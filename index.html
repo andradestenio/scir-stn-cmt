@@ -3,7 +3,7 @@
 <head>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🚨%3C/text%3E%3C/svg%3E">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Sistema de Controle Interno de Regulações — NIR CEMETRON</title>
   <style>
     :root{
@@ -477,7 +477,8 @@
       .form-grid{grid-template-columns:1fr}
       .record-grid{grid-template-columns:1fr}
     }
-  <style>.calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}    .calendar-export-actions .btn{min-width:190px}
+  </style>
+  <style>.calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}
     .hours-summary-card{
       position:relative;
     }
@@ -516,22 +517,157 @@
   .login-screen.hidden{display:none}.login-card{width:min(420px,100%);background:#fff;border-radius:16px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.3)}
   .login-card h2{margin:0 0 8px;color:var(--navy)}.login-card p{margin:0 0 20px;color:var(--muted);line-height:1.5}.login-card .field{margin-bottom:14px}.login-error{min-height:20px;color:#b91c1c;font-size:13px;margin-top:12px}
 </style>
+<style>
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{overflow-x:hidden}
+  button,input,select,textarea{touch-action:manipulation}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(79,142,220,.45);outline-offset:2px}
+  .mobile-header,.menu-backdrop,.calendar-mobile-agenda{display:none}
+  .brand-logo-box{display:flex;align-items:center;justify-content:center;margin-bottom:15px;padding:9px 10px;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+  .brand-logo-box img{display:block;width:100%;max-width:210px;height:auto}
+
+  .login-screen{overflow-y:auto;padding:24px;background:radial-gradient(circle at 12% 15%,rgba(79,142,220,.28),transparent 30%),linear-gradient(135deg,#071628 0%,#0f2747 52%,#173a67 100%)}
+  .login-shell{width:min(900px,100%);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(380px,.95fr);overflow:hidden;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:#fff;box-shadow:0 30px 90px rgba(2,8,23,.42)}
+  .login-brand-panel{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:560px;padding:42px;color:#fff;background:linear-gradient(160deg,#0b213c,#173a67)}
+  .login-brand-panel::before,.login-brand-panel::after{content:"";position:absolute;z-index:-1;border-radius:50%;background:rgba(255,255,255,.06)}
+  .login-brand-panel::before{width:260px;height:260px;right:-100px;top:-95px}.login-brand-panel::after{width:190px;height:190px;left:-85px;bottom:-85px}
+  .login-logo-surface{display:flex;align-items:center;justify-content:center;width:min(290px,100%);padding:14px 18px;border-radius:14px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+  .login-logo-surface img{display:block;width:100%;max-width:226px;height:auto}
+  .login-eyebrow{display:block;margin-bottom:10px;color:#93c5fd;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+  .login-brand-panel h1{max-width:420px;margin:0 0 13px;font-size:31px;line-height:1.15;letter-spacing:-.02em}
+  .login-brand-panel p{max-width:430px;margin:0;color:#dbeafe;font-size:15px;line-height:1.65}
+  .login-features{display:grid;gap:10px;margin:24px 0 0;padding:0;list-style:none;color:#e2e8f0;font-size:13px}
+  .login-features li{display:flex;align-items:center;gap:9px}.login-feature-icon{display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:rgba(76,175,114,.2);color:#86efac;font-weight:900}
+  .login-card{display:flex;flex-direction:column;justify-content:center;width:auto;padding:48px 44px;border-radius:0;box-shadow:none}
+  .login-form-heading{margin-bottom:26px}.login-form-heading .login-access-label{display:block;margin-bottom:8px;color:var(--navy-2);font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+  .login-card h2{margin:0 0 9px;font-size:28px;letter-spacing:-.02em}.login-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+  .login-card .field{margin-bottom:17px}.login-card label{font-size:13px}.login-card input{min-height:48px;padding:12px 13px;border-color:#b8c3d1;background:#f8fafc}.login-card input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(79,142,220,.12);outline:0}
+  .password-field{position:relative}.password-field input{padding-right:82px}.password-toggle{position:absolute;top:50%;right:7px;transform:translateY(-50%);min-height:36px;padding:0 9px;border:0;border-radius:7px;background:#e8eef6;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer}
+  .login-submit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:50px;margin-top:3px;border-radius:10px;font-size:15px;box-shadow:0 8px 18px rgba(15,39,71,.2)}
+  .login-error{display:flex;align-items:center;min-height:22px;margin-top:12px;color:#b91c1c;font-size:13px;line-height:1.4}
+  .login-security-note{display:flex;align-items:flex-start;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;color:#64748b;font-size:11px;line-height:1.5}
+  .login-security-note span:first-child{font-size:14px}
+
+  @media(max-width:1024px){
+    body.menu-open{overflow:hidden}
+    .mobile-header{
+      position:sticky;top:0;z-index:1100;display:flex;align-items:center;gap:12px;
+      min-height:64px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;
+      background:linear-gradient(90deg,var(--navy),var(--navy-2));color:#fff;
+      box-shadow:0 4px 18px rgba(9,26,48,.22)
+    }
+    .mobile-menu-button{width:44px;height:44px;display:grid;place-items:center;flex:0 0 44px;border:1px solid rgba(255,255,255,.24);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer}
+    .mobile-brand-logo{display:flex;align-items:center;justify-content:center;width:124px;flex:0 0 124px;padding:5px 7px;border-radius:7px;background:#fff}.mobile-brand-logo img{display:block;width:100%;height:auto}
+    .mobile-header-copy{min-width:0}.mobile-header-copy span{display:block;color:#dbeafe;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app{display:block!important;min-height:auto}
+    aside{
+      position:fixed!important;inset:0 auto 0 0;z-index:1300;width:min(330px,88vw);height:100dvh;
+      padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));
+      overflow-y:auto;overscroll-behavior:contain;transform:translateX(-105%);transition:transform .24s ease;
+      box-shadow:18px 0 48px rgba(0,0,0,.26)
+    }
+    aside.mobile-open{transform:translateX(0)}
+    aside .brand{padding-right:44px}
+    nav{display:block!important;overflow:visible!important}
+    nav button{min-width:0!important;min-height:48px;margin-bottom:5px;padding:13px 14px;font-size:15px}
+    .menu-backdrop{position:fixed;inset:0;z-index:1250;display:block;background:rgba(2,8,23,.58);opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(2px)}
+    body.menu-open .menu-backdrop{opacity:1;visibility:visible}
+    main{width:100%;max-width:100%;padding:22px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .table-wrap,.calendar-scroll{-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}
+    .table-wrap{position:relative}
+    .records-table{min-width:920px}
+  }
+
+  @media(max-width:700px){
+    .mobile-header{min-height:60px;padding-left:12px;padding-right:12px}
+    main{padding:12px 12px calc(88px + env(safe-area-inset-bottom))}
+    .topbar{flex-direction:column;gap:12px;margin-bottom:14px}
+    .topbar h2{font-size:21px;line-height:1.2}.topbar p{font-size:13px;line-height:1.45}
+    .shift-chip{width:100%;min-width:0;padding:11px 13px}
+    .panel{padding:14px;border-radius:12px;margin-bottom:12px}
+    .panel h3{font-size:17px;line-height:1.3;margin-bottom:12px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}
+    .stat{min-width:0;padding:12px;border-radius:10px}.stat .label{font-size:11px;line-height:1.3}.stat .value{font-size:24px}
+    .form-grid{display:block}.form-grid>div{margin-bottom:12px}.form-grid>div:last-child{margin-bottom:0}
+    input,select,textarea{min-height:46px;padding:11px 12px;border-radius:9px;font-size:16px}
+    textarea{min-height:110px}
+    .actions{display:flex;gap:8px;margin-top:12px}.actions>.btn{flex:1 1 calc(50% - 4px);min-height:46px;padding:11px 12px}
+    .btn{min-height:44px;font-size:14px}
+    .record-grid{grid-template-columns:1fr;gap:6px}.record{padding:12px}.record-footer{justify-content:stretch;flex-wrap:wrap}.record-footer .btn{flex:1 1 130px}
+    .module-card{padding:12px;border-left-width:6px}.module-title{align-items:flex-start;line-height:1.35}
+    .report-header{flex-direction:column;gap:10px}.report-header .actions{width:100%}
+    .table-wrap{border-radius:8px;box-shadow:inset -18px 0 18px -22px rgba(15,39,71,.55)}
+    .records-table{min-width:860px}.records-table th,.records-table td{padding:11px 10px}
+    .table-actions{white-space:normal;flex-wrap:wrap}.table-actions .btn{min-height:40px}
+    .sbar-box{min-height:320px;max-height:58vh;padding:12px;font-size:12px;line-height:1.5}
+    .calendar-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}.calendar-toolbar h3{grid-column:1/-1;grid-row:1;text-align:center}.calendar-toolbar .btn{width:100%;min-width:0}
+    .calendar-scroll{display:none}.calendar-mobile-agenda{display:block}
+    .calendar-mobile-empty{padding:22px 10px;text-align:center;color:var(--muted);font-size:13px}
+    .calendar-mobile-day{margin-bottom:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+    .calendar-mobile-date{padding:9px 11px;background:#e8eef6;color:var(--navy);font-size:13px;font-weight:800;text-transform:capitalize}
+    .calendar-mobile-day .calendar-event{display:block;width:calc(100% - 18px);margin:9px;min-height:44px;padding:10px;border:0;text-align:left;font-size:12px}
+    .calendar-legend{display:grid;grid-template-columns:1fr;gap:7px}
+    .calendar-export-actions{display:grid;grid-template-columns:1fr;gap:8px}.calendar-export-actions .btn{width:100%;min-width:0}
+    .cloud-bar{right:10px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:calc(100vw - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .toast{left:12px;right:12px;bottom:calc(64px + env(safe-area-inset-bottom));text-align:center}
+    .login-screen{display:block;padding:12px;padding-top:calc(12px + env(safe-area-inset-top));padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .login-shell{display:block;margin:auto;border-radius:17px}.login-brand-panel{display:block;min-height:0;padding:22px 20px 20px}.login-logo-surface{width:230px;max-width:100%;padding:10px 13px;border-radius:10px}.login-brand-copy{margin-top:20px}.login-eyebrow{margin-bottom:7px}.login-brand-panel h1{margin-bottom:8px;font-size:22px}.login-brand-panel p{font-size:13px;line-height:1.5}.login-features{display:none}
+    .login-card{padding:26px 20px;border-radius:0}.login-form-heading{margin-bottom:20px}.login-card h2{font-size:24px}.login-card .btn{width:100%;min-height:48px}
+  }
+
+  @media(max-width:430px){
+    .actions{display:grid;grid-template-columns:1fr}.actions>.btn{width:100%}
+    .record-footer{display:grid;grid-template-columns:1fr}.record-footer .btn{width:100%}
+    .topbar h2{font-size:20px}
+    .mobile-brand-logo{width:108px;flex-basis:108px}.mobile-header-copy span{font-size:11px}
+  }
+
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
 <body>
   <div class="login-screen" id="loginScreen">
-    <form class="login-card" id="loginForm">
-      <h2>SCIR — NIR CEMETRON</h2>
-      <p>Entre para acessar a base integrada do sistema.</p>
-      <div class="field"><label for="loginUsername">Usuário</label><input id="loginUsername" autocomplete="username" required></div>
-      <div class="field"><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
-      <button class="btn btn-primary" id="loginButton" type="submit">Entrar</button>
-      <div class="login-error" id="loginError"></div>
-    </form>
+    <div class="login-shell">
+      <section class="login-brand-panel" aria-label="Apresentação do sistema">
+        <div class="login-logo-surface"><img src="assets/logo-cemetron.png" alt="CEMETRON — Centro de Medicina Tropical de Rondônia"></div>
+        <div class="login-brand-copy">
+          <span class="login-eyebrow">Sistema institucional</span>
+          <h1>Controle Interno de Regulações</h1>
+          <p>Gestão integrada dos registros, plantões, autorizações e passagens de plantão do NIR CEMETRON.</p>
+          <ul class="login-features">
+            <li><span class="login-feature-icon">✓</span>Base sincronizada entre dispositivos</li>
+            <li><span class="login-feature-icon">✓</span>Histórico protegido e sempre disponível</li>
+            <li><span class="login-feature-icon">✓</span>Acesso responsivo em computador, tablet e celular</li>
+          </ul>
+        </div>
+      </section>
+      <form class="login-card" id="loginForm">
+        <div class="login-form-heading">
+          <span class="login-access-label">Acesso seguro</span>
+          <h2>Entrar no SCIR</h2>
+          <p>Informe suas credenciais para acessar a base integrada.</p>
+        </div>
+        <div class="field"><label for="loginUsername">Usuário</label><input id="loginUsername" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Digite seu usuário" required></div>
+        <div class="field"><label for="loginPassword">Senha</label><div class="password-field"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" required><button class="password-toggle" id="togglePassword" type="button" aria-label="Mostrar senha" aria-pressed="false">Mostrar</button></div></div>
+        <button class="btn btn-primary login-submit" id="loginButton" type="submit"><span class="login-button-label">Entrar no sistema</span><span aria-hidden="true">→</span></button>
+        <div class="login-error" id="loginError" role="alert" aria-live="polite"></div>
+        <div class="login-security-note"><span aria-hidden="true">🔒</span><span>Sessão protegida. Seus dados são transmitidos e armazenados na base integrada do sistema.</span></div>
+      </form>
+    </div>
   </div>
   <div class="cloud-bar" id="cloudStatus">Conectando à base…</div>
+  <header class="mobile-header">
+    <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Abrir menu" aria-controls="mainSidebar" aria-expanded="false">☰</button>
+    <div class="mobile-brand-logo"><img src="assets/logo-cemetron.png" alt="CEMETRON"></div>
+    <div class="mobile-header-copy"><span id="mobilePageTitle">Dashboard</span></div>
+  </header>
+  <button class="menu-backdrop" id="menuBackdrop" type="button" aria-label="Fechar menu"></button>
 <div class="app">
-  <aside>
+  <aside id="mainSidebar">
     <div class="brand">
+      <div class="brand-logo-box"><img src="assets/logo-cemetron.png" alt="CEMETRON — Centro de Medicina Tropical de Rondônia"></div>
       <h1>NIR CEMETRON</h1>
       <p>Controle Interno de Regulações<br>Versão integrada em nuvem</p>
     </div>
@@ -843,7 +979,7 @@
           </div>
 
         </div>
-      <div class="panel"><div class="calendar-toolbar"><button class="btn btn-secondary" id="previousMonth">← Mês anterior</button><h3 id="calendarMonthTitle"></h3><button class="btn btn-secondary" id="nextMonth">Próximo mês →</button></div><div class="calendar-scroll"><div class="calendar-grid" id="calendarGrid"></div></div><div class="calendar-legend"><span><span class="legend-dot green"></span>Plantão já executado</span><span><span class="legend-dot blue"></span>NIR ainda não executado</span><span><span class="legend-dot yellow"></span>Visita Médica ainda não executada</span></div></div>
+      <div class="panel"><div class="calendar-toolbar"><button class="btn btn-secondary" id="previousMonth">← Mês anterior</button><h3 id="calendarMonthTitle"></h3><button class="btn btn-secondary" id="nextMonth">Próximo mês →</button></div><div class="calendar-scroll"><div class="calendar-grid" id="calendarGrid"></div></div><div class="calendar-mobile-agenda" id="calendarMobileAgenda"></div><div class="calendar-legend"><span><span class="legend-dot green"></span>Plantão já executado</span><span><span class="legend-dot blue"></span>NIR ainda não executado</span><span><span class="legend-dot yellow"></span>Visita Médica ainda não executada</span></div></div>
       <div class="panel" style="margin-top:16px;">
         <h3>Exportar meus plantões</h3>
         <div class="calendar-export-actions">
@@ -957,6 +1093,24 @@
 
   const $ = id => document.getElementById(id);
 
+  function openMobileMenu(){
+    $("mainSidebar")?.classList.add("mobile-open");
+    document.body.classList.add("menu-open");
+    $("mobileMenuButton")?.setAttribute("aria-expanded", "true");
+    $("mobileMenuButton")?.setAttribute("aria-label", "Fechar menu");
+  }
+
+  function closeMobileMenu(){
+    $("mainSidebar")?.classList.remove("mobile-open");
+    document.body.classList.remove("menu-open");
+    $("mobileMenuButton")?.setAttribute("aria-expanded", "false");
+    $("mobileMenuButton")?.setAttribute("aria-label", "Abrir menu");
+  }
+
+  function setCurrentViewTitle(button){
+    if($("mobilePageTitle")) $("mobilePageTitle").textContent = button?.textContent?.trim() || "Dashboard";
+  }
+
   function getCurrentTime(){
     const now = new Date();
     return `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
@@ -1011,7 +1165,10 @@
     queueCloudSave();
   }
 
-  function showLogin(){ $("loginScreen").classList.remove("hidden"); }
+  function showLogin(){
+    $("loginScreen").classList.remove("hidden");
+    setTimeout(() => $("loginUsername")?.focus(), 80);
+  }
   function hideLogin(){ $("loginScreen").classList.add("hidden"); }
 
   async function loadCloudState(){
@@ -1442,6 +1599,26 @@ $("background").value = state.sbar.background || "";
     const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(); for(let i=0;i<first;i++)h+='<div class="calendar-day empty"></div>';
     for(let day=1;day<=days;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;const ev=state.calendarShifts.filter(x=>x.date===key).map(x=>`<div class="calendar-event ${calendarEventClass(x)}" onclick="editCalendarShift('${x.id}')"><strong>${escapeHtml(x.turn)} — ${escapeHtml(calendarSectorLabel(x.sector))}</strong>Início: ${escapeHtml(x.start || "Não informado")}<br>Término: ${escapeHtml(x.end || calculateShiftEnd(x.start, x.hours) || "Não informado")}<br>Carga horária: ${escapeHtml(String(x.hours || "Não informado"))}${x.hours ? "h" : ""}</div>`).join("");h+=`<div class="calendar-day"><div class="calendar-date-number">${day}</div>${ev}</div>`;} grid.innerHTML=h;
     const items=calendarMonthItems();
+    const mobileAgenda = $("calendarMobileAgenda");
+    if(mobileAgenda){
+      const grouped = items.reduce((acc,item) => {
+        (acc[item.date] ||= []).push(item);
+        return acc;
+      }, {});
+      mobileAgenda.innerHTML = items.length
+        ? Object.entries(grouped).map(([date,dateItems]) => {
+            const dateLabel = localDateOnly(date).toLocaleDateString("pt-BR", {weekday:"long", day:"2-digit", month:"long"});
+            const events = dateItems.map(item => `
+              <button class="calendar-event ${calendarEventClass(item)}" type="button" onclick="editCalendarShift('${item.id}')">
+                <strong>${escapeHtml(item.turn || "Plantão")} — ${escapeHtml(calendarSectorLabel(item.sector))}</strong>
+                Início: ${escapeHtml(item.start || "Não informado")}<br>
+                Término: ${escapeHtml(item.end || calculateShiftEnd(item.start,item.hours) || "Não informado")}<br>
+                Carga horária: ${escapeHtml(String(item.hours || "Não informado"))}${item.hours ? "h" : ""}
+              </button>`).join("");
+            return `<div class="calendar-mobile-day"><div class="calendar-mobile-date">${escapeHtml(dateLabel)}</div>${events}</div>`;
+          }).join("")
+        : '<div class="calendar-mobile-empty">Nenhum plantão cadastrado neste mês.</div>';
+    }
     const monthlyHours = items.reduce((total,item)=>{
       const value = Number(item.hours);
       return total + (Number.isFinite(value) ? value : 0);
@@ -1515,7 +1692,7 @@ $("background").value = state.sbar.background || "";
         }).join("")
       : '<tr><td colspan="8" class="empty-table">Nenhum plantão cadastrado neste mês.</td></tr>';
   }
-  window.editCalendarShift=function(id){const x=state.calendarShifts.find(v=>v.id===id);if(!x)return;calendarEditingId=id;$("calendarShiftDate").value=x.date;$("calendarShiftTurn").value=x.turn;$("calendarShiftSector").value=x.sector||"NIR";$("calendarShiftStart").value=x.start||"";$("calendarShiftHours").value=x.hours;$("calendarShiftEnd").value=x.end||calculateShiftEnd(x.start,x.hours);$("saveCalendarShift").textContent="Atualizar plantão";};
+  window.editCalendarShift=function(id){const x=state.calendarShifts.find(v=>v.id===id);if(!x)return;calendarEditingId=id;$("calendarShiftDate").value=x.date;$("calendarShiftTurn").value=x.turn;$("calendarShiftSector").value=x.sector||"NIR";$("calendarShiftStart").value=x.start||"";$("calendarShiftHours").value=x.hours;$("calendarShiftEnd").value=x.end||calculateShiftEnd(x.start,x.hours);$("saveCalendarShift").textContent="Atualizar plantão";if(window.matchMedia("(max-width:700px)").matches)window.scrollTo({top:0,behavior:"smooth"});};
   window.deleteCalendarShift=function(id){if(!confirm("Deseja excluir este plantão do calendário?"))return;state.calendarShifts=state.calendarShifts.filter(x=>x.id!==id);saveState();toast("Plantão removido do calendário.");};
   function clearCalendarShiftForm(){$("calendarShiftDate").value="";$("calendarShiftTurn").value="";$("calendarShiftSector").value="";$("calendarShiftStart").value="";$("calendarShiftHours").value="";$("calendarShiftEnd").value="";calendarEditingId=null;$("saveCalendarShift").textContent="Cadastrar plantão";}
 
@@ -1790,8 +1967,19 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden"));
       $(btn.dataset.view).classList.remove("hidden");
       if(btn.dataset.view === "registros") ensureCurrentRequestTime();
+      setCurrentViewTitle(btn);
+      closeMobileMenu();
+      window.scrollTo({top:0, behavior:"smooth"});
     });
   });
+
+  $("mobileMenuButton").addEventListener("click", () => {
+    if($("mainSidebar").classList.contains("mobile-open")) closeMobileMenu();
+    else openMobileMenu();
+  });
+  $("menuBackdrop").addEventListener("click", closeMobileMenu);
+  document.addEventListener("keydown", event => { if(event.key === "Escape") closeMobileMenu(); });
+  window.matchMedia("(min-width:1025px)").addEventListener("change", event => { if(event.matches) closeMobileMenu(); });
 
   $("saveShift").addEventListener("click", () => {
     const date = $("shiftDate").value;
@@ -2315,10 +2503,22 @@ background: $("background").value.trim(),
     $("exportCalendarExcel").addEventListener("click",exportCalendarExcel);
   }
 
+  $("togglePassword").addEventListener("click", () => {
+    const input = $("loginPassword");
+    const showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    $("togglePassword").textContent = showing ? "Mostrar" : "Ocultar";
+    $("togglePassword").setAttribute("aria-label", showing ? "Mostrar senha" : "Ocultar senha");
+    $("togglePassword").setAttribute("aria-pressed", String(!showing));
+    input.focus();
+  });
+
   $("loginForm").addEventListener("submit", async event => {
     event.preventDefault();
     const button = $("loginButton");
+    const label = button.querySelector(".login-button-label");
     button.disabled = true;
+    if(label) label.textContent = "Entrando…";
     $("loginError").textContent = "";
     try{
       await cloudRequest("/api/login", {method:"POST", body:JSON.stringify({username:$("loginUsername").value.trim(), password:$("loginPassword").value})});
@@ -2326,7 +2526,10 @@ background: $("background").value.trim(),
       await loadCloudState();
     }catch(error){
       $("loginError").textContent = error.message === "UNAUTHORIZED" ? "Usuário ou senha inválidos." : error.message;
-    }finally{ button.disabled = false; }
+    }finally{
+      button.disabled = false;
+      if(label) label.textContent = "Entrar no sistema";
+    }
   });
 
   $("logoutButton").addEventListener("click", async () => {

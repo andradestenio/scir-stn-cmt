@@ -8,6 +8,22 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dashboard. O arquivo JSON gerado pelo migrador local pode ser selecionado em **Importar backup** para substituir a base vazia e enviá-la ao Supabase.
 
+### Versão 1.2 — celular e tablet
+
+- Menu lateral recolhível com fundo de proteção e fechamento automático ao navegar.
+- Formulários e botões com áreas de toque ampliadas.
+- Reorganização de painéis, indicadores e ações para telas estreitas.
+- Tabelas com rolagem horizontal por toque.
+- Calendário mensal convertido automaticamente em agenda no celular.
+- Compatibilidade com áreas seguras de iPhone/iPad e prevenção de zoom involuntário em campos.
+
+### Versão 1.3 — identidade institucional e login
+
+- Nova página de login institucional, responsiva e com melhor hierarquia visual.
+- Logo oficial do CEMETRON no login, menu lateral e cabeçalho móvel.
+- Opção para mostrar ou ocultar a senha.
+- Mensagens de autenticação acessíveis e indicação visual durante a entrada.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.
