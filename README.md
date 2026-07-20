@@ -24,6 +24,13 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Opção para mostrar ou ocultar a senha.
 - Mensagens de autenticação acessíveis e indicação visual durante a entrada.
 
+### Versão 1.4 — produtividade no plantão
+
+- Bloco de notas na Dashboard, sincronizado com a base integrada.
+- Cadastro de mensagens padrão com ações de copiar, editar e excluir.
+- Lembrete de registro do ponto de entrada ao iniciar um novo plantão.
+- Lembrete de registro do ponto de saída ao encerrar o plantão.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.

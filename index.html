@@ -547,6 +547,11 @@
   .login-error{display:flex;align-items:center;min-height:22px;margin-top:12px;color:#b91c1c;font-size:13px;line-height:1.4}
   .login-security-note{display:flex;align-items:flex-start;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;color:#64748b;font-size:11px;line-height:1.5}
   .login-security-note span:first-child{font-size:14px}
+  .dashboard-panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}.dashboard-panel-header h3{margin-bottom:4px}.dashboard-panel-header p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+  .dashboard-notes{min-height:170px;line-height:1.55}.note-save-meta{align-self:center;color:var(--muted);font-size:12px}
+  .standard-message-form{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:12px;align-items:start}.standard-message-form .message-text-field{grid-row:span 2}.standard-message-form textarea{min-height:112px}
+  .standard-messages-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.standard-message-card{display:flex;flex-direction:column;min-width:0;padding:15px;border:1px solid var(--line);border-radius:11px;background:#f8fafc}.standard-message-title{margin:0 0 8px;color:var(--navy);font-size:15px;line-height:1.35}.standard-message-text{flex:1;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#374151;font-size:13px;line-height:1.55}.standard-message-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0}.standard-message-actions .btn{min-height:38px;padding:8px 11px;font-size:12px}.standard-messages-empty{grid-column:1/-1;padding:24px;border:1px dashed #cbd5e1;border-radius:10px;text-align:center;color:var(--muted);font-size:13px}
+  .reminder-modal{position:fixed;inset:0;z-index:3200;display:grid;place-items:center;padding:20px;background:rgba(2,8,23,.7);opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}.reminder-modal.show{opacity:1;visibility:visible}.reminder-dialog{width:min(430px,100%);padding:30px;border:1px solid rgba(255,255,255,.25);border-radius:18px;background:#fff;text-align:center;box-shadow:0 28px 80px rgba(0,0,0,.38);transform:translateY(12px) scale(.98);transition:.2s}.reminder-modal.show .reminder-dialog{transform:none}.reminder-symbol{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:#e8eef6;color:var(--navy);font-size:28px;font-weight:900}.reminder-eyebrow{display:block;margin-bottom:7px;color:var(--navy-2);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.reminder-dialog h3{margin:0 0 9px;color:var(--navy);font-size:22px}.reminder-dialog p{margin:0 0 22px;color:#475569;font-size:15px;line-height:1.6}.reminder-dialog .btn{width:100%;min-height:48px}
 
   @media(max-width:1024px){
     body.menu-open{overflow:hidden}
@@ -615,6 +620,7 @@
     .login-screen{display:block;padding:12px;padding-top:calc(12px + env(safe-area-inset-top));padding-bottom:calc(12px + env(safe-area-inset-bottom))}
     .login-shell{display:block;margin:auto;border-radius:17px}.login-brand-panel{display:block;min-height:0;padding:22px 20px 20px}.login-logo-surface{width:230px;max-width:100%;padding:10px 13px;border-radius:10px}.login-brand-copy{margin-top:20px}.login-eyebrow{margin-bottom:7px}.login-brand-panel h1{margin-bottom:8px;font-size:22px}.login-brand-panel p{font-size:13px;line-height:1.5}.login-features{display:none}
     .login-card{padding:26px 20px;border-radius:0}.login-form-heading{margin-bottom:20px}.login-card h2{font-size:24px}.login-card .btn{width:100%;min-height:48px}
+    .dashboard-panel-header{display:block}.dashboard-panel-header p{margin-bottom:10px}.standard-message-form{display:block}.standard-message-form>div{margin-bottom:12px}.standard-messages-list{grid-template-columns:1fr}.standard-message-actions{display:grid;grid-template-columns:1fr 1fr}.standard-message-actions .btn{width:100%}.reminder-modal{padding:12px}.reminder-dialog{padding:24px 20px;border-radius:15px}
   }
 
   @media(max-width:430px){
@@ -734,6 +740,28 @@
         <div class="stat"><div class="label">🟦 Transferências / Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
         <div class="stat"><div class="label">🟩 Autorizações</div><div class="value" id="countGreen">0</div></div>
         <div class="stat"><div class="label">🟥 Negativas</div><div class="value" id="countRed">0</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="dashboard-panel-header">
+          <div><h3>Bloco de notas</h3><p>Registre lembretes, pendências e informações importantes do dia.</p></div>
+          <span class="note-save-meta" id="noteSaveMeta">Salvo na base integrada</span>
+        </div>
+        <label for="dashboardNotes">Anotações</label>
+        <textarea class="dashboard-notes" id="dashboardNotes" placeholder="Escreva aqui o que não pode esquecer..."></textarea>
+        <div class="actions"><button class="btn btn-primary" id="saveDashboardNotes" type="button">Salvar anotações</button></div>
+      </div>
+
+      <div class="panel">
+        <div class="dashboard-panel-header">
+          <div><h3>Mensagens padrão</h3><p>Deixe textos frequentes salvos para copiar e enviar rapidamente.</p></div>
+        </div>
+        <div class="standard-message-form">
+          <div><label for="standardMessageTitle">Título da mensagem</label><input id="standardMessageTitle" placeholder="Ex.: Solicitação de atualização"></div>
+          <div class="message-text-field"><label for="standardMessageText">Texto da mensagem</label><textarea id="standardMessageText" placeholder="Digite a mensagem completa..."></textarea></div>
+          <div class="actions"><button class="btn btn-primary" id="saveStandardMessage" type="button">Salvar mensagem</button><button class="btn btn-secondary" id="cancelStandardMessage" type="button">Limpar</button></div>
+        </div>
+        <div class="standard-messages-list" id="standardMessagesList"></div>
       </div>
     </section>
 
@@ -1052,6 +1080,16 @@
   </main>
 </div>
 
+<div class="reminder-modal" id="shiftReminderModal" role="dialog" aria-modal="true" aria-labelledby="shiftReminderTitle" aria-describedby="shiftReminderText">
+  <div class="reminder-dialog">
+    <div class="reminder-symbol" aria-hidden="true">!</div>
+    <span class="reminder-eyebrow">Lembrete do plantão</span>
+    <h3 id="shiftReminderTitle">Registro de ponto</h3>
+    <p id="shiftReminderText"></p>
+    <button class="btn btn-primary" id="dismissShiftReminder" type="button">Entendido</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1067,12 +1105,18 @@
     shift: null,
     records: [],
     history: [],
-    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" }
+    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" },
+    dashboardNotes: "",
+    dashboardNotesUpdatedAt: null,
+    standardMessages: []
   };
 
   state.records = Array.isArray(state.records) ? state.records : [];
   state.history = Array.isArray(state.history) ? state.history : [];
   state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+  state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
+  state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
+  state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
   state.sbar = state.sbar || {
     operationalStatus:"",
     turnover:"",
@@ -1089,6 +1133,7 @@
   let editingRecordId = null;
   let selectedHistoryId = null;
   let calendarEditingId = null;
+  let editingStandardMessageId = null;
   let calendarCurrentDate = new Date();
 
   const $ = id => document.getElementById(id);
@@ -1181,6 +1226,9 @@
         state.history = Array.isArray(state.history) ? state.history : [];
         state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
         state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",assessment:"",recommendation:""};
+        state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
+        state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
+        state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }else{
         await cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state})});
@@ -1201,6 +1249,88 @@
     el.classList.add("show");
     setTimeout(() => el.classList.remove("show"), 1800);
   }
+
+  function showShiftReminder(title, message){
+    $("shiftReminderTitle").textContent = title;
+    $("shiftReminderText").textContent = message;
+    $("shiftReminderModal").classList.add("show");
+    setTimeout(() => $("dismissShiftReminder").focus(), 80);
+  }
+
+  function hideShiftReminder(){
+    $("shiftReminderModal").classList.remove("show");
+  }
+
+  function renderDashboardTools(){
+    const notes = $("dashboardNotes");
+    if(notes && document.activeElement !== notes) notes.value = state.dashboardNotes || "";
+    if($("noteSaveMeta")){
+      $("noteSaveMeta").textContent = state.dashboardNotesUpdatedAt
+        ? `Salvo em ${formatDateTime(state.dashboardNotesUpdatedAt)}`
+        : "Salvo na base integrada";
+    }
+    renderStandardMessages();
+  }
+
+  function renderStandardMessages(){
+    const container = $("standardMessagesList");
+    if(!container) return;
+    const messages = state.standardMessages.slice().sort((a,b) => String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || "")));
+    container.innerHTML = messages.length ? messages.map(message => `
+      <article class="standard-message-card">
+        <h4 class="standard-message-title">${escapeHtml(message.title || "Mensagem sem título")}</h4>
+        <p class="standard-message-text">${escapeHtml(message.text || "")}</p>
+        <div class="standard-message-actions">
+          <button class="btn btn-primary" type="button" onclick="copyStandardMessage('${message.id}')">Copiar</button>
+          <button class="btn btn-edit" type="button" onclick="editStandardMessage('${message.id}')">Editar</button>
+          <button class="btn btn-danger" type="button" onclick="deleteStandardMessage('${message.id}')">Excluir</button>
+        </div>
+      </article>`).join("") : '<div class="standard-messages-empty">Nenhuma mensagem padrão cadastrada.</div>';
+  }
+
+  function clearStandardMessageForm(){
+    editingStandardMessageId = null;
+    $("standardMessageTitle").value = "";
+    $("standardMessageText").value = "";
+    $("saveStandardMessage").textContent = "Salvar mensagem";
+  }
+
+  async function copyTextToClipboard(text){
+    try{ await navigator.clipboard.writeText(text); }
+    catch{
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+    }
+  }
+
+  window.copyStandardMessage = async function(id){
+    const message = state.standardMessages.find(item => item.id === id);
+    if(!message) return;
+    await copyTextToClipboard(message.text || "");
+    toast("Mensagem copiada.");
+  };
+
+  window.editStandardMessage = function(id){
+    const message = state.standardMessages.find(item => item.id === id);
+    if(!message) return;
+    editingStandardMessageId = id;
+    $("standardMessageTitle").value = message.title || "";
+    $("standardMessageText").value = message.text || "";
+    $("saveStandardMessage").textContent = "Atualizar mensagem";
+    $("standardMessageTitle").focus();
+  };
+
+  window.deleteStandardMessage = function(id){
+    if(!confirm("Deseja excluir esta mensagem padrão?")) return;
+    state.standardMessages = state.standardMessages.filter(item => item.id !== id);
+    if(editingStandardMessageId === id) clearStandardMessageForm();
+    saveState();
+    toast("Mensagem excluída.");
+  };
 
   function formatDate(date){
     if(!date) return "";
@@ -1910,6 +2040,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderAuthorizationOptions();
     renderHistoryTable();
     renderCalendar();
+    renderDashboardTools();
 
     const locked = isShiftClosed();
     ["module","requestTime","patient","origin","hd","destination","status","addRecord","clearForm"].forEach(id => {
@@ -1985,6 +2116,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const date = $("shiftDate").value;
     const type = $("shiftType").value;
     const professional = $("professional").value.trim();
+    const startingNewShift = !state.shift || isShiftClosed();
 
     if(!date || !professional){
       alert("Informe a data e o plantonista.");
@@ -1992,7 +2124,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
 
     if(isShiftClosed()){
-      if(!confirm("Deseja iniciar um novo plantão? Os registros encerrados permanecerão no histórico local.")){
+      if(!confirm("Deseja iniciar um novo plantão? Os registros encerrados permanecerão no histórico integrado.")){
         return;
       }
 
@@ -2031,6 +2163,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
 
     saveState();
+    if(startingNewShift){
+      showShiftReminder("Ponto de entrada", "Lembre-se de registrar o ponto de entrada.");
+    }
   });
 
   $("addRecord").addEventListener("click", () => {
@@ -2152,7 +2287,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     state.shift.endedAt = new Date().toISOString();
     archiveClosedShift();
     saveState();
-    toast("Plantão encerrado e arquivado no histórico local.");
+    toast("Plantão encerrado e arquivado no histórico integrado.");
+    showShiftReminder("Ponto de saída", "Lembre-se de registrar o ponto de saída.");
   }
 
   function createPrintableReport(){
@@ -2503,6 +2639,44 @@ background: $("background").value.trim(),
     $("exportCalendarExcel").addEventListener("click",exportCalendarExcel);
   }
 
+  $("dismissShiftReminder").addEventListener("click", hideShiftReminder);
+
+  $("saveDashboardNotes").addEventListener("click", () => {
+    state.dashboardNotes = $("dashboardNotes").value;
+    state.dashboardNotesUpdatedAt = new Date().toISOString();
+    saveState();
+    toast("Anotações salvas.");
+  });
+
+  $("dashboardNotes").addEventListener("keydown", event => {
+    if((event.ctrlKey || event.metaKey) && event.key === "Enter"){
+      event.preventDefault();
+      $("saveDashboardNotes").click();
+    }
+  });
+
+  $("saveStandardMessage").addEventListener("click", () => {
+    const title = $("standardMessageTitle").value.trim();
+    const text = $("standardMessageText").value.trim();
+    if(!title || !text){
+      alert("Informe o título e o texto da mensagem.");
+      return;
+    }
+    const now = new Date().toISOString();
+    if(editingStandardMessageId){
+      const index = state.standardMessages.findIndex(item => item.id === editingStandardMessageId);
+      if(index >= 0) state.standardMessages[index] = {...state.standardMessages[index], title, text, updatedAt:now};
+      toast("Mensagem atualizada.");
+    }else{
+      state.standardMessages.push({id:crypto.randomUUID ? crypto.randomUUID() : `message-${Date.now()}`, title, text, createdAt:now, updatedAt:now});
+      toast("Mensagem salva.");
+    }
+    saveState();
+    clearStandardMessageForm();
+  });
+
+  $("cancelStandardMessage").addEventListener("click", clearStandardMessageForm);
+
   $("togglePassword").addEventListener("click", () => {
     const input = $("loginPassword");
     const showing = input.type === "text";
@@ -2556,6 +2730,9 @@ background: $("background").value.trim(),
       state.records = Array.isArray(state.records) ? state.records : [];
       state.history = Array.isArray(state.history) ? state.history : [];
       state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+      state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
+      state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
+      state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
       saveState();
       toast("Backup importado e enviado à nuvem.");
     }catch{
