@@ -1,0 +1,2768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🚨%3C/text%3E%3C/svg%3E">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Controle Interno de Regulações — NIR CEMETRON</title>
+  <style>
+    :root{
+      --navy:#0f2747;
+      --navy-2:#173a67;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#d1d5db;
+      --panel:#ffffff;
+      --bg:#f3f4f6;
+      --yellow:#f6c945;
+      --blue:#4f8edc;
+      --green:#4caf72;
+      --red:#d9534f;
+      --soft-yellow:#fff8d8;
+      --soft-blue:#eaf3ff;
+      --soft-green:#eaf8ef;
+      --soft-red:#fdecec;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns:250px 1fr;
+      min-height:100vh;
+    }
+
+    aside{
+      background:linear-gradient(180deg,var(--navy),#091a30);
+      color:#fff;
+      padding:24px 18px;
+    }
+
+    .brand{
+      margin-bottom:28px;
+    }
+
+    .brand h1{
+      font-size:18px;
+      margin:0 0 6px;
+      line-height:1.3;
+    }
+
+    .brand p{
+      margin:0;
+      font-size:12px;
+      color:#cbd5e1;
+    }
+
+    nav button{
+      width:100%;
+      border:0;
+      background:transparent;
+      color:#dbeafe;
+      padding:12px 14px;
+      border-radius:8px;
+      text-align:left;
+      cursor:pointer;
+      margin-bottom:6px;
+      font-size:14px;
+    }
+
+    nav button:hover,
+    nav button.active{
+      background:rgba(255,255,255,.12);
+      color:#fff;
+    }
+
+    main{
+      padding:28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      margin-bottom:20px;
+    }
+
+    .topbar h2{
+      margin:0 0 6px;
+      font-size:26px;
+      color:var(--navy);
+    }
+
+    .topbar p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .shift-chip{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:12px 16px;
+      min-width:250px;
+      box-shadow:0 4px 14px rgba(15,39,71,.06);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin-bottom:20px;
+    }
+
+    .stat{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,.04);
+    }
+
+    .stat .label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .stat .value{
+      font-size:28px;
+      font-weight:700;
+      color:var(--navy);
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,.04);
+      margin-bottom:18px;
+    }
+
+    .panel h3{
+      margin:0 0 14px;
+      color:var(--navy);
+      font-size:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+
+    label{
+      display:block;
+      font-size:12px;
+      font-weight:600;
+      margin-bottom:6px;
+      color:#374151;
+    }
+
+    input, select, textarea{
+      width:100%;
+      border:1px solid #cbd5e1;
+      border-radius:8px;
+      padding:10px 11px;
+      font:inherit;
+      background:#fff;
+    }
+
+    textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:0;
+      border-radius:8px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .btn-primary{
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .btn-danger{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+
+    .module-card{
+      border-left:8px solid var(--line);
+      padding:14px;
+      border-radius:10px;
+      margin-bottom:14px;
+      background:#fafafa;
+    }
+
+    .module-card.yellow{border-left-color:var(--yellow);background:var(--soft-yellow)}
+    .module-card.blue{border-left-color:var(--blue);background:var(--soft-blue)}
+    .module-card.green{border-left-color:var(--green);background:var(--soft-green)}
+    .module-card.red{border-left-color:var(--red);background:var(--soft-red)}
+
+    .module-title{
+      font-weight:700;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .record-number-tag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:30px;
+      height:24px;
+      padding:0 9px;
+      border-radius:999px;
+      background:var(--navy);
+      color:#fff;
+      font-size:11px;
+      font-weight:800;
+      line-height:1;
+      flex-shrink:0;
+    }
+
+    .record{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:9px;
+      padding:13px;
+      margin-bottom:10px;
+    }
+
+    .record-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:7px 18px;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .record strong{color:var(--navy)}
+
+    .record-footer{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .hidden{display:none}
+
+    .sbar-box{
+      white-space:pre-wrap;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      background:#f8fafc;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      padding:18px;
+      line-height:1.55;
+      min-height:420px;
+      max-height:65vh;
+      overflow:auto;
+    }
+
+    .note{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    .toast{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      background:#111827;
+      color:#fff;
+      padding:12px 16px;
+      border-radius:8px;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(12px);
+      transition:.25s;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .report-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .report-subtitle{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .table-wrap{
+      overflow-x:auto;
+      border:1px solid var(--line);
+      border-radius:10px;
+    }
+
+    .records-table{
+      width:100%;
+      min-width:1050px;
+      border-collapse:collapse;
+      background:#fff;
+    }
+
+    .records-table th{
+      background:#101c2d;
+      color:#eef2f7;
+      padding:13px 12px;
+      text-align:left;
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    .records-table td{
+      padding:13px 12px;
+      border-top:1px solid #d7dde5;
+      vertical-align:top;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .records-table tr:hover td{
+      background:#f8fafc;
+    }
+
+    .type-cell{
+      border-left:5px solid transparent;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .type-cell.yellow{border-left-color:var(--yellow)}
+    .type-cell.blue{border-left-color:var(--blue)}
+    .type-cell.green{border-left-color:var(--green)}
+    .type-cell.red{border-left-color:var(--red)}
+
+    .status-pill{
+      display:inline-block;
+      max-width:220px;
+      padding:5px 9px;
+      border-radius:999px;
+      background:#e5e7eb;
+      color:#1f2937;
+      font-weight:700;
+      font-size:12px;
+      white-space:normal;
+    }
+
+    .table-actions{
+      display:flex;
+      gap:7px;
+      white-space:nowrap;
+    }
+
+    .btn-edit{
+      background:#dbeafe;
+      color:#1e3a8a;
+    }
+
+    .empty-table{
+      padding:28px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .shift-status{
+      display:inline-block;
+      margin-top:6px;
+      padding:4px 9px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.03em;
+    }
+
+    .shift-status.open{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .shift-status.closed{
+      background:#e5e7eb;
+      color:#374151;
+    }
+
+    .btn-success{
+      background:#166534;
+      color:#fff;
+    }
+
+    .btn-excel{
+      background:#107c41;
+      color:#fff;
+    }
+
+    .btn-pdf{
+      background:#b42318;
+      color:#fff;
+    }
+
+    .locked-note{
+      margin-top:12px;
+      padding:11px 13px;
+      border-radius:9px;
+      background:#f3f4f6;
+      color:#4b5563;
+      font-size:13px;
+      border:1px solid #d1d5db;
+    }
+
+
+    .calendar-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}.calendar-toolbar h3{margin:0;text-transform:capitalize}.calendar-scroll{overflow-x:auto}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(105px,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.calendar-weekday{background:#101c2d;color:#fff;padding:10px 6px;text-align:center;font-size:12px;font-weight:700}.calendar-day{min-height:125px;padding:8px;border-top:1px solid var(--line);border-right:1px solid var(--line);background:#fff}.calendar-day.empty{background:#f6f7f9}.calendar-date-number{font-weight:800;color:var(--navy);margin-bottom:7px;font-size:13px}.calendar-event{border-radius:8px;padding:7px 8px;margin-bottom:6px;color:#fff;font-size:11px;line-height:1.35;cursor:pointer}.calendar-event.executed{background:#2e8b57}.calendar-event.pending-nir{background:#2563a8}.calendar-event.pending-ward{background:#d6a600;color:#111827}.calendar-event strong{display:block;margin-bottom:5px}.calendar-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}.legend-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}.legend-dot.green{background:#2e8b57}.legend-dot.blue{background:#2563a8}.legend-dot.yellow{background:#d6a600}
+
+    button:disabled,
+    input:disabled,
+    select:disabled,
+    textarea:disabled{
+      opacity:.58;
+      cursor:not-allowed;
+    }
+
+    @media(max-width:1000px){
+      .app{grid-template-columns:1fr}
+      aside{position:static}
+      nav{display:flex;gap:6px;overflow:auto}
+      nav button{min-width:max-content}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .form-grid{grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:650px){
+      main{padding:16px}
+      .topbar{flex-direction:column}
+      .shift-chip{width:100%}
+      .grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .record-grid{grid-template-columns:1fr}
+    }
+  .calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}    .calendar-export-actions .btn{min-width:190px}
+    .hours-summary-card{
+      position:relative;
+    }
+    .hours-summary-card.exceeded{
+      border:2px solid #b42318;
+      background:#fff1f0;
+    }
+    .hours-summary-card.exceeded .label,
+    .hours-summary-card.exceeded .value{
+      color:#b42318;
+    }
+    .hours-excess-tag{
+      position:absolute;
+      top:10px;
+      right:10px;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:4px 9px;
+      border-radius:999px;
+      background:#b42318;
+      color:#fff;
+      font-size:11px;
+      font-weight:800;
+      line-height:1;
+      box-shadow:0 2px 6px rgba(180,35,24,.18);
+    }
+    .hours-summary-card.exceeded .hours-excess-tag{
+      display:inline-flex;
+    }
+
+    .setup-overlay{position:fixed;inset:0;z-index:100000;background:linear-gradient(135deg,#091a30,#173a67);display:none;place-items:center;padding:20px}
+    .setup-overlay.open{display:grid}
+    .setup-card{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:16px;padding:26px;box-shadow:0 30px 90px rgba(0,0,0,.4)}
+    .setup-card h2{margin:0;color:#0f2747}.setup-card h3{margin-top:22px;color:#173a67}
+    .setup-step{border:1px solid #d8dee8;border-radius:12px;padding:16px;margin-top:14px}
+    .setup-step.done{border-color:#2e8b57;background:#f0fff6}
+    .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .setup-code{white-space:pre-wrap;background:#0c1727;color:#e8eef7;border-radius:10px;padding:14px;max-height:230px;overflow:auto;font:12px/1.45 monospace}
+    .setup-message{display:none;margin-top:12px;padding:10px 12px;border-radius:8px}
+    .setup-message.ok{display:block;background:#dcfce7;color:#166534}.setup-message.error{display:block;background:#fee2e2;color:#991b1b}
+    @media(max-width:700px){.setup-grid{grid-template-columns:1fr}}
+
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <style>
+    .cloud-auth-overlay{
+      position:fixed; inset:0; z-index:99999; display:grid; place-items:center;
+      padding:22px; background:linear-gradient(135deg,#091a30,#173a67);
+    }
+    .cloud-auth-card{
+      width:min(430px,100%); background:#fff; border-radius:16px; padding:28px;
+      box-shadow:0 28px 80px rgba(0,0,0,.35);
+    }
+    .cloud-auth-card h2{margin:0 0 6px;color:#0f2747}
+    .cloud-auth-card p{margin:0 0 18px;color:#6b7280;line-height:1.5}
+    .cloud-auth-error{display:none;background:#fee2e2;color:#991b1b;padding:10px 12px;border-radius:8px;margin-bottom:12px}
+    .cloud-auth-actions{display:flex;gap:10px;margin-top:14px}
+    .cloud-toolbar{
+      position:fixed; right:14px; top:14px; z-index:9990; display:none;
+      gap:8px; align-items:center; background:#fff; border:1px solid #d1d5db;
+      border-radius:10px; padding:8px 10px; box-shadow:0 8px 24px rgba(15,39,71,.14);
+      font-size:12px;
+    }
+    .cloud-status-dot{width:9px;height:9px;border-radius:50%;background:#d6a600}
+    .cloud-status-dot.online{background:#2e8b57}
+    .cloud-status-dot.error{background:#b42318}
+    .cloud-modal{
+      position:fixed; inset:0; z-index:99998; background:rgba(9,26,48,.72);
+      display:none; place-items:center; padding:22px;
+    }
+    .cloud-modal.open{display:grid}
+    .cloud-modal-card{
+      width:min(760px,100%); max-height:90vh; overflow:auto;
+      background:#fff; border-radius:14px; padding:22px;
+    }
+    .cloud-user-row{
+      display:grid; grid-template-columns:1fr 1fr auto auto; gap:8px;
+      align-items:center; padding:10px 0; border-top:1px solid #e5e7eb;
+    }
+    @media(max-width:700px){.cloud-user-row{grid-template-columns:1fr}.cloud-toolbar{top:auto;bottom:12px}}
+  </style>
+
+</head>
+<body>
+
+<div id="setupOverlay" class="setup-overlay">
+  <div class="setup-card">
+    <h2>Configuração inicial — NIR CEMETRON</h2>
+    <p class="note">Esta configuração é realizada uma única vez neste navegador.</p>
+    <div class="setup-step" id="setupStep1">
+      <h3>1. Conectar ao Supabase</h3>
+      <div class="setup-grid">
+        <div><label>Project URL</label><input id="setupUrl" value="https://cvtvtquyabfionisdfwg.supabase.co"></div>
+        <div><label>Publishable key</label><input id="setupKey" type="password" placeholder="sb_publishable_..."></div>
+      </div>
+      <div class="actions"><button id="setupSaveConnection" class="btn btn-primary" type="button">Salvar e testar conexão</button></div>
+      <div id="setupConnectionMessage" class="setup-message"></div>
+    </div>
+    <div class="setup-step" id="setupStep2">
+      <h3>2. Instalar estrutura do banco</h3>
+      <p class="note">Copie o script, abra o SQL Editor do Supabase, cole e clique em Run.</p>
+      <div class="actions">
+        <button id="setupCopySql" class="btn btn-secondary" type="button">Copiar script SQL</button>
+        <button id="setupOpenSql" class="btn btn-secondary" type="button">Abrir Supabase SQL Editor</button>
+        <button id="setupVerifySchema" class="btn btn-primary" type="button">Já executei — verificar banco</button>
+      </div>
+      <div id="setupSchemaMessage" class="setup-message"></div>
+      <details><summary>Visualizar script</summary><pre id="setupSqlPreview" class="setup-code"></pre></details>
+    </div>
+    <div class="setup-step" id="setupStep3">
+      <h3>3. Criar administrador inicial</h3>
+      <div class="setup-grid">
+        <div><label>Usuário</label><input id="setupAdminUsername" value="stenio.andrade"></div>
+        <div><label>Senha</label><input id="setupAdminPassword" type="password" value="99663831"></div>
+        <div><label>Nome</label><input id="setupAdminName" value="Stênio Andrade"></div>
+      </div>
+      <div class="actions"><button id="setupCreateAdmin" class="btn btn-primary" type="button">Criar administrador</button></div>
+      <div id="setupAdminMessage" class="setup-message"></div>
+    </div>
+    <div class="actions" style="justify-content:flex-end;margin-top:20px">
+      <button id="setupFinish" class="btn btn-primary" type="button">Concluir e abrir sistema</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="cloudAuthOverlay" class="cloud-auth-overlay">
+  <form id="cloudLoginForm" class="cloud-auth-card">
+    <h2>NIR CEMETRON</h2>
+    <p>Acesse o sistema em nuvem para consultar o mesmo histórico em qualquer dispositivo.</p>
+    <div id="cloudAuthError" class="cloud-auth-error"></div>
+    <label for="cloudUsername">Usuário</label>
+    <input id="cloudUsername" type="text" autocomplete="username" required placeholder="Ex.: stenio.andrade">
+    <label for="cloudPassword" style="margin-top:12px">Senha</label>
+    <input id="cloudPassword" type="password" autocomplete="current-password" required>
+    <div class="cloud-auth-actions">
+      <button class="btn btn-primary" type="submit">Entrar</button>
+    </div>
+    <p class="note" style="margin-top:16px">O primeiro administrador deve ser criado no Supabase conforme o README.</p>
+  </form>
+</div>
+
+<div id="cloudToolbar" class="cloud-toolbar">
+  <span id="cloudStatusDot" class="cloud-status-dot"></span>
+  <span id="cloudStatusText">Conectando...</span>
+  <button id="cloudAdminButton" class="btn btn-secondary hidden" type="button">Usuários</button>
+  <button id="cloudLogoutButton" class="btn btn-secondary" type="button">Sair</button>
+</div>
+
+<div id="cloudAdminModal" class="cloud-modal">
+  <div class="cloud-modal-card">
+    <div class="report-header">
+      <div>
+        <h3>Administração de usuários</h3>
+        <div class="report-subtitle">Cadastre, ative ou inative acessos ao sistema.</div>
+      </div>
+      <button id="cloudAdminClose" class="btn btn-secondary" type="button">Fechar</button>
+    </div>
+    <form id="cloudCreateUserForm" class="panel">
+      <h3>Novo usuário</h3>
+      <div class="form-grid">
+        <div><label>Nome</label><input id="adminNewName" required></div>
+        <div><label>Login</label><input id="adminNewUsername" type="text" required placeholder="Ex.: nome.sobrenome"></div>
+        <div><label>Senha inicial</label><input id="adminNewPassword" type="password" minlength="8" required></div>
+        <div><label>Perfil</label><select id="adminNewRole"><option value="USUARIO">Usuário</option><option value="ADMIN">Administrador</option></select></div>
+      </div>
+      <div class="actions"><button class="btn btn-primary" type="submit">Cadastrar usuário</button></div>
+    </form>
+    <div class="panel">
+      <h3>Usuários cadastrados</h3>
+      <div id="cloudUsersList">Carregando...</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <aside>
+    <div class="brand">
+      <h1>NIR CEMETRON</h1>
+      <p>Controle Interno de Regulações<br>Versão final corrigida v23 — HTML local</p>
+    </div>
+    <nav>
+      <button class="active" data-view="dashboard">Dashboard</button>
+      <button data-view="registros">Novo registro</button>
+      <button data-view="relatorioPlantao">Relatório do plantão</button>
+      <button data-view="historicoPlantoes">Histórico de plantões</button>
+      <button data-view="calendarioPlantoes">Meus plantões</button>
+      <button id="authorizationNavButton" data-view="autorizacaoTransferencia" class="hidden">Autorização de transferência</button>
+      <button data-view="sbar">Relatório SBAR</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h2>Controle Interno de Regulações</h2>
+        <p>Registro, acompanhamento e passagem de plantão do NIR CEMETRON.</p>
+      </div>
+      <div class="shift-chip">
+        <strong>Plantão atual</strong><br>
+        <span id="shiftInfo">Não iniciado</span>
+      </div>
+    </div>
+
+    <section id="dashboard" class="view">
+      <div class="panel">
+        <h3>Iniciar ou atualizar plantão</h3>
+        <div class="form-grid">
+          <div>
+            <label for="shiftDate">Data</label>
+            <input id="shiftDate" type="date">
+          </div>
+          <div>
+            <label for="shiftType">Tipo de plantão</label>
+            <select id="shiftType">
+              <option>Manhã — 07h00 às 13h00</option>
+              <option>Tarde — 13h00 às 19h00</option>
+              <option>Noite — 19h00 às 07h00</option>
+              <option>Tarde/Noite — 13h00 às 07h00</option>
+            </select>
+          </div>
+          <div>
+            <label for="professional">Plantonista</label>
+<input id="professional" placeholder="Nome e CRM">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="saveShift">Iniciar plantão</button>
+          <button class="btn btn-danger" id="closeShift">Encerrar plantão</button>
+          <button class="btn btn-secondary" id="resetLocalData">Limpar dados locais</button>
+        </div>
+        <div id="closedShiftNotice" class="locked-note hidden">
+          Este plantão está encerrado. Os registros permanecem disponíveis para consulta e exportação.
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="stat"><div class="label">🟨 Pendências</div><div class="value" id="countYellow">0</div></div>
+        <div class="stat"><div class="label">🟦 Transferências / Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
+        <div class="stat"><div class="label">🟩 Autorizações</div><div class="value" id="countGreen">0</div></div>
+        <div class="stat"><div class="label">🟥 Negativas</div><div class="value" id="countRed">0</div></div>
+      </div>
+    </section>
+
+    <section id="registros" class="view hidden">
+      <div class="panel">
+        <h3>Novo registro</h3>
+        <div class="form-grid">
+          <div>
+            <label for="module">Módulo</label>
+            <select id="module">
+              <option value="yellow">🟨 Pendências</option>
+              <option value="blue">🟦 Transferências externas / Avaliações / Exames</option>
+              <option value="green">🟩 Autorizações de transferência/internação</option>
+              <option value="red">🟥 Negativas</option>
+            </select>
+          </div>
+          <div>
+            <label for="requestTime">Horário da solicitação</label>
+            <input id="requestTime" type="time">
+          </div>
+          <div>
+            <label for="patient">Paciente</label>
+            <input id="patient" placeholder="Nome do paciente">
+          </div>
+          <div>
+            <label for="origin">Unidade de origem</label>
+            <input id="origin" placeholder="Ex.: CEMETRON">
+          </div>
+          <div>
+            <label for="hd">HD</label>
+            <input id="hd" placeholder="Hipótese diagnóstica">
+          </div>
+          <div>
+            <label for="destination">Destino</label>
+            <input id="destination" placeholder="Unidade, setor, avaliação ou exame">
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="status">Status</label>
+            <textarea id="status" placeholder="Descreva o status atual da demanda"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="addRecord">Adicionar registro</button>
+          <button class="btn btn-secondary" id="clearForm">Limpar</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Registros do plantão atual</h3>
+        <div id="recordsList"></div>
+      </div>
+    </section>
+
+    <section id="relatorioPlantao" class="view hidden">
+      <div class="panel">
+        <div class="report-header">
+          <div>
+            <h3>Registros do plantão selecionado</h3>
+            <div id="selectedShiftSummary" class="report-subtitle">Nenhum plantão selecionado.</div>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn btn-primary" id="refreshShiftTable">Atualizar registros</button>
+            <button class="btn btn-danger" id="closeShiftFromReport">Encerrar plantão</button>
+            <button class="btn btn-pdf" id="exportPdf">Gerar PDF</button>
+            <button class="btn btn-excel" id="exportExcel">Exportar para Excel</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>Paciente</th>
+                <th>Origem</th>
+                <th>HD</th>
+                <th>Destino</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="shiftReportTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="autorizacaoTransferencia" class="view hidden">
+      <div class="panel">
+        <h3>Gerar autorização de transferência</h3>
+        <div class="form-grid">
+          <div style="grid-column:1/-1">
+            <label for="authorizedPatientSelect">Paciente autorizado</label>
+            <select id="authorizedPatientSelect">
+              <option value="">Selecione um paciente autorizado</option>
+            </select>
+          </div>
+          <div>
+            <label for="authPatient">Paciente</label>
+            <input id="authPatient" type="text" readonly>
+          </div>
+          <div>
+            <label for="authOrigin">Unidade de origem</label>
+            <input id="authOrigin" type="text" readonly>
+          </div>
+          <div>
+            <label for="authVacancy">Vaga autorizada para</label>
+            <input id="authVacancy" type="text" placeholder="Informe a vaga disponibilizada">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="generateAuthorization">Gerar/Atualizar autorização</button>
+          <button class="btn btn-secondary" id="copyAuthorization">Copiar autorização</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Pré-visualização</h3>
+        <div id="authorizationOutput" class="sbar-box">Selecione um paciente autorizado para gerar a autorização.</div>
+      </div>
+    </section>
+
+
+    <section id="historicoPlantoes" class="view hidden">
+      <div class="panel">
+        <h3>Histórico de plantões encerrados</h3>
+        <div class="form-grid">
+          <div>
+            <label for="historyDate">Data do plantão</label>
+            <input id="historyDate" type="date">
+          </div>
+          <div>
+            <label for="historyProfessional">Plantonista</label>
+            <input id="historyProfessional" type="text" placeholder="Nome ou CRM">
+          </div>
+          <div>
+            <label for="historyType">Tipo de plantão</label>
+            <select id="historyType">
+              <option value="">Todos</option>
+              <option>Manhã — 07h00 às 13h00</option>
+              <option>Tarde — 13h00 às 19h00</option>
+              <option>Noite — 19h00 às 07h00</option>
+              <option>Tarde/Noite — 13h00 às 07h00</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="searchHistory">Buscar</button>
+          <button class="btn btn-secondary" id="clearHistoryFilters">Limpar filtros</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Plantões encontrados</h3>
+        <div class="table-wrap">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Plantão</th>
+                <th>Plantonista</th>
+                <th>Encerramento</th>
+                <th>Registros</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel hidden" id="historyReportPanel">
+        <div class="report-header">
+          <div>
+            <h3>Relatório do plantão encerrado</h3>
+            <div id="historyReportSummary" class="report-subtitle"></div>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn btn-pdf" id="historyExportPdf">Gerar PDF</button>
+            <button class="btn btn-excel" id="historyExportExcel">Exportar para Excel</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>Paciente</th>
+                <th>Origem</th>
+                <th>HD</th>
+                <th>Destino</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyReportBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="calendarioPlantoes" class="view hidden">
+      <div class="panel"><h3>Cadastrar meus plantões</h3><div class="form-grid">
+        <div><label for="calendarShiftDate">Data</label><input id="calendarShiftDate" type="date"></div>
+        <div><label for="calendarShiftTurn">Turno</label><select id="calendarShiftTurn"><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Noite</option><option>Tarde/Noite</option><option>24 horas</option></select></div>
+        
+        <div><label for="calendarShiftSector">Setor</label>
+          <select id="calendarShiftSector">
+            <option value="">Selecione</option>
+            <option value="NIR">Regulação (NIR)</option>
+            <option value="ENFERMARIA">Visita Médica (Enfermaria)</option>
+          </select>
+        </div>
+        <div><label for="calendarShiftStart">Horário de início</label><input id="calendarShiftStart" type="time"></div>
+        <div><label for="calendarShiftHours">Carga horária</label><input id="calendarShiftHours" type="number" min="1" step="1" placeholder="Ex.: 6, 12 ou 18"></div>
+        <div><label for="calendarShiftEnd">Término previsto</label><input id="calendarShiftEnd" type="text" readonly placeholder="Calculado automaticamente"></div>
+      </div><div class="actions"><button class="btn btn-primary" id="saveCalendarShift">Cadastrar plantão</button><button class="btn btn-secondary" id="clearCalendarShift">Limpar</button></div></div>
+      <div class="panel" style="margin-top:16px;background:#f8fafc;">
+          <h3 style="margin-bottom:12px;">Resumo do mês</h3>
+          <div class="grid">
+            <div class="stat">
+              <div class="label">Plantões</div>
+              <div class="value" id="calendarMonthlyShiftCount">0</div>
+            </div>
+            <div class="stat hours-summary-card" id="calendarMonthlyHoursCard">
+              <div class="hours-excess-tag" id="calendarMonthlyHoursExcess">+0h</div>
+              <div class="label">Carga horária</div>
+              <div class="value" id="calendarMonthlyHoursTotal">0h</div>
+            </div>
+            <div class="stat">
+              <div class="label">Regulação (NIR)</div>
+              <div class="value" id="calendarMonthlyNirHours">0h</div>
+            </div>
+            <div class="stat">
+              <div class="label">Visita Médica</div>
+              <div class="value" id="calendarMonthlyWardHours">0h</div>
+            </div>
+          </div>
+
+        </div>
+      <div class="panel"><div class="calendar-toolbar"><button class="btn btn-secondary" id="previousMonth">← Mês anterior</button><h3 id="calendarMonthTitle"></h3><button class="btn btn-secondary" id="nextMonth">Próximo mês →</button></div><div class="calendar-scroll"><div class="calendar-grid" id="calendarGrid"></div></div><div class="calendar-legend"><span><span class="legend-dot green"></span>Plantão já executado</span><span><span class="legend-dot blue"></span>NIR ainda não executado</span><span><span class="legend-dot yellow"></span>Visita Médica ainda não executada</span></div></div>
+      <div class="panel" style="margin-top:16px;">
+        <h3>Exportar meus plantões</h3>
+        <div class="calendar-export-actions">
+          <button class="btn btn-primary" id="exportGoogleCalendar">Exportar Google Calendar</button>
+          <button class="btn btn-primary" id="exportAppleCalendar">Exportar Apple Calendar</button>
+          <button class="btn btn-primary" id="exportCalendarPdf">Exportar PDF</button>
+          <button class="btn btn-primary" id="exportCalendarExcel">Exportar Excel</button>
+        </div>
+      </div>
+      <div class="panel"><h3>Meus plantões no mês</h3><div class="table-wrap"><table class="records-table"><thead><tr><th>Data</th><th>Turno</th><th>Setor</th><th>Início</th><th>Carga horária</th><th>Término previsto</th><th>Situação</th><th>Ações</th></tr></thead><tbody id="calendarShiftTableBody"></tbody></table></div>
+        
+</div>
+    </section>
+
+    <section id="sbar" class="view hidden">
+      <div class="panel">
+        <h3>Relatório SBAR completo</h3>
+
+        <div class="form-grid">
+          <div>
+            <label for="operationalStatus">Status operacional</label>
+            <select id="operationalStatus">
+              <option value="">Selecione</option>
+              <option>Normal</option>
+              <option>Atenção</option>
+              <option>Alta tensão</option>
+              <option>Colapso operacional</option>
+            </select>
+          </div>
+          <div>
+            <label for="turnover">Rotatividade</label>
+            <select id="turnover">
+              <option value="">Selecione</option>
+              <option>Baixa</option>
+              <option>Moderada</option>
+              <option>Alta</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="vacancies">Vagas disponíveis</label>
+            <input id="vacancies" type="text" placeholder="Ex.: Clínica Médica: 2 vagas | UTI: lotada | Censo: 42 pacientes">
+          </div>
+<div style="grid-column:1/-1">
+            <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
+            <textarea id="background" placeholder="Registre as ocorrências do plantão."></textarea>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="assessment">A — Avaliação</label>
+            <textarea id="assessment" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="recommendation">R — Relatório do plantão</label>
+            <textarea id="recommendation" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="generateSbar">Gerar/Atualizar SBAR</button>
+          <button class="btn btn-secondary" id="copySbar">Copiar SBAR</button>
+        </div>
+
+        <p class="note">Cada campo dos registros será exibido em uma linha própria no relatório.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Pré-visualização</h3>
+        <div id="sbarOutput" class="sbar-box">Clique em “Gerar/Atualizar SBAR” para montar o relatório.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const moduleMeta = {
+    yellow: { title: "🟨 PENDÊNCIAS", css: "yellow" },
+    blue: { title: "🟦 TRANSFERÊNCIAS EXTERNAS / AVALIAÇÕES / EXAMES", css: "blue" },
+    green: { title: "🟩 AUTORIZAÇÕES DE TRANSFERÊNCIA/INTERNAÇÃO", css: "green" },
+    red: { title: "🟥 NEGATIVAS", css: "red" }
+  };
+
+  let state = window.__NIR_BOOTSTRAP_STATE__ || JSON.parse(localStorage.getItem("nirCemetronFinalStateV2")) || {
+    shift: null,
+    records: [],
+    history: [],
+    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" }
+  };
+
+  state.records = Array.isArray(state.records) ? state.records : [];
+  state.history = Array.isArray(state.history) ? state.history : [];
+  state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+  state.sbar = state.sbar || {
+    operationalStatus:"",
+    turnover:"",
+    vacancies:"",
+        background:"",
+    assessment:"",
+    recommendation:""
+  };
+
+  if(state.shift && !state.shift.status){
+    state.shift.status = "EM ANDAMENTO";
+  }
+
+  let editingRecordId = null;
+  let selectedHistoryId = null;
+  let calendarEditingId = null;
+  let calendarCurrentDate = new Date();
+
+  const $ = id => document.getElementById(id);
+
+  function getCurrentTime(){
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+  }
+
+  function ensureCurrentRequestTime(){
+    if(!$("requestTime").value){
+      $("requestTime").value = getCurrentTime();
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem("nirCemetronFinalStateV2", JSON.stringify(state));
+    renderAll();
+    if(window.NIRCloud && window.NIRCloud.isReady()){
+      window.NIRCloud.scheduleSave(state);
+    }
+  }
+
+  function toast(message){
+    const el = $("toast");
+    el.textContent = message;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 1800);
+  }
+
+  function formatDate(date){
+    if(!date) return "";
+    const [y,m,d] = date.split("-");
+    return `${d}/${m}/${y}`;
+  }
+
+  function isShiftClosed(){
+    return Boolean(state.shift && state.shift.status === "ENCERRADO");
+  }
+
+  function formatDateTime(value){
+    if(!value) return "";
+    return new Date(value).toLocaleString("pt-BR");
+  }
+
+  function getShiftStatus(){
+    return isShiftClosed() ? "ENCERRADO" : "EM ANDAMENTO";
+  }
+
+  function createShiftId(){
+    return crypto.randomUUID ? crypto.randomUUID() : `shift-${Date.now()}`;
+  }
+
+  function downloadBlob(content, mimeType, filename){
+    const blob = new Blob([content], {type:mimeType});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function safeFilename(value){
+    return String(value || "plantao")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9_-]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .toLowerCase();
+  }
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function renderShift(){
+    const closed = isShiftClosed();
+
+    if(state.shift){
+      $("shiftDate").value = state.shift.date || "";
+      $("shiftType").value = state.shift.type || $("shiftType").value;
+      $("professional").value = state.shift.professional || "";
+
+      const statusClass = closed ? "closed" : "open";
+      const ended = closed && state.shift.endedAt
+        ? `<br>Encerrado em: ${escapeHtml(formatDateTime(state.shift.endedAt))}`
+        : "";
+
+      $("shiftInfo").innerHTML =
+        `${formatDate(state.shift.date)}<br>${escapeHtml(state.shift.type)}<br>${escapeHtml(state.shift.professional || "Plantonista não informado")}<br>` +
+        `<span class="shift-status ${statusClass}">${getShiftStatus()}</span>${ended}`;
+    } else {
+      $("shiftInfo").textContent = "Não iniciado";
+    }
+
+    ["shiftDate","shiftType","professional"].forEach(id => {
+      $(id).disabled = closed;
+    });
+
+    $("saveShift").textContent = closed ? "Iniciar novo plantão" : "Iniciar plantão";
+    $("closeShift").disabled = !state.shift || closed;
+    $("closeShiftFromReport").disabled = !state.shift || closed;
+    $("closedShiftNotice").classList.toggle("hidden", !closed);
+  }
+
+  function recordCard(record){
+    return `
+      <div class="record">
+        <div class="record-grid">
+          <div><strong>Horário da solicitação:</strong> ${escapeHtml(record.requestTime)}</div>
+          <div><strong>Paciente:</strong> ${escapeHtml(record.patient)}</div>
+          <div><strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}</div>
+          <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
+          <div><strong>Destino:</strong> ${escapeHtml(record.destination)}</div>
+          <div><strong>Status:</strong> ${escapeHtml(record.status)}</div>
+        </div>
+        <div class="record-footer">
+          ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
+          ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
+          <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : ""}
+        </div>
+      </div>`;
+  }
+
+  function renderGrouped(targetId, compact=false){
+    const target = $(targetId);
+    let html = "";
+
+    Object.keys(moduleMeta).forEach(key => {
+      const records = state.records.filter(record => record.module === key);
+
+      html += `<div class="module-card ${moduleMeta[key].css}">
+        <div class="module-title">
+          <span>${moduleMeta[key].title}</span>
+          <span class="record-number-tag">${records.length}</span>
+        </div>
+        ${records.length
+          ? records.map(record => recordCard(record)).join("")
+          : "<div class='note'>Sem registros neste plantão.</div>"}
+      </div>`;
+    });
+
+    target.innerHTML = html;
+  }
+
+  function renderCounts(){
+    $("countYellow").textContent = state.records.filter(r=>r.module==="yellow").length;
+    $("countBlue").textContent = state.records.filter(r=>r.module==="blue").length;
+    $("countGreen").textContent = state.records.filter(r=>r.module==="green").length;
+    $("countRed").textContent = state.records.filter(r=>r.module==="red").length;
+  }
+
+  function renderSbarFields(){
+    state.sbar = state.sbar || {};
+    $("operationalStatus").value = state.sbar.operationalStatus || "";
+    $("turnover").value = state.sbar.turnover || "";
+    $("vacancies").value = state.sbar.vacancies || "";
+$("background").value = state.sbar.background || "";
+    $("assessment").value = state.sbar.assessment || "";
+    $("recommendation").value = state.sbar.recommendation || "";
+  }
+
+  function renderShiftReportTable(){
+    const body = $("shiftReportTableBody");
+    const summary = $("selectedShiftSummary");
+    const shift = state.shift || {};
+
+    summary.textContent = state.shift
+      ? `${formatDate(shift.date)} — ${shift.type || "Plantão não informado"} — ${shift.professional || "Plantonista não informado"} — ${getShiftStatus()}${shift.endedAt ? ` — Encerrado em ${formatDateTime(shift.endedAt)}` : ""}`
+      : "Nenhum plantão selecionado.";
+
+    if(!state.records.length){
+      body.innerHTML = `<tr><td colspan="9" class="empty-table">Nenhum registro cadastrado neste plantão.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = state.records
+      .slice()
+      .map((record, index) => {
+        const meta = moduleMeta[record.module] || {title:"REGISTRO", css:""};
+        const typeLabel = meta.title.replace(/^[^A-ZÁÉÍÓÚÃÕÇ]*\s*/, "");
+        return `
+          <tr>
+            <td><strong>${index + 1}</strong></td>
+            <td><strong>${escapeHtml(record.requestTime || "")}</strong></td>
+            <td class="type-cell ${meta.css}">${escapeHtml(typeLabel)}</td>
+            <td>${escapeHtml(record.patient)}</td>
+            <td>${escapeHtml(record.origin)}</td>
+            <td>${escapeHtml(record.hd)}</td>
+            <td>${escapeHtml(record.destination)}</td>
+            <td><span class="status-pill">${escapeHtml(record.status)}</span></td>
+            <td>
+              <div class="table-actions">
+                ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
+                ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
+                <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : `<span class="note">Somente leitura</span>`}
+              </div>
+            </td>
+          </tr>`;
+      }).join("");
+  }
+
+  function renderAuthorizationOptions(){
+    const authorized = state.records.filter(r => r.module === "green");
+    const navButton = $("authorizationNavButton");
+    const select = $("authorizedPatientSelect");
+
+    if(authorized.length){
+      navButton.classList.remove("hidden");
+    }else{
+      navButton.classList.add("hidden");
+      if(!$("autorizacaoTransferencia").classList.contains("hidden")){
+        document.querySelector('nav button[data-view="dashboard"]').click();
+      }
+    }
+
+    const currentValue = select.value;
+    select.innerHTML = '<option value="">Selecione um paciente autorizado</option>' +
+      authorized.map(r => `<option value="${r.id}">${escapeHtml(r.patient)} — ${escapeHtml(r.origin)} → ${escapeHtml(r.destination)}</option>`).join("");
+
+    if(authorized.some(r => r.id === currentValue)){
+      select.value = currentValue;
+    }
+  }
+
+  function loadAuthorizationRecord(id){
+    const record = state.records.find(r => r.id === id && r.module === "green");
+    if(!record) return;
+    $("authorizedPatientSelect").value = id;
+    $("authPatient").value = record.patient || "";
+    $("authOrigin").value = record.origin || "";
+    $("authVacancy").value = record.destination || "";
+  }
+
+  window.openAuthorization = function(id){
+    loadAuthorizationRecord(id);
+
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    const authButton = $("authorizationNavButton");
+    authButton.classList.remove("hidden");
+    authButton.classList.add("active");
+
+    document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
+    $("autorizacaoTransferencia").classList.remove("hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+    toast("Paciente carregado para autorização.");
+  }
+
+
+  function getFilteredHistory(){
+    const date = $("historyDate")?.value || "";
+    const professional = ($("historyProfessional")?.value || "").trim().toLowerCase();
+    const type = $("historyType")?.value || "";
+
+    return state.history
+      .filter(item => item.shift && item.shift.status === "ENCERRADO")
+      .filter(item => !date || item.shift.date === date)
+      .filter(item => !professional || String(item.shift.professional || "").toLowerCase().includes(professional))
+      .filter(item => !type || item.shift.type === type)
+      .sort((a,b) => String(b.shift.endedAt || b.archivedAt).localeCompare(String(a.shift.endedAt || a.archivedAt)));
+  }
+
+  function renderHistoryTable(){
+    const body = $("historyTableBody");
+    if(!body) return;
+    const items = getFilteredHistory();
+
+    if(!items.length){
+      body.innerHTML = `<tr><td colspan="6" class="empty-table">Nenhum plantão encerrado encontrado.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = items.map(item => `
+      <tr>
+        <td>${escapeHtml(formatDate(item.shift.date))}</td>
+        <td>${escapeHtml(item.shift.type || "")}</td>
+        <td>${escapeHtml(item.shift.professional || "")}</td>
+        <td>${escapeHtml(formatDateTime(item.shift.endedAt || item.archivedAt))}</td>
+        <td>${item.records?.length || 0}</td>
+        <td><button class="btn btn-primary" onclick="viewHistoryReport('${item.id}')">Visualizar relatório</button></td>
+      </tr>
+    `).join("");
+  }
+
+  window.viewHistoryReport = function(id){
+    const item = state.history.find(entry => entry.id === id);
+    if(!item) return;
+
+    selectedHistoryId = id;
+    $("historyReportPanel").classList.remove("hidden");
+    $("historyReportSummary").textContent =
+      `${formatDate(item.shift.date)} — ${item.shift.type || ""} — ${item.shift.professional || ""} — ENCERRADO EM ${formatDateTime(item.shift.endedAt || item.archivedAt)}`;
+
+    const records = Array.isArray(item.records) ? item.records.slice() : [];
+
+    $("historyReportBody").innerHTML = records.length
+      ? records.map((record, index) => {
+          const meta = moduleMeta[record.module] || {title:"REGISTRO"};
+          return `<tr>
+            <td><strong>${index + 1}</strong></td>
+            <td>${escapeHtml(record.requestTime || "")}</td>
+            <td>${escapeHtml(meta.title)}</td>
+            <td>${escapeHtml(record.patient)}</td>
+            <td>${escapeHtml(record.origin)}</td>
+            <td>${escapeHtml(record.hd)}</td>
+            <td>${escapeHtml(record.destination)}</td>
+            <td>${escapeHtml(record.status)}</td>
+          </tr>`;
+        }).join("")
+      : `<tr><td colspan="8" class="empty-table">Sem registros neste plantão.</td></tr>`;
+
+    $("historyReportPanel").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  function getSelectedHistoricalData(){
+    const item = state.history.find(entry => entry.id === selectedHistoryId);
+    if(!item) return null;
+    return {
+      title: "RELATÓRIO DO PLANTÃO - NIR CEMETRON",
+      date: formatDate(item.shift.date),
+      type: item.shift.type || "NÃO INFORMADO",
+      professional: item.shift.professional || "NÃO INFORMADO",
+      endedAt: formatDateTime(item.shift.endedAt || item.archivedAt),
+      records: Array.isArray(item.records) ? item.records.slice().sort((a,b) => String(a.requestTime).localeCompare(String(b.requestTime))) : []
+    };
+  }
+
+  function exportHistoricalPdf(){
+    const data = getSelectedHistoricalData();
+    if(!data){
+      alert("Selecione um plantão encerrado.");
+      return;
+    }
+
+    const rows = data.records.length ? data.records.map(record => {
+      const meta = moduleMeta[record.module] || {title:"REGISTRO"};
+      return `<tr>
+        <td>${escapeHtml(record.requestTime || "")}</td>
+        <td>${escapeHtml(meta.title)}</td>
+        <td>${escapeHtml(record.patient)}</td>
+        <td>${escapeHtml(record.origin)}</td>
+        <td>${escapeHtml(record.hd)}</td>
+        <td>${escapeHtml(record.destination)}</td>
+        <td>${escapeHtml(record.status)}</td>
+      </tr>`;
+    }).join("") : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
+
+    const doc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>${escapeHtml(data.title)}</title>
+    <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}
+    table{width:100%;border-collapse:collapse;font-size:10px}th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
+    td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}</style></head>
+    <body><h1>${escapeHtml(data.title)}</h1><div class="meta"><strong>Data:</strong> ${escapeHtml(data.date)}<br>
+    <strong>Plantão:</strong> ${escapeHtml(data.type)}<br><strong>Plantonista:</strong> ${escapeHtml(data.professional)}<br>
+    <strong>Encerramento:</strong> ${escapeHtml(data.endedAt)}</div>
+    <table><thead><tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+
+    const win = window.open("", "_blank", "width=1200,height=800");
+    if(!win){ alert("O navegador bloqueou a janela de impressão."); return; }
+    win.document.open(); win.document.write(doc); win.document.close(); win.focus();
+    setTimeout(() => win.print(), 350);
+  }
+
+  function exportHistoricalExcel(){
+    const data = getSelectedHistoricalData();
+    if(!data){
+      alert("Selecione um plantão encerrado.");
+      return;
+    }
+
+    const rows = data.records.map(record => {
+      const meta = moduleMeta[record.module] || {title:"REGISTRO"};
+      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${escapeHtml(record.status)}</td></tr>`;
+    }).join("");
+
+    const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:Arial;font-size:11pt}th{background:#0f2747;color:#fff}th,td{border:1px solid #999;padding:6px}.meta{font-weight:bold;background:#e5e7eb}</style></head>
+    <body><table><tr><td colspan="7"><strong>${escapeHtml(data.title)}</strong></td></tr>
+    <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="4">${escapeHtml(data.type)}</td></tr>
+    <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Encerramento</td><td colspan="4">${escapeHtml(data.endedAt)}</td></tr>
+    <tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`}</table></body></html>`;
+
+    downloadBlob("\ufeff" + workbook, "application/vnd.ms-excel;charset=utf-8", `historico_${safeFilename(data.date)}_${safeFilename(data.type)}.xls`);
+    toast("Histórico exportado para Excel.");
+  }
+
+
+  function localDateOnly(value){ const [y,m,d]=String(value).split("-").map(Number); return new Date(y,m-1,d); }
+  function calendarExecuted(value){ const d=localDateOnly(value),t=new Date(); t.setHours(0,0,0,0); return d<t; }
+  function calendarMonthItems(){ const y=calendarCurrentDate.getFullYear(),m=calendarCurrentDate.getMonth(); return state.calendarShifts.filter(x=>{const d=localDateOnly(x.date);return d.getFullYear()===y&&d.getMonth()===m}).sort((a,b)=>a.date.localeCompare(b.date)); }
+  function calculateShiftEnd(startTime,hours){
+    if(!startTime||!hours)return "";
+    const [h,m]=startTime.split(":").map(Number);
+    const duration=Number(hours);
+    if(Number.isNaN(h)||Number.isNaN(m)||Number.isNaN(duration))return "";
+    const total=h*60+m+duration*60;
+    const normalized=((total%1440)+1440)%1440;
+    const endHour=Math.floor(normalized/60);
+    const endMinute=normalized%60;
+    return `${String(endHour).padStart(2,"0")}:${String(endMinute).padStart(2,"0")}${total>=1440?" (+1 dia)":""}`;
+  }
+  function updateCalendarShiftEnd(){
+    if($("calendarShiftEnd"))$("calendarShiftEnd").value=calculateShiftEnd($("calendarShiftStart").value,$("calendarShiftHours").value);
+  }
+  function calendarEventClass(item){
+    if(calendarExecuted(item.date)) return "executed";
+    return item.sector === "ENFERMARIA" ? "pending-ward" : "pending-nir";
+  }
+
+  function calendarSectorLabel(value){
+    return value === "ENFERMARIA" ? "Visita Médica (Enfermaria)" : "Regulação (NIR)";
+  }
+
+  function renderCalendar(){
+    const grid=$("calendarGrid"),title=$("calendarMonthTitle"),body=$("calendarShiftTableBody"); if(!grid||!title||!body)return;
+    const y=calendarCurrentDate.getFullYear(),m=calendarCurrentDate.getMonth(); title.textContent=calendarCurrentDate.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+    let h=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map(x=>`<div class="calendar-weekday">${x}</div>`).join("");
+    const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(); for(let i=0;i<first;i++)h+='<div class="calendar-day empty"></div>';
+    for(let day=1;day<=days;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;const ev=state.calendarShifts.filter(x=>x.date===key).map(x=>`<div class="calendar-event ${calendarEventClass(x)}" onclick="editCalendarShift('${x.id}')"><strong>${escapeHtml(x.turn)} — ${escapeHtml(calendarSectorLabel(x.sector))}</strong>Início: ${escapeHtml(x.start || "Não informado")}<br>Término: ${escapeHtml(x.end || calculateShiftEnd(x.start, x.hours) || "Não informado")}<br>Carga horária: ${escapeHtml(String(x.hours || "Não informado"))}${x.hours ? "h" : ""}</div>`).join("");h+=`<div class="calendar-day"><div class="calendar-date-number">${day}</div>${ev}</div>`;} grid.innerHTML=h;
+    const items=calendarMonthItems();
+    const monthlyHours = items.reduce((total,item)=>{
+      const value = Number(item.hours);
+      return total + (Number.isFinite(value) ? value : 0);
+    },0);
+
+    const monthlyNirHours = items
+      .filter(item => item.sector !== "ENFERMARIA")
+      .reduce((total,item)=>{
+        const value = Number(item.hours);
+        return total + (Number.isFinite(value) ? value : 0);
+      },0);
+
+    const monthlyWardHours = items
+      .filter(item => item.sector === "ENFERMARIA")
+      .reduce((total,item)=>{
+        const value = Number(item.hours);
+        return total + (Number.isFinite(value) ? value : 0);
+      },0);
+
+    if($("calendarMonthlyShiftCount")){
+      $("calendarMonthlyShiftCount").textContent = String(items.length);
+    }
+
+    if($("calendarMonthlyHoursTotal")){
+      $("calendarMonthlyHoursTotal").textContent = `${monthlyHours}h`;
+    }
+
+    const monthlyLimit = 156;
+    const excessHours = Math.max(0, monthlyHours - monthlyLimit);
+    const hoursCard = $("calendarMonthlyHoursCard");
+    const excessTag = $("calendarMonthlyHoursExcess");
+
+    if(hoursCard){
+      hoursCard.classList.toggle("exceeded", excessHours > 0);
+    }
+
+    if(excessTag){
+      excessTag.textContent = `+${excessHours}h`;
+    }
+
+    if($("calendarMonthlyNirHours")){
+      $("calendarMonthlyNirHours").textContent = `${monthlyNirHours}h`;
+    }
+
+    if($("calendarMonthlyWardHours")){
+      $("calendarMonthlyWardHours").textContent = `${monthlyWardHours}h`;
+    }
+    body.innerHTML=items.length
+      ? items.map(x=>{
+          const sector = x.sector ? calendarSectorLabel(x.sector) : "Não informado";
+          const start = x.start || "Não informado";
+          const hours = x.hours ? `${escapeHtml(String(x.hours))}h` : "Não informado";
+          const end = x.end || calculateShiftEnd(x.start, x.hours) || "Não informado";
+          const situation = calendarExecuted(x.date) ? "Executado" : "Ainda não executado";
+
+          return `<tr>
+            <td>${escapeHtml(formatDate(x.date))}</td>
+            <td>${escapeHtml(x.turn || "Não informado")}</td>
+            <td>${escapeHtml(sector)}</td>
+            <td>${escapeHtml(start)}</td>
+            <td>${hours}</td>
+            <td>${escapeHtml(end)}</td>
+            <td><span class="status-pill">${situation}</span></td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-edit" onclick="editCalendarShift('${x.id}')">Editar</button>
+                <button class="btn btn-danger" onclick="deleteCalendarShift('${x.id}')">Excluir</button>
+              </div>
+            </td>
+          </tr>`;
+        }).join("")
+      : '<tr><td colspan="8" class="empty-table">Nenhum plantão cadastrado neste mês.</td></tr>';
+  }
+  window.editCalendarShift=function(id){const x=state.calendarShifts.find(v=>v.id===id);if(!x)return;calendarEditingId=id;$("calendarShiftDate").value=x.date;$("calendarShiftTurn").value=x.turn;$("calendarShiftSector").value=x.sector||"NIR";$("calendarShiftStart").value=x.start||"";$("calendarShiftHours").value=x.hours;$("calendarShiftEnd").value=x.end||calculateShiftEnd(x.start,x.hours);$("saveCalendarShift").textContent="Atualizar plantão";};
+  window.deleteCalendarShift=function(id){if(!confirm("Deseja excluir este plantão do calendário?"))return;state.calendarShifts=state.calendarShifts.filter(x=>x.id!==id);saveState();toast("Plantão removido do calendário.");};
+  function clearCalendarShiftForm(){$("calendarShiftDate").value="";$("calendarShiftTurn").value="";$("calendarShiftSector").value="";$("calendarShiftStart").value="";$("calendarShiftHours").value="";$("calendarShiftEnd").value="";calendarEditingId=null;$("saveCalendarShift").textContent="Cadastrar plantão";}
+
+
+  function padCalendarNumber(value){
+    return String(value).padStart(2,"0");
+  }
+
+  function toIcsDate(dateString, timeString){
+    const [year, month, day] = dateString.split("-").map(Number);
+    const [hour, minute] = timeString.split(":").map(Number);
+    return `${year}${padCalendarNumber(month)}${padCalendarNumber(day)}T${padCalendarNumber(hour)}${padCalendarNumber(minute)}00`;
+  }
+
+  function addHoursToDateTime(dateString, timeString, hours){
+    const [year, month, day] = dateString.split("-").map(Number);
+    const [hour, minute] = timeString.split(":").map(Number);
+    const date = new Date(year, month - 1, day, hour, minute, 0);
+    date.setHours(date.getHours() + Number(hours || 0));
+    return `${date.getFullYear()}${padCalendarNumber(date.getMonth()+1)}${padCalendarNumber(date.getDate())}T${padCalendarNumber(date.getHours())}${padCalendarNumber(date.getMinutes())}00`;
+  }
+
+  function escapeIcsText(value){
+    return String(value || "")
+      .replace(/\\/g,"\\\\")
+      .replace(/,/g,"\\,")
+      .replace(/;/g,"\\;")
+      .replace(/\n/g,"\\n");
+  }
+
+  function createMonthlyIcs(){
+    const items = calendarMonthItems();
+    if(!items.length){
+      alert("Não existem plantões cadastrados no mês exibido.");
+      return null;
+    }
+
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//NIR CEMETRON//Meus Plantoes//PT-BR",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "X-WR-CALNAME:Meus Plantões",
+      "X-WR-TIMEZONE:America/Porto_Velho"
+    ];
+
+    items.forEach(item => {
+      const startTime = item.start || "00:00";
+      const sector = calendarSectorLabel(item.sector);
+      const title = `${sector} — ${item.turn || "Plantão"}`;
+      const description = [
+        `Setor: ${sector}`,
+        `Turno: ${item.turn || "Não informado"}`,
+        `Início: ${startTime}`,
+        `Término: ${item.end || calculateShiftEnd(item.start,item.hours) || "Não informado"}`,
+        `Carga horária: ${item.hours || "Não informada"}h`
+      ].join("\n");
+
+      const uid = `${item.id || Date.now()}@nir-cemetron`;
+      const dtStart = toIcsDate(item.date, startTime);
+      const dtEnd = addHoursToDateTime(item.date, startTime, item.hours);
+
+      lines.push(
+        "BEGIN:VEVENT",
+        `UID:${escapeIcsText(uid)}`,
+        `DTSTAMP:${dtStart}`,
+        `DTSTART;TZID=America/Porto_Velho:${dtStart}`,
+        `DTEND;TZID=America/Porto_Velho:${dtEnd}`,
+        `SUMMARY:${escapeIcsText(title)}`,
+        `DESCRIPTION:${escapeIcsText(description)}`,
+        "STATUS:CONFIRMED",
+        "TRANSP:OPAQUE",
+        "END:VEVENT"
+      );
+    });
+
+    lines.push("END:VCALENDAR");
+    return lines.join("\r\n");
+  }
+
+  function exportCalendarIcs(provider){
+    const content = createMonthlyIcs();
+    if(!content) return;
+
+    const month = padCalendarNumber(calendarCurrentDate.getMonth()+1);
+    const year = calendarCurrentDate.getFullYear();
+    const filename = `meus_plantoes_${month}_${year}.ics`;
+
+    downloadBlob("\ufeff" + content, "text/calendar;charset=utf-8", filename);
+
+    if(provider === "google"){
+      toast("Arquivo para Google Calendar gerado.");
+    }else{
+      toast("Arquivo para Apple Calendar gerado.");
+    }
+  }
+
+  function createCalendarPrintableReport(){
+    const items = calendarMonthItems();
+    const monthLabel = calendarCurrentDate.toLocaleDateString("pt-BR", {month:"long", year:"numeric"});
+
+    const totalHours = items.reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+    const nirHours = items.filter(item=>item.sector!=="ENFERMARIA").reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+    const wardHours = items.filter(item=>item.sector==="ENFERMARIA").reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+
+    const rows = items.length ? items.map(item=>`
+      <tr>
+        <td>${escapeHtml(formatDate(item.date))}</td>
+        <td>${escapeHtml(item.turn || "")}</td>
+        <td>${escapeHtml(calendarSectorLabel(item.sector))}</td>
+        <td>${escapeHtml(item.start || "")}</td>
+        <td>${escapeHtml(String(item.hours || ""))}h</td>
+        <td>${escapeHtml(item.end || calculateShiftEnd(item.start,item.hours))}</td>
+        <td>${calendarExecuted(item.date) ? "Executado" : "Ainda não executado"}</td>
+      </tr>
+    `).join("") : `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`;
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Meus plantões — ${escapeHtml(monthLabel)}</title>
+<style>
+  @page{size:A4 landscape;margin:12mm}
+  body{font-family:Arial,sans-serif;color:#111827}
+  h1{color:#0f2747;margin:0 0 8px}
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  .box{border:1px solid #cbd5e1;border-radius:8px;padding:10px}
+  .box strong{display:block;font-size:18px;margin-top:5px}
+  table{width:100%;border-collapse:collapse;font-size:10px}
+  th{background:#0f2747;color:white;text-align:left;padding:7px}
+  td{border:1px solid #cbd5e1;padding:7px}
+</style>
+</head>
+<body>
+  <h1>Meus plantões — ${escapeHtml(monthLabel)}</h1>
+  <div class="summary">
+    <div class="box">Plantões<strong>${items.length}</strong></div>
+    <div class="box">Carga horária<strong>${totalHours}h</strong></div>
+    <div class="box">Regulação (NIR)<strong>${nirHours}h</strong></div>
+    <div class="box">Visita Médica<strong>${wardHours}h</strong></div>
+  </div>
+  <table>
+    <thead><tr><th>Data</th><th>Turno</th><th>Setor</th><th>Início</th><th>Carga horária</th><th>Término previsto</th><th>Situação</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+</body>
+</html>`;
+  }
+
+  function exportCalendarPdf(){
+    const win = window.open("", "_blank", "width=1200,height=800");
+    if(!win){
+      alert("O navegador bloqueou a janela de impressão.");
+      return;
+    }
+    win.document.open();
+    win.document.write(createCalendarPrintableReport());
+    win.document.close();
+    win.focus();
+    setTimeout(()=>win.print(),350);
+  }
+
+  function exportCalendarExcel(){
+    const items = calendarMonthItems();
+    const monthLabel = calendarCurrentDate.toLocaleDateString("pt-BR", {month:"long", year:"numeric"});
+    const totalHours = items.reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+    const nirHours = items.filter(item=>item.sector!=="ENFERMARIA").reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+    const wardHours = items.filter(item=>item.sector==="ENFERMARIA").reduce((sum,item)=>sum+(Number(item.hours)||0),0);
+
+    const rows = items.map(item=>`
+      <tr>
+        <td>${escapeHtml(formatDate(item.date))}</td>
+        <td>${escapeHtml(item.turn || "")}</td>
+        <td>${escapeHtml(calendarSectorLabel(item.sector))}</td>
+        <td>${escapeHtml(item.start || "")}</td>
+        <td>${escapeHtml(String(item.hours || ""))}</td>
+        <td>${escapeHtml(item.end || calculateShiftEnd(item.start,item.hours))}</td>
+        <td>${calendarExecuted(item.date) ? "Executado" : "Ainda não executado"}</td>
+      </tr>
+    `).join("");
+
+    const workbook = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<style>
+table{border-collapse:collapse;font-family:Arial;font-size:11pt}
+th{background:#0f2747;color:#fff}
+th,td{border:1px solid #999;padding:6px}
+.meta{font-weight:bold;background:#e5e7eb}
+</style></head>
+<body>
+<table>
+<tr><td colspan="7"><strong>Meus plantões — ${escapeHtml(monthLabel)}</strong></td></tr>
+<tr><td class="meta">Plantões</td><td>${items.length}</td><td class="meta">Carga horária</td><td>${totalHours}h</td><td class="meta">NIR</td><td>${nirHours}h</td><td>${wardHours}h Visita Médica</td></tr>
+<tr><th>Data</th><th>Turno</th><th>Setor</th><th>Início</th><th>Carga horária</th><th>Término previsto</th><th>Situação</th></tr>
+${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
+</table>
+</body>
+</html>`;
+
+    const month = padCalendarNumber(calendarCurrentDate.getMonth()+1);
+    const year = calendarCurrentDate.getFullYear();
+    downloadBlob("\ufeff"+workbook,"application/vnd.ms-excel;charset=utf-8",`meus_plantoes_${month}_${year}.xls`);
+    toast("Relatório mensal exportado para Excel.");
+  }
+
+  function renderAll(){
+    renderShift();
+    renderCounts();
+    renderGrouped("recordsList");
+    renderSbarFields();
+    renderShiftReportTable();
+    renderAuthorizationOptions();
+    renderHistoryTable();
+    renderCalendar();
+
+    const locked = isShiftClosed();
+    ["module","requestTime","patient","origin","hd","destination","status","addRecord","clearForm"].forEach(id => {
+      if($(id)) $(id).disabled = locked;
+    });
+  }
+
+  window.editRecord = function(id){
+    if(isShiftClosed()){
+      alert("O plantão está encerrado e não pode ser editado.");
+      return;
+    }
+    const record = state.records.find(r => r.id === id);
+    if(!record) return;
+
+    editingRecordId = id;
+    $("module").value = record.module;
+    $("requestTime").value = record.requestTime || getCurrentTime();
+    $("patient").value = record.patient || "";
+    $("origin").value = record.origin || "";
+    $("hd").value = record.hd || "";
+    $("destination").value = record.destination || "";
+    $("status").value = record.status || "";
+    $("addRecord").textContent = "Atualizar registro";
+
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    const recordsButton = document.querySelector('nav button[data-view="registros"]');
+    if(recordsButton) recordsButton.classList.add("active");
+    document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
+    $("registros").classList.remove("hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+    toast("Registro carregado para edição.");
+  }
+
+  window.deleteRecord = function(id){
+    if(isShiftClosed()){
+      alert("O plantão está encerrado e não pode ser alterado.");
+      return;
+    }
+    if(confirm("Deseja excluir este registro?")){
+      state.records = state.records.filter(r => r.id !== id);
+      if(editingRecordId === id){
+        editingRecordId = null;
+        $("addRecord").textContent = "Adicionar registro";
+      }
+      saveState();
+      toast("Registro excluído.");
+    }
+  }
+
+  document.querySelectorAll("nav button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden"));
+      $(btn.dataset.view).classList.remove("hidden");
+      if(btn.dataset.view === "registros") ensureCurrentRequestTime();
+    });
+  });
+
+  $("saveShift").addEventListener("click", () => {
+    const date = $("shiftDate").value;
+    const type = $("shiftType").value;
+    const professional = $("professional").value.trim();
+
+    if(!date || !professional){
+      alert("Informe a data e o plantonista.");
+      return;
+    }
+
+    if(isShiftClosed()){
+      if(!confirm("Deseja iniciar um novo plantão? Os registros encerrados permanecerão no histórico local.")){
+        return;
+      }
+
+      state.shift = {
+        id: createShiftId(),
+        date,
+        type,
+        professional,
+        status: "EM ANDAMENTO",
+        startedAt: new Date().toISOString(),
+        endedAt: null
+      };
+      state.records = [];
+      state.sbar = {
+        operationalStatus:"",
+        turnover:"",
+        vacancies:"",
+                background:"",
+        assessment:"",
+        recommendation:""
+      };
+      $("sbarOutput").textContent = "Clique em “Gerar/Atualizar SBAR” para montar o relatório.";
+      toast("Novo plantão iniciado.");
+    }else{
+      state.shift = {
+        ...(state.shift || {}),
+        id: state.shift?.id || createShiftId(),
+        date,
+        type,
+        professional,
+        status: "EM ANDAMENTO",
+        startedAt: state.shift?.startedAt || new Date().toISOString(),
+        endedAt: null
+      };
+      toast("Plantão salvo.");
+    }
+
+    saveState();
+  });
+
+  $("addRecord").addEventListener("click", () => {
+    if(!state.shift){
+      alert("Inicie e salve o plantão antes de cadastrar registros.");
+      return;
+    }
+    if(isShiftClosed()){
+      alert("O plantão está encerrado.");
+      return;
+    }
+
+    const record = {
+      id: editingRecordId || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+      module: $("module").value,
+      requestTime: $("requestTime").value || getCurrentTime(),
+      patient: $("patient").value.trim(),
+      origin: $("origin").value.trim(),
+      hd: $("hd").value.trim(),
+      destination: $("destination").value.trim(),
+      status: $("status").value.trim()
+    };
+
+    if(!record.patient || !record.origin || !record.hd || !record.destination || !record.status){
+      alert("Preencha todos os campos do registro.");
+      return;
+    }
+
+    if(editingRecordId){
+      const index = state.records.findIndex(r => r.id === editingRecordId);
+      if(index >= 0) state.records[index] = record;
+      editingRecordId = null;
+      $("addRecord").textContent = "Adicionar registro";
+      toast("Registro atualizado.");
+    }else{
+      state.records.push(record);
+      toast("Registro adicionado.");
+    }
+
+    saveState();
+    $("requestTime").value = getCurrentTime();
+    $("patient").value = "";
+    $("origin").value = "";
+    $("hd").value = "";
+    $("destination").value = "";
+    $("status").value = "";
+  });
+
+  $("clearForm").addEventListener("click", () => {
+    ["patient","origin","hd","destination","status"].forEach(id => $(id).value = "");
+    $("requestTime").value = getCurrentTime();
+    editingRecordId = null;
+    $("addRecord").textContent = "Adicionar registro";
+  });
+
+  function buildRecordsText(moduleKey){
+    const records = state.records.filter(r => r.module === moduleKey);
+    if(!records.length) return "SEM REGISTROS NESTE PLANTÃO.";
+
+    return records.map((r) => [
+      `HORÁRIO DA SOLICITAÇÃO: ${r.requestTime}`,
+      `PACIENTE: ${r.patient}`,
+      `UNIDADE DE ORIGEM: ${r.origin}`,
+      `HD: ${r.hd}`,
+      `DESTINO: ${r.destination}`,
+      `STATUS: ${r.status}`
+    ].join("\n")).join("\n\n\n\n");
+  }
+
+  function buildShiftReportData(){
+    const shift = state.shift || {};
+    return {
+      title: "RELATÓRIO DO PLANTÃO - NIR CEMETRON",
+      date: shift.date ? formatDate(shift.date) : "NÃO INFORMADA",
+      type: shift.type || "NÃO INFORMADO",
+      professional: shift.professional || "NÃO INFORMADO",
+      status: getShiftStatus(),
+      startedAt: shift.startedAt ? formatDateTime(shift.startedAt) : "",
+      endedAt: shift.endedAt ? formatDateTime(shift.endedAt) : "",
+      records: state.records.slice().sort((a,b) => String(a.requestTime).localeCompare(String(b.requestTime)))
+    };
+  }
+
+  function archiveClosedShift(){
+    if(!state.shift) return;
+    const id = state.shift.id || createShiftId();
+    state.shift.id = id;
+
+    const snapshot = {
+      id,
+      shift: JSON.parse(JSON.stringify(state.shift)),
+      records: JSON.parse(JSON.stringify(state.records)),
+      sbar: JSON.parse(JSON.stringify(state.sbar)),
+      archivedAt: new Date().toISOString()
+    };
+
+    const existingIndex = state.history.findIndex(item => item.id === id);
+    if(existingIndex >= 0){
+      state.history[existingIndex] = snapshot;
+    }else{
+      state.history.push(snapshot);
+    }
+  }
+
+  function closeCurrentShift(){
+    if(!state.shift){
+      alert("Nenhum plantão foi iniciado.");
+      return;
+    }
+    if(isShiftClosed()){
+      alert("Este plantão já está encerrado.");
+      return;
+    }
+    if(!confirm("Deseja encerrar este plantão? Após o encerramento, os registros ficarão bloqueados para edição e exclusão.")){
+      return;
+    }
+
+    state.shift.status = "ENCERRADO";
+    state.shift.endedAt = new Date().toISOString();
+    archiveClosedShift();
+    saveState();
+    toast("Plantão encerrado e arquivado no histórico local.");
+  }
+
+  function createPrintableReport(){
+    const data = buildShiftReportData();
+    const rows = data.records.length
+      ? data.records.map(record => {
+          const meta = moduleMeta[record.module] || {title:"REGISTRO"};
+          return `<tr>
+            <td>${escapeHtml(record.requestTime || "")}</td>
+            <td>${escapeHtml(meta.title)}</td>
+            <td>${escapeHtml(record.patient)}</td>
+            <td>${escapeHtml(record.origin)}</td>
+            <td>${escapeHtml(record.hd)}</td>
+            <td>${escapeHtml(record.destination)}</td>
+            <td>${escapeHtml(record.status)}</td>
+          </tr>`;
+        }).join("")
+      : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHtml(data.title)}</title>
+<style>
+  @page{size:A4 landscape;margin:12mm}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0}
+  h1{font-size:20px;margin:0 0 12px;color:#0f2747}
+  .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:5px 18px;margin-bottom:16px;font-size:12px}
+  table{width:100%;border-collapse:collapse;font-size:10px}
+  th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
+  td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}
+  .footer{margin-top:12px;font-size:10px;color:#6b7280}
+</style>
+</head>
+<body>
+  <h1>${escapeHtml(data.title)}</h1>
+  <div class="meta">
+    <div><strong>Data:</strong> ${escapeHtml(data.date)}</div>
+    <div><strong>Plantão:</strong> ${escapeHtml(data.type)}</div>
+    <div><strong>Plantonista:</strong> ${escapeHtml(data.professional)}</div>
+    <div><strong>Status:</strong> ${escapeHtml(data.status)}</div>
+    <div><strong>Início:</strong> ${escapeHtml(data.startedAt || "-")}</div>
+    <div><strong>Encerramento:</strong> ${escapeHtml(data.endedAt || "-")}</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="footer">Documento gerado localmente em ${escapeHtml(new Date().toLocaleString("pt-BR"))}.</div>
+</body>
+</html>`;
+  }
+
+  function exportReportToPdf(){
+    if(!state.shift){
+      alert("Nenhum plantão disponível para exportação.");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank", "width=1200,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este arquivo.");
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(createPrintableReport());
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+    }, 350);
+  }
+
+  function exportReportToExcel(){
+    if(!state.shift){
+      alert("Nenhum plantão disponível para exportação.");
+      return;
+    }
+
+    const data = buildShiftReportData();
+    const rows = data.records.map(record => {
+      const meta = moduleMeta[record.module] || {title:"REGISTRO"};
+      return `<tr>
+        <td>${escapeHtml(record.requestTime || "")}</td>
+        <td>${escapeHtml(meta.title)}</td>
+        <td>${escapeHtml(record.patient)}</td>
+        <td>${escapeHtml(record.origin)}</td>
+        <td>${escapeHtml(record.hd)}</td>
+        <td>${escapeHtml(record.destination)}</td>
+        <td>${escapeHtml(record.status)}</td>
+      </tr>`;
+    }).join("");
+
+    const workbook = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<!--[if gte mso 9]><xml>
+<x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+<x:Name>Relatório do Plantão</x:Name>
+<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook>
+</xml><![endif]-->
+<style>
+  table{border-collapse:collapse;font-family:Arial;font-size:11pt}
+  th{background:#0f2747;color:#fff;font-weight:bold}
+  th,td{border:1px solid #999;padding:6px;vertical-align:top}
+  .title{font-size:16pt;font-weight:bold;color:#0f2747}
+  .meta{font-weight:bold;background:#e5e7eb}
+</style>
+</head>
+<body>
+<table>
+  <tr><td colspan="7" class="title">${escapeHtml(data.title)}</td></tr>
+  <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="4">${escapeHtml(data.type)}</td></tr>
+  <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Status</td><td>${escapeHtml(data.status)}</td><td class="meta">Encerramento</td><td colspan="2">${escapeHtml(data.endedAt || "-")}</td></tr>
+  <tr><td colspan="7"></td></tr>
+  <tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
+  ${rows || `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`}
+</table>
+</body>
+</html>`;
+
+    const filename = `relatorio_${safeFilename(state.shift.date)}_${safeFilename(state.shift.type)}.xls`;
+    downloadBlob("\\ufeff" + workbook, "application/vnd.ms-excel;charset=utf-8", filename);
+    toast("Relatório exportado para Excel.");
+  }
+
+  $("closeShift").addEventListener("click", closeCurrentShift);
+  $("closeShiftFromReport").addEventListener("click", closeCurrentShift);
+  $("exportPdf").addEventListener("click", exportReportToPdf);
+  $("exportExcel").addEventListener("click", exportReportToExcel);
+
+  $("authorizedPatientSelect").addEventListener("change", () => {
+    const id = $("authorizedPatientSelect").value;
+    if(id){
+      loadAuthorizationRecord(id);
+    }else{
+      $("authPatient").value = "";
+      $("authOrigin").value = "";
+      $("authVacancy").value = "";
+      $("authorizationOutput").textContent = "Selecione um paciente autorizado para gerar a autorização.";
+    }
+  });
+
+  $("generateAuthorization").addEventListener("click", () => {
+    const patient = $("authPatient").value.trim();
+    const origin = $("authOrigin").value.trim();
+    const vacancy = $("authVacancy").value.trim();
+
+    if(!patient || !origin || !vacancy){
+      alert("Selecione um paciente autorizado e informe a vaga disponibilizada.");
+      return;
+    }
+
+    const doctor = state.shift?.professional || "";
+
+    const authorization = [
+      "AUTORIZAÇÃO DE TRANSFERÊNCIA",
+      "HOSPITAL CEMETRON",
+      "",
+      "1. INFORMAÇÕES DO PACIENTE / ORIGEM",
+      `Paciente: ${patient}`,
+      `Unidade de Origem: ${origin}`,
+      "",
+      "2. DESFECHO",
+      `Vaga autorizada para: ${vacancy}`,
+      "",
+      "Encaminhar o paciente ao Hospital CEMETRON para continuidade do tratamento especializado, conforme vaga disponibilizada.",
+      "",
+      "3. ORIENTAÇÕES PARA O ENCAMINHAMENTO",
+      "",
+      "Enviar junto ao paciente:",
+      "",
+      "✔️ Exame COVID-19 NEGATIVO;",
+      "✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;",
+      "✔️ Exames agendados, quando houver;",
+      "✔️ Exames de imagem realizados e respectivos laudos, quando houver;",
+      "✔️ Evolução de enfermagem atualizada, contendo obrigatoriamente as datas de inserção dos dispositivos invasivos (cateter venoso central, sonda vesical, sonda enteral, drenos e outros, quando existentes).",
+      "",
+      `Médico Regulador: ${doctor}`,
+      "",
+      `Data e hora: ${new Date().toLocaleString("pt-BR")}`
+    ].join("\n");
+
+    $("authorizationOutput").textContent = authorization;
+    toast("Autorização gerada/atualizada.");
+  });
+
+  $("copyAuthorization").addEventListener("click", async () => {
+    const text = $("authorizationOutput").textContent;
+    if(!text || text.startsWith("Selecione um paciente")){
+      alert("Gere a autorização antes de copiar.");
+      return;
+    }
+
+    try{
+      await navigator.clipboard.writeText(text);
+    }catch{
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+    }
+    toast("Autorização copiada com sucesso.");
+  });
+
+  $("refreshShiftTable").addEventListener("click", () => {
+    renderShiftReportTable();
+    toast("Registros atualizados.");
+  });
+
+  $("generateSbar").addEventListener("click", () => {
+    state.sbar = {
+      operationalStatus: $("operationalStatus").value,
+      turnover: $("turnover").value,
+      vacancies: $("vacancies").value.trim(),
+background: $("background").value.trim(),
+      assessment: $("assessment").value.trim(),
+      recommendation: $("recommendation").value.trim()
+    };
+    localStorage.setItem("nirCemetronFinalStateV2", JSON.stringify(state));
+
+    const shift = state.shift || {};
+    const now = new Date();
+    const generatedAt = now.toLocaleString("pt-BR");
+
+    const report = [
+      "RELATÓRIO DO PLANTÃO — NIR CEMETRON",
+      "",
+      `DATA: ${shift.date ? formatDate(shift.date) : "NÃO INFORMADA"}`,
+      `PLANTÃO: ${shift.type || "NÃO INFORMADO"}`,
+      `PLANTONISTA: ${shift.professional || "NÃO INFORMADO"}`,
+      `_GERADO AUTOMATICAMENTE EM: ${new Date().toLocaleString("pt-BR")}._`,
+      "",
+      "> *S — SITUAÇÃO*",
+      `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
+      "",
+      "> *B — BACKGROUND / CONTEXTO*",
+      state.sbar.background || "",
+      "",
+      "> *A — AVALIAÇÃO*",
+      `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
+      `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
+      state.sbar.assessment || "",
+      "",
+      "> *R — RELATÓRIO DO PLANTÃO*",
+      state.sbar.recommendation || "",
+      "",
+      moduleMeta.yellow.title,
+      "",
+      buildRecordsText("yellow"),
+      "",
+      moduleMeta.blue.title,
+      "",
+      buildRecordsText("blue"),
+      "",
+      moduleMeta.green.title,
+      "",
+      buildRecordsText("green"),
+      "",
+      moduleMeta.red.title,
+      "",
+      buildRecordsText("red")
+    ].join("\n");
+
+    $("sbarOutput").textContent = report;
+    toast("SBAR gerado/atualizado.");
+  });
+
+  $("copySbar").addEventListener("click", async () => {
+    const text = $("sbarOutput").textContent;
+    if(!text || text.startsWith("Clique em")){
+      alert("Gere o SBAR antes de copiar.");
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(text);
+    }catch{
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+    }
+    toast("SBAR copiado com sucesso.");
+  });
+
+  if(!$("shiftDate").value){
+    $("shiftDate").value = new Date().toISOString().slice(0,10);
+  }
+
+
+  if($("searchHistory")){
+    $("searchHistory").addEventListener("click", () => {
+      renderHistoryTable();
+      $("historyReportPanel").classList.add("hidden");
+      selectedHistoryId = null;
+    });
+  }
+
+  if($("clearHistoryFilters")){
+    $("clearHistoryFilters").addEventListener("click", () => {
+      $("historyDate").value = "";
+      $("historyProfessional").value = "";
+      $("historyType").value = "";
+      renderHistoryTable();
+      $("historyReportPanel").classList.add("hidden");
+      selectedHistoryId = null;
+    });
+  }
+
+  if($("historyExportPdf")) $("historyExportPdf").addEventListener("click", exportHistoricalPdf);
+  if($("historyExportExcel")) $("historyExportExcel").addEventListener("click", exportHistoricalExcel);
+
+
+  if($("saveCalendarShift")) $("saveCalendarShift").addEventListener("click",()=>{const date=$("calendarShiftDate").value,turn=$("calendarShiftTurn").value,sector=$("calendarShiftSector").value,start=$("calendarShiftStart").value,hours=$("calendarShiftHours").value.trim(),end=calculateShiftEnd(start,hours);if(!date||!turn||!sector||!start||!hours){alert("Preencha data, turno, setor, horário de início e carga horária.");return;}const item={id:calendarEditingId||(crypto.randomUUID?crypto.randomUUID():`calendar-${Date.now()}`),date,turn,sector,start,hours,end};if(calendarEditingId){const i=state.calendarShifts.findIndex(x=>x.id===calendarEditingId);if(i>=0)state.calendarShifts[i]=item;}else state.calendarShifts.push(item);calendarCurrentDate=localDateOnly(date);clearCalendarShiftForm();saveState();toast("Plantão salvo no calendário.");});
+  if($("clearCalendarShift")) $("clearCalendarShift").addEventListener("click",clearCalendarShiftForm);
+  if($("previousMonth")) $("previousMonth").addEventListener("click",()=>{calendarCurrentDate=new Date(calendarCurrentDate.getFullYear(),calendarCurrentDate.getMonth()-1,1);renderCalendar();});
+  if($("nextMonth")) $("nextMonth").addEventListener("click",()=>{calendarCurrentDate=new Date(calendarCurrentDate.getFullYear(),calendarCurrentDate.getMonth()+1,1);renderCalendar();});
+
+  if($("calendarShiftStart"))$("calendarShiftStart").addEventListener("input",updateCalendarShiftEnd);
+  if($("calendarShiftHours"))$("calendarShiftHours").addEventListener("input",updateCalendarShiftEnd);
+
+
+  if($("exportGoogleCalendar")){
+    $("exportGoogleCalendar").addEventListener("click",()=>exportCalendarIcs("google"));
+  }
+
+  if($("exportAppleCalendar")){
+    $("exportAppleCalendar").addEventListener("click",()=>exportCalendarIcs("apple"));
+  }
+
+  if($("exportCalendarPdf")){
+    $("exportCalendarPdf").addEventListener("click",exportCalendarPdf);
+  }
+
+  if($("exportCalendarExcel")){
+    $("exportCalendarExcel").addEventListener("click",exportCalendarExcel);
+  }
+
+  if($("resetLocalData")){
+    $("resetLocalData").addEventListener("click", () => {
+      if(!confirm("Deseja apagar todos os dados salvos localmente neste navegador?")){
+        return;
+      }
+      if(window.NIRCloud && window.NIRCloud.isReady()){
+        window.NIRCloud.clearCloudState().then(() => {
+          localStorage.removeItem("nirCemetronFinalStateV2");
+          location.reload();
+        }).catch(error => alert("Não foi possível limpar os dados em nuvem: " + error.message));
+      } else {
+        localStorage.removeItem("nirCemetronFinalStateV2");
+        location.reload();
+      }
+    });
+  }
+
+  renderAll();
+  ensureCurrentRequestTime();
+</script>
+
+  window.NIRCloud = (() => {
+    let client = null;
+    let currentUser = null;
+    let currentProfile = null;
+    let saveTimer = null;
+    let ready = false;
+    let realtimeChannel = null;
+    const stateKey = "nirCemetronFinalStateV2";
+
+    const el = id => document.getElementById(id);
+
+    function setStatus(text, kind="pending"){
+      el("cloudStatusText").textContent = text;
+      const dot = el("cloudStatusDot");
+      dot.className = "cloud-status-dot";
+      if(kind === "online") dot.classList.add("online");
+      if(kind === "error") dot.classList.add("error");
+    }
+
+    function showAuthError(message){
+      const box = el("cloudAuthError");
+      box.textContent = message;
+      box.style.display = "block";
+    }
+
+    function readRuntimeConfig(){
+      try{
+        const saved = JSON.parse(localStorage.getItem("nirSupabaseConfig") || "null");
+        if(saved?.SUPABASE_URL && saved?.SUPABASE_ANON_KEY) return saved;
+      }catch(_){}
+      return window.NIR_CONFIG || {};
+    }
+
+    function configured(){
+      const cfg = readRuntimeConfig();
+      return cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY &&
+        !cfg.SUPABASE_URL.includes("SEU-PROJETO");
+    }
+
+    async function fetchProfile(){
+      const {data, error} = await client
+        .from("profiles")
+        .select("id,nome,username,email,perfil,ativo")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+      if(error) throw error;
+      if(!data || !data.ativo) throw new Error("Usuário sem perfil ativo.");
+      currentProfile = data;
+      el("cloudAdminButton").classList.toggle("hidden", data.perfil !== "ADMIN");
+    }
+
+    async function loadCloudState(){
+      const {data, error} = await client
+        .from("user_app_state")
+        .select("state,updated_at")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+      if(error) throw error;
+
+      const localRaw = localStorage.getItem(stateKey);
+      const localState = localRaw ? JSON.parse(localRaw) : null;
+
+      if(data?.state){
+        state = data.state;
+        localStorage.setItem(stateKey, JSON.stringify(state));
+      } else if(localState){
+        state = localState;
+        await persistState(state);
+      }
+
+      state.records = Array.isArray(state.records) ? state.records : [];
+      state.history = Array.isArray(state.history) ? state.history : [];
+      state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+      state.sbar = state.sbar || {};
+      renderAll();
+      ensureCurrentRequestTime();
+    }
+
+    async function persistState(nextState){
+      setStatus("Salvando...", "pending");
+      const {error} = await client.from("user_app_state").upsert({
+        user_id: currentUser.id,
+        state: nextState,
+        updated_at: new Date().toISOString()
+      }, {onConflict:"user_id"});
+      if(error){
+        setStatus("Erro ao sincronizar", "error");
+        throw error;
+      }
+      setStatus("Sincronizado", "online");
+    }
+
+    function scheduleSave(nextState){
+      clearTimeout(saveTimer);
+      setStatus("Alterações pendentes", "pending");
+      const snapshot = JSON.parse(JSON.stringify(nextState));
+      saveTimer = setTimeout(() => persistState(snapshot).catch(console.error), 500);
+    }
+
+    async function clearCloudState(){
+      const {error} = await client.from("user_app_state").delete().eq("user_id", currentUser.id);
+      if(error) throw error;
+    }
+
+    function subscribeRealtime(){
+      if(realtimeChannel) client.removeChannel(realtimeChannel);
+      realtimeChannel = client.channel(`nir-state-${currentUser.id}`)
+        .on("postgres_changes", {
+          event:"UPDATE", schema:"public", table:"user_app_state",
+          filter:`user_id=eq.${currentUser.id}`
+        }, payload => {
+          if(payload.new?.state){
+            state = payload.new.state;
+            localStorage.setItem(stateKey, JSON.stringify(state));
+            renderAll();
+            setStatus("Atualizado em tempo real", "online");
+          }
+        }).subscribe();
+    }
+
+    async function afterLogin(user){
+      currentUser = user;
+      await fetchProfile();
+      await loadCloudState();
+      subscribeRealtime();
+      ready = true;
+      el("cloudAuthOverlay").style.display = "none";
+      el("cloudToolbar").style.display = "flex";
+      setStatus("Sincronizado", "online");
+    }
+
+    async function init(){
+      if(!configured()){
+        document.getElementById("cloudAuthOverlay").style.display = "none";
+        document.getElementById("setupOverlay").classList.add("open");
+        return;
+      }
+
+      const cfg = readRuntimeConfig();
+      client = window.supabase.createClient(
+        cfg.SUPABASE_URL,
+        cfg.SUPABASE_ANON_KEY,
+        {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+      );
+
+      const {data:{session}} = await client.auth.getSession();
+      if(session?.user){
+        try{ await afterLogin(session.user); }
+        catch(error){ showAuthError(error.message); await client.auth.signOut(); }
+      }
+
+      client.auth.onAuthStateChange(async (_event, session) => {
+        if(session?.user && !ready){
+          try{ await afterLogin(session.user); }
+          catch(error){ showAuthError(error.message); }
+        }
+      });
+    }
+
+    function normalizeUsername(value){
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9._-]/g, "");
+    }
+
+    function usernameToInternalEmail(username){
+      const normalized = normalizeUsername(username);
+      if(!normalized) throw new Error("Informe um nome de usuário válido.");
+      const cfg = readRuntimeConfig();
+      const domain = cfg.LOGIN_EMAIL_DOMAIN || "nircemetron.local";
+      return `${normalized}@${domain}`;
+    }
+
+    async function login(username,password){
+      const email = usernameToInternalEmail(username);
+      const {data,error} = await client.auth.signInWithPassword({email,password});
+      if(error) throw new Error("Usuário ou senha inválidos.");
+      await afterLogin(data.user);
+    }
+
+    async function logout(){
+      await client.auth.signOut();
+      location.reload();
+    }
+
+    async function invokeAdmin(body){
+      const {data,error} = await client.functions.invoke("admin-users", {body});
+      if(error) throw error;
+      if(data?.error) throw new Error(data.error);
+      return data;
+    }
+
+    async function loadUsers(){
+      const target = el("cloudUsersList");
+      target.textContent = "Carregando...";
+      try{
+        const result = await invokeAdmin({action:"list"});
+        target.innerHTML = (result.users || []).map(user => `
+          <div class="cloud-user-row">
+            <div><strong>${escapeHtml(user.nome || "")}</strong><br><span class="note">@${escapeHtml(user.username || "")}</span></div>
+            <div>${escapeHtml(user.perfil || "USUARIO")}</div>
+            <div>${user.ativo ? "Ativo" : "Inativo"}</div>
+            <button class="btn btn-secondary" onclick="NIRCloud.toggleUser('${user.id}',${!user.ativo})">${user.ativo ? "Inativar" : "Ativar"}</button>
+          </div>`).join("") || "<div class='note'>Nenhum usuário encontrado.</div>";
+      }catch(error){
+        target.innerHTML = `<div class="error">Erro: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function createUser(payload){
+      await invokeAdmin({action:"create", ...payload});
+      await loadUsers();
+    }
+
+    async function toggleUser(id, ativo){
+      await invokeAdmin({action:"toggle", id, ativo});
+      await loadUsers();
+    }
+
+    return {
+      init, login, logout, scheduleSave, clearCloudState, loadUsers, createUser, toggleUser,
+      isReady:() => ready, profile:() => currentProfile,
+      getClient:() => client,
+      reinitialize: async () => {
+        ready = false;
+        client = null;
+        await init();
+      }
+    };
+  })();
+
+  document.getElementById("cloudLoginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    document.getElementById("cloudAuthError").style.display = "none";
+    try{
+      await window.NIRCloud.login(
+        document.getElementById("cloudUsername").value.trim(),
+        document.getElementById("cloudPassword").value
+      );
+    }catch(error){
+      const box = document.getElementById("cloudAuthError");
+      box.textContent = error.message || "Não foi possível entrar.";
+      box.style.display = "block";
+    }
+  });
+
+  document.getElementById("cloudLogoutButton").addEventListener("click", () => window.NIRCloud.logout());
+  document.getElementById("cloudAdminButton").addEventListener("click", () => {
+    document.getElementById("cloudAdminModal").classList.add("open");
+    window.NIRCloud.loadUsers();
+  });
+  document.getElementById("cloudAdminClose").addEventListener("click", () => {
+    document.getElementById("cloudAdminModal").classList.remove("open");
+  });
+  document.getElementById("cloudCreateUserForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    try{
+      await window.NIRCloud.createUser({
+        nome:document.getElementById("adminNewName").value.trim(),
+        username:document.getElementById("adminNewUsername").value.trim(),
+        password:document.getElementById("adminNewPassword").value,
+        perfil:document.getElementById("adminNewRole").value
+      });
+      event.target.reset();
+      toast("Usuário cadastrado.");
+    }catch(error){
+      alert("Não foi possível cadastrar: " + error.message);
+    }
+  });
+
+
+  const NIR_SETUP_SQL = "create extension if not exists pgcrypto;\n\ncreate table if not exists public.profiles (\n  id uuid primary key references auth.users(id) on delete cascade,\n  nome text not null,\n  username text not null unique,\n  email text not null unique,\n  perfil text not null default 'USUARIO' check (perfil in ('ADMIN','USUARIO')),\n  ativo boolean not null default true,\n  created_at timestamptz not null default now(),\n  updated_at timestamptz not null default now()\n);\n\ncreate table if not exists public.user_app_state (\n  user_id uuid primary key references public.profiles(id) on delete cascade,\n  state jsonb not null default '{}'::jsonb,\n  updated_at timestamptz not null default now()\n);\n\ncreate table if not exists public.audit_logs (\n  id bigint generated always as identity primary key,\n  actor_id uuid references public.profiles(id),\n  action text not null,\n  target_id text,\n  details jsonb,\n  created_at timestamptz not null default now()\n);\n\nalter table public.profiles enable row level security;\nalter table public.user_app_state enable row level security;\nalter table public.audit_logs enable row level security;\n\ncreate policy \"profiles_select_self_or_admin\"\non public.profiles for select to authenticated\nusing (\n  id = auth.uid()\n  or exists (\n    select 1 from public.profiles p\n    where p.id = auth.uid() and p.perfil = 'ADMIN' and p.ativo\n  )\n);\n\ncreate policy \"state_select_own\"\non public.user_app_state for select to authenticated\nusing (user_id = auth.uid());\n\ncreate policy \"state_insert_own\"\non public.user_app_state for insert to authenticated\nwith check (user_id = auth.uid());\n\ncreate policy \"state_update_own\"\non public.user_app_state for update to authenticated\nusing (user_id = auth.uid())\nwith check (user_id = auth.uid());\n\ncreate policy \"state_delete_own\"\non public.user_app_state for delete to authenticated\nusing (user_id = auth.uid());\n\ncreate policy \"audit_select_admin\"\non public.audit_logs for select to authenticated\nusing (\n  exists (\n    select 1 from public.profiles p\n    where p.id = auth.uid() and p.perfil = 'ADMIN' and p.ativo\n  )\n);\n\ncreate or replace function public.handle_new_user()\nreturns trigger\nlanguage plpgsql\nsecurity definer set search_path = public\nas $$\nbegin\n  insert into public.profiles (id, nome, username, email, perfil, ativo)\n  values (\n    new.id,\n    coalesce(new.raw_user_meta_data->>'nome', split_part(new.email,'@',1)),\n    coalesce(new.raw_user_meta_data->>'username', split_part(new.email,'@',1)),\n    new.email,\n    coalesce(new.raw_user_meta_data->>'perfil','USUARIO'),\n    true\n  )\n  on conflict (id) do nothing;\n  return new;\nend;\n$$;\n\ndrop trigger if exists on_auth_user_created on auth.users;\ncreate trigger on_auth_user_created\nafter insert on auth.users\nfor each row execute function public.handle_new_user();\n\nalter publication supabase_realtime add table public.user_app_state;\n";
+  const setupEl = id => document.getElementById(id);
+  setupEl("setupSqlPreview").textContent = NIR_SETUP_SQL;
+
+  function setupMessage(id, message, ok){
+    const node = setupEl(id);
+    node.textContent = message;
+    node.className = "setup-message " + (ok ? "ok" : "error");
+  }
+
+  setupEl("setupSaveConnection").addEventListener("click", async () => {
+    const url = setupEl("setupUrl").value.trim().replace(/\/$/,"");
+    const key = setupEl("setupKey").value.trim();
+    if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url) || !key){
+      setupMessage("setupConnectionMessage","Informe a Project URL e a Publishable key completas.",false);
+      return;
+    }
+    localStorage.setItem("nirSupabaseConfig", JSON.stringify({
+      SUPABASE_URL:url, SUPABASE_ANON_KEY:key, LOGIN_EMAIL_DOMAIN:"nircemetron.local"
+    }));
+    try{
+      const testClient = window.supabase.createClient(url,key);
+      const {error} = await testClient.from("profiles").select("id").limit(1);
+      if(error && (error.status === 401 || /invalid.*key|unauthorized/i.test(error.message))) throw error;
+      setupMessage("setupConnectionMessage","Conexão salva. A chave pública foi aceita.",true);
+      setupEl("setupStep1").classList.add("done");
+    }catch(error){
+      setupMessage("setupConnectionMessage","Falha na conexão: " + error.message,false);
+    }
+  });
+
+  setupEl("setupCopySql").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(NIR_SETUP_SQL);
+    setupMessage("setupSchemaMessage","Script copiado. Cole no SQL Editor do Supabase e execute.",true);
+  });
+
+  setupEl("setupOpenSql").addEventListener("click", () => {
+    window.open("https://supabase.com/dashboard/project/cvtvtquyabfionisdfwg/sql/new","_blank","noopener");
+  });
+
+  setupEl("setupVerifySchema").addEventListener("click", async () => {
+    try{
+      const cfg = JSON.parse(localStorage.getItem("nirSupabaseConfig") || "null");
+      if(!cfg) throw new Error("Salve primeiro a conexão.");
+      const c = window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+      const {error} = await c.from("profiles").select("id").limit(1);
+      if(error) throw error;
+      setupMessage("setupSchemaMessage","Banco verificado com sucesso.",true);
+      setupEl("setupStep2").classList.add("done");
+    }catch(error){
+      setupMessage("setupSchemaMessage","O banco ainda não está pronto: " + error.message,false);
+    }
+  });
+
+  setupEl("setupCreateAdmin").addEventListener("click", async () => {
+    try{
+      const cfg = JSON.parse(localStorage.getItem("nirSupabaseConfig") || "null");
+      if(!cfg) throw new Error("Salve primeiro a conexão.");
+      const username = setupEl("setupAdminUsername").value.trim().toLowerCase();
+      const password = setupEl("setupAdminPassword").value;
+      const nome = setupEl("setupAdminName").value.trim();
+      if(!username || password.length < 8) throw new Error("Informe o usuário e uma senha com pelo menos 8 caracteres.");
+      const c = window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+      const email = `${username}@${cfg.LOGIN_EMAIL_DOMAIN || "nircemetron.local"}`;
+      const {data,error} = await c.auth.signUp({
+        email,password,options:{data:{nome,username,perfil:"ADMIN"}}
+      });
+      if(error && !/already registered/i.test(error.message)) throw error;
+      if(data?.user){
+        const {error:profileError} = await c.from("profiles").update({
+          nome,username,perfil:"ADMIN",ativo:true
+        }).eq("id",data.user.id);
+        if(profileError) throw profileError;
+      }
+      setupMessage("setupAdminMessage","Administrador criado. Usuário: " + username,true);
+      setupEl("setupStep3").classList.add("done");
+    }catch(error){
+      setupMessage("setupAdminMessage","Não foi possível criar o administrador: " + error.message,false);
+    }
+  });
+
+  setupEl("setupFinish").addEventListener("click", async () => {
+    if(!localStorage.getItem("nirSupabaseConfig")){
+      setupMessage("setupConnectionMessage","Configure a conexão antes de concluir.",false);
+      return;
+    }
+    setupEl("setupOverlay").classList.remove("open");
+    document.getElementById("cloudAuthOverlay").style.display = "grid";
+    await window.NIRCloud.reinitialize();
+  });
+
+  window.NIRCloud.init();
+</script>
+</body>
+</html>
