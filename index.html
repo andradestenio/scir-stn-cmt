@@ -697,6 +697,15 @@
     .dashboard-record-stats{grid-template-columns:1fr}
   }
 
+
+  .clinic-name-cell{display:flex;align-items:center;gap:10px;min-width:0}
+  .clinic-icon{display:inline-grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:9px;background:#e8eef6;color:var(--navy);font-size:16px;line-height:1;border:1px solid #c8d4e2}
+  .clinic-icon.uti{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+  .clinic-icon.isolation{background:#fff7d6;color:#92400e;border-color:#f4d06f}
+  .clinic-icon.collective{background:#eaf3ff;color:#1e3a8a;border-color:#bfdbfe}
+  .clinic-icon.female{background:#fce7f3;color:#9d174d;border-color:#f9a8d4}
+  .clinic-name-text{min-width:0;overflow-wrap:anywhere}
+
 </style>
 </head>
 <body>
@@ -815,8 +824,8 @@
       <div class="panel bed-census-panel">
         <div class="bed-census-header">
           <div>
-            <h3>Censo de disponibilidade de leitos</h3>
-            <p class="report-subtitle">Resultado consolidado do último censo registrado.</p>
+            <h3>Censo diário</h3>
+            <p class="report-subtitle">Resultado consolidado do último censo diário registrado.</p>
           </div>
           <div class="bed-census-meta">
             <strong>Último censo registrado</strong>
@@ -850,16 +859,6 @@
         <div class="actions">
           <button class="btn btn-primary" id="openBedCensusModal" type="button">Registrar novo censo</button>
         </div>
-      </div>
-
-      <div class="panel">
-        <div class="dashboard-panel-header">
-          <div><h3>Bloco de notas</h3><p>Registre lembretes, pendências e informações importantes do dia.</p></div>
-          <span class="note-save-meta" id="noteSaveMeta">Salvo na base integrada</span>
-        </div>
-        <label for="dashboardNotes">Anotações</label>
-        <textarea class="dashboard-notes" id="dashboardNotes" placeholder="Escreva aqui o que não pode esquecer..."></textarea>
-        <div class="actions"><button class="btn btn-primary" id="saveDashboardNotes" type="button">Salvar anotações</button></div>
       </div>
 
       <div class="panel">
@@ -1195,7 +1194,7 @@
   <div class="bed-census-dialog">
     <div class="bed-census-dialog-header">
       <div>
-        <h3 id="bedCensusModalTitle">Registrar censo de disponibilidade de leitos</h3>
+        <h3 id="bedCensusModalTitle">Registrar censo diário</h3>
         <p class="report-subtitle">Informe data, hora, responsável e quantitativo disponível em cada clínica.</p>
       </div>
       <button class="btn btn-secondary" id="closeBedCensusModal" type="button">Fechar</button>
@@ -1473,18 +1472,18 @@
 
   const BED_CENSUS_LABELS = {
     infectologia:[
-      ["masc2","Masculina 2 - Coletivo"],
-      ["masc3","Masculina 3 - Coletivo"],
-      ["fem","Feminina - Coletivo"],
-      ["tb","Isolamento - TB"],
-      ["utiColetivo","UTI Coletivo"],
-      ["utiIsolamento","UTI Isolamento"]
+      ["masc2","Masculina 2 - Coletivo","🛏","collective"],
+      ["masc3","Masculina 3 - Coletivo","🛏","collective"],
+      ["fem","Feminina - Coletivo","♀","female"],
+      ["tb","Isolamento - TB","⚠","isolation"],
+      ["utiColetivo","UTI Coletivo","✚","uti"],
+      ["utiIsolamento","UTI Isolamento","✚","uti"]
     ],
     clinica:[
-      ["masc1","Masculina 1 - Coletivo"],
-      ["masc1Isolamento","Masculina 1 - Isolamento"],
-      ["fem","Feminina - Coletivo"],
-      ["utiGeral","UTI Geral - Coletivo"]
+      ["masc1","Masculina 1 - Coletivo","🛏","collective"],
+      ["masc1Isolamento","Masculina 1 - Isolamento","⚠","isolation"],
+      ["fem","Feminina - Coletivo","♀","female"],
+      ["utiGeral","UTI Geral - Coletivo","✚","uti"]
     ]
   };
 
@@ -1503,14 +1502,14 @@
     const clinica = $("bedCensusClinicaResult");
 
     if(infectologia){
-      infectologia.innerHTML = BED_CENSUS_LABELS.infectologia.map(([key,label]) =>
-        `<tr><td>${escapeHtml(label)}</td>${censusValueCell(census.infectologia?.[key])}</tr>`
+      infectologia.innerHTML = BED_CENSUS_LABELS.infectologia.map(([key,label,icon,iconClass]) =>
+        `<tr><td><div class="clinic-name-cell"><span class="clinic-icon ${iconClass}" aria-hidden="true">${icon}</span><span class="clinic-name-text">${escapeHtml(label)}</span></div></td>${censusValueCell(census.infectologia?.[key])}</tr>`
       ).join("");
     }
 
     if(clinica){
-      clinica.innerHTML = BED_CENSUS_LABELS.clinica.map(([key,label]) =>
-        `<tr><td>${escapeHtml(label)}</td>${censusValueCell(census.clinica?.[key])}</tr>`
+      clinica.innerHTML = BED_CENSUS_LABELS.clinica.map(([key,label,icon,iconClass]) =>
+        `<tr><td><div class="clinic-name-cell"><span class="clinic-icon ${iconClass}" aria-hidden="true">${icon}</span><span class="clinic-name-text">${escapeHtml(label)}</span></div></td>${censusValueCell(census.clinica?.[key])}</tr>`
       ).join("");
     }
 
