@@ -781,6 +781,214 @@
   }
 </style>
 
+
+<style id="scir-modules-chart-style">
+  #mainSidebar{
+    display:flex;
+    flex-direction:column;
+  }
+
+  #mainSidebar nav{
+    flex:1 0 auto;
+  }
+
+  .sidebar-footer-actions{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.16);
+  }
+
+  .sidebar-logout-button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-height:44px;
+    padding:11px 12px;
+    border:0;
+    border-radius:8px;
+    background:transparent;
+    color:#dbeafe;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+    transition:background-color .18s ease,color .18s ease,transform .18s ease;
+  }
+
+  .sidebar-logout-button:hover{
+    color:#fff;
+    background:rgba(255,255,255,.12);
+    transform:translateX(2px);
+  }
+
+  .records-chart-panel{
+    overflow:hidden;
+  }
+
+  .records-chart-layout{
+    display:grid;
+    grid-template-columns:minmax(220px,.8fr) minmax(300px,1.2fr);
+    align-items:center;
+    gap:28px;
+    padding:8px 10px 4px;
+  }
+
+  .records-donut-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:260px;
+  }
+
+  .records-donut{
+    --chart-yellow:0deg;
+    --chart-blue:0deg;
+    --chart-green:0deg;
+    width:230px;
+    height:230px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:conic-gradient(
+      var(--yellow) 0deg var(--chart-yellow),
+      var(--blue) var(--chart-yellow) var(--chart-blue),
+      var(--green) var(--chart-blue) var(--chart-green),
+      var(--red) var(--chart-green) 360deg
+    );
+    box-shadow:0 10px 28px rgba(15,39,71,.12);
+    position:relative;
+  }
+
+  .records-donut::before{
+    content:"";
+    position:absolute;
+    inset:24%;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:inset 0 0 0 1px #e2e8f0;
+  }
+
+  .records-donut.empty{
+    background:conic-gradient(#e5e7eb 0deg 360deg);
+  }
+
+  .records-donut-center{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--navy);
+  }
+
+  .records-donut-center strong{
+    font-size:34px;
+    line-height:1;
+  }
+
+  .records-donut-center span{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .records-chart-legend{
+    display:grid;
+    gap:4px;
+  }
+
+  .chart-legend-row{
+    display:grid;
+    grid-template-columns:14px minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
+    padding:12px 4px;
+    border-bottom:1px solid #e5e7eb;
+    color:#334155;
+    font-size:13px;
+  }
+
+  .chart-legend-row:last-child{
+    border-bottom:0;
+  }
+
+  .chart-legend-row strong{
+    color:var(--navy);
+    font-size:12px;
+    white-space:nowrap;
+  }
+
+  .chart-dot{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+  }
+
+  .chart-dot.yellow{background:var(--yellow)}
+  .chart-dot.blue{background:var(--blue)}
+  .chart-dot.green{background:var(--green)}
+  .chart-dot.red{background:var(--red)}
+
+  .chart-report-action{
+    justify-content:center;
+    padding-top:10px;
+    border-top:1px solid #e5e7eb;
+  }
+
+  .chart-report-action .btn{
+    min-width:240px;
+  }
+
+  @media(max-width:900px){
+    .records-chart-layout{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .records-donut-wrap{
+      min-height:230px;
+    }
+  }
+
+  @media(max-width:700px){
+    .sidebar-footer-actions{
+      padding-bottom:calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .sidebar-logout-button{
+      min-height:49px;
+      padding:13px 14px;
+      font-size:15px;
+    }
+
+    .records-chart-layout{
+      padding-left:0;
+      padding-right:0;
+    }
+
+    .records-donut{
+      width:205px;
+      height:205px;
+    }
+
+    .chart-legend-row{
+      grid-template-columns:13px minmax(0,1fr);
+    }
+
+    .chart-legend-row strong{
+      grid-column:2;
+      justify-self:start;
+      margin-top:-5px;
+    }
+
+    .chart-report-action .btn{
+      width:100%;
+      min-width:0;
+    }
+  }
+</style>
+
 </head>
 <body>
   <div class="login-screen" id="loginScreen">
@@ -855,7 +1063,21 @@
       <span class="nav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M5 18.5 3.5 21l3.8-1.1A8.5 8.5 0 1 0 5 18.5Z"/><path d="M8 9.5h8M8 13h5"/></svg>
       </span><span class="nav-label">Relatório SBAR</span></button>
+
+      <button data-view="mensagensPadrao">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+      </span><span class="nav-label">Mensagens padrão</span></button>
     </nav>
+
+    <div class="sidebar-footer-actions">
+      <button class="sidebar-logout-button" id="logoutButton" type="button">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M10 5H5v14h5"/><path d="M14 8l4 4-4 4M8 12h10"/></svg>
+        </span>
+        <span class="nav-label">Sair</span>
+      </button>
+    </div>
   </aside>
 
   <main>
@@ -898,7 +1120,7 @@
           <button class="btn btn-secondary" id="exportBackup">Exportar backup</button>
           <button class="btn btn-secondary" id="importBackup">Importar backup</button>
           <input id="backupFile" type="file" accept="application/json,.json" class="hidden">
-          <button class="btn btn-secondary" id="logoutButton">Sair</button>
+          
         </div>
         <div id="closedShiftNotice" class="locked-note hidden">
           Este plantão está encerrado. Os registros permanecem disponíveis para consulta e exportação.
@@ -913,6 +1135,34 @@
         <div class="stat total-records-stat">
           <div class="label">Número de registros no plantão</div>
           <div class="value" id="countTotalRecords">0</div>
+        </div>
+      </div>
+
+      <div class="panel records-chart-panel">
+        <div class="dashboard-panel-header">
+          <div>
+            <h3>Gráfico de registros por status</h3>
+            <p>Distribuição dos registros cadastrados no plantão atual.</p>
+          </div>
+        </div>
+        <div class="records-chart-layout">
+          <div class="records-donut-wrap">
+            <div class="records-donut" id="recordsDonut" role="img" aria-label="Distribuição dos registros por status">
+              <div class="records-donut-center">
+                <strong id="chartTotalRecords">0</strong>
+                <span>Total</span>
+              </div>
+            </div>
+          </div>
+          <div class="records-chart-legend" id="recordsChartLegend">
+            <div class="chart-legend-row"><span class="chart-dot yellow"></span><span>Pendências</span><strong id="chartYellowValue">0 (0%)</strong></div>
+            <div class="chart-legend-row"><span class="chart-dot blue"></span><span>Transferências / Avaliações / Exames</span><strong id="chartBlueValue">0 (0%)</strong></div>
+            <div class="chart-legend-row"><span class="chart-dot green"></span><span>Autorizações</span><strong id="chartGreenValue">0 (0%)</strong></div>
+            <div class="chart-legend-row"><span class="chart-dot red"></span><span>Negativas</span><strong id="chartRedValue">0 (0%)</strong></div>
+          </div>
+        </div>
+        <div class="actions chart-report-action">
+          <button class="btn btn-secondary" id="openFullShiftReport" type="button">Ver relatório completo</button>
         </div>
       </div>
 
@@ -956,14 +1206,30 @@
         </div>
       </div>
 
+
+    </section>
+
+    <section id="mensagensPadrao" class="view hidden">
       <div class="panel">
         <div class="dashboard-panel-header">
-          <div><h3>Mensagens padrão</h3><p>Deixe textos frequentes salvos para copiar e enviar rapidamente.</p></div>
+          <div>
+            <h3>Mensagens padrão</h3>
+            <p>Cadastre, edite, copie e exclua textos utilizados com frequência nas rotinas do NIR.</p>
+          </div>
         </div>
         <div class="standard-message-form">
-          <div><label for="standardMessageTitle">Título da mensagem</label><input id="standardMessageTitle" placeholder="Ex.: Solicitação de atualização"></div>
-          <div class="message-text-field"><label for="standardMessageText">Texto da mensagem</label><textarea id="standardMessageText" placeholder="Digite a mensagem completa..."></textarea></div>
-          <div class="actions"><button class="btn btn-primary" id="saveStandardMessage" type="button">Salvar mensagem</button><button class="btn btn-secondary" id="cancelStandardMessage" type="button">Limpar</button></div>
+          <div>
+            <label for="standardMessageTitle">Título da mensagem</label>
+            <input id="standardMessageTitle" placeholder="Ex.: Solicitação de atualização">
+          </div>
+          <div class="message-text-field">
+            <label for="standardMessageText">Texto da mensagem</label>
+            <textarea id="standardMessageText" placeholder="Digite a mensagem completa..."></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="saveStandardMessage" type="button">Salvar mensagem</button>
+            <button class="btn btn-secondary" id="cancelStandardMessage" type="button">Limpar</button>
+          </div>
         </div>
         <div class="standard-messages-list" id="standardMessagesList"></div>
       </div>
@@ -1867,11 +2133,45 @@
 
   function renderCounts(){
     const records = Array.isArray(state.records) ? state.records : [];
-    $("countYellow").textContent = records.filter(r=>r.module==="yellow").length;
-    $("countBlue").textContent = records.filter(r=>r.module==="blue").length;
-    $("countGreen").textContent = records.filter(r=>r.module==="green").length;
-    $("countRed").textContent = records.filter(r=>r.module==="red").length;
-    if($("countTotalRecords")) $("countTotalRecords").textContent = records.length;
+    const counts = {
+      yellow:records.filter(r=>r.module==="yellow").length,
+      blue:records.filter(r=>r.module==="blue").length,
+      green:records.filter(r=>r.module==="green").length,
+      red:records.filter(r=>r.module==="red").length
+    };
+    const total = records.length;
+
+    $("countYellow").textContent = counts.yellow;
+    $("countBlue").textContent = counts.blue;
+    $("countGreen").textContent = counts.green;
+    $("countRed").textContent = counts.red;
+    if($("countTotalRecords")) $("countTotalRecords").textContent = total;
+
+    const percent = value => total ? (value / total) * 100 : 0;
+    const formatChartValue = value => `${value} (${percent(value).toFixed(total ? 1 : 0).replace(".", ",")}%)`;
+
+    if($("chartTotalRecords")) $("chartTotalRecords").textContent = total;
+    if($("chartYellowValue")) $("chartYellowValue").textContent = formatChartValue(counts.yellow);
+    if($("chartBlueValue")) $("chartBlueValue").textContent = formatChartValue(counts.blue);
+    if($("chartGreenValue")) $("chartGreenValue").textContent = formatChartValue(counts.green);
+    if($("chartRedValue")) $("chartRedValue").textContent = formatChartValue(counts.red);
+
+    const donut = $("recordsDonut");
+    if(donut){
+      const yellowEnd = percent(counts.yellow) * 3.6;
+      const blueEnd = yellowEnd + percent(counts.blue) * 3.6;
+      const greenEnd = blueEnd + percent(counts.green) * 3.6;
+      donut.style.setProperty("--chart-yellow", `${yellowEnd}deg`);
+      donut.style.setProperty("--chart-blue", `${blueEnd}deg`);
+      donut.style.setProperty("--chart-green", `${greenEnd}deg`);
+      donut.classList.toggle("empty", total === 0);
+      donut.setAttribute(
+        "aria-label",
+        total
+          ? `Total de ${total} registros: ${counts.yellow} pendências, ${counts.blue} transferências, avaliações ou exames, ${counts.green} autorizações e ${counts.red} negativas.`
+          : "Nenhum registro no plantão atual."
+      );
+    }
   }
 
   function renderSbarFields(){
@@ -2504,7 +2804,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   }
 
-  document.querySelectorAll("nav button").forEach(btn => {
+  document.querySelectorAll("nav button[data-view]").forEach(btn => {
     btn.addEventListener("click", () => {
       document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
@@ -3096,6 +3396,10 @@ background: $("background").value.trim(),
   });
 
   $("cancelStandardMessage").addEventListener("click", clearStandardMessageForm);
+
+  $("openFullShiftReport")?.addEventListener("click", () => {
+    document.querySelector('nav button[data-view="relatorioPlantao"]')?.click();
+  });
 
   $("togglePassword").addEventListener("click", () => {
     const input = $("loginPassword");
