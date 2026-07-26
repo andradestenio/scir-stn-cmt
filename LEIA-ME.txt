@@ -1,0 +1,10 @@
+SCIR — NIR CEMETRON | Atualização visual
+
+Substitua o index.html atual pelo arquivo desta pasta e envie também todos os
+arquivos de favicon e o site.webmanifest para a raiz do projeto.
+
+Preserve a pasta assets existente, especialmente:
+assets/logo-cemetron.png
+
+A alteração no index.html foi restrita ao bloco de favicon/PWA no <head>.
+O restante do sistema foi mantido.
