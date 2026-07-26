@@ -672,6 +672,31 @@
     .bed-census-dialog-actions{display:grid;grid-template-columns:1fr}.bed-census-dialog-actions .btn{width:100%}
   }
 
+
+  .dashboard-record-stats{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+  }
+  .total-records-stat{
+    border-color:#9fb3ca;
+    background:linear-gradient(145deg,#ffffff,#f0f5fa);
+  }
+  .total-records-stat .label{
+    color:var(--navy);
+    font-weight:700;
+  }
+  .total-records-stat .value{
+    color:var(--navy-2);
+  }
+  @media(max-width:1250px){
+    .dashboard-record-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media(max-width:800px){
+    .dashboard-record-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media(max-width:500px){
+    .dashboard-record-stats{grid-template-columns:1fr}
+  }
+
 </style>
 </head>
 <body>
@@ -776,11 +801,15 @@
         </div>
       </div>
 
-      <div class="grid">
+      <div class="grid dashboard-record-stats">
         <div class="stat"><div class="label">🟨 Pendências</div><div class="value" id="countYellow">0</div></div>
         <div class="stat"><div class="label">🟦 Transferências / Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
         <div class="stat"><div class="label">🟩 Autorizações</div><div class="value" id="countGreen">0</div></div>
         <div class="stat"><div class="label">🟥 Negativas</div><div class="value" id="countRed">0</div></div>
+        <div class="stat total-records-stat">
+          <div class="label">Número de registros no plantão</div>
+          <div class="value" id="countTotalRecords">0</div>
+        </div>
       </div>
 
       <div class="panel bed-census-panel">
@@ -1743,10 +1772,12 @@
   }
 
   function renderCounts(){
-    $("countYellow").textContent = state.records.filter(r=>r.module==="yellow").length;
-    $("countBlue").textContent = state.records.filter(r=>r.module==="blue").length;
-    $("countGreen").textContent = state.records.filter(r=>r.module==="green").length;
-    $("countRed").textContent = state.records.filter(r=>r.module==="red").length;
+    const records = Array.isArray(state.records) ? state.records : [];
+    $("countYellow").textContent = records.filter(r=>r.module==="yellow").length;
+    $("countBlue").textContent = records.filter(r=>r.module==="blue").length;
+    $("countGreen").textContent = records.filter(r=>r.module==="green").length;
+    $("countRed").textContent = records.filter(r=>r.module==="red").length;
+    if($("countTotalRecords")) $("countTotalRecords").textContent = records.length;
   }
 
   function renderSbarFields(){
