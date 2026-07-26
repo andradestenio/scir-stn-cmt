@@ -631,6 +631,47 @@
   }
 
   @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+  .bed-census-panel{margin-top:18px}
+  .bed-census-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .bed-census-meta{min-width:250px;padding:11px 13px;border:1px solid #d8dee8;border-radius:10px;background:#f8fafc;color:#475569;font-size:12px;line-height:1.5}
+  .bed-census-meta strong{display:block;margin-bottom:3px;color:var(--navy);font-size:13px}
+  .bed-census-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .bed-census-summary-section{overflow:hidden;border:1px solid #cfd8e3;border-radius:12px;background:#fff}
+  .bed-census-summary-section h4{margin:0;padding:11px 14px;background:var(--navy);color:#fff;font-size:14px}
+  .bed-census-result-table,.bed-census-form-table{width:100%;border-collapse:collapse}
+  .bed-census-result-table th,.bed-census-result-table td,.bed-census-form-table th,.bed-census-form-table td{padding:10px 12px;border-top:1px solid #d8dee8;text-align:left}
+  .bed-census-result-table th,.bed-census-form-table th{background:#eef3f8;color:var(--navy);font-size:12px;text-transform:uppercase}
+  .bed-census-result-table td:last-child{width:160px;text-align:center}
+  .bed-availability-tag{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:28px;padding:0 12px;border:1px solid transparent;border-radius:999px;font-size:13px;font-weight:800;line-height:1}
+  .bed-availability-tag.available{background:#dcfce7;color:#166534;border-color:#86efac}
+  .bed-availability-tag.unavailable{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+  .bed-availability-tag.not-informed{min-width:auto;background:#f1f5f9;color:#64748b;border-color:#cbd5e1;font-weight:700}
+  .bed-census-observations-result{min-height:52px;margin-top:8px;padding:12px;border:1px solid #d8dee8;border-radius:10px;background:#f8fafc;color:#334155;white-space:pre-wrap}
+  .bed-census-modal{position:fixed;inset:0;z-index:3300;display:grid;place-items:center;padding:20px;background:rgba(2,8,23,.72);opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}
+  .bed-census-modal.show{opacity:1;visibility:visible}
+  .bed-census-dialog{width:min(920px,100%);max-height:92vh;overflow:auto;padding:24px;border-radius:18px;background:#fff;box-shadow:0 28px 80px rgba(0,0,0,.38)}
+  .bed-census-dialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+  .bed-census-dialog-header h3{margin:0 0 5px;color:var(--navy)}
+  .bed-census-form-meta{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:12px}
+  .bed-census-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .bed-census-form-section{overflow:hidden;border:1px solid #cfd8e3;border-radius:12px;background:#fff}
+  .bed-census-form-section h4{margin:0;padding:11px 14px;background:var(--navy);color:#fff;font-size:14px}
+  .bed-census-form-table input{min-width:90px;text-align:center}
+  .bed-census-dialog-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}
+  @media(max-width:900px){
+    .bed-census-summary-grid,.bed-census-form-grid{grid-template-columns:1fr}
+    .bed-census-form-meta{grid-template-columns:1fr}
+  }
+  @media(max-width:700px){
+    .bed-census-meta{width:100%;min-width:0}
+    .bed-census-result-table th,.bed-census-result-table td,.bed-census-form-table th,.bed-census-form-table td{padding:9px 8px}
+    .bed-census-result-table td:last-child{width:120px}
+    .bed-census-dialog{padding:16px;border-radius:14px}
+    .bed-census-dialog-header{display:block}.bed-census-dialog-header .btn{width:100%;margin-top:10px}
+    .bed-census-dialog-actions{display:grid;grid-template-columns:1fr}.bed-census-dialog-actions .btn{width:100%}
+  }
+
 </style>
 </head>
 <body>
@@ -740,6 +781,46 @@
         <div class="stat"><div class="label">🟦 Transferências / Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
         <div class="stat"><div class="label">🟩 Autorizações</div><div class="value" id="countGreen">0</div></div>
         <div class="stat"><div class="label">🟥 Negativas</div><div class="value" id="countRed">0</div></div>
+      </div>
+
+      <div class="panel bed-census-panel">
+        <div class="bed-census-header">
+          <div>
+            <h3>Censo de disponibilidade de leitos</h3>
+            <p class="report-subtitle">Resultado consolidado do último censo registrado.</p>
+          </div>
+          <div class="bed-census-meta">
+            <strong>Último censo registrado</strong>
+            <span id="bedCensusLastUpdate">Nenhum censo registrado.</span>
+            <div id="bedCensusPerformedBy"></div>
+          </div>
+        </div>
+
+        <div class="bed-census-summary-grid">
+          <section class="bed-census-summary-section">
+            <h4>Infectologia</h4>
+            <table class="bed-census-result-table">
+              <thead><tr><th>Clínica</th><th>Leitos disponíveis</th></tr></thead>
+              <tbody id="bedCensusInfectologiaResult"></tbody>
+            </table>
+          </section>
+          <section class="bed-census-summary-section">
+            <h4>Clínica Médica</h4>
+            <table class="bed-census-result-table">
+              <thead><tr><th>Clínica</th><th>Leitos disponíveis</th></tr></thead>
+              <tbody id="bedCensusClinicaResult"></tbody>
+            </table>
+          </section>
+        </div>
+
+        <div style="margin-top:16px">
+          <strong>Observações</strong>
+          <div id="bedCensusObservationsResult" class="bed-census-observations-result">Nenhuma observação registrada.</div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="openBedCensusModal" type="button">Registrar novo censo</button>
+        </div>
       </div>
 
       <div class="panel">
@@ -1080,6 +1161,65 @@
   </main>
 </div>
 
+
+<div class="bed-census-modal" id="bedCensusModal" role="dialog" aria-modal="true" aria-labelledby="bedCensusModalTitle">
+  <div class="bed-census-dialog">
+    <div class="bed-census-dialog-header">
+      <div>
+        <h3 id="bedCensusModalTitle">Registrar censo de disponibilidade de leitos</h3>
+        <p class="report-subtitle">Informe data, hora, responsável e quantitativo disponível em cada clínica.</p>
+      </div>
+      <button class="btn btn-secondary" id="closeBedCensusModal" type="button">Fechar</button>
+    </div>
+
+    <div class="bed-census-form-meta">
+      <div><label for="bedCensusDate">Data do censo</label><input id="bedCensusDate" type="date"></div>
+      <div><label for="bedCensusTime">Hora do censo</label><input id="bedCensusTime" type="time"></div>
+      <div><label for="bedCensusPerformedByInput">Realizado por</label><input id="bedCensusPerformedByInput" placeholder="Nome do profissional"></div>
+    </div>
+
+    <div class="bed-census-form-grid">
+      <section class="bed-census-form-section">
+        <h4>Infectologia</h4>
+        <table class="bed-census-form-table">
+          <thead><tr><th>Clínica</th><th>Leitos disponíveis</th></tr></thead>
+          <tbody>
+            <tr><td>Masculina 2 - Coletivo</td><td><input id="bedInfMasc2" type="number" min="0" step="1"></td></tr>
+            <tr><td>Masculina 3 - Coletivo</td><td><input id="bedInfMasc3" type="number" min="0" step="1"></td></tr>
+            <tr><td>Feminina - Coletivo</td><td><input id="bedInfFem" type="number" min="0" step="1"></td></tr>
+            <tr><td>Isolamento - TB</td><td><input id="bedInfTb" type="number" min="0" step="1"></td></tr>
+            <tr><td>UTI Coletivo</td><td><input id="bedInfUtiColetivo" type="number" min="0" step="1"></td></tr>
+            <tr><td>UTI Isolamento</td><td><input id="bedInfUtiIso" type="number" min="0" step="1"></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="bed-census-form-section">
+        <h4>Clínica Médica</h4>
+        <table class="bed-census-form-table">
+          <thead><tr><th>Clínica</th><th>Leitos disponíveis</th></tr></thead>
+          <tbody>
+            <tr><td>Masculina 1 - Coletivo</td><td><input id="bedClinMasc1" type="number" min="0" step="1"></td></tr>
+            <tr><td>Masculina 1 - Isolamento</td><td><input id="bedClinMasc1Iso" type="number" min="0" step="1"></td></tr>
+            <tr><td>Feminina - Coletivo</td><td><input id="bedClinFem" type="number" min="0" step="1"></td></tr>
+            <tr><td>UTI Geral - Coletivo</td><td><input id="bedClinUtiGeral" type="number" min="0" step="1"></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div style="margin-top:16px">
+      <label for="bedCensusObservations">Observações</label>
+      <textarea id="bedCensusObservations" placeholder="Bloqueios, restrições, previsão de liberação ou outras informações relevantes..."></textarea>
+    </div>
+
+    <div class="bed-census-dialog-actions">
+      <button class="btn btn-secondary" id="clearBedCensusForm" type="button">Limpar campos</button>
+      <button class="btn btn-primary" id="saveBedCensus" type="button">Registrar censo</button>
+    </div>
+  </div>
+</div>
+
 <div class="reminder-modal" id="shiftReminderModal" role="dialog" aria-modal="true" aria-labelledby="shiftReminderTitle" aria-describedby="shiftReminderText">
   <div class="reminder-dialog">
     <div class="reminder-symbol" aria-hidden="true">!</div>
@@ -1108,7 +1248,16 @@
     sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" },
     dashboardNotes: "",
     dashboardNotesUpdatedAt: null,
-    standardMessages: []
+    standardMessages: [],
+    bedCensus: {
+      infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+      clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
+      observations:"",
+      censusDate:"",
+      censusTime:"",
+      performedBy:"",
+      updatedAt:null
+    }
   };
 
   state.records = Array.isArray(state.records) ? state.records : [];
@@ -1117,6 +1266,15 @@
   state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
   state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
   state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+  state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
+    infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+    clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
+    observations:"",
+    censusDate:"",
+    censusTime:"",
+    performedBy:"",
+    updatedAt:null
+  };
   state.sbar = state.sbar || {
     operationalStatus:"",
     turnover:"",
@@ -1229,6 +1387,15 @@
         state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
         state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
         state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+        state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
+          infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+          clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
+          observations:"",
+          censusDate:"",
+          censusTime:"",
+          performedBy:"",
+          updatedAt:null
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }else{
         await cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state})});
@@ -1259,6 +1426,126 @@
 
   function hideShiftReminder(){
     $("shiftReminderModal").classList.remove("show");
+  }
+
+
+  const BED_CENSUS_FIELDS = {
+    bedInfMasc2:["infectologia","masc2"],
+    bedInfMasc3:["infectologia","masc3"],
+    bedInfFem:["infectologia","fem"],
+    bedInfTb:["infectologia","tb"],
+    bedInfUtiColetivo:["infectologia","utiColetivo"],
+    bedInfUtiIso:["infectologia","utiIsolamento"],
+    bedClinMasc1:["clinica","masc1"],
+    bedClinMasc1Iso:["clinica","masc1Isolamento"],
+    bedClinFem:["clinica","fem"],
+    bedClinUtiGeral:["clinica","utiGeral"]
+  };
+
+  const BED_CENSUS_LABELS = {
+    infectologia:[
+      ["masc2","Masculina 2 - Coletivo"],
+      ["masc3","Masculina 3 - Coletivo"],
+      ["fem","Feminina - Coletivo"],
+      ["tb","Isolamento - TB"],
+      ["utiColetivo","UTI Coletivo"],
+      ["utiIsolamento","UTI Isolamento"]
+    ],
+    clinica:[
+      ["masc1","Masculina 1 - Coletivo"],
+      ["masc1Isolamento","Masculina 1 - Isolamento"],
+      ["fem","Feminina - Coletivo"],
+      ["utiGeral","UTI Geral - Coletivo"]
+    ]
+  };
+
+  function censusValueCell(value){
+    const numeric = value === "" || value === null || value === undefined ? null : Number(value);
+    if(numeric === null || Number.isNaN(numeric)){
+      return '<td><span class="bed-availability-tag not-informed">Não informado</span></td>';
+    }
+    const statusClass = numeric === 0 ? "unavailable" : "available";
+    return `<td><span class="bed-availability-tag ${statusClass}">${numeric}</span></td>`;
+  }
+
+  function renderBedCensus(){
+    const census = state.bedCensus || {};
+    const infectologia = $("bedCensusInfectologiaResult");
+    const clinica = $("bedCensusClinicaResult");
+
+    if(infectologia){
+      infectologia.innerHTML = BED_CENSUS_LABELS.infectologia.map(([key,label]) =>
+        `<tr><td>${escapeHtml(label)}</td>${censusValueCell(census.infectologia?.[key])}</tr>`
+      ).join("");
+    }
+
+    if(clinica){
+      clinica.innerHTML = BED_CENSUS_LABELS.clinica.map(([key,label]) =>
+        `<tr><td>${escapeHtml(label)}</td>${censusValueCell(census.clinica?.[key])}</tr>`
+      ).join("");
+    }
+
+    if($("bedCensusLastUpdate")){
+      if(census.censusDate && census.censusTime){
+        $("bedCensusLastUpdate").textContent = `${formatDate(census.censusDate)} às ${census.censusTime}`;
+      }else{
+        $("bedCensusLastUpdate").textContent = census.updatedAt ? formatDateTime(census.updatedAt) : "Nenhum censo registrado.";
+      }
+    }
+
+    if($("bedCensusPerformedBy")){
+      $("bedCensusPerformedBy").textContent = census.performedBy ? `Realizado por: ${census.performedBy}` : "";
+    }
+
+    if($("bedCensusObservationsResult")){
+      $("bedCensusObservationsResult").textContent = census.observations || "Nenhuma observação registrada.";
+    }
+  }
+
+  function loadBedCensusForm(){
+    const census = state.bedCensus || {};
+    Object.entries(BED_CENSUS_FIELDS).forEach(([id,path]) => {
+      if($(id)) $(id).value = census?.[path[0]]?.[path[1]] ?? "";
+    });
+    if($("bedCensusObservations")) $("bedCensusObservations").value = census.observations || "";
+    if($("bedCensusDate")) $("bedCensusDate").value = census.censusDate || new Date().toISOString().slice(0,10);
+    if($("bedCensusTime")) $("bedCensusTime").value = census.censusTime || new Date().toTimeString().slice(0,5);
+    if($("bedCensusPerformedByInput")) $("bedCensusPerformedByInput").value = census.performedBy || "";
+  }
+
+  function readBedCensusForm(){
+    const result = {
+      infectologia:{},
+      clinica:{},
+      observations:$("bedCensusObservations")?.value.trim() || "",
+      censusDate:$("bedCensusDate")?.value || "",
+      censusTime:$("bedCensusTime")?.value || "",
+      performedBy:$("bedCensusPerformedByInput")?.value.trim() || "",
+      updatedAt:new Date().toISOString()
+    };
+    Object.entries(BED_CENSUS_FIELDS).forEach(([id,path]) => {
+      const raw = $(id)?.value ?? "";
+      result[path[0]][path[1]] = raw === "" ? "" : Math.max(0, Number(raw));
+    });
+    return result;
+  }
+
+  function clearBedCensusForm(){
+    Object.keys(BED_CENSUS_FIELDS).forEach(id => { if($(id)) $(id).value = ""; });
+    if($("bedCensusObservations")) $("bedCensusObservations").value = "";
+    if($("bedCensusPerformedByInput")) $("bedCensusPerformedByInput").value = "";
+    if($("bedCensusDate")) $("bedCensusDate").value = new Date().toISOString().slice(0,10);
+    if($("bedCensusTime")) $("bedCensusTime").value = new Date().toTimeString().slice(0,5);
+  }
+
+  function openBedCensusModal(){
+    loadBedCensusForm();
+    $("bedCensusModal")?.classList.add("show");
+    setTimeout(() => $("bedCensusDate")?.focus(), 80);
+  }
+
+  function closeBedCensusModal(){
+    $("bedCensusModal")?.classList.remove("show");
   }
 
   function renderDashboardTools(){
@@ -2040,6 +2327,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderAuthorizationOptions();
     renderHistoryTable();
     renderCalendar();
+    renderBedCensus();
     renderDashboardTools();
 
     const locked = isShiftClosed();
@@ -2639,6 +2927,27 @@ background: $("background").value.trim(),
     $("exportCalendarExcel").addEventListener("click",exportCalendarExcel);
   }
 
+
+  $("openBedCensusModal")?.addEventListener("click", openBedCensusModal);
+  $("closeBedCensusModal")?.addEventListener("click", closeBedCensusModal);
+  $("bedCensusModal")?.addEventListener("click", event => {
+    if(event.target === $("bedCensusModal")) closeBedCensusModal();
+  });
+  $("clearBedCensusForm")?.addEventListener("click", () => {
+    if(confirm("Deseja limpar todos os campos do formulário?")) clearBedCensusForm();
+  });
+  $("saveBedCensus")?.addEventListener("click", () => {
+    const census = readBedCensusForm();
+    if(!census.censusDate || !census.censusTime || !census.performedBy){
+      alert("Informe a data, a hora e quem realizou o censo.");
+      return;
+    }
+    state.bedCensus = census;
+    saveState();
+    closeBedCensusModal();
+    toast("Censo de leitos registrado.");
+  });
+
   $("dismissShiftReminder").addEventListener("click", hideShiftReminder);
 
   $("saveDashboardNotes").addEventListener("click", () => {
@@ -2733,6 +3042,15 @@ background: $("background").value.trim(),
       state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
       state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
       state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+      state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
+        infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+        clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
+        observations:"",
+        censusDate:"",
+        censusTime:"",
+        performedBy:"",
+        updatedAt:null
+      };
       saveState();
       toast("Backup importado e enviado à nuvem.");
     }catch{
