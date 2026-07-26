@@ -1,22 +1,39 @@
-SCIR — NIR CEMETRON | Versão Vercel com módulos laterais e gráfico
+SCIR — NIR CEMETRON | Versão 1.6 com Zimbra integrado à Vercel
 
-ALTERAÇÕES
-- O botão Sair foi removido do painel de ações do Dashboard.
-- O botão Sair foi incluído no rodapé da barra lateral, com ícone SVG.
-- Mensagens padrão foi removido do Dashboard.
-- Mensagens padrão agora é um módulo próprio na barra lateral.
-- Foi incluído no Dashboard um gráfico dinâmico de registros por status.
-- O gráfico é atualizado automaticamente a partir dos registros do plantão.
-- O botão “Ver relatório completo” abre o módulo Relatório do plantão.
+CAMINHO SIMPLIFICADO
+- Não é necessário editar código.
+- Não é necessário executar novo SQL no Supabase.
+- Não é necessário cadastrar nova variável na Vercel.
+- Não é necessário Docker, Terminal ou computador permanentemente ligado.
+- Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
+  informar a senha do Zimbra e clicar em “Testar e ativar”.
 
-PUBLICAÇÃO NA VERCEL
+CONFIGURAÇÃO JÁ DEFINIDA
+- E-mail: nr.cemetron@sesau.ro.gov.br
+- Servidor: webmail.sesau.ro.gov.br
+- Protocolo: IMAP com TLS
+- Porta: 993
+- Caixa: INBOX
+
+ATUALIZAÇÃO DO SISTEMA
 1. Extraia o pacote.
-2. Substitua os arquivos correspondentes na raiz do repositório.
-3. Preserve a pasta assets já existente, especialmente assets/logo-cemetron.png.
-4. Faça commit e push no repositório conectado à Vercel.
+2. Substitua no repositório todos os arquivos correspondentes.
+3. Faça commit e push no repositório conectado à Vercel.
+4. Aguarde o deploy.
+5. Entre no SCIR e abra “Configurar e-mail”.
+6. Informe a senha e clique em “Testar e ativar”.
+
+SEGURANÇA
+- A senha não está incluída neste pacote.
+- A senha é testada pela função segura da Vercel.
+- Depois de validada, é armazenada com criptografia AES-256-GCM.
+- A senha nunca é devolvida ao navegador.
+- Somente remetente, assunto e horário são processados.
+- Corpo e anexos dos e-mails não são baixados.
 
 VALIDAÇÕES EXECUTADAS
-- IDs duplicados: nenhum.
-- Estrutura de scripts preservada.
-- Sintaxe dos scripts inline validada com Node.js.
-- Login, nuvem, registros, censo e calendário preservados.
+- Sintaxe das funções e do script inline validada com Node.js.
+- IDs HTML duplicados: nenhum.
+- Testes das APIs e da criptografia: aprovados.
+- Auditoria npm: nenhuma vulnerabilidade encontrada.
+- Login, nuvem, registros, censo, calendário e módulos laterais preservados.

@@ -31,6 +31,25 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Lembrete de registro do ponto de entrada ao iniciar um novo plantão.
 - Lembrete de registro do ponto de saída ao encerrar o plantão.
 
+### Versão 1.5 — notificações do Zimbra
+
+- Sino de notificações com contador no computador, tablet e celular.
+- Alerta visual no formato “Novo e-mail recebido”, com remetente, assunto e horário.
+- Histórico recente de e-mails no Dashboard e no centro de notificações.
+- Atualização automática a cada 10 segundos enquanto o SCIR está aberto.
+- Deduplicação automática por mensagem.
+- Armazenamento mínimo: nenhum corpo de e-mail ou anexo é enviado ao SCIR.
+
+### Versão 1.6 — configuração simplificada
+
+- Consulta direta ao Zimbra pelas funções da Vercel.
+- Não depende de Docker, computador ligado, Terminal ou monitor externo.
+- Servidor e usuário do e-mail já configurados.
+- Tela interna “Configurar e-mail”: basta informar a senha uma única vez.
+- Teste da conexão antes da ativação.
+- Senha protegida com AES-256-GCM e nunca devolvida ao navegador.
+- Usa a tabela `app_state` já existente; não exige nova migração do Supabase.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.
@@ -60,7 +79,20 @@ Crie um repositório vazio e envie **todo o conteúdo desta pasta**, mantendo as
 
 5. Clique em **Deploy**.
 
-Para gerar `SESSION_SECRET`, use um gerenciador de senhas ou execute localmente: `openssl rand -hex 32`.
+Para gerar `SESSION_SECRET`, use um gerenciador de senhas ou execute
+localmente: `openssl rand -hex 32`.
+
+## 4. Ativar as notificações do Zimbra
+
+1. Publique os arquivos atualizados na Vercel.
+2. Acesse o SCIR normalmente.
+3. No Dashboard, clique em **Configurar e-mail**.
+4. Informe a senha do e-mail `nr.cemetron@sesau.ro.gov.br`.
+5. Clique em **Testar e ativar**.
+
+O SCIR testará o acesso a `webmail.sesau.ro.gov.br` pela porta IMAP segura 993.
+Se a conexão for aceita, as notificações serão ativadas imediatamente. Nenhuma
+edição de código, SQL, variável da Vercel ou serviço adicional é necessária.
 
 ## Migração dos dados atuais
 
@@ -75,6 +107,10 @@ Depois da primeira migração, todos os dispositivos autenticados passam a compa
 - A chave privilegiada do Supabase fica somente nas funções da Vercel e nunca é enviada ao navegador.
 - O acesso usa cookie seguro, HttpOnly e validade de 12 horas.
 - A tabela não permite acesso direto pelas chaves públicas do Supabase.
+- A senha do Zimbra é criptografada com AES-256-GCM usando uma chave derivada
+  do `SESSION_SECRET` já configurado na Vercel.
+- A senha nunca é incluída no pacote, no GitHub ou nas respostas enviadas ao navegador.
+- Corpo e anexos do e-mail não são processados.
 - Não publique arquivos `.env` nem coloque senhas diretamente no código.
 
 ## Backup
