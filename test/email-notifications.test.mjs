@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {createSessionCookie} from "../lib/auth.js";
 import listHandler from "../api/email-notifications.js";
+import statusHandler from "../api/email-notification-status.js";
 import {
   decryptEmailPassword,
   encryptEmailPassword
@@ -57,8 +58,90 @@ test("lista notificações somente com sessão autenticada", async () => {
       sender:"João Silva",
       subject:"Solicitação de avaliação",
       receivedAt:"2026-07-26T22:42:00.000Z",
-      createdAt:"2026-07-26T22:42:01.000Z"
+      createdAt:"2026-07-26T22:42:01.000Z",
+      readAt:null,
+      respondedAt:null
     });
+  }finally{
+    global.fetch = originalFetch;
+  }
+});
+
+test("persiste a marcação de e-mail como lido", async () => {
+  const originalFetch = global.fetch;
+  let storedState;
+  let requestNumber = 0;
+  global.fetch = async (_url, options={}) => {
+    requestNumber += 1;
+    if(requestNumber === 1){
+      return new Response(JSON.stringify([{
+        state:{
+          event_key:"message-1",
+          sender:"João Silva",
+          subject:"Solicitação de avaliação",
+          received_at:"2026-07-26T22:42:00.000Z",
+          created_at:"2026-07-26T22:42:01.000Z"
+        }
+      }]), {status:200});
+    }
+    storedState = JSON.parse(options.body).state;
+    return new Response(JSON.stringify([{state:storedState}]), {status:201});
+  };
+
+  try{
+    const req = {
+      method:"PUT",
+      headers:{cookie:createSessionCookie().split(";")[0]},
+      body:{eventKey:"message-1", action:"read"}
+    };
+    const res = responseRecorder();
+    await statusHandler(req, res);
+    assert.equal(res.statusCode, 200);
+    const body = JSON.parse(res.body);
+    assert.deepEqual(body.eventKeys, ["message-1"]);
+    assert.equal(body.action, "read");
+    assert.ok(storedState.read_at);
+    assert.equal(storedState.responded_at, undefined);
+    assert.equal(storedState.event_key, "message-1");
+  }finally{
+    global.fetch = originalFetch;
+  }
+});
+
+test("evolui um e-mail lido para respondido", async () => {
+  const originalFetch = global.fetch;
+  let storedState;
+  let requestNumber = 0;
+  global.fetch = async (_url, options={}) => {
+    requestNumber += 1;
+    if(requestNumber === 1){
+      return new Response(JSON.stringify([{
+        state:{
+          event_key:"message-2",
+          sender:"Maria",
+          subject:"Avaliação",
+          received_at:"2026-07-26T22:42:00.000Z",
+          created_at:"2026-07-26T22:42:01.000Z",
+          read_at:"2026-07-26T22:43:00.000Z"
+        }
+      }]), {status:200});
+    }
+    storedState = JSON.parse(options.body).state;
+    return new Response(JSON.stringify([{state:storedState}]), {status:201});
+  };
+
+  try{
+    const req = {
+      method:"PUT",
+      headers:{cookie:createSessionCookie().split(";")[0]},
+      body:{eventKey:"message-2", action:"responded"}
+    };
+    const res = responseRecorder();
+    await statusHandler(req, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(JSON.parse(res.body).action, "responded");
+    assert.equal(storedState.read_at, "2026-07-26T22:43:00.000Z");
+    assert.ok(storedState.responded_at);
   }finally{
     global.fetch = originalFetch;
   }

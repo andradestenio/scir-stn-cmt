@@ -15,7 +15,9 @@ export default async function handler(req, res){
       sender:row.sender,
       subject:row.subject,
       receivedAt:row.received_at,
-      createdAt:row.created_at
+      createdAt:row.created_at,
+      readAt:row.read_at || null,
+      respondedAt:row.responded_at || null
     }));
     return json(res, 200, {notifications, integration});
   }catch(error){

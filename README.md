@@ -49,6 +49,12 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Teste da conexão antes da ativação.
 - Senha protegida com AES-256-GCM e nunca devolvida ao navegador.
 - Usa a tabela `app_state` já existente; não exige nova migração do Supabase.
+- Alerta sonoro curto para cada e-mail novo, ativado por padrão.
+- Controle no centro de notificações para silenciar ou reativar o som.
+- E-mails ainda não tratados recebem tag amarela `Pendente` e destaque amarelo suave.
+- `Marcar como lida` altera o cartão para azul e mostra a tag `Lido`.
+- Depois disso, `Marcar como respondido` altera o cartão para verde e mostra a tag `Respondido`.
+- Os status `Lido` e `Respondido` são sincronizados entre os dispositivos conectados ao SCIR.
 
 ## 1. Criar a base no Supabase
 
@@ -93,6 +99,10 @@ localmente: `openssl rand -hex 32`.
 O SCIR testará o acesso a `webmail.sesau.ro.gov.br` pela porta IMAP segura 993.
 Se a conexão for aceita, as notificações serão ativadas imediatamente. Nenhuma
 edição de código, SQL, variável da Vercel ou serviço adicional é necessária.
+
+O som é reproduzido somente para mensagens novas detectadas durante o uso do
+sistema. Mensagens antigas carregadas no primeiro acesso não disparam o alerta.
+O navegador libera o áudio após a primeira interação do usuário com a página.
 
 ## Migração dos dados atuais
 

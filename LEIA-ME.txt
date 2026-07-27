@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.6 com Zimbra integrado à Vercel
+SCIR — NIR CEMETRON | Versão 1.6.3 com fluxo de status dos e-mails
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -7,6 +7,12 @@ CAMINHO SIMPLIFICADO
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.
+- Cada e-mail novo gera um alerta visual acompanhado de um sinal sonoro curto.
+- O botão de alto-falante no centro de notificações permite silenciar o som.
+- E-mail não tratado aparece em amarelo com a tag “Pendente”.
+- “Marcar como lida” muda o cartão para azul e mostra a tag “Lido”.
+- “Marcar como respondido” muda o cartão para verde e mostra a tag “Respondido”.
+- Os status ficam salvos na base integrada e aparecem em todos os dispositivos.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br
@@ -35,5 +41,6 @@ VALIDAÇÕES EXECUTADAS
 - Sintaxe das funções e do script inline validada com Node.js.
 - IDs HTML duplicados: nenhum.
 - Testes das APIs e da criptografia: aprovados.
+- Alerta sonoro acionado somente por mensagens novas.
 - Auditoria npm: nenhuma vulnerabilidade encontrada.
 - Login, nuvem, registros, censo, calendário e módulos laterais preservados.

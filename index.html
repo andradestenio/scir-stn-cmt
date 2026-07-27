@@ -244,6 +244,12 @@
       stroke-linejoin:round;
     }
 
+    .email-notification-icon-button.muted{
+      border-color:#fca5a5;
+      background:#fef2f2;
+      color:#b42318;
+    }
+
     .email-notification-list{
       max-height:430px;
       overflow-y:auto;
@@ -261,6 +267,22 @@
 
     .email-notification-item.unread{
       background:#eff6ff;
+    }
+
+    .email-notification-item.pending{
+      background:#fffbeb;
+    }
+
+    .email-notification-item.pending.unread::before{
+      background:#d97706;
+    }
+
+    .email-notification-item.read{
+      background:#eff6ff;
+    }
+
+    .email-notification-item.responded{
+      background:#f0fdf4;
     }
 
     .email-notification-item.unread::before{
@@ -298,6 +320,68 @@
 
     .email-notification-item dt{font-weight:800}
     .email-notification-item dd{min-width:0;margin:0;overflow-wrap:anywhere}
+
+    .email-notification-footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px solid rgba(148,163,184,.35);
+    }
+
+    .email-status-tag{
+      display:inline-flex;
+      align-items:center;
+      min-height:25px;
+      padding:4px 9px;
+      border:1px solid transparent;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:850;
+      letter-spacing:.02em;
+    }
+
+    .email-status-tag.pending{
+      border-color:#facc15;
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .email-status-tag.read{
+      border-color:#93c5fd;
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .email-status-tag.responded{
+      border-color:#86efac;
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .email-mark-read-button{
+      min-height:32px;
+      padding:6px 10px;
+      border:1px solid #94a3b8;
+      border-radius:7px;
+      background:#fff;
+      color:var(--navy);
+      cursor:pointer;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .email-mark-read-button:hover{
+      border-color:var(--navy-2);
+      background:#f8fafc;
+    }
+
+    .email-mark-read-button:disabled{
+      opacity:.6;
+      cursor:wait;
+    }
 
     .email-notification-empty{
       padding:28px 18px;
@@ -338,6 +422,18 @@
     .email-notifications-dashboard-list .email-notification-item{
       border:1px solid #d8dee8;
       border-radius:10px;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.pending{
+      border-color:#facc15;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.read{
+      border-color:#60a5fa;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.responded{
+      border-color:#86efac;
     }
 
     .email-alert-toast{
@@ -1463,6 +1559,9 @@
               <button class="email-notification-icon-button" id="openEmailSettings" type="button" aria-label="Configurar e-mail" title="Configurar e-mail">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
               </button>
+              <button class="email-notification-icon-button" id="toggleEmailSound" type="button" aria-label="Silenciar alertas sonoros" aria-pressed="true" title="Som ativado">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+              </button>
               <button class="email-notification-icon-button" id="refreshEmailNotifications" type="button" aria-label="Atualizar notificações" title="Atualizar">↻</button>
               <button class="email-notification-icon-button" id="markEmailNotificationsRead" type="button" aria-label="Marcar todas como lidas" title="Marcar todas como lidas">✓</button>
               <button class="email-notification-icon-button" id="closeEmailNotifications" type="button" aria-label="Fechar notificações" title="Fechar">×</button>
@@ -2116,9 +2215,12 @@
   let editingStandardMessageId = null;
   let calendarCurrentDate = new Date();
   const EMAIL_LAST_READ_STORAGE_KEY = "scirEmailLastReadAtV1";
+  const EMAIL_SOUND_STORAGE_KEY = "scirEmailSoundEnabledV1";
   let emailNotifications = [];
   let emailNotificationsLoaded = false;
   let emailIntegration = null;
+  let emailSoundEnabled = localStorage.getItem(EMAIL_SOUND_STORAGE_KEY) !== "false";
+  let emailAudioContext = null;
   let emailNotificationPollTimer = null;
   let emailAlertTimer = null;
 
@@ -2193,23 +2295,86 @@
   }
 
   function isEmailNotificationUnread(notification){
+    if(notification.readAt || notification.respondedAt) return false;
     const eventTime = new Date(notification.createdAt || notification.receivedAt).getTime();
     return Number.isFinite(eventTime) && eventTime > emailLastReadAt();
   }
 
   function emailNotificationMarkup(notification){
     const unreadClass = isEmailNotificationUnread(notification) ? " unread" : "";
-    return `<article class="email-notification-item${unreadClass}">
+    const status = notification.respondedAt
+      ? {key:"responded", label:"Respondido", action:null, buttonLabel:null}
+      : notification.readAt
+        ? {key:"read", label:"Lido", action:"responded", buttonLabel:"Marcar como respondido"}
+        : {key:"pending", label:"Pendente", action:"read", buttonLabel:"Marcar como lida"};
+    const action = status.action && notification.eventKey
+      ? `<button class="email-mark-read-button" type="button" data-email-action="${status.action}" data-email-event-key="${encodeURIComponent(String(notification.eventKey))}">${status.buttonLabel}</button>`
+      : "";
+    return `<article class="email-notification-item${unreadClass} ${status.key}">
       <strong>Novo e-mail recebido</strong>
       <dl>
         <div><dt>De:</dt><dd>${escapeHtml(notification.sender || "Remetente não identificado")}</dd></div>
         <div><dt>Assunto:</dt><dd>${escapeHtml(notification.subject || "Sem assunto")}</dd></div>
         <div><dt>Recebido:</dt><dd>${escapeHtml(emailReceivedDateTime(notification.receivedAt))}</dd></div>
       </dl>
+      <div class="email-notification-footer">
+        <span class="email-status-tag ${status.key}">${status.label}</span>
+        ${action}
+      </div>
     </article>`;
   }
 
+  function renderEmailSoundControl(){
+    const button = $("toggleEmailSound");
+    if(!button) return;
+    button.classList.toggle("muted", !emailSoundEnabled);
+    button.setAttribute("aria-pressed", String(emailSoundEnabled));
+    button.setAttribute(
+      "aria-label",
+      emailSoundEnabled ? "Silenciar alertas sonoros" : "Ativar alertas sonoros"
+    );
+    button.title = emailSoundEnabled ? "Som ativado" : "Som silenciado";
+    button.innerHTML = emailSoundEnabled
+      ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>`
+      : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="m16 10 5 5M21 10l-5 5"/></svg>`;
+  }
+
+  async function unlockEmailNotificationSound(){
+    if(!emailSoundEnabled) return null;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContextClass) return null;
+    if(!emailAudioContext) emailAudioContext = new AudioContextClass();
+    if(emailAudioContext.state === "suspended"){
+      await emailAudioContext.resume().catch(() => {});
+    }
+    return emailAudioContext;
+  }
+
+  function scheduleEmailTone(context, frequency, startAt, duration, volume){
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.025);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(startAt);
+    oscillator.stop(startAt + duration + 0.02);
+  }
+
+  async function playEmailNotificationSound(){
+    if(!emailSoundEnabled) return;
+    const context = await unlockEmailNotificationSound();
+    if(!context || context.state !== "running") return;
+    const startAt = context.currentTime + 0.02;
+    scheduleEmailTone(context, 880, startAt, 0.16, 0.10);
+    scheduleEmailTone(context, 1174.66, startAt + 0.18, 0.28, 0.085);
+  }
+
   function renderEmailNotifications(){
+    renderEmailSoundControl();
     const unreadCount = emailNotifications.filter(isEmailNotificationUnread).length;
     ["emailNotificationBadge","emailNotificationBadgeMobile"].forEach(id => {
       const badge = $(id);
@@ -2275,6 +2440,7 @@
     $("emailAlertSubject").textContent = notification.subject || "Sem assunto";
     $("emailAlertTime").textContent = emailReceivedTime(notification.receivedAt);
     $("emailAlertToast").classList.add("show");
+    playEmailNotificationSound().catch(() => {});
     clearTimeout(emailAlertTimer);
     emailAlertTimer = setTimeout(() => $("emailAlertToast")?.classList.remove("show"), 10000);
   }
@@ -2345,13 +2511,81 @@
     }
   }
 
-  function markEmailNotificationsRead(){
+  function applyEmailStatus(eventKeys, action, statusAt){
+    const updatedKeys = new Set(eventKeys);
+    emailNotifications = emailNotifications.map(notification =>
+      updatedKeys.has(notification.eventKey)
+        ? action === "responded"
+          ? {
+              ...notification,
+              readAt:notification.readAt || statusAt,
+              respondedAt:notification.respondedAt || statusAt
+            }
+          : {...notification, readAt:notification.readAt || statusAt}
+        : notification
+    );
+    renderEmailNotifications();
+  }
+
+  async function updateSingleEmailStatus(eventKey, action, button){
+    if(!eventKey || !["read","responded"].includes(action)) return;
+    if(button){
+      button.disabled = true;
+      button.textContent = "Salvando…";
+    }
+    try{
+      const result = await cloudRequest("/api/email-notification-status", {
+        method:"PUT",
+        body:JSON.stringify({eventKey, action})
+      });
+      applyEmailStatus(
+        result.eventKeys || [eventKey],
+        result.action || action,
+        result.statusAt || new Date().toISOString()
+      );
+      toast(action === "responded" ? "E-mail marcado como respondido." : "E-mail marcado como lido.");
+    }catch(error){
+      toast(error.message || "Não foi possível atualizar o e-mail.");
+      if(button){
+        button.disabled = false;
+        button.textContent = action === "responded" ? "Marcar como respondido" : "Marcar como lida";
+      }
+    }
+  }
+
+  async function markEmailNotificationsRead(){
+    const pendingEventKeys = emailNotifications
+      .filter(notification => !notification.readAt && !notification.respondedAt && notification.eventKey)
+      .map(notification => notification.eventKey);
+    if(!pendingEventKeys.length){
+      toast("Não há e-mails pendentes.");
+      return;
+    }
+    const button = $("markEmailNotificationsRead");
+    if(button) button.disabled = true;
+    try{
+      const result = await cloudRequest("/api/email-notification-status", {
+        method:"PUT",
+        body:JSON.stringify({eventKeys:pendingEventKeys, action:"read"})
+      });
+      applyEmailStatus(
+        result.eventKeys || pendingEventKeys,
+        "read",
+        result.statusAt || new Date().toISOString()
+      );
+      toast("Todos os e-mails pendentes foram marcados como lidos.");
+    }catch(error){
+      toast(error.message || "Não foi possível atualizar os e-mails.");
+      return;
+    }finally{
+      if(button) button.disabled = false;
+    }
+
     const latest = emailNotifications.reduce((latestValue, notification) => {
       const candidate = new Date(notification.createdAt || notification.receivedAt).getTime();
       return Number.isFinite(candidate) ? Math.max(latestValue, candidate) : latestValue;
     }, Date.now());
     localStorage.setItem(EMAIL_LAST_READ_STORAGE_KEY, new Date(latest).toISOString());
-    renderEmailNotifications();
   }
 
   function queueCloudSave(){
@@ -3462,6 +3696,18 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   $("closeEmailNotifications")?.addEventListener("click", closeEmailNotificationsPopover);
   $("openEmailSettings")?.addEventListener("click", openEmailSettingsModal);
   $("openEmailSettingsDashboard")?.addEventListener("click", openEmailSettingsModal);
+  $("toggleEmailSound")?.addEventListener("click", async () => {
+    emailSoundEnabled = !emailSoundEnabled;
+    localStorage.setItem(EMAIL_SOUND_STORAGE_KEY, String(emailSoundEnabled));
+    renderEmailSoundControl();
+    if(emailSoundEnabled){
+      await unlockEmailNotificationSound();
+      await playEmailNotificationSound();
+      toast("Alerta sonoro ativado.");
+    }else{
+      toast("Alerta sonoro silenciado.");
+    }
+  });
   $("refreshEmailNotifications")?.addEventListener("click", () => loadEmailNotifications({announce:false}));
   $("markEmailNotificationsRead")?.addEventListener("click", markEmailNotificationsRead);
   $("openEmailNotifications")?.addEventListener("click", () => {
@@ -3501,6 +3747,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   });
   document.addEventListener("click", event => {
+    const button = event.target.closest(".email-mark-read-button");
+    if(!button) return;
+    const eventKey = decodeURIComponent(button.dataset.emailEventKey || "");
+    updateSingleEmailStatus(eventKey, button.dataset.emailAction || "", button);
+  });
+  document.addEventListener("click", event => {
     if(!$("emailNotificationPopover")?.classList.contains("hidden")
       && !$("emailNotificationPopover").contains(event.target)
       && !event.target.closest("[data-email-notifications-toggle]")
@@ -3511,6 +3763,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   document.addEventListener("visibilitychange", () => {
     if(document.visibilityState === "visible" && emailNotificationsLoaded) loadEmailNotifications();
   });
+  document.addEventListener("pointerdown", unlockEmailNotificationSound, {once:true, capture:true});
+  document.addEventListener("keydown", unlockEmailNotificationSound, {once:true, capture:true});
 
   $("saveShift").addEventListener("click", () => {
     const date = $("shiftDate").value;
