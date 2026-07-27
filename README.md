@@ -56,6 +56,16 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Depois disso, `Marcar como respondido` altera o cartão para verde e mostra a tag `Respondido`.
 - Os status `Lido` e `Respondido` são sincronizados entre os dispositivos conectados ao SCIR.
 
+### Versão 1.7 — acompanhamento por plantão
+
+- Alerta sonoro mais alto, com três tons, para facilitar a percepção durante o plantão.
+- Resumo no Dashboard com a quantidade de e-mails `Pendentes`, `Lidos` e `Respondidos`.
+- E-mails respondidos saem da lista em acompanhamento e permanecem disponíveis em **Ver todas → Histórico**.
+- O monitoramento do Zimbra começa somente ao iniciar um plantão e atualiza a
+  caixa aproximadamente a cada 10 segundos enquanto o SCIR permanece aberto.
+- Ao encerrar o plantão, as consultas e os alertas de novos e-mails são interrompidos.
+- Ao iniciar o plantão seguinte, o sistema considera apenas os e-mails que chegarem a partir daquele momento.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.
@@ -100,9 +110,11 @@ O SCIR testará o acesso a `webmail.sesau.ro.gov.br` pela porta IMAP segura 993.
 Se a conexão for aceita, as notificações serão ativadas imediatamente. Nenhuma
 edição de código, SQL, variável da Vercel ou serviço adicional é necessária.
 
-O som é reproduzido somente para mensagens novas detectadas durante o uso do
-sistema. Mensagens antigas carregadas no primeiro acesso não disparam o alerta.
-O navegador libera o áudio após a primeira interação do usuário com a página.
+O som é reproduzido somente para mensagens novas detectadas durante um plantão
+ativo. Mensagens antigas e mensagens recebidas entre plantões não disparam o
+alerta. O navegador libera o áudio após a primeira interação do usuário com a
+página. O volume final também depende do volume configurado no computador,
+tablet ou celular.
 
 ## Migração dos dados atuais
 

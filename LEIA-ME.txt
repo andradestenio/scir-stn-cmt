@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.6.3 com fluxo de status dos e-mails
+SCIR — NIR CEMETRON | Versão 1.7.0 com acompanhamento por plantão
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -7,12 +7,17 @@ CAMINHO SIMPLIFICADO
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.
-- Cada e-mail novo gera um alerta visual acompanhado de um sinal sonoro curto.
+- Cada e-mail novo durante o plantão gera um alerta visual e um sinal sonoro alto de três tons.
 - O botão de alto-falante no centro de notificações permite silenciar o som.
 - E-mail não tratado aparece em amarelo com a tag “Pendente”.
 - “Marcar como lida” muda o cartão para azul e mostra a tag “Lido”.
 - “Marcar como respondido” muda o cartão para verde e mostra a tag “Respondido”.
+- O Dashboard mostra um resumo com as quantidades de pendentes, lidos e respondidos.
+- E-mails respondidos saem da lista em acompanhamento e ficam em “Ver todas” → “Histórico”.
 - Os status ficam salvos na base integrada e aparecem em todos os dispositivos.
+- O monitoramento começa ao iniciar o plantão e para imediatamente ao encerrá-lo.
+- Durante o plantão, a caixa é atualizada aproximadamente a cada 10 segundos enquanto o SCIR estiver aberto.
+- E-mails recebidos fora do plantão não geram notificação no plantão seguinte.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br
@@ -42,5 +47,7 @@ VALIDAÇÕES EXECUTADAS
 - IDs HTML duplicados: nenhum.
 - Testes das APIs e da criptografia: aprovados.
 - Alerta sonoro acionado somente por mensagens novas.
+- Início e pausa do monitoramento vinculados ao plantão ativo.
+- Resumo por status e histórico de respondidos validados.
 - Auditoria npm: nenhuma vulnerabilidade encontrada.
 - Login, nuvem, registros, censo, calendário e módulos laterais preservados.

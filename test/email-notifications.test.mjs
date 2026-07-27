@@ -9,7 +9,8 @@ import {
 } from "../lib/email-credentials.js";
 import {
   configureZimbra,
-  messageToNotification
+  messageToNotification,
+  syncZimbraNotifications
 } from "../lib/zimbra.js";
 
 process.env.SUPABASE_URL = "https://example.supabase.co";
@@ -205,6 +206,78 @@ test("testa a conexão e persiste a configuração sem senha em texto aberto", a
     assert.equal(storedState.password_ciphertext.includes("senha-nao-real"), false);
     assert.equal(result.configured, true);
     assert.equal(result.connectionTested, true);
+  }finally{
+    global.fetch = originalFetch;
+  }
+});
+
+test("ao iniciar novo plantão ignora e-mails do intervalo e mantém os posteriores ao início", async () => {
+  const originalFetch = global.fetch;
+  const integrationId = "nir-cemetron-email-integration";
+  const stored = new Map([[
+    integrationId,
+    {
+      host:"webmail.sesau.ro.gov.br",
+      port:993,
+      secure:true,
+      username:"nr.cemetron@sesau.ro.gov.br",
+      mailbox:"INBOX",
+      password_ciphertext:encryptEmailPassword("senha-nao-real"),
+      uid_validity:"123",
+      last_uid:10,
+      active_shift_id:"plantao-anterior",
+      last_checked_at:"2026-07-26T10:00:00.000Z",
+      last_error:null
+    }
+  ]]);
+
+  global.fetch = async (url, options={}) => {
+    const method = options.method || "GET";
+    if(method === "GET"){
+      const idMatch = String(url).match(/id=eq\.([^&]+)/);
+      const id = idMatch ? decodeURIComponent(idMatch[1]) : "";
+      const state = stored.get(id);
+      return new Response(JSON.stringify(state ? [{state}] : []), {status:200});
+    }
+    const body = JSON.parse(options.body);
+    stored.set(body.id, body.state);
+    return new Response(JSON.stringify([{state:body.state}]), {status:201});
+  };
+
+  const messages = [
+    {
+      uid:11,
+      internalDate:new Date("2026-07-26T11:55:00.000Z"),
+      envelope:{messageId:"fora-do-plantao", from:[{address:"fora@example.org"}], subject:"Fora"}
+    },
+    {
+      uid:12,
+      internalDate:new Date("2026-07-26T12:05:00.000Z"),
+      envelope:{messageId:"durante-o-plantao", from:[{address:"dentro@example.org"}], subject:"Dentro"}
+    }
+  ];
+  const client = {
+    usable:true,
+    async *fetch(){ for(const message of messages) yield message; },
+    logout:async () => {}
+  };
+
+  try{
+    const result = await syncZimbraNotifications({
+      force:true,
+      shiftId:"plantao-atual",
+      shiftStartedAt:"2026-07-26T12:00:00.000Z",
+      openMailboxImpl:async () => ({
+        client,
+        mailbox:{uidValidity:123n, uidNext:13n}
+      })
+    });
+    const integration = stored.get(integrationId);
+    const notifications = [...stored.values()].filter(item => item.event_key);
+    assert.equal(result.monitoringActive, true);
+    assert.equal(integration.active_shift_id, "plantao-atual");
+    assert.equal(integration.last_uid, 12);
+    assert.deepEqual(notifications.map(item => item.event_key), ["durante-o-plantao"]);
   }finally{
     global.fetch = originalFetch;
   }
