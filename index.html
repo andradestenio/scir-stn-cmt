@@ -122,6 +122,515 @@
       line-height:1.6;
     }
 
+    .topbar-actions{
+      position:relative;
+      display:flex;
+      align-items:stretch;
+      gap:10px;
+    }
+
+    .email-notification-button{
+      position:relative;
+      display:grid;
+      place-items:center;
+      width:48px;
+      min-width:48px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+      color:var(--navy);
+      cursor:pointer;
+      box-shadow:0 4px 14px rgba(15,39,71,.06);
+    }
+
+    .email-notification-button:hover{
+      border-color:#94a3b8;
+      background:#f8fafc;
+    }
+
+    .email-notification-button svg{
+      width:22px;
+      height:22px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .email-notification-badge{
+      position:absolute;
+      top:-7px;
+      right:-7px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-width:22px;
+      height:22px;
+      padding:0 6px;
+      border:2px solid #f4f6f8;
+      border-radius:999px;
+      background:#b42318;
+      color:#fff;
+      font-size:11px;
+      font-weight:800;
+      line-height:1;
+    }
+
+    .email-notification-popover{
+      position:absolute;
+      top:58px;
+      right:0;
+      z-index:1500;
+      width:min(430px,calc(100vw - 32px));
+      overflow:hidden;
+      border:1px solid #cbd5e1;
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 22px 60px rgba(15,39,71,.24);
+    }
+
+    .email-notification-popover.hidden{display:none}
+
+    .email-notification-popover-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:15px 16px;
+      border-bottom:1px solid #e2e8f0;
+      background:#f8fafc;
+    }
+
+    .email-notification-popover-header h3{
+      margin:0 0 3px;
+      color:var(--navy);
+      font-size:16px;
+    }
+
+    .email-notification-popover-header p{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .email-notification-header-actions{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .email-notification-icon-button{
+      display:grid;
+      place-items:center;
+      width:34px;
+      height:34px;
+      border:1px solid #cbd5e1;
+      border-radius:8px;
+      background:#fff;
+      color:var(--navy);
+      cursor:pointer;
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .email-notification-icon-button svg{
+      width:17px;
+      height:17px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .email-notification-icon-button.muted{
+      border-color:#fca5a5;
+      background:#fef2f2;
+      color:#b42318;
+    }
+
+    .email-notification-list{
+      max-height:430px;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+    }
+
+    .email-notification-tabs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:6px;
+      padding:9px 12px;
+      border-bottom:1px solid #e2e8f0;
+      background:#fff;
+    }
+
+    .email-notification-tab{
+      min-height:35px;
+      padding:7px 10px;
+      border:1px solid #cbd5e1;
+      border-radius:8px;
+      background:#fff;
+      color:#475569;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .email-notification-tab.active{
+      border-color:var(--navy-2);
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .email-notification-item{
+      position:relative;
+      padding:15px 16px 14px 20px;
+      border-bottom:1px solid #e2e8f0;
+      background:#fff;
+    }
+
+    .email-notification-item:last-child{border-bottom:0}
+
+    .email-notification-item.unread{
+      background:#eff6ff;
+    }
+
+    .email-notification-item.pending{
+      background:#fffbeb;
+    }
+
+    .email-notification-item.pending.unread::before{
+      background:#d97706;
+    }
+
+    .email-notification-item.read{
+      background:#eff6ff;
+    }
+
+    .email-notification-item.responded{
+      background:#f0fdf4;
+    }
+
+    .email-notification-item.unread::before{
+      content:"";
+      position:absolute;
+      top:18px;
+      left:8px;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#2563eb;
+    }
+
+    .email-notification-item strong{
+      display:block;
+      margin-bottom:8px;
+      color:var(--navy);
+      font-size:13px;
+    }
+
+    .email-notification-item dl{
+      display:grid;
+      gap:5px;
+      margin:0;
+      color:#334155;
+      font-size:13px;
+      line-height:1.42;
+    }
+
+    .email-notification-item dl div{
+      display:grid;
+      grid-template-columns:64px minmax(0,1fr);
+      gap:6px;
+    }
+
+    .email-notification-item dt{font-weight:800}
+    .email-notification-item dd{min-width:0;margin:0;overflow-wrap:anywhere}
+
+    .email-notification-footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px solid rgba(148,163,184,.35);
+    }
+
+    .email-status-tag{
+      display:inline-flex;
+      align-items:center;
+      min-height:25px;
+      padding:4px 9px;
+      border:1px solid transparent;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:850;
+      letter-spacing:.02em;
+    }
+
+    .email-status-tag.pending{
+      border-color:#facc15;
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .email-status-tag.read{
+      border-color:#93c5fd;
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .email-status-tag.responded{
+      border-color:#86efac;
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .email-mark-read-button{
+      min-height:32px;
+      padding:6px 10px;
+      border:1px solid #94a3b8;
+      border-radius:7px;
+      background:#fff;
+      color:var(--navy);
+      cursor:pointer;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .email-mark-read-button:hover{
+      border-color:var(--navy-2);
+      background:#f8fafc;
+    }
+
+    .email-mark-read-button:disabled{
+      opacity:.6;
+      cursor:wait;
+    }
+
+    .email-notification-empty{
+      padding:28px 18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .email-status-summary{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .email-summary-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      min-height:32px;
+      padding:6px 11px;
+      border:1px solid transparent;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .email-summary-tag strong{font-size:14px}
+
+    .email-summary-tag.pending{
+      border-color:#facc15;
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .email-summary-tag.read{
+      border-color:#93c5fd;
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .email-summary-tag.responded{
+      border-color:#86efac;
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .email-integration-status{
+      margin-top:12px;
+      padding:11px 13px;
+      border:1px solid #cbd5e1;
+      border-radius:9px;
+      background:#f8fafc;
+      color:#475569;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .email-integration-status.online{
+      border-color:#86efac;
+      background:#f0fdf4;
+      color:#166534;
+    }
+
+    .email-integration-status.error{
+      border-color:#fca5a5;
+      background:#fef2f2;
+      color:#991b1b;
+    }
+
+    .email-notifications-dashboard-list{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item{
+      border:1px solid #d8dee8;
+      border-radius:10px;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.pending{
+      border-color:#facc15;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.read{
+      border-color:#60a5fa;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.responded{
+      border-color:#86efac;
+    }
+
+    .email-alert-toast{
+      position:fixed;
+      top:20px;
+      right:20px;
+      z-index:3600;
+      width:min(390px,calc(100vw - 32px));
+      padding:17px 18px;
+      border:1px solid #93c5fd;
+      border-left:6px solid #2563eb;
+      border-radius:12px;
+      background:#fff;
+      color:#1e293b;
+      box-shadow:0 22px 60px rgba(15,39,71,.28);
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(-12px);
+      transition:.22s;
+    }
+
+    .email-alert-toast.show{
+      opacity:1;
+      visibility:visible;
+      transform:none;
+    }
+
+    .email-alert-toast strong{
+      display:block;
+      margin-bottom:9px;
+      color:var(--navy);
+      font-size:15px;
+    }
+
+    .email-alert-toast p{
+      margin:4px 0 0;
+      font-size:13px;
+      line-height:1.45;
+      overflow-wrap:anywhere;
+    }
+
+    .email-alert-toast p b{color:var(--navy)}
+
+    .email-alert-toast-close{
+      position:absolute;
+      top:8px;
+      right:8px;
+      display:grid;
+      place-items:center;
+      width:30px;
+      height:30px;
+      border:0;
+      border-radius:7px;
+      background:transparent;
+      color:#64748b;
+      cursor:pointer;
+      font-size:19px;
+    }
+
+    .email-settings-modal{
+      position:fixed;
+      inset:0;
+      z-index:3500;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      background:rgba(2,8,23,.72);
+      opacity:0;
+      visibility:hidden;
+      transition:.2s;
+      backdrop-filter:blur(4px);
+    }
+
+    .email-settings-modal.show{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .email-settings-dialog{
+      width:min(520px,100%);
+      max-height:calc(100dvh - 40px);
+      overflow-y:auto;
+      padding:26px;
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:17px;
+      background:#fff;
+      box-shadow:0 28px 80px rgba(0,0,0,.38);
+      transform:translateY(12px) scale(.98);
+      transition:.2s;
+    }
+
+    .email-settings-modal.show .email-settings-dialog{transform:none}
+
+    .email-settings-dialog h3{
+      margin:0 0 6px;
+      color:var(--navy);
+      font-size:21px;
+    }
+
+    .email-settings-dialog>p{
+      margin:0 0 20px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .email-settings-readonly{
+      background:#f1f5f9;
+      color:#475569;
+    }
+
+    .email-settings-security{
+      margin:14px 0 0;
+      padding:11px 13px;
+      border-radius:9px;
+      background:#eff6ff;
+      color:#1e3a8a;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .email-settings-result{
+      min-height:20px;
+      margin-top:12px;
+      color:#b42318;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .email-settings-dialog .actions .btn{flex:1}
+
     .grid{
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
@@ -572,7 +1081,8 @@
     }
     .mobile-menu-button{width:44px;height:44px;display:grid;place-items:center;flex:0 0 44px;border:1px solid rgba(255,255,255,.24);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer}
     .mobile-brand-logo{display:flex;align-items:center;justify-content:center;width:124px;flex:0 0 124px;padding:5px 7px;border-radius:7px;background:#fff}.mobile-brand-logo img{display:block;width:100%;height:auto}
-    .mobile-header-copy{min-width:0}.mobile-header-copy span{display:block;color:#dbeafe;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mobile-header-copy{min-width:0;flex:1}.mobile-header-copy span{display:block;color:#dbeafe;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mobile-header .email-notification-button{width:42px;height:42px;min-width:42px;border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
     .app{display:block!important;min-height:auto}
     aside{
       position:fixed!important;inset:0 auto 0 0;z-index:1300;width:min(330px,88vw);height:100dvh;
@@ -598,6 +1108,12 @@
     .mobile-header{min-height:60px;padding-left:12px;padding-right:12px}
     main{padding:12px 12px calc(88px + env(safe-area-inset-bottom))}
     .topbar{flex-direction:column;gap:12px;margin-bottom:14px}
+    .topbar-actions{width:100%}.topbar-actions>.email-notification-button{display:none}.topbar-actions .shift-chip{flex:1}
+    .email-notification-popover{position:fixed;top:calc(68px + env(safe-area-inset-top));right:10px;left:10px;width:auto;max-height:calc(100dvh - 88px);border-radius:12px}
+    .email-notification-list{max-height:calc(100dvh - 185px)}
+    .email-notifications-dashboard-list{grid-template-columns:1fr}
+    .email-alert-toast{top:calc(72px + env(safe-area-inset-top));right:12px;left:12px;width:auto}
+    .email-settings-modal{padding:12px}.email-settings-dialog{max-height:calc(100dvh - 24px);padding:22px 18px;border-radius:14px}
     .topbar h2{font-size:21px;line-height:1.2}.topbar p{font-size:13px;line-height:1.45}
     .shift-chip{width:100%;min-width:0;padding:11px 13px}
     .panel{padding:14px;border-radius:12px;margin-bottom:12px}
@@ -1025,6 +1541,10 @@
     <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Abrir menu" aria-controls="mainSidebar" aria-expanded="false">☰</button>
     <div class="mobile-brand-logo"><img src="assets/logo-cemetron.png" alt="CEMETRON"></div>
     <div class="mobile-header-copy"><span id="mobilePageTitle">Dashboard</span></div>
+    <button class="email-notification-button" type="button" data-email-notifications-toggle aria-label="Abrir notificações de e-mail" aria-controls="emailNotificationPopover" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+      <span class="email-notification-badge hidden" id="emailNotificationBadgeMobile">0</span>
+    </button>
   </header>
   <button class="menu-backdrop" id="menuBackdrop" type="button" aria-label="Fechar menu"></button>
 <div class="app">
@@ -1086,9 +1606,41 @@
         <h2>Controle Interno de Regulações</h2>
         <p>Registro, acompanhamento e passagem de plantão do NIR CEMETRON.</p>
       </div>
-      <div class="shift-chip">
-        <strong>Plantão atual</strong><br>
-        <span id="shiftInfo">Não iniciado</span>
+      <div class="topbar-actions">
+        <button class="email-notification-button" type="button" data-email-notifications-toggle aria-label="Abrir notificações de e-mail" aria-controls="emailNotificationPopover" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+          <span class="email-notification-badge hidden" id="emailNotificationBadge">0</span>
+        </button>
+        <div class="shift-chip">
+          <strong>Plantão atual</strong><br>
+          <span id="shiftInfo">Não iniciado</span>
+        </div>
+        <div class="email-notification-popover hidden" id="emailNotificationPopover" aria-label="Notificações de e-mail">
+          <div class="email-notification-popover-header">
+            <div>
+              <h3>Notificações de e-mail</h3>
+              <p>Caixa do NIR CEMETRON</p>
+            </div>
+            <div class="email-notification-header-actions">
+              <button class="email-notification-icon-button" id="openEmailSettings" type="button" aria-label="Configurar e-mail" title="Configurar e-mail">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+              </button>
+              <button class="email-notification-icon-button" id="toggleEmailSound" type="button" aria-label="Silenciar alertas sonoros" aria-pressed="true" title="Som ativado">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+              </button>
+              <button class="email-notification-icon-button" id="refreshEmailNotifications" type="button" aria-label="Atualizar notificações" title="Atualizar">↻</button>
+              <button class="email-notification-icon-button" id="markEmailNotificationsRead" type="button" aria-label="Marcar todas como lidas" title="Marcar todas como lidas">✓</button>
+              <button class="email-notification-icon-button" id="closeEmailNotifications" type="button" aria-label="Fechar notificações" title="Fechar">×</button>
+            </div>
+          </div>
+          <div class="email-notification-tabs">
+            <button class="email-notification-tab active" id="emailActiveTab" type="button">Em acompanhamento</button>
+            <button class="email-notification-tab" id="emailHistoryTab" type="button">Histórico</button>
+          </div>
+          <div class="email-notification-list" id="emailNotificationList">
+            <div class="email-notification-empty">Carregando notificações…</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1125,6 +1677,28 @@
         <div id="closedShiftNotice" class="locked-note hidden">
           Este plantão está encerrado. Os registros permanecem disponíveis para consulta e exportação.
         </div>
+      </div>
+
+      <div class="panel">
+        <div class="dashboard-panel-header">
+          <div>
+            <h3>Notificações de e-mail</h3>
+            <p>Novos e-mails recebidos em nr.cemetron@sesau.ro.gov.br.</p>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn btn-secondary" id="openEmailSettingsDashboard" type="button">Configurar e-mail</button>
+            <button class="btn btn-secondary" id="openEmailNotifications" type="button">Ver todas</button>
+          </div>
+        </div>
+        <div class="email-status-summary" id="emailStatusSummary">
+          <span class="email-summary-tag pending"><strong>0</strong> Pendentes</span>
+          <span class="email-summary-tag read"><strong>0</strong> Lidos</span>
+          <span class="email-summary-tag responded"><strong>0</strong> Respondidos</span>
+        </div>
+        <div class="email-notifications-dashboard-list" id="dashboardEmailNotifications">
+          <div class="email-notification-empty">As notificações recentes aparecerão aqui.</div>
+        </div>
+        <div class="email-integration-status" id="emailIntegrationStatus">Verificando a integração com o Zimbra…</div>
       </div>
 
       <div class="grid dashboard-record-stats">
@@ -1518,7 +2092,7 @@
           </div>
           <div style="grid-column:1/-1">
             <label for="vacancies">Vagas disponíveis</label>
-            <textarea id="vacancies" placeholder="Ex.: Clínica Médica: 2 vagas | UTI: lotada | Censo: 42 pacientes"></textarea>
+            <input id="vacancies" type="text" placeholder="Ex.: Clínica Médica: 2 vagas | UTI: lotada | Censo: 42 pacientes">
           </div>
 <div style="grid-column:1/-1">
             <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
@@ -1621,6 +2195,39 @@
 
 <div class="toast" id="toast"></div>
 
+<div class="email-alert-toast" id="emailAlertToast" role="status" aria-live="assertive" aria-atomic="true">
+  <button class="email-alert-toast-close" id="closeEmailAlertToast" type="button" aria-label="Fechar alerta">×</button>
+  <strong>Novo e-mail recebido</strong>
+  <p><b>De:</b> <span id="emailAlertSender"></span></p>
+  <p><b>Assunto:</b> <span id="emailAlertSubject"></span></p>
+  <p><b>Recebido:</b> <span id="emailAlertTime"></span></p>
+</div>
+
+<div class="email-settings-modal" id="emailSettingsModal" role="dialog" aria-modal="true" aria-labelledby="emailSettingsTitle">
+  <form class="email-settings-dialog" id="emailSettingsForm">
+    <h3 id="emailSettingsTitle">Configurar e-mail do NIR</h3>
+    <p>O servidor e o endereço já estão definidos. Informe somente a senha para testar e ativar as notificações.</p>
+    <div class="field">
+      <label for="emailSettingsAddress">E-mail</label>
+      <input class="email-settings-readonly" id="emailSettingsAddress" value="nr.cemetron@sesau.ro.gov.br" readonly>
+    </div>
+    <div class="field">
+      <label for="emailSettingsServer">Servidor Zimbra</label>
+      <input class="email-settings-readonly" id="emailSettingsServer" value="webmail.sesau.ro.gov.br — IMAP seguro, porta 993" readonly>
+    </div>
+    <div class="field">
+      <label for="emailSettingsPassword">Senha do e-mail</label>
+      <input id="emailSettingsPassword" type="password" autocomplete="current-password" placeholder="Digite a senha do Zimbra" required>
+    </div>
+    <div class="email-settings-security">A senha não será exibida novamente. Ela será criptografada antes de ser armazenada e ficará disponível somente para as funções seguras da Vercel.</div>
+    <div class="email-settings-result" id="emailSettingsResult" role="alert" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn btn-secondary" id="cancelEmailSettings" type="button">Cancelar</button>
+      <button class="btn btn-primary" id="saveEmailSettings" type="submit">Testar e ativar</button>
+    </div>
+  </form>
+</div>
+
 <script>
   const moduleMeta = {
     yellow: { title: "🟨 PENDÊNCIAS", css: "yellow" },
@@ -1682,6 +2289,18 @@
   let calendarEditingId = null;
   let editingStandardMessageId = null;
   let calendarCurrentDate = new Date();
+  const EMAIL_LAST_READ_STORAGE_KEY = "scirEmailLastReadAtV1";
+  const EMAIL_SOUND_STORAGE_KEY = "scirEmailSoundEnabledV1";
+  let emailNotifications = [];
+  let emailNotificationsLoaded = false;
+  let emailIntegration = null;
+  let emailHistoryMode = false;
+  let emailMonitoringActive = false;
+  let emailSoundEnabled = localStorage.getItem(EMAIL_SOUND_STORAGE_KEY) !== "false";
+  let emailAudioContext = null;
+  let emailNotificationPollTimer = null;
+  let emailNotificationRequestInFlight = false;
+  let emailAlertTimer = null;
 
   const $ = id => document.getElementById(id);
 
@@ -1735,6 +2354,396 @@
     return body;
   }
 
+  function emailReceivedTime(value){
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return "Horário não informado";
+    return `${String(date.getHours()).padStart(2,"0")}h${String(date.getMinutes()).padStart(2,"0")}`;
+  }
+
+  function emailReceivedDateTime(value){
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return "Data e horário não informados";
+    return `${date.toLocaleDateString("pt-BR")} às ${emailReceivedTime(value)}`;
+  }
+
+  function emailLastReadAt(){
+    const stored = localStorage.getItem(EMAIL_LAST_READ_STORAGE_KEY);
+    const parsed = stored ? new Date(stored).getTime() : 0;
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function isEmailNotificationUnread(notification){
+    if(notification.readAt || notification.respondedAt) return false;
+    const eventTime = new Date(notification.createdAt || notification.receivedAt).getTime();
+    return Number.isFinite(eventTime) && eventTime > emailLastReadAt();
+  }
+
+  function emailNotificationMarkup(notification){
+    const unreadClass = isEmailNotificationUnread(notification) ? " unread" : "";
+    const status = notification.respondedAt
+      ? {key:"responded", label:"Respondido", action:null, buttonLabel:null}
+      : notification.readAt
+        ? {key:"read", label:"Lido", action:"responded", buttonLabel:"Marcar como respondido"}
+        : {key:"pending", label:"Pendente", action:"read", buttonLabel:"Marcar como lida"};
+    const action = status.action && notification.eventKey
+      ? `<button class="email-mark-read-button" type="button" data-email-action="${status.action}" data-email-event-key="${encodeURIComponent(String(notification.eventKey))}">${status.buttonLabel}</button>`
+      : "";
+    return `<article class="email-notification-item${unreadClass} ${status.key}">
+      <strong>Novo e-mail recebido</strong>
+      <dl>
+        <div><dt>De:</dt><dd>${escapeHtml(notification.sender || "Remetente não identificado")}</dd></div>
+        <div><dt>Assunto:</dt><dd>${escapeHtml(notification.subject || "Sem assunto")}</dd></div>
+        <div><dt>Recebido:</dt><dd>${escapeHtml(emailReceivedDateTime(notification.receivedAt))}</dd></div>
+      </dl>
+      <div class="email-notification-footer">
+        <span class="email-status-tag ${status.key}">${status.label}</span>
+        ${action}
+      </div>
+    </article>`;
+  }
+
+  function renderEmailSoundControl(){
+    const button = $("toggleEmailSound");
+    if(!button) return;
+    button.classList.toggle("muted", !emailSoundEnabled);
+    button.setAttribute("aria-pressed", String(emailSoundEnabled));
+    button.setAttribute(
+      "aria-label",
+      emailSoundEnabled ? "Silenciar alertas sonoros" : "Ativar alertas sonoros"
+    );
+    button.title = emailSoundEnabled ? "Som ativado" : "Som silenciado";
+    button.innerHTML = emailSoundEnabled
+      ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>`
+      : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4Z"/><path d="m16 10 5 5M21 10l-5 5"/></svg>`;
+  }
+
+  async function unlockEmailNotificationSound(){
+    if(!emailSoundEnabled) return null;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContextClass) return null;
+    if(!emailAudioContext) emailAudioContext = new AudioContextClass();
+    if(emailAudioContext.state === "suspended"){
+      await emailAudioContext.resume().catch(() => {});
+    }
+    return emailAudioContext;
+  }
+
+  function scheduleEmailTone(context, frequency, startAt, duration, volume){
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.type = "triangle";
+    oscillator.frequency.setValueAtTime(frequency, startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.025);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(startAt);
+    oscillator.stop(startAt + duration + 0.02);
+  }
+
+  async function playEmailNotificationSound(){
+    if(!emailSoundEnabled) return;
+    const context = await unlockEmailNotificationSound();
+    if(!context || context.state !== "running") return;
+    const startAt = context.currentTime + 0.02;
+    scheduleEmailTone(context, 783.99, startAt, 0.22, 0.34);
+    scheduleEmailTone(context, 1046.50, startAt + 0.20, 0.27, 0.31);
+    scheduleEmailTone(context, 1318.51, startAt + 0.43, 0.36, 0.28);
+  }
+
+  function currentEmailShiftId(){
+    if(!state.shift || isShiftClosed()) return null;
+    return String(
+      state.shift.id ||
+      `${state.shift.date || "sem-data"}:${state.shift.type || "plantao"}:${state.shift.startedAt || ""}`
+    );
+  }
+
+  function currentEmailShiftStartedAt(){
+    if(!currentEmailShiftId() || !state.shift?.startedAt) return null;
+    const startedAt = new Date(state.shift.startedAt);
+    return Number.isNaN(startedAt.getTime()) ? null : startedAt.toISOString();
+  }
+
+  function renderEmailNotifications(){
+    renderEmailSoundControl();
+    const pendingNotifications = emailNotifications.filter(item => !item.readAt && !item.respondedAt);
+    const readNotifications = emailNotifications.filter(item => item.readAt && !item.respondedAt);
+    const respondedNotifications = emailNotifications.filter(item => item.respondedAt);
+    const activeNotifications = emailNotifications.filter(item => !item.respondedAt);
+    const displayedNotifications = emailHistoryMode ? emailNotifications : activeNotifications;
+    const unreadCount = emailNotifications.filter(isEmailNotificationUnread).length;
+    ["emailNotificationBadge","emailNotificationBadgeMobile"].forEach(id => {
+      const badge = $(id);
+      if(!badge) return;
+      badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+      badge.classList.toggle("hidden", unreadCount === 0);
+    });
+
+    document.querySelectorAll("[data-email-notifications-toggle]").forEach(button => {
+      button.setAttribute("aria-label", unreadCount
+        ? `Abrir notificações de e-mail: ${unreadCount} não lida${unreadCount === 1 ? "" : "s"}`
+        : "Abrir notificações de e-mail");
+    });
+
+    const summary = $("emailStatusSummary");
+    if(summary){
+      summary.innerHTML = `
+        <span class="email-summary-tag pending"><strong>${pendingNotifications.length}</strong> Pendentes</span>
+        <span class="email-summary-tag read"><strong>${readNotifications.length}</strong> Lidos</span>
+        <span class="email-summary-tag responded"><strong>${respondedNotifications.length}</strong> Respondidos</span>`;
+    }
+
+    const activeTab = $("emailActiveTab");
+    const historyTab = $("emailHistoryTab");
+    if(activeTab){
+      activeTab.textContent = `Em acompanhamento (${activeNotifications.length})`;
+      activeTab.classList.toggle("active", !emailHistoryMode);
+    }
+    if(historyTab){
+      historyTab.textContent = `Histórico (${emailNotifications.length})`;
+      historyTab.classList.toggle("active", emailHistoryMode);
+    }
+
+    const list = $("emailNotificationList");
+    if(list){
+      list.innerHTML = displayedNotifications.length
+        ? displayedNotifications.map(emailNotificationMarkup).join("")
+        : `<div class="email-notification-empty">${
+            !emailIntegration?.configured
+              ? "Configure o e-mail para começar a receber notificações."
+              : emailHistoryMode
+                ? "Nenhum e-mail no histórico."
+                : "Nenhum e-mail em acompanhamento."
+          }</div>`;
+    }
+
+    const dashboardList = $("dashboardEmailNotifications");
+    if(dashboardList){
+      dashboardList.innerHTML = activeNotifications.length
+        ? activeNotifications.slice(0,4).map(emailNotificationMarkup).join("")
+        : `<div class="email-notification-empty">${
+            !emailIntegration?.configured
+              ? "Clique em “Configurar e-mail” e informe somente a senha do Zimbra."
+              : "Nenhum e-mail pendente ou lido em acompanhamento."
+          }</div>`;
+    }
+
+    const integrationStatus = $("emailIntegrationStatus");
+    if(integrationStatus){
+      integrationStatus.className = "email-integration-status";
+      if(!emailIntegration){
+        integrationStatus.textContent = "Verificando a integração com o Zimbra…";
+      }else if(!emailIntegration.configured){
+        integrationStatus.textContent = "Integração ainda não configurada. Informe a senha do Zimbra uma única vez para ativar.";
+      }else if(!currentEmailShiftId()){
+        integrationStatus.textContent = "Monitoramento pausado. Inicie um plantão para começar a receber e atualizar notificações.";
+      }else if(emailIntegration.lastError){
+        integrationStatus.classList.add("error");
+        integrationStatus.textContent = `Zimbra configurado, mas a última consulta falhou: ${emailIntegration.lastError}`;
+      }else{
+        integrationStatus.classList.add("online");
+        integrationStatus.textContent = emailIntegration.lastCheckedAt
+          ? `Zimbra conectado. Última verificação: ${emailReceivedDateTime(emailIntegration.lastCheckedAt)}.`
+          : "Zimbra configurado e pronto para receber notificações.";
+      }
+    }
+
+    const settingsButton = $("openEmailSettingsDashboard");
+    if(settingsButton){
+      settingsButton.textContent = emailIntegration?.configured ? "Reconfigurar e-mail" : "Configurar e-mail";
+    }
+  }
+
+  function showEmailAlert(notification){
+    $("emailAlertSender").textContent = notification.sender || "Remetente não identificado";
+    $("emailAlertSubject").textContent = notification.subject || "Sem assunto";
+    $("emailAlertTime").textContent = emailReceivedTime(notification.receivedAt);
+    $("emailAlertToast").classList.add("show");
+    playEmailNotificationSound().catch(() => {});
+    clearTimeout(emailAlertTimer);
+    emailAlertTimer = setTimeout(() => $("emailAlertToast")?.classList.remove("show"), 10000);
+  }
+
+  async function loadEmailNotifications({announce=true}={}){
+    if(emailNotificationRequestInFlight) return;
+    emailNotificationRequestInFlight = true;
+    const previousKeys = new Set(emailNotifications.map(item => item.eventKey));
+    const shiftId = currentEmailShiftId();
+    const shiftStartedAt = currentEmailShiftStartedAt();
+    const requestPath = shiftId
+      ? `/api/email-notifications?shiftId=${encodeURIComponent(shiftId)}&shiftStartedAt=${encodeURIComponent(shiftStartedAt || "")}`
+      : "/api/email-notifications";
+    try{
+      const result = await cloudRequest(requestPath);
+      const nextNotifications = Array.isArray(result.notifications) ? result.notifications : [];
+      emailIntegration = result.integration || emailIntegration;
+      emailMonitoringActive = Boolean(result.monitoringActive && shiftId);
+      const newlyReceived = emailNotificationsLoaded
+        ? nextNotifications.filter(item => !previousKeys.has(item.eventKey))
+        : [];
+      emailNotifications = nextNotifications;
+      emailNotificationsLoaded = true;
+      renderEmailNotifications();
+      if(announce && shiftId && currentEmailShiftId() === shiftId && newlyReceived.length){
+        showEmailAlert(newlyReceived[0]);
+      }
+    }catch(error){
+      if(error.status === 401) showLogin();
+      else console.error("Falha ao carregar notificações de e-mail.", error);
+    }finally{
+      emailNotificationRequestInFlight = false;
+    }
+  }
+
+  function startEmailNotificationPolling(){
+    clearInterval(emailNotificationPollTimer);
+    emailMonitoringActive = Boolean(currentEmailShiftId());
+    renderEmailNotifications();
+    if(!emailMonitoringActive) return;
+    emailNotificationPollTimer = setInterval(() => {
+      if(currentEmailShiftId()) loadEmailNotifications();
+    }, 10000);
+  }
+
+  function stopEmailNotificationPolling(){
+    clearInterval(emailNotificationPollTimer);
+    emailNotificationPollTimer = null;
+    emailMonitoringActive = false;
+    renderEmailNotifications();
+  }
+
+  function closeEmailNotificationsPopover(){
+    $("emailNotificationPopover")?.classList.add("hidden");
+    document.querySelectorAll("[data-email-notifications-toggle]").forEach(button => {
+      button.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function openEmailSettingsModal(){
+    closeEmailNotificationsPopover();
+    $("emailSettingsResult").textContent = "";
+    $("emailSettingsPassword").value = "";
+    $("emailSettingsModal").classList.add("show");
+    setTimeout(() => $("emailSettingsPassword")?.focus(), 80);
+  }
+
+  function closeEmailSettingsModal(){
+    $("emailSettingsModal")?.classList.remove("show");
+    $("emailSettingsResult").textContent = "";
+    $("emailSettingsPassword").value = "";
+  }
+
+  function setEmailNotificationMode(historyMode){
+    emailHistoryMode = Boolean(historyMode);
+    renderEmailNotifications();
+  }
+
+  function toggleEmailNotificationsPopover(){
+    const popover = $("emailNotificationPopover");
+    if(!popover) return;
+    const willOpen = popover.classList.contains("hidden");
+    closeEmailNotificationsPopover();
+    if(willOpen){
+      setEmailNotificationMode(false);
+      popover.classList.remove("hidden");
+      document.querySelectorAll("[data-email-notifications-toggle]").forEach(button => {
+        button.setAttribute("aria-expanded", "true");
+      });
+      loadEmailNotifications({announce:false});
+    }
+  }
+
+  function openEmailHistory(){
+    const popover = $("emailNotificationPopover");
+    if(!popover) return;
+    closeEmailNotificationsPopover();
+    setEmailNotificationMode(true);
+    popover.classList.remove("hidden");
+    document.querySelectorAll("[data-email-notifications-toggle]").forEach(button => {
+      button.setAttribute("aria-expanded", "true");
+    });
+    loadEmailNotifications({announce:false});
+  }
+
+  function applyEmailStatus(eventKeys, action, statusAt){
+    const updatedKeys = new Set(eventKeys);
+    emailNotifications = emailNotifications.map(notification =>
+      updatedKeys.has(notification.eventKey)
+        ? action === "responded"
+          ? {
+              ...notification,
+              readAt:notification.readAt || statusAt,
+              respondedAt:notification.respondedAt || statusAt
+            }
+          : {...notification, readAt:notification.readAt || statusAt}
+        : notification
+    );
+    renderEmailNotifications();
+  }
+
+  async function updateSingleEmailStatus(eventKey, action, button){
+    if(!eventKey || !["read","responded"].includes(action)) return;
+    if(button){
+      button.disabled = true;
+      button.textContent = "Salvando…";
+    }
+    try{
+      const result = await cloudRequest("/api/email-notification-status", {
+        method:"PUT",
+        body:JSON.stringify({eventKey, action})
+      });
+      applyEmailStatus(
+        result.eventKeys || [eventKey],
+        result.action || action,
+        result.statusAt || new Date().toISOString()
+      );
+      toast(action === "responded" ? "E-mail marcado como respondido." : "E-mail marcado como lido.");
+    }catch(error){
+      toast(error.message || "Não foi possível atualizar o e-mail.");
+      if(button){
+        button.disabled = false;
+        button.textContent = action === "responded" ? "Marcar como respondido" : "Marcar como lida";
+      }
+    }
+  }
+
+  async function markEmailNotificationsRead(){
+    const pendingEventKeys = emailNotifications
+      .filter(notification => !notification.readAt && !notification.respondedAt && notification.eventKey)
+      .map(notification => notification.eventKey);
+    if(!pendingEventKeys.length){
+      toast("Não há e-mails pendentes.");
+      return;
+    }
+    const button = $("markEmailNotificationsRead");
+    if(button) button.disabled = true;
+    try{
+      const result = await cloudRequest("/api/email-notification-status", {
+        method:"PUT",
+        body:JSON.stringify({eventKeys:pendingEventKeys, action:"read"})
+      });
+      applyEmailStatus(
+        result.eventKeys || pendingEventKeys,
+        "read",
+        result.statusAt || new Date().toISOString()
+      );
+      toast("Todos os e-mails pendentes foram marcados como lidos.");
+    }catch(error){
+      toast(error.message || "Não foi possível atualizar os e-mails.");
+      return;
+    }finally{
+      if(button) button.disabled = false;
+    }
+
+    const latest = emailNotifications.reduce((latestValue, notification) => {
+      const candidate = new Date(notification.createdAt || notification.receivedAt).getTime();
+      return Number.isFinite(candidate) ? Math.max(latestValue, candidate) : latestValue;
+    }, Date.now());
+    localStorage.setItem(EMAIL_LAST_READ_STORAGE_KEY, new Date(latest).toISOString());
+  }
+
   function queueCloudSave(){
     clearTimeout(cloudSaveTimer);
     setCloudStatus("Salvando…");
@@ -1758,6 +2767,8 @@
   }
 
   function showLogin(){
+    stopEmailNotificationPolling();
+    closeEmailSettingsModal();
     $("loginScreen").classList.remove("hidden");
     setTimeout(() => $("loginUsername")?.focus(), 80);
   }
@@ -1792,6 +2803,8 @@
       hideLogin();
       renderAll();
       ensureCurrentRequestTime();
+      await loadEmailNotifications({announce:false});
+      startEmailNotificationPolling();
       setCloudStatus("Dados sincronizados", "online");
     }catch(error){
       if(error.status === 401){ showLogin(); setCloudStatus("Autenticação necessária"); }
@@ -2754,6 +3767,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderCalendar();
     renderBedCensus();
     renderDashboardTools();
+    renderEmailNotifications();
 
     const locked = isShiftClosed();
     ["module","requestTime","patient","origin","hd","destination","status","addRecord","clearForm"].forEach(id => {
@@ -2822,8 +3836,93 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     else openMobileMenu();
   });
   $("menuBackdrop").addEventListener("click", closeMobileMenu);
-  document.addEventListener("keydown", event => { if(event.key === "Escape") closeMobileMenu(); });
+  document.addEventListener("keydown", event => {
+    if(event.key === "Escape"){
+      closeMobileMenu();
+      closeEmailNotificationsPopover();
+      closeEmailSettingsModal();
+      $("emailAlertToast")?.classList.remove("show");
+    }
+  });
   window.matchMedia("(min-width:1025px)").addEventListener("change", event => { if(event.matches) closeMobileMenu(); });
+
+  document.querySelectorAll("[data-email-notifications-toggle]").forEach(button => {
+    button.addEventListener("click", toggleEmailNotificationsPopover);
+  });
+  $("closeEmailNotifications")?.addEventListener("click", closeEmailNotificationsPopover);
+  $("openEmailSettings")?.addEventListener("click", openEmailSettingsModal);
+  $("openEmailSettingsDashboard")?.addEventListener("click", openEmailSettingsModal);
+  $("toggleEmailSound")?.addEventListener("click", async () => {
+    emailSoundEnabled = !emailSoundEnabled;
+    localStorage.setItem(EMAIL_SOUND_STORAGE_KEY, String(emailSoundEnabled));
+    renderEmailSoundControl();
+    if(emailSoundEnabled){
+      await unlockEmailNotificationSound();
+      await playEmailNotificationSound();
+      toast("Alerta sonoro ativado.");
+    }else{
+      toast("Alerta sonoro silenciado.");
+    }
+  });
+  $("refreshEmailNotifications")?.addEventListener("click", () => loadEmailNotifications({announce:false}));
+  $("markEmailNotificationsRead")?.addEventListener("click", markEmailNotificationsRead);
+  $("emailActiveTab")?.addEventListener("click", () => setEmailNotificationMode(false));
+  $("emailHistoryTab")?.addEventListener("click", () => setEmailNotificationMode(true));
+  $("openEmailNotifications")?.addEventListener("click", openEmailHistory);
+  $("closeEmailAlertToast")?.addEventListener("click", () => $("emailAlertToast")?.classList.remove("show"));
+  $("cancelEmailSettings")?.addEventListener("click", closeEmailSettingsModal);
+  $("emailSettingsModal")?.addEventListener("click", event => {
+    if(event.target === $("emailSettingsModal")) closeEmailSettingsModal();
+  });
+  $("emailSettingsForm")?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const password = $("emailSettingsPassword").value;
+    const button = $("saveEmailSettings");
+    if(!password){
+      $("emailSettingsResult").textContent = "Informe a senha do e-mail.";
+      return;
+    }
+    button.disabled = true;
+    button.textContent = "Testando conexão…";
+    $("emailSettingsResult").textContent = "";
+    try{
+      const result = await cloudRequest("/api/email-settings", {
+        method:"PUT",
+        body:JSON.stringify({password})
+      });
+      emailIntegration = result.integration || emailIntegration;
+      renderEmailNotifications();
+      closeEmailSettingsModal();
+      toast("E-mail configurado e conexão validada.");
+      await loadEmailNotifications({announce:false});
+    }catch(error){
+      $("emailSettingsResult").textContent = error.message || "Não foi possível configurar o e-mail.";
+    }finally{
+      button.disabled = false;
+      button.textContent = "Testar e ativar";
+    }
+  });
+  document.addEventListener("click", event => {
+    const button = event.target.closest(".email-mark-read-button");
+    if(!button) return;
+    const eventKey = decodeURIComponent(button.dataset.emailEventKey || "");
+    updateSingleEmailStatus(eventKey, button.dataset.emailAction || "", button);
+  });
+  document.addEventListener("click", event => {
+    if(!$("emailNotificationPopover")?.classList.contains("hidden")
+      && !$("emailNotificationPopover").contains(event.target)
+      && !event.target.closest("[data-email-notifications-toggle]")
+      && event.target !== $("openEmailNotifications")){
+      closeEmailNotificationsPopover();
+    }
+  });
+  document.addEventListener("visibilitychange", () => {
+    if(document.visibilityState === "visible" && emailNotificationsLoaded && currentEmailShiftId()){
+      loadEmailNotifications();
+    }
+  });
+  document.addEventListener("pointerdown", unlockEmailNotificationSound, {once:true, capture:true});
+  document.addEventListener("keydown", unlockEmailNotificationSound, {once:true, capture:true});
 
   $("saveShift").addEventListener("click", () => {
     const date = $("shiftDate").value;
@@ -2876,6 +3975,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
 
     saveState();
+    if(startingNewShift){
+      startEmailNotificationPolling();
+      loadEmailNotifications({announce:false});
+    }
     if(startingNewShift){
       showShiftReminder("Ponto de entrada", "Lembre-se de registrar o ponto de entrada.");
     }
@@ -3000,6 +4103,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     state.shift.endedAt = new Date().toISOString();
     archiveClosedShift();
     saveState();
+    stopEmailNotificationPolling();
     toast("Plantão encerrado e arquivado no histórico integrado.");
     showShiftReminder("Ponto de saída", "Lembre-se de registrar o ponto de saída.");
   }
@@ -3432,6 +4536,12 @@ background: $("background").value.trim(),
 
   $("logoutButton").addEventListener("click", async () => {
     await cloudRequest("/api/logout", {method:"POST"}).catch(()=>{});
+    stopEmailNotificationPolling();
+    emailNotifications = [];
+    emailNotificationsLoaded = false;
+    emailIntegration = null;
+    closeEmailNotificationsPopover();
+    renderEmailNotifications();
     showLogin();
     setCloudStatus("Sessão encerrada");
   });
