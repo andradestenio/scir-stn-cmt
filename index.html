@@ -701,6 +701,11 @@
       resize:vertical;
     }
 
+    .sbar-long-text{
+      min-height:90px;
+      resize:vertical;
+    }
+
     .actions{
       display:flex;
       gap:10px;
@@ -2092,19 +2097,19 @@
           </div>
           <div style="grid-column:1/-1">
             <label for="vacancies">Vagas disponíveis</label>
-            <input id="vacancies" type="text" placeholder="Ex.: Clínica Médica: 2 vagas | UTI: lotada | Censo: 42 pacientes">
+            <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Registre as vagas disponíveis, setores lotados, bloqueios, restrições e demais informações relevantes."></textarea>
           </div>
-<div style="grid-column:1/-1">
+          <div style="grid-column:1/-1">
             <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
-            <textarea id="background" placeholder="Registre as ocorrências do plantão."></textarea>
+            <textarea class="sbar-long-text" id="background" rows="4" placeholder="Registre as ocorrências do plantão."></textarea>
           </div>
           <div style="grid-column:1/-1">
             <label for="assessment">A — Avaliação</label>
-            <textarea id="assessment" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+            <textarea class="sbar-long-text" id="assessment" rows="4" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
           </div>
           <div style="grid-column:1/-1">
             <label for="recommendation">R — Relatório do plantão</label>
-            <textarea id="recommendation" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+            <textarea class="sbar-long-text" id="recommendation" rows="4" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
           </div>
         </div>
 
