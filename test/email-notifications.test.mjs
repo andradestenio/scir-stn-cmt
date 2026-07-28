@@ -27,33 +27,51 @@ function responseRecorder(){
   };
 }
 
-test("lista notificações somente com sessão autenticada", async () => {
+test("lista somente as notificações vinculadas ao plantão solicitado", async () => {
   const originalFetch = global.fetch;
   let requestNumber = 0;
   global.fetch = async () => {
     requestNumber += 1;
     if(requestNumber === 1) return new Response("[]", {status:200});
-    return new Response(JSON.stringify([{
-      state:{
-        event_key:"message-1",
-        sender:"João Silva",
-        subject:"Solicitação de avaliação",
-        received_at:"2026-07-26T22:42:00.000Z",
-        created_at:"2026-07-26T22:42:01.000Z"
+    return new Response(JSON.stringify([
+      {
+        state:{
+          event_key:"message-1",
+          shift_id:"plantao-atual",
+          sender:"João Silva",
+          subject:"Solicitação de avaliação",
+          received_at:"2026-07-26T22:42:00.000Z",
+          created_at:"2026-07-26T22:42:01.000Z"
+        },
+        updated_at:"2026-07-26T22:42:01.000Z"
       },
-      updated_at:"2026-07-26T22:42:01.000Z"
-    }]), {status:200});
+      {
+        state:{
+          event_key:"message-anterior",
+          shift_id:"plantao-anterior",
+          sender:"Maria",
+          subject:"Mensagem do plantão anterior",
+          received_at:"2026-07-25T22:42:00.000Z",
+          created_at:"2026-07-25T22:42:01.000Z",
+          responded_at:"2026-07-25T23:00:00.000Z"
+        },
+        updated_at:"2026-07-25T23:00:00.000Z"
+      }
+    ]), {status:200});
   };
 
   try{
     const req = {
       method:"GET",
-      headers:{cookie:createSessionCookie().split(";")[0]}
+      headers:{cookie:createSessionCookie().split(";")[0]},
+      query:{historyShiftId:"plantao-atual"}
     };
     const res = responseRecorder();
     await listHandler(req, res);
     assert.equal(res.statusCode, 200);
     const body = JSON.parse(res.body);
+    assert.equal(body.notifications.length, 1);
+    assert.equal(body.historyShiftId, "plantao-atual");
     assert.deepEqual(body.notifications[0], {
       eventKey:"message-1",
       sender:"João Silva",
@@ -78,6 +96,7 @@ test("persiste a marcação de e-mail como lido", async () => {
       return new Response(JSON.stringify([{
         state:{
           event_key:"message-1",
+          shift_id:"plantao-atual",
           sender:"João Silva",
           subject:"Solicitação de avaliação",
           received_at:"2026-07-26T22:42:00.000Z",
@@ -104,6 +123,7 @@ test("persiste a marcação de e-mail como lido", async () => {
     assert.ok(storedState.read_at);
     assert.equal(storedState.responded_at, undefined);
     assert.equal(storedState.event_key, "message-1");
+    assert.equal(storedState.shift_id, "plantao-atual");
   }finally{
     global.fetch = originalFetch;
   }
@@ -119,6 +139,7 @@ test("evolui um e-mail lido para respondido", async () => {
       return new Response(JSON.stringify([{
         state:{
           event_key:"message-2",
+          shift_id:"plantao-atual",
           sender:"Maria",
           subject:"Avaliação",
           received_at:"2026-07-26T22:42:00.000Z",
@@ -143,6 +164,7 @@ test("evolui um e-mail lido para respondido", async () => {
     assert.equal(JSON.parse(res.body).action, "responded");
     assert.equal(storedState.read_at, "2026-07-26T22:43:00.000Z");
     assert.ok(storedState.responded_at);
+    assert.equal(storedState.shift_id, "plantao-atual");
   }finally{
     global.fetch = originalFetch;
   }
@@ -278,6 +300,7 @@ test("ao iniciar novo plantão ignora e-mails do intervalo e mantém os posterio
     assert.equal(integration.active_shift_id, "plantao-atual");
     assert.equal(integration.last_uid, 12);
     assert.deepEqual(notifications.map(item => item.event_key), ["durante-o-plantao"]);
+    assert.equal(notifications[0].shift_id, "plantao-atual");
   }finally{
     global.fetch = originalFetch;
   }

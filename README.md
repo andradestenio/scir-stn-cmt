@@ -66,6 +66,24 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Ao encerrar o plantão, as consultas e os alertas de novos e-mails são interrompidos.
 - Ao iniciar o plantão seguinte, o sistema considera apenas os e-mails que chegarem a partir daquele momento.
 
+### Versão 1.7.1 — campo ampliado no SBAR
+
+- O campo **Vagas disponíveis** passou a aceitar texto longo e possui o mesmo
+  tamanho dos demais campos descritivos do relatório SBAR.
+
+### Versão 1.7.2 — padronização reforçada do SBAR
+
+- Os quatro campos descritivos do SBAR usam explicitamente a mesma classe,
+  quantidade de linhas, altura e possibilidade de redimensionamento.
+
+### Versão 1.8 — histórico de e-mails por plantão
+
+- Cada nova notificação de e-mail é vinculada ao plantão em que foi recebida.
+- As contagens, a lista em acompanhamento e **Ver todas → Histórico** exibem
+  somente os e-mails do plantão atual, inclusive depois de seu encerramento.
+- E-mails pendentes, lidos ou respondidos de plantões anteriores não aparecem
+  no plantão seguinte.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.

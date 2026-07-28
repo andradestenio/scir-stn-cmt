@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.7.0 com acompanhamento por plantão
+SCIR — NIR CEMETRON | Versão 1.8.0 com histórico de e-mails por plantão
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -18,6 +18,9 @@ CAMINHO SIMPLIFICADO
 - O monitoramento começa ao iniciar o plantão e para imediatamente ao encerrá-lo.
 - Durante o plantão, a caixa é atualizada aproximadamente a cada 10 segundos enquanto o SCIR estiver aberto.
 - E-mails recebidos fora do plantão não geram notificação no plantão seguinte.
+- No relatório SBAR, “Vagas disponíveis” é um campo amplo para texto longo.
+- O histórico, as contagens e a lista de e-mails mostram somente as mensagens do plantão atual.
+- E-mails respondidos de plantões anteriores não aparecem no plantão seguinte.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

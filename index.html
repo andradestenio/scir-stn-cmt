@@ -2457,12 +2457,17 @@
     scheduleEmailTone(context, 1318.51, startAt + 0.43, 0.36, 0.28);
   }
 
-  function currentEmailShiftId(){
-    if(!state.shift || isShiftClosed()) return null;
+  function currentEmailHistoryShiftId(){
+    if(!state.shift) return null;
     return String(
       state.shift.id ||
       `${state.shift.date || "sem-data"}:${state.shift.type || "plantao"}:${state.shift.startedAt || ""}`
     );
+  }
+
+  function currentEmailShiftId(){
+    if(isShiftClosed()) return null;
+    return currentEmailHistoryShiftId();
   }
 
   function currentEmailShiftStartedAt(){
@@ -2576,9 +2581,17 @@
     emailNotificationRequestInFlight = true;
     const previousKeys = new Set(emailNotifications.map(item => item.eventKey));
     const shiftId = currentEmailShiftId();
+    const historyShiftId = currentEmailHistoryShiftId();
     const shiftStartedAt = currentEmailShiftStartedAt();
-    const requestPath = shiftId
-      ? `/api/email-notifications?shiftId=${encodeURIComponent(shiftId)}&shiftStartedAt=${encodeURIComponent(shiftStartedAt || "")}`
+    const requestParameters = new URLSearchParams();
+    if(historyShiftId) requestParameters.set("historyShiftId", historyShiftId);
+    if(shiftId){
+      requestParameters.set("shiftId", shiftId);
+      requestParameters.set("shiftStartedAt", shiftStartedAt || "");
+    }
+    const requestQuery = requestParameters.toString();
+    const requestPath = requestQuery
+      ? `/api/email-notifications?${requestQuery}`
       : "/api/email-notifications";
     try{
       const result = await cloudRequest(requestPath);
@@ -3981,6 +3994,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
     saveState();
     if(startingNewShift){
+      emailNotifications = [];
+      emailNotificationsLoaded = false;
+      renderEmailNotifications();
       startEmailNotificationPolling();
       loadEmailNotifications({announce:false});
     }
