@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.10.0 com edição das ações dos e-mails
+SCIR — NIR CEMETRON | Versão 1.11.0 com módulo Ocupação Hospub
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -27,6 +27,11 @@ CAMINHO SIMPLIFICADO
 - Ao voltar para Pendente ou Lido, o e-mail reaparece em “Em acompanhamento”.
 - O relatório registra e-mails recebidos, respondidos, cientes e todas as atualizações do censo.
 - Esses indicadores permanecem no histórico do plantão e nas exportações PDF e Excel.
+- O menu lateral possui o novo módulo independente “Ocupação Hospub”.
+- O módulo calcula pacientes internados, leitos operacionais, disponíveis e taxa de ocupação por setor.
+- Todas as opções de PA entram na consulta; opções de teste e “XXXXXXX” são ignoradas.
+- A atualização ocorre a cada cinco minutos apenas com plantão ativo e registra mudanças no histórico.
+- Para instalar o conector, siga o arquivo conector-hospub/INSTALAR.txt.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

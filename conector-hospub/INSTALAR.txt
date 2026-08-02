@@ -1,0 +1,30 @@
+SCIR — CONECTOR VISUAL HOSPUB
+
+INSTALAÇÃO NO GOOGLE CHROME
+
+1. Extraia o pacote completo do SCIR em uma pasta do computador.
+2. No Chrome, abra o endereço: chrome://extensions
+3. Ative o botão “Modo do desenvolvedor”, no canto superior direito.
+4. Clique em “Carregar sem compactação”.
+5. Selecione a pasta “conector-hospub” deste pacote.
+6. Abra ou atualize estas duas páginas no mesmo Chrome:
+   - Visual Hospub: https://cemetron-hospub.sesau.ro.gov.br/
+   - SCIR: https://scir-stn-cmt.vercel.app/
+7. Entre normalmente nos dois sistemas.
+8. No Hospub, abra Internação → Consulta por Clínica.
+9. No SCIR, inicie o plantão e abra o módulo “Ocupação Hospub”.
+10. Clique em “Configurar leitos operacionais” e informe uma única vez o total de leitos de cada setor.
+11. Clique em “Atualizar do Hospub” para realizar a primeira conferência.
+
+FUNCIONAMENTO
+
+- A atualização automática ocorre a cada cinco minutos somente enquanto houver plantão ativo.
+- A aba do Visual Hospub deve permanecer aberta e autenticada no Chrome.
+- Entram na consulta as clínicas assistenciais, inclusive todas as opções iniciadas por “PA”.
+- São excluídas automaticamente as opções “Todas”, “Teste Hospub Clínica” e “XXXXXXX”.
+- Cadastros repetidos com a mesma lista de pacientes não são contados duas vezes.
+- Apenas o nome do setor, a quantidade de pacientes e o horário da coleta chegam ao SCIR.
+- Nenhum nome, prontuário, leito individual, CID ou diagnóstico é enviado ou armazenado.
+- Quando o plantão é encerrado, as atualizações automáticas são interrompidas.
+
+Não é necessário alterar código, executar SQL ou criar variável na Vercel.

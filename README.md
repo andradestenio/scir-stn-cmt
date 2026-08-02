@@ -105,6 +105,38 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11 — módulo Ocupação Hospub
+
+- Novo módulo independente **Ocupação Hospub**, sem alterar o censo manual já
+  existente na Dashboard.
+- O conector do Chrome percorre automaticamente as clínicas do Visual Hospub,
+  incluindo todas as opções iniciadas por `PA`.
+- As opções `Todas`, `Teste Hospub Clínica` e `XXXXXXX` são desconsideradas.
+- Cadastros repetidos que exibem a mesma lista são identificados localmente para
+  evitar dupla contagem.
+- O módulo correlaciona pacientes internados, leitos operacionais, leitos
+  disponíveis e taxa de ocupação por setor.
+- Leitos operacionais são configurados uma única vez pela própria tela do SCIR.
+- A consulta é iniciada e repetida a cada cinco minutos somente durante plantão
+  ativo; ao encerrar o plantão, o monitoramento é interrompido.
+- Mudanças nos totais são registradas no histórico do plantão e incluídas nos
+  relatórios PDF e Excel.
+- Somente setor, total de pacientes e horário são transmitidos. Nenhum nome,
+  prontuário, leito individual, CID ou diagnóstico é enviado ou armazenado.
+
+#### Instalar o conector Hospub
+
+1. Abra `chrome://extensions` no Google Chrome.
+2. Ative **Modo do desenvolvedor**.
+3. Clique em **Carregar sem compactação** e selecione a pasta
+   `conector-hospub` deste pacote.
+4. Atualize as abas do Visual Hospub e do SCIR.
+5. No Hospub, mantenha aberta a tela **Internação → Consulta por Clínica**.
+6. Inicie o plantão no SCIR e abra **Ocupação Hospub**.
+7. Configure os leitos operacionais e clique em **Atualizar do Hospub**.
+
+Não é necessário executar novo SQL nem cadastrar variável adicional na Vercel.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "SCIR — Conector Visual Hospub",
+  "version": "1.0.0",
+  "description": "Atualiza o módulo de ocupação do SCIR usando somente os totais por setor exibidos no Visual Hospub.",
+  "permissions": ["tabs"],
+  "host_permissions": [
+    "https://cemetron-hospub.sesau.ro.gov.br/*",
+    "https://scir-stn-cmt.vercel.app/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://cemetron-hospub.sesau.ro.gov.br/*"],
+      "js": ["content-hospub.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://scir-stn-cmt.vercel.app/*"],
+      "js": ["content-scir.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_title": "SCIR — Conector Visual Hospub"
+  }
+}
