@@ -1334,6 +1334,12 @@
   .hospub-sector-table th{background:#eef3f8;color:var(--navy);font-size:11px;text-transform:uppercase}
   .hospub-sector-table td:not(:first-child),.hospub-sector-table th:not(:first-child){text-align:center}
   .hospub-sector-table tr:last-child td{border-bottom:0}
+  .hospub-sector-table tbody tr.hospub-row-pa td{background:#fffbeb}
+  .hospub-sector-table tbody tr.hospub-row-pa td:first-child{box-shadow:inset 5px 0 0 #eab308}
+  .hospub-sector-table tbody tr.hospub-row-red td{background:#fef2f2}
+  .hospub-sector-table tbody tr.hospub-row-red td:first-child{box-shadow:inset 5px 0 0 #ef4444}
+  .hospub-sector-table tbody tr.hospub-row-uti td{background:#fff7ed}
+  .hospub-sector-table tbody tr.hospub-row-uti td:first-child{box-shadow:inset 5px 0 0 #f97316}
   .hospub-sector-table tfoot td{border-top:2px solid #9aabc0;background:#e8eef6;color:var(--navy);font-weight:900}
   .hospub-sector-table tfoot td:first-child{letter-spacing:.04em;text-transform:uppercase}
   .hospub-total-number{display:inline-flex;align-items:center;justify-content:center;min-width:62px;min-height:27px;padding:4px 9px;border:1px solid var(--navy);border-radius:7px;background:var(--navy);color:#fff;font-size:12px;font-weight:900}
@@ -3425,6 +3431,14 @@
     return occupancyRate >= 85 ? "warning" : "available";
   }
 
+  function hospubSectorRowClass(sector){
+    const key = String(sector?.key || "");
+    if(key.includes("sala-vermelha")) return "hospub-row-red";
+    if(key.startsWith("uti-")) return "hospub-row-uti";
+    if(key.startsWith("pa-")) return "hospub-row-pa";
+    return "";
+  }
+
   function renderHospubOccupancy(){
     const body = $("hospubSectorTableBody");
     const foot = $("hospubSectorTableFoot");
@@ -3439,13 +3453,14 @@
       const careTag = careArea
         ? `<span class="hospub-care-tag ${careClass}">${escapeHtml(careArea)}</span>`
         : "";
+      const rowClass = hospubSectorRowClass(sector);
       const operationalCell = hospubCapacityEditing
         ? `<input class="hospub-capacity-input" data-hospub-capacity-key="${encodedKey}" type="number" min="0" step="1" value="${metrics.operational ?? ""}" aria-label="Leitos operacionais de ${escapeHtml(sector.label)}">`
         : `<span class="hospub-capacity-value">${metrics.operational ?? "Não informado"}</span>`;
       const occupiedText = metrics.occupied === null ? "Aguardando Hospub" : String(metrics.occupied);
       const availableText = metrics.available === null ? "—" : String(metrics.available);
       const rateText = metrics.occupancyRate === null ? "—" : `${metrics.occupancyRate.toFixed(1).replace(".",",")}%`;
-      return `<tr>
+      return `<tr${rowClass ? ` class="${rowClass}"` : ""}>
         <td><div class="hospub-sector-name"><strong>${escapeHtml(sector.label)}</strong>${careTag}</div></td>
         <td>${operationalCell}</td>
         <td><span class="hospub-metric-tag ${metrics.occupied === null ? "unknown" : "available"}">${occupiedText}</span></td>

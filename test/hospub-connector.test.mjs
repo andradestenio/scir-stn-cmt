@@ -87,6 +87,16 @@ test("cabeçalho Hospub é simétrico e setores exibem as tags assistenciais",()
   assert.match(html,/class="hospub-care-tag \$\{careClass\}"/);
 });
 
+test("linhas críticas do Hospub recebem cores por prioridade assistencial",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/tr\.hospub-row-pa td\{background:#fffbeb\}/);
+  assert.match(html,/tr\.hospub-row-red td\{background:#fef2f2\}/);
+  assert.match(html,/tr\.hospub-row-uti td\{background:#fff7ed\}/);
+  assert.match(html,/if\(key\.includes\("sala-vermelha"\)\) return "hospub-row-red"/);
+  assert.match(html,/if\(key\.startsWith\("uti-"\)\) return "hospub-row-uti"/);
+  assert.match(html,/if\(key\.startsWith\("pa-"\)\) return "hospub-row-pa"/);
+});
+
 test("conector inclui setores PA e transmite apenas totais consolidados",() => {
   const content = fs.readFileSync(new URL("conector-hospub/content-hospub.js",root),"utf8");
   assert.match(content,/labels\.some\(label => label\.startsWith\("PA\/"\)\)/);

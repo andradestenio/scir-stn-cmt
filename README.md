@@ -105,6 +105,15 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.4 — destaque visual dos setores críticos
+
+- Linhas de PA receberam fundo amarelo suave.
+- Linhas de Sala Vermelha receberam fundo vermelho suave, inclusive
+  **PA/Sala Vermelha**.
+- Linhas de UTI receberam fundo laranja suave.
+- Uma faixa lateral mais intensa reforça cada categoria sem prejudicar a
+  leitura das tags e dos indicadores.
+
 ### Versão 1.11.3 — simetria e identificação assistencial
 
 - O status do conector, a última atualização e o botão de atualização possuem

@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.11.3 com simetria e identificação assistencial
+SCIR — NIR CEMETRON | Versão 1.11.4 com destaque visual dos setores críticos
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -40,6 +40,8 @@ CAMINHO SIMPLIFICADO
 - A tabela de ocupação exibe uma linha final com os totais de todas as colunas e a taxa consolidada.
 - Conexão, última atualização e botão do Hospub possuem largura, altura e alinhamento padronizados.
 - Cada setor possui uma tag assistencial INFECTO, CM ou INFECTO/CM ao lado do nome.
+- Linhas do PA aparecem em amarelo, Salas Vermelhas em vermelho e UTIs em laranja.
+- PA/Sala Vermelha segue a prioridade de Sala Vermelha e aparece em vermelho.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br
