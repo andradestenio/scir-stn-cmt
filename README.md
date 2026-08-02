@@ -105,6 +105,15 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.6 — alerta de paciente em Sala Vermelha
+
+- Em **PA/Sala Vermelha** e **Sala Vermelha Isolamento**, a coluna
+  **Pacientes internados** fica vermelha e recebe o símbolo `⚠` quando o total
+  for maior que zero.
+- Quando o setor estiver vazio, o indicador permanece verde e sem alerta.
+- O alerta utiliza exatamente o mesmo desenho, tamanho e espaçamento do símbolo
+  já exibido na taxa de ocupação máxima.
+
 ### Versão 1.11.5 — alerta de lotação e tags configuráveis
 
 - Setores com taxa de ocupação igual ou superior a 100% exibem o símbolo `⚠`

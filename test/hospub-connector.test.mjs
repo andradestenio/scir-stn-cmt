@@ -109,6 +109,15 @@ test("ocupação máxima exibe alerta e tags assistenciais são configuráveis",
   assert.match(html,/Configurar leitos e tags/);
 });
 
+test("Sala Vermelha com pacientes exibe alerta vermelho na coluna de internados",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/includes\("sala-vermelha"\) && metrics\.occupied !== null && metrics\.occupied > 0/);
+  assert.match(html,/class="hospub-rate-alert" role="img" aria-label="Paciente internado em Sala Vermelha"/);
+  assert.match(html,/aria-label="Paciente internado em Sala Vermelha"/);
+  assert.match(html,/redRoomOccupied \? "full" : "available"/);
+  assert.match(html,/\$\{occupiedAlert\}\$\{occupiedText\}/);
+});
+
 test("conector inclui setores PA e transmite apenas totais consolidados",() => {
   const content = fs.readFileSync(new URL("conector-hospub/content-hospub.js",root),"utf8");
   assert.match(content,/labels\.some\(label => label\.startsWith\("PA\/"\)\)/);

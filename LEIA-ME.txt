@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.11.5 com alerta de lotação e tags configuráveis
+SCIR — NIR CEMETRON | Versão 1.11.6 com alerta de paciente em Sala Vermelha
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -45,6 +45,7 @@ CAMINHO SIMPLIFICADO
 - Setores com 100% ou mais de ocupação exibem o símbolo de alerta ⚠ na coluna da taxa.
 - O botão “Configurar leitos e tags” permite editar e salvar a tag de cada setor.
 - Masculina 2 utiliza inicialmente a tag “INFECTO/PPL”.
+- Nas Salas Vermelhas, pacientes internados acima de zero aparecem em vermelho com o símbolo ⚠.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

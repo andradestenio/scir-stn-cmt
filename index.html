@@ -3478,10 +3478,15 @@
         ? `<span class="hospub-care-tag ${careClass}">${escapeHtml(careArea)}</span>`
         : "");
       const rowClass = hospubSectorRowClass(sector);
+      const redRoomOccupied = String(sector.key || "").includes("sala-vermelha") && metrics.occupied !== null && metrics.occupied > 0;
       const operationalCell = hospubCapacityEditing
         ? `<input class="hospub-capacity-input" data-hospub-capacity-key="${encodedKey}" type="number" min="0" step="1" value="${metrics.operational ?? ""}" aria-label="Leitos operacionais de ${escapeHtml(sector.label)}">`
         : `<span class="hospub-capacity-value">${metrics.operational ?? "Não informado"}</span>`;
       const occupiedText = metrics.occupied === null ? "Aguardando Hospub" : String(metrics.occupied);
+      const occupiedAlert = redRoomOccupied
+        ? '<span class="hospub-rate-alert" role="img" aria-label="Paciente internado em Sala Vermelha" title="Paciente internado em Sala Vermelha">⚠</span>'
+        : "";
+      const occupiedClass = metrics.occupied === null ? "unknown" : (redRoomOccupied ? "full" : "available");
       const availableText = metrics.available === null ? "—" : String(metrics.available);
       const rateText = metrics.occupancyRate === null ? "—" : `${metrics.occupancyRate.toFixed(1).replace(".",",")}%`;
       const rateAlert = metrics.occupancyRate !== null && metrics.occupancyRate >= 100
@@ -3490,7 +3495,7 @@
       return `<tr${rowClass ? ` class="${rowClass}"` : ""}>
         <td><div class="hospub-sector-name"><strong>${escapeHtml(sector.label)}</strong>${careTag}</div></td>
         <td>${operationalCell}</td>
-        <td><span class="hospub-metric-tag ${metrics.occupied === null ? "unknown" : "available"}">${occupiedText}</span></td>
+        <td><span class="hospub-metric-tag ${occupiedClass}">${occupiedAlert}${occupiedText}</span></td>
         <td><span class="hospub-metric-tag ${hospubMetricClass(metrics,"available")}">${availableText}</span></td>
         <td><span class="hospub-metric-tag ${hospubMetricClass(metrics,"rate")}">${rateAlert}${rateText}</span></td>
       </tr>`;
