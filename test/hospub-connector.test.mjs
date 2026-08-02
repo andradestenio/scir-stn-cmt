@@ -73,6 +73,20 @@ test("tabela Hospub exibe totais consolidados no rodapé",() => {
   assert.match(html,/<td>TOTAL<\/td>/);
 });
 
+test("cabeçalho Hospub é simétrico e setores exibem as tags assistenciais",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/\.hospub-module-actions\{display:grid;width:min\(760px,100%\);grid-template-columns:repeat\(3,minmax\(190px,1fr\)\);align-items:stretch;/);
+  assert.match(html,/\.hospub-module-actions>\.bed-census-meta\{display:flex;min-height:56px;/);
+  assert.match(html,/\.hospub-module-actions>\.btn\{min-height:56px;/);
+  assert.match(html,/\.hospub-connection-status\{display:inline-flex;align-items:center;justify-content:center;min-height:56px;/);
+  assert.match(html,/key:"clinica-feminina",label:"Clínica Feminina",careArea:"INFECTO\/CM"/);
+  assert.match(html,/key:"masculina-1",label:"Masculina 1",careArea:"CM"/);
+  assert.match(html,/key:"uti-geral",label:"UTI Geral",careArea:"CM"/);
+  assert.match(html,/key:"uti-infecto",label:"UTI Infecto",careArea:"INFECTO"/);
+  assert.match(html,/class="hospub-sector-name"/);
+  assert.match(html,/class="hospub-care-tag \$\{careClass\}"/);
+});
+
 test("conector inclui setores PA e transmite apenas totais consolidados",() => {
   const content = fs.readFileSync(new URL("conector-hospub/content-hospub.js",root),"utf8");
   assert.match(content,/labels\.some\(label => label\.startsWith\("PA\/"\)\)/);

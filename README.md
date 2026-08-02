@@ -105,6 +105,14 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.3 — simetria e identificação assistencial
+
+- O status do conector, a última atualização e o botão de atualização possuem
+  agora a mesma largura, altura, alinhamento e raio de borda.
+- Cada setor recebeu sua tag assistencial: `INFECTO`, `CM` ou `INFECTO/CM`.
+- As tags usam cores próprias e permanecem alinhadas ao nome do setor em todas
+  as linhas da tabela.
+
 ### Versão 1.11.2 — leitura de setores sem pacientes
 
 - Corrigida a consulta de setores como **PA/Observação** quando o Hospub mostra
