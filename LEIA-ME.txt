@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.8.0 com histórico de e-mails por plantão
+SCIR — NIR CEMETRON | Versão 1.9.0 com produtividade registrada por plantão
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -21,6 +21,10 @@ CAMINHO SIMPLIFICADO
 - No relatório SBAR, “Vagas disponíveis” é um campo amplo para texto longo.
 - O histórico, as contagens e a lista de e-mails mostram somente as mensagens do plantão atual.
 - E-mails respondidos de plantões anteriores não aparecem no plantão seguinte.
+- Após a leitura, o e-mail pode ser finalizado como “Respondido” ou “Ciente 👍🏻”.
+- “Ciente 👍🏻” aparece em roxo e permanece somente no histórico daquele plantão.
+- O relatório registra e-mails recebidos, respondidos, cientes e todas as atualizações do censo.
+- Esses indicadores permanecem no histórico do plantão e nas exportações PDF e Excel.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

@@ -84,6 +84,17 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - E-mails pendentes, lidos ou respondidos de plantões anteriores não aparecem
   no plantão seguinte.
 
+### Versão 1.9 — produtividade do plantão
+
+- O relatório do plantão registra os totais de e-mails recebidos, respondidos
+  e classificados como `Ciente 👍🏻`.
+- `Ciente 👍🏻` é um desfecho final em roxo para mensagens que não exigem
+  resposta; após a leitura, pode ser escolhido no lugar de `Respondido`.
+- Cada atualização do censo realizada durante o plantão é preservada com data,
+  hora, responsável, disponibilidade informada e observações.
+- Os indicadores e as atualizações do censo aparecem na tela do relatório, no
+  histórico de plantões e nas exportações PDF e Excel.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.

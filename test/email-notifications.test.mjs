@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {createSessionCookie} from "../lib/auth.js";
 import listHandler from "../api/email-notifications.js";
 import statusHandler from "../api/email-notification-status.js";
@@ -26,6 +27,17 @@ function responseRecorder(){
     end(body){ this.body = body || ""; }
   };
 }
+
+test("interface inclui ciência em roxo e produtividade no histórico do plantão", () => {
+  const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  assert.match(html, /data-email-action="acknowledged"/);
+  assert.match(html, /Ciente 👍🏻/);
+  assert.match(html, /\.email-status-tag\.acknowledged/);
+  assert.match(html, /background:#f3e8ff/);
+  assert.match(html, /emailSummary:buildEmailProductivitySummary\(\)/);
+  assert.match(html, /censusUpdates:JSON\.parse\(JSON\.stringify\(state\.shiftCensusUpdates/);
+  assert.match(html, /historyCensusHistoryBody/);
+});
 
 test("lista somente as notificações vinculadas ao plantão solicitado", async () => {
   const originalFetch = global.fetch;
@@ -79,7 +91,8 @@ test("lista somente as notificações vinculadas ao plantão solicitado", async 
       receivedAt:"2026-07-26T22:42:00.000Z",
       createdAt:"2026-07-26T22:42:01.000Z",
       readAt:null,
-      respondedAt:null
+      respondedAt:null,
+      acknowledgedAt:null
     });
   }finally{
     global.fetch = originalFetch;
@@ -164,6 +177,49 @@ test("evolui um e-mail lido para respondido", async () => {
     assert.equal(JSON.parse(res.body).action, "responded");
     assert.equal(storedState.read_at, "2026-07-26T22:43:00.000Z");
     assert.ok(storedState.responded_at);
+    assert.equal(storedState.acknowledged_at, null);
+    assert.equal(storedState.shift_id, "plantao-atual");
+  }finally{
+    global.fetch = originalFetch;
+  }
+});
+
+test("finaliza um e-mail lido como ciente", async () => {
+  const originalFetch = global.fetch;
+  let storedState;
+  let requestNumber = 0;
+  global.fetch = async (_url, options={}) => {
+    requestNumber += 1;
+    if(requestNumber === 1){
+      return new Response(JSON.stringify([{
+        state:{
+          event_key:"message-ciente",
+          shift_id:"plantao-atual",
+          sender:"Direção",
+          subject:"Comunicado",
+          received_at:"2026-07-26T22:42:00.000Z",
+          created_at:"2026-07-26T22:42:01.000Z",
+          read_at:"2026-07-26T22:43:00.000Z"
+        }
+      }]), {status:200});
+    }
+    storedState = JSON.parse(options.body).state;
+    return new Response(JSON.stringify([{state:storedState}]), {status:201});
+  };
+
+  try{
+    const req = {
+      method:"PUT",
+      headers:{cookie:createSessionCookie().split(";")[0]},
+      body:{eventKey:"message-ciente", action:"acknowledged"}
+    };
+    const res = responseRecorder();
+    await statusHandler(req, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(JSON.parse(res.body).action, "acknowledged");
+    assert.equal(storedState.read_at, "2026-07-26T22:43:00.000Z");
+    assert.ok(storedState.acknowledged_at);
+    assert.equal(storedState.responded_at, null);
     assert.equal(storedState.shift_id, "plantao-atual");
   }finally{
     global.fetch = originalFetch;

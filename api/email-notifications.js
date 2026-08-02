@@ -51,7 +51,8 @@ export default async function handler(req, res){
         receivedAt:row.received_at,
         createdAt:row.created_at,
         readAt:row.read_at || null,
-        respondedAt:row.responded_at || null
+        respondedAt:row.responded_at || null,
+        acknowledgedAt:row.acknowledged_at || null
       }));
     return json(res, 200, {
       notifications,

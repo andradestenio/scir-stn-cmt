@@ -312,6 +312,10 @@
       background:#f0fdf4;
     }
 
+    .email-notification-item.acknowledged{
+      background:#faf5ff;
+    }
+
     .email-notification-item.unread::before{
       content:"";
       position:absolute;
@@ -388,6 +392,19 @@
       color:#166534;
     }
 
+    .email-status-tag.acknowledged{
+      border-color:#c084fc;
+      background:#f3e8ff;
+      color:#6b21a8;
+    }
+
+    .email-notification-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+
     .email-mark-read-button{
       min-height:32px;
       padding:6px 10px;
@@ -408,6 +425,12 @@
     .email-mark-read-button:disabled{
       opacity:.6;
       cursor:wait;
+    }
+
+    .email-mark-read-button.acknowledged-action{
+      border-color:#c084fc;
+      background:#f3e8ff;
+      color:#6b21a8;
     }
 
     .email-notification-empty{
@@ -456,6 +479,12 @@
       color:#166534;
     }
 
+    .email-summary-tag.acknowledged{
+      border-color:#c084fc;
+      background:#f3e8ff;
+      color:#6b21a8;
+    }
+
     .email-integration-status{
       margin-top:12px;
       padding:11px 13px;
@@ -500,6 +529,10 @@
 
     .email-notifications-dashboard-list .email-notification-item.responded{
       border-color:#86efac;
+    }
+
+    .email-notifications-dashboard-list .email-notification-item.acknowledged{
+      border-color:#c084fc;
     }
 
     .email-alert-toast{
@@ -853,6 +886,50 @@
       line-height:1.6;
     }
 
+    .shift-productivity-summary{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin:0 0 16px;
+    }
+
+    .shift-productivity-card{
+      padding:13px 14px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      background:#f8fafc;
+    }
+
+    .shift-productivity-card span{
+      display:block;
+      margin-bottom:5px;
+      color:#64748b;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .shift-productivity-card strong{
+      display:block;
+      color:var(--navy);
+      font-size:22px;
+      line-height:1.1;
+    }
+
+    .shift-census-history{
+      margin:0 0 18px;
+    }
+
+    .shift-census-history h4,
+    .shift-records-heading{
+      margin:0 0 9px;
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .productivity-history-table{
+      min-width:820px;
+    }
+
     .table-wrap{
       overflow-x:auto;
       border:1px solid var(--line);
@@ -990,6 +1067,7 @@
       nav button{min-width:max-content}
       .grid{grid-template-columns:repeat(2,1fr)}
       .form-grid{grid-template-columns:1fr 1fr}
+      .shift-productivity-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
 
     @media(max-width:650px){
@@ -999,6 +1077,7 @@
       .grid{grid-template-columns:1fr}
       .form-grid{grid-template-columns:1fr}
       .record-grid{grid-template-columns:1fr}
+      .shift-productivity-summary{grid-template-columns:1fr}
     }
   </style>
   <style>.calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}
@@ -1699,6 +1778,7 @@
           <span class="email-summary-tag pending"><strong>0</strong> Pendentes</span>
           <span class="email-summary-tag read"><strong>0</strong> Lidos</span>
           <span class="email-summary-tag responded"><strong>0</strong> Respondidos</span>
+          <span class="email-summary-tag acknowledged"><strong>0</strong> Cientes 👍🏻</span>
         </div>
         <div class="email-notifications-dashboard-list" id="dashboardEmailNotifications">
           <div class="email-notification-empty">As notificações recentes aparecerão aqui.</div>
@@ -1879,6 +1959,24 @@
           </div>
         </div>
 
+        <div class="shift-productivity-summary" aria-label="Produtividade do plantão">
+          <div class="shift-productivity-card"><span>E-mails recebidos</span><strong id="shiftEmailReceived">0</strong></div>
+          <div class="shift-productivity-card"><span>E-mails respondidos</span><strong id="shiftEmailResponded">0</strong></div>
+          <div class="shift-productivity-card"><span>E-mails com ciência</span><strong id="shiftEmailAcknowledged">0</strong></div>
+          <div class="shift-productivity-card"><span>Atualizações do censo</span><strong id="shiftCensusUpdateCount">0</strong></div>
+        </div>
+
+        <div class="shift-census-history">
+          <h4>Atualizações do censo no plantão</h4>
+          <div class="table-wrap">
+            <table class="records-table productivity-history-table">
+              <thead><tr><th>Data e hora</th><th>Responsável</th><th>Disponibilidade registrada</th><th>Observações</th></tr></thead>
+              <tbody id="shiftCensusHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <h4 class="shift-records-heading">Registros de regulação do plantão</h4>
         <div class="table-wrap">
           <table class="records-table">
             <thead>
@@ -1977,6 +2075,8 @@
                 <th>Plantonista</th>
                 <th>Encerramento</th>
                 <th>Registros</th>
+                <th>E-mails</th>
+                <th>Censos</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -1996,6 +2096,25 @@
             <button class="btn btn-excel" id="historyExportExcel">Exportar para Excel</button>
           </div>
         </div>
+
+        <div class="shift-productivity-summary" aria-label="Produtividade do plantão encerrado">
+          <div class="shift-productivity-card"><span>E-mails recebidos</span><strong id="historyEmailReceived">—</strong></div>
+          <div class="shift-productivity-card"><span>E-mails respondidos</span><strong id="historyEmailResponded">—</strong></div>
+          <div class="shift-productivity-card"><span>E-mails com ciência</span><strong id="historyEmailAcknowledged">—</strong></div>
+          <div class="shift-productivity-card"><span>Atualizações do censo</span><strong id="historyCensusUpdateCount">—</strong></div>
+        </div>
+
+        <div class="shift-census-history">
+          <h4>Atualizações do censo no plantão</h4>
+          <div class="table-wrap">
+            <table class="records-table productivity-history-table">
+              <thead><tr><th>Data e hora</th><th>Responsável</th><th>Disponibilidade registrada</th><th>Observações</th></tr></thead>
+              <tbody id="historyCensusHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <h4 class="shift-records-heading">Registros de regulação do plantão</h4>
         <div class="table-wrap">
           <table class="records-table">
             <thead>
@@ -2250,6 +2369,7 @@
     dashboardNotes: "",
     dashboardNotesUpdatedAt: null,
     standardMessages: [],
+    shiftCensusUpdates: [],
     bedCensus: {
       infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
       clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
@@ -2267,6 +2387,7 @@
   state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
   state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
   state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+  state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
   state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
     infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
     clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
@@ -2288,6 +2409,7 @@
   if(state.shift && !state.shift.status){
     state.shift.status = "EM ANDAMENTO";
   }
+  seedLatestCensusForCurrentShift();
 
   let editingRecordId = null;
   let selectedHistoryId = null;
@@ -2305,6 +2427,7 @@
   let emailAudioContext = null;
   let emailNotificationPollTimer = null;
   let emailNotificationRequestInFlight = false;
+  let emailNotificationRequestPromise = null;
   let emailAlertTimer = null;
 
   const $ = id => document.getElementById(id);
@@ -2378,7 +2501,7 @@
   }
 
   function isEmailNotificationUnread(notification){
-    if(notification.readAt || notification.respondedAt) return false;
+    if(notification.readAt || notification.respondedAt || notification.acknowledgedAt) return false;
     const eventTime = new Date(notification.createdAt || notification.receivedAt).getTime();
     return Number.isFinite(eventTime) && eventTime > emailLastReadAt();
   }
@@ -2387,12 +2510,22 @@
     const unreadClass = isEmailNotificationUnread(notification) ? " unread" : "";
     const status = notification.respondedAt
       ? {key:"responded", label:"Respondido", action:null, buttonLabel:null}
+      : notification.acknowledgedAt
+        ? {key:"acknowledged", label:"Ciente 👍🏻", action:null, buttonLabel:null}
       : notification.readAt
-        ? {key:"read", label:"Lido", action:"responded", buttonLabel:"Marcar como respondido"}
+        ? {key:"read", label:"Lido", action:"final", buttonLabel:null}
         : {key:"pending", label:"Pendente", action:"read", buttonLabel:"Marcar como lida"};
-    const action = status.action && notification.eventKey
-      ? `<button class="email-mark-read-button" type="button" data-email-action="${status.action}" data-email-event-key="${encodeURIComponent(String(notification.eventKey))}">${status.buttonLabel}</button>`
+    const encodedEventKey = notification.eventKey
+      ? encodeURIComponent(String(notification.eventKey))
       : "";
+    const action = status.action === "final" && encodedEventKey
+      ? `<div class="email-notification-actions">
+          <button class="email-mark-read-button" type="button" data-email-action="responded" data-email-event-key="${encodedEventKey}">Marcar como respondido</button>
+          <button class="email-mark-read-button acknowledged-action" type="button" data-email-action="acknowledged" data-email-event-key="${encodedEventKey}">Ciente 👍🏻</button>
+        </div>`
+      : status.action && encodedEventKey
+        ? `<button class="email-mark-read-button" type="button" data-email-action="${status.action}" data-email-event-key="${encodedEventKey}">${status.buttonLabel}</button>`
+        : "";
     return `<article class="email-notification-item${unreadClass} ${status.key}">
       <strong>Novo e-mail recebido</strong>
       <dl>
@@ -2478,10 +2611,11 @@
 
   function renderEmailNotifications(){
     renderEmailSoundControl();
-    const pendingNotifications = emailNotifications.filter(item => !item.readAt && !item.respondedAt);
-    const readNotifications = emailNotifications.filter(item => item.readAt && !item.respondedAt);
+    const pendingNotifications = emailNotifications.filter(item => !item.readAt && !item.respondedAt && !item.acknowledgedAt);
+    const readNotifications = emailNotifications.filter(item => item.readAt && !item.respondedAt && !item.acknowledgedAt);
     const respondedNotifications = emailNotifications.filter(item => item.respondedAt);
-    const activeNotifications = emailNotifications.filter(item => !item.respondedAt);
+    const acknowledgedNotifications = emailNotifications.filter(item => item.acknowledgedAt && !item.respondedAt);
+    const activeNotifications = emailNotifications.filter(item => !item.respondedAt && !item.acknowledgedAt);
     const displayedNotifications = emailHistoryMode ? emailNotifications : activeNotifications;
     const unreadCount = emailNotifications.filter(isEmailNotificationUnread).length;
     ["emailNotificationBadge","emailNotificationBadgeMobile"].forEach(id => {
@@ -2502,7 +2636,8 @@
       summary.innerHTML = `
         <span class="email-summary-tag pending"><strong>${pendingNotifications.length}</strong> Pendentes</span>
         <span class="email-summary-tag read"><strong>${readNotifications.length}</strong> Lidos</span>
-        <span class="email-summary-tag responded"><strong>${respondedNotifications.length}</strong> Respondidos</span>`;
+        <span class="email-summary-tag responded"><strong>${respondedNotifications.length}</strong> Respondidos</span>
+        <span class="email-summary-tag acknowledged"><strong>${acknowledgedNotifications.length}</strong> Cientes 👍🏻</span>`;
     }
 
     const activeTab = $("emailActiveTab");
@@ -2577,42 +2712,47 @@
   }
 
   async function loadEmailNotifications({announce=true}={}){
-    if(emailNotificationRequestInFlight) return;
+    if(emailNotificationRequestPromise) return emailNotificationRequestPromise;
     emailNotificationRequestInFlight = true;
-    const previousKeys = new Set(emailNotifications.map(item => item.eventKey));
-    const shiftId = currentEmailShiftId();
-    const historyShiftId = currentEmailHistoryShiftId();
-    const shiftStartedAt = currentEmailShiftStartedAt();
-    const requestParameters = new URLSearchParams();
-    if(historyShiftId) requestParameters.set("historyShiftId", historyShiftId);
-    if(shiftId){
-      requestParameters.set("shiftId", shiftId);
-      requestParameters.set("shiftStartedAt", shiftStartedAt || "");
-    }
-    const requestQuery = requestParameters.toString();
-    const requestPath = requestQuery
-      ? `/api/email-notifications?${requestQuery}`
-      : "/api/email-notifications";
-    try{
-      const result = await cloudRequest(requestPath);
-      const nextNotifications = Array.isArray(result.notifications) ? result.notifications : [];
-      emailIntegration = result.integration || emailIntegration;
-      emailMonitoringActive = Boolean(result.monitoringActive && shiftId);
-      const newlyReceived = emailNotificationsLoaded
-        ? nextNotifications.filter(item => !previousKeys.has(item.eventKey))
-        : [];
-      emailNotifications = nextNotifications;
-      emailNotificationsLoaded = true;
-      renderEmailNotifications();
-      if(announce && shiftId && currentEmailShiftId() === shiftId && newlyReceived.length){
-        showEmailAlert(newlyReceived[0]);
+    emailNotificationRequestPromise = (async () => {
+      const previousKeys = new Set(emailNotifications.map(item => item.eventKey));
+      const shiftId = currentEmailShiftId();
+      const historyShiftId = currentEmailHistoryShiftId();
+      const shiftStartedAt = currentEmailShiftStartedAt();
+      const requestParameters = new URLSearchParams();
+      if(historyShiftId) requestParameters.set("historyShiftId", historyShiftId);
+      if(shiftId){
+        requestParameters.set("shiftId", shiftId);
+        requestParameters.set("shiftStartedAt", shiftStartedAt || "");
       }
-    }catch(error){
-      if(error.status === 401) showLogin();
-      else console.error("Falha ao carregar notificações de e-mail.", error);
-    }finally{
+      const requestQuery = requestParameters.toString();
+      const requestPath = requestQuery
+        ? `/api/email-notifications?${requestQuery}`
+        : "/api/email-notifications";
+      try{
+        const result = await cloudRequest(requestPath);
+        const nextNotifications = Array.isArray(result.notifications) ? result.notifications : [];
+        emailIntegration = result.integration || emailIntegration;
+        emailMonitoringActive = Boolean(result.monitoringActive && shiftId);
+        const newlyReceived = emailNotificationsLoaded
+          ? nextNotifications.filter(item => !previousKeys.has(item.eventKey))
+          : [];
+        emailNotifications = nextNotifications;
+        emailNotificationsLoaded = true;
+        renderEmailNotifications();
+        renderShiftReportTable();
+        if(announce && shiftId && currentEmailShiftId() === shiftId && newlyReceived.length){
+          showEmailAlert(newlyReceived[0]);
+        }
+      }catch(error){
+        if(error.status === 401) showLogin();
+        else console.error("Falha ao carregar notificações de e-mail.", error);
+      }
+    })().finally(() => {
       emailNotificationRequestInFlight = false;
-    }
+      emailNotificationRequestPromise = null;
+    });
+    return emailNotificationRequestPromise;
   }
 
   function startEmailNotificationPolling(){
@@ -2693,16 +2833,25 @@
           ? {
               ...notification,
               readAt:notification.readAt || statusAt,
-              respondedAt:notification.respondedAt || statusAt
+              respondedAt:notification.respondedAt || statusAt,
+              acknowledgedAt:null
             }
+          : action === "acknowledged"
+            ? {
+                ...notification,
+                readAt:notification.readAt || statusAt,
+                acknowledgedAt:notification.acknowledgedAt || statusAt,
+                respondedAt:null
+              }
           : {...notification, readAt:notification.readAt || statusAt}
         : notification
     );
     renderEmailNotifications();
+    renderShiftReportTable();
   }
 
   async function updateSingleEmailStatus(eventKey, action, button){
-    if(!eventKey || !["read","responded"].includes(action)) return;
+    if(!eventKey || !["read","responded","acknowledged"].includes(action)) return;
     if(button){
       button.disabled = true;
       button.textContent = "Salvando…";
@@ -2717,19 +2866,27 @@
         result.action || action,
         result.statusAt || new Date().toISOString()
       );
-      toast(action === "responded" ? "E-mail marcado como respondido." : "E-mail marcado como lido.");
+      toast(action === "responded"
+        ? "E-mail marcado como respondido."
+        : action === "acknowledged"
+          ? "Ciência do e-mail registrada."
+          : "E-mail marcado como lido.");
     }catch(error){
       toast(error.message || "Não foi possível atualizar o e-mail.");
       if(button){
         button.disabled = false;
-        button.textContent = action === "responded" ? "Marcar como respondido" : "Marcar como lida";
+        button.textContent = action === "responded"
+          ? "Marcar como respondido"
+          : action === "acknowledged"
+            ? "Ciente 👍🏻"
+            : "Marcar como lida";
       }
     }
   }
 
   async function markEmailNotificationsRead(){
     const pendingEventKeys = emailNotifications
-      .filter(notification => !notification.readAt && !notification.respondedAt && notification.eventKey)
+      .filter(notification => !notification.readAt && !notification.respondedAt && !notification.acknowledgedAt && notification.eventKey)
       .map(notification => notification.eventKey);
     if(!pendingEventKeys.length){
       toast("Não há e-mails pendentes.");
@@ -2805,6 +2962,7 @@
         state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
         state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
         state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+        state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
         state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
           infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
           clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
@@ -2814,6 +2972,7 @@
           performedBy:"",
           updatedAt:null
         };
+        seedLatestCensusForCurrentShift();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }else{
         await cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state})});
@@ -2878,6 +3037,83 @@
       ["utiGeral","UTI Geral - Coletivo","🩸","uti"]
     ]
   };
+
+  function buildEmailProductivitySummary(notifications=emailNotifications){
+    const items = Array.isArray(notifications) ? notifications : [];
+    return {
+      received:items.length,
+      responded:items.filter(item => item.respondedAt).length,
+      acknowledged:items.filter(item => item.acknowledgedAt && !item.respondedAt).length,
+      read:items.filter(item => item.readAt && !item.respondedAt && !item.acknowledgedAt).length,
+      pending:items.filter(item => !item.readAt && !item.respondedAt && !item.acknowledgedAt).length,
+      capturedAt:new Date().toISOString()
+    };
+  }
+
+  function seedLatestCensusForCurrentShift(){
+    if(!state.shift || state.shift.status === "ENCERRADO") return;
+    state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
+    if(state.shiftCensusUpdates.length || !state.bedCensus?.updatedAt || !state.shift.startedAt) return;
+    const updatedAt = new Date(state.bedCensus.updatedAt).getTime();
+    const startedAt = new Date(state.shift.startedAt).getTime();
+    if(!Number.isFinite(updatedAt) || !Number.isFinite(startedAt) || updatedAt < startedAt) return;
+    state.shiftCensusUpdates.push({
+      ...JSON.parse(JSON.stringify(state.bedCensus)),
+      id:`census-migrated-${updatedAt}`,
+      shiftId:state.shift.id || null,
+      recordedAt:state.bedCensus.updatedAt
+    });
+  }
+
+  function censusUpdateDateTime(census){
+    if(census?.censusDate && census?.censusTime){
+      return `${formatDate(census.censusDate)} às ${census.censusTime}`;
+    }
+    return formatDateTime(census?.recordedAt || census?.updatedAt) || "Não informado";
+  }
+
+  function censusAvailabilitySummary(census){
+    const sections = [
+      ["Infectologia", "infectologia"],
+      ["Clínica Médica", "clinica"]
+    ];
+    const summaries = sections.map(([sectionLabel,sectionKey]) => {
+      const values = (BED_CENSUS_LABELS[sectionKey] || [])
+        .map(([key,label]) => {
+          const value = census?.[sectionKey]?.[key];
+          return value === "" || value === null || value === undefined
+            ? null
+            : `${label}: ${value}`;
+        })
+        .filter(Boolean);
+      return values.length ? `${sectionLabel} — ${values.join("; ")}` : null;
+    }).filter(Boolean);
+    return summaries.join(" | ") || "Sem quantitativos informados.";
+  }
+
+  function censusHistoryRowsMarkup(updates, emptyMessage="Nenhuma atualização de censo registrada neste plantão."){
+    const items = Array.isArray(updates) ? updates : [];
+    return items.length
+      ? items.map(census => `<tr>
+          <td>${escapeHtml(censusUpdateDateTime(census))}</td>
+          <td>${escapeHtml(census.performedBy || "Não informado")}</td>
+          <td>${escapeHtml(censusAvailabilitySummary(census))}</td>
+          <td>${escapeHtml(census.observations || "Sem observações.")}</td>
+        </tr>`).join("")
+      : `<tr><td colspan="4" class="empty-table">${escapeHtml(emptyMessage)}</td></tr>`;
+  }
+
+  function censusHistoryExcelRowsMarkup(updates, emptyMessage="Nenhuma atualização de censo registrada neste plantão."){
+    const items = Array.isArray(updates) ? updates : [];
+    return items.length
+      ? items.map(census => `<tr>
+          <td>${escapeHtml(censusUpdateDateTime(census))}</td>
+          <td>${escapeHtml(census.performedBy || "Não informado")}</td>
+          <td colspan="4">${escapeHtml(censusAvailabilitySummary(census))}</td>
+          <td>${escapeHtml(census.observations || "Sem observações.")}</td>
+        </tr>`).join("")
+      : `<tr><td colspan="7">${escapeHtml(emptyMessage)}</td></tr>`;
+  }
 
   function censusValueCell(value){
     const numeric = value === "" || value === null || value === undefined ? null : Number(value);
@@ -3219,10 +3455,23 @@ $("background").value = state.sbar.background || "";
     const body = $("shiftReportTableBody");
     const summary = $("selectedShiftSummary");
     const shift = state.shift || {};
+    const archivedItem = state.shift?.id
+      ? state.history.find(item => item.id === state.shift.id)
+      : null;
+    const emailSummary = archivedItem?.emailSummary || buildEmailProductivitySummary();
+    const censusUpdates = Array.isArray(archivedItem?.censusUpdates)
+      ? archivedItem.censusUpdates
+      : state.shiftCensusUpdates;
 
     summary.textContent = state.shift
       ? `${formatDate(shift.date)} — ${shift.type || "Plantão não informado"} — ${shift.professional || "Plantonista não informado"} — ${getShiftStatus()}${shift.endedAt ? ` — Encerrado em ${formatDateTime(shift.endedAt)}` : ""}`
       : "Nenhum plantão selecionado.";
+
+    if($("shiftEmailReceived")) $("shiftEmailReceived").textContent = String(emailSummary.received || 0);
+    if($("shiftEmailResponded")) $("shiftEmailResponded").textContent = String(emailSummary.responded || 0);
+    if($("shiftEmailAcknowledged")) $("shiftEmailAcknowledged").textContent = String(emailSummary.acknowledged || 0);
+    if($("shiftCensusUpdateCount")) $("shiftCensusUpdateCount").textContent = String(censusUpdates.length);
+    if($("shiftCensusHistoryBody")) $("shiftCensusHistoryBody").innerHTML = censusHistoryRowsMarkup(censusUpdates);
 
     if(!state.records.length){
       body.innerHTML = `<tr><td colspan="9" class="empty-table">Nenhum registro cadastrado neste plantão.</td></tr>`;
@@ -3321,7 +3570,7 @@ $("background").value = state.sbar.background || "";
     const items = getFilteredHistory();
 
     if(!items.length){
-      body.innerHTML = `<tr><td colspan="6" class="empty-table">Nenhum plantão encerrado encontrado.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="8" class="empty-table">Nenhum plantão encerrado encontrado.</td></tr>`;
       return;
     }
 
@@ -3332,6 +3581,10 @@ $("background").value = state.sbar.background || "";
         <td>${escapeHtml(item.shift.professional || "")}</td>
         <td>${escapeHtml(formatDateTime(item.shift.endedAt || item.archivedAt))}</td>
         <td>${item.records?.length || 0}</td>
+        <td>${item.emailSummary
+          ? `${item.emailSummary.received || 0} recebidos / ${item.emailSummary.responded || 0} respondidos / ${item.emailSummary.acknowledged || 0} cientes`
+          : "—"}</td>
+        <td>${Array.isArray(item.censusUpdates) ? item.censusUpdates.length : "—"}</td>
         <td><button class="btn btn-primary" onclick="viewHistoryReport('${item.id}')">Visualizar relatório</button></td>
       </tr>
     `).join("");
@@ -3347,6 +3600,19 @@ $("background").value = state.sbar.background || "";
       `${formatDate(item.shift.date)} — ${item.shift.type || ""} — ${item.shift.professional || ""} — ENCERRADO EM ${formatDateTime(item.shift.endedAt || item.archivedAt)}`;
 
     const records = Array.isArray(item.records) ? item.records.slice() : [];
+    const emailSummary = item.emailSummary || null;
+    const censusUpdates = Array.isArray(item.censusUpdates) ? item.censusUpdates : [];
+
+    $("historyEmailReceived").textContent = emailSummary ? String(emailSummary.received || 0) : "—";
+    $("historyEmailResponded").textContent = emailSummary ? String(emailSummary.responded || 0) : "—";
+    $("historyEmailAcknowledged").textContent = emailSummary ? String(emailSummary.acknowledged || 0) : "—";
+    $("historyCensusUpdateCount").textContent = Array.isArray(item.censusUpdates) ? String(censusUpdates.length) : "—";
+    $("historyCensusHistoryBody").innerHTML = censusHistoryRowsMarkup(
+      censusUpdates,
+      Array.isArray(item.censusUpdates)
+        ? "Nenhuma atualização de censo registrada neste plantão."
+        : "Informação não registrada nas versões anteriores."
+    );
 
     $("historyReportBody").innerHTML = records.length
       ? records.map((record, index) => {
@@ -3376,6 +3642,9 @@ $("background").value = state.sbar.background || "";
       type: item.shift.type || "NÃO INFORMADO",
       professional: item.shift.professional || "NÃO INFORMADO",
       endedAt: formatDateTime(item.shift.endedAt || item.archivedAt),
+      emailSummary:item.emailSummary || null,
+      censusUpdates:Array.isArray(item.censusUpdates) ? item.censusUpdates : [],
+      censusHistoryAvailable:Array.isArray(item.censusUpdates),
       records: Array.isArray(item.records) ? item.records.slice().sort((a,b) => String(a.requestTime).localeCompare(String(b.requestTime))) : []
     };
   }
@@ -3386,6 +3655,13 @@ $("background").value = state.sbar.background || "";
       alert("Selecione um plantão encerrado.");
       return;
     }
+    const emailSummary = data.emailSummary;
+    const censusRows = censusHistoryRowsMarkup(
+      data.censusUpdates,
+      data.censusHistoryAvailable
+        ? "Nenhuma atualização de censo registrada neste plantão."
+        : "Informação não registrada nas versões anteriores."
+    );
 
     const rows = data.records.length ? data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
@@ -3401,12 +3677,22 @@ $("background").value = state.sbar.background || "";
     }).join("") : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
 
     const doc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>${escapeHtml(data.title)}</title>
-    <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}
+    <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}h2{margin:14px 0 7px;color:#0f2747;font-size:13px}
+    .productivity{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}.metric{padding:8px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;font-size:11px}.metric strong{display:block;margin-top:3px;font-size:17px;color:#0f2747}
     table{width:100%;border-collapse:collapse;font-size:10px}th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
     td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}</style></head>
     <body><h1>${escapeHtml(data.title)}</h1><div class="meta"><strong>Data:</strong> ${escapeHtml(data.date)}<br>
     <strong>Plantão:</strong> ${escapeHtml(data.type)}<br><strong>Plantonista:</strong> ${escapeHtml(data.professional)}<br>
     <strong>Encerramento:</strong> ${escapeHtml(data.endedAt)}</div>
+    <div class="productivity">
+      <div class="metric">E-mails recebidos<strong>${emailSummary ? emailSummary.received || 0 : "—"}</strong></div>
+      <div class="metric">E-mails respondidos<strong>${emailSummary ? emailSummary.responded || 0 : "—"}</strong></div>
+      <div class="metric">E-mails com ciência<strong>${emailSummary ? emailSummary.acknowledged || 0 : "—"}</strong></div>
+      <div class="metric">Atualizações do censo<strong>${data.censusHistoryAvailable ? data.censusUpdates.length : "—"}</strong></div>
+    </div>
+    <h2>ATUALIZAÇÕES DO CENSO NO PLANTÃO</h2>
+    <table><thead><tr><th>Data e hora</th><th>Responsável</th><th>Disponibilidade registrada</th><th>Observações</th></tr></thead><tbody>${censusRows}</tbody></table>
+    <h2>REGISTROS DE REGULAÇÃO DO PLANTÃO</h2>
     <table><thead><tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
 
     const win = window.open("", "_blank", "width=1200,height=800");
@@ -3421,6 +3707,13 @@ $("background").value = state.sbar.background || "";
       alert("Selecione um plantão encerrado.");
       return;
     }
+    const emailSummary = data.emailSummary;
+    const censusRows = censusHistoryExcelRowsMarkup(
+      data.censusUpdates,
+      data.censusHistoryAvailable
+        ? "Nenhuma atualização de censo registrada neste plantão."
+        : "Informação não registrada nas versões anteriores."
+    );
 
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
@@ -3432,6 +3725,14 @@ $("background").value = state.sbar.background || "";
     <body><table><tr><td colspan="7"><strong>${escapeHtml(data.title)}</strong></td></tr>
     <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="4">${escapeHtml(data.type)}</td></tr>
     <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Encerramento</td><td colspan="4">${escapeHtml(data.endedAt)}</td></tr>
+    <tr><td class="meta">E-mails recebidos</td><td>${emailSummary ? emailSummary.received || 0 : "—"}</td><td class="meta">Respondidos</td><td>${emailSummary ? emailSummary.responded || 0 : "—"}</td><td class="meta">Cientes</td><td>${emailSummary ? emailSummary.acknowledged || 0 : "—"}</td><td></td></tr>
+    <tr><td class="meta">Atualizações do censo</td><td>${data.censusHistoryAvailable ? data.censusUpdates.length : "—"}</td><td colspan="5"></td></tr>
+    <tr><td colspan="7"></td></tr>
+    <tr><td colspan="7"><strong>Atualizações do censo no plantão</strong></td></tr>
+    <tr><th>Data e hora</th><th>Responsável</th><th colspan="4">Disponibilidade registrada</th><th>Observações</th></tr>
+    ${censusRows}
+    <tr><td colspan="7"></td></tr>
+    <tr><td colspan="7"><strong>Registros de regulação do plantão</strong></td></tr>
     <tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`}</table></body></html>`;
 
     downloadBlob("\ufeff" + workbook, "application/vnd.ms-excel;charset=utf-8", `historico_${safeFilename(data.date)}_${safeFilename(data.type)}.xls`);
@@ -3968,6 +4269,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         endedAt: null
       };
       state.records = [];
+      state.shiftCensusUpdates = [];
       state.sbar = {
         operationalStatus:"",
         turnover:"",
@@ -4074,6 +4376,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   function buildShiftReportData(){
     const shift = state.shift || {};
+    const archivedItem = shift.id ? state.history.find(item => item.id === shift.id) : null;
     return {
       title: "RELATÓRIO DO PLANTÃO - NIR CEMETRON",
       date: shift.date ? formatDate(shift.date) : "NÃO INFORMADA",
@@ -4082,6 +4385,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       status: getShiftStatus(),
       startedAt: shift.startedAt ? formatDateTime(shift.startedAt) : "",
       endedAt: shift.endedAt ? formatDateTime(shift.endedAt) : "",
+      emailSummary:archivedItem?.emailSummary || buildEmailProductivitySummary(),
+      censusUpdates:Array.isArray(archivedItem?.censusUpdates)
+        ? JSON.parse(JSON.stringify(archivedItem.censusUpdates))
+        : JSON.parse(JSON.stringify(state.shiftCensusUpdates || [])),
       records: state.records.slice().sort((a,b) => String(a.requestTime).localeCompare(String(b.requestTime)))
     };
   }
@@ -4096,6 +4403,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       shift: JSON.parse(JSON.stringify(state.shift)),
       records: JSON.parse(JSON.stringify(state.records)),
       sbar: JSON.parse(JSON.stringify(state.sbar)),
+      emailSummary:buildEmailProductivitySummary(),
+      censusUpdates:JSON.parse(JSON.stringify(state.shiftCensusUpdates || [])),
       archivedAt: new Date().toISOString()
     };
 
@@ -4107,7 +4416,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   }
 
-  function closeCurrentShift(){
+  async function closeCurrentShift(){
     if(!state.shift){
       alert("Nenhum plantão foi iniciado.");
       return;
@@ -4120,6 +4429,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
 
+    await loadEmailNotifications({announce:false});
     state.shift.status = "ENCERRADO";
     state.shift.endedAt = new Date().toISOString();
     archiveClosedShift();
@@ -4131,6 +4441,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   function createPrintableReport(){
     const data = buildShiftReportData();
+    const emailSummary = data.emailSummary || {received:0,responded:0,acknowledged:0};
+    const censusRows = censusHistoryRowsMarkup(data.censusUpdates);
     const rows = data.records.length
       ? data.records.map(record => {
           const meta = moduleMeta[record.module] || {title:"REGISTRO"};
@@ -4156,6 +4468,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   body{font-family:Arial,sans-serif;color:#111827;margin:0}
   h1{font-size:20px;margin:0 0 12px;color:#0f2747}
   .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:5px 18px;margin-bottom:16px;font-size:12px}
+  .productivity{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+  .metric{padding:8px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;font-size:11px}.metric strong{display:block;margin-top:3px;font-size:17px;color:#0f2747}
+  h2{margin:14px 0 7px;color:#0f2747;font-size:13px}
   table{width:100%;border-collapse:collapse;font-size:10px}
   th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
   td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}
@@ -4172,6 +4487,18 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     <div><strong>Início:</strong> ${escapeHtml(data.startedAt || "-")}</div>
     <div><strong>Encerramento:</strong> ${escapeHtml(data.endedAt || "-")}</div>
   </div>
+  <div class="productivity">
+    <div class="metric">E-mails recebidos<strong>${emailSummary.received || 0}</strong></div>
+    <div class="metric">E-mails respondidos<strong>${emailSummary.responded || 0}</strong></div>
+    <div class="metric">E-mails com ciência<strong>${emailSummary.acknowledged || 0}</strong></div>
+    <div class="metric">Atualizações do censo<strong>${data.censusUpdates.length}</strong></div>
+  </div>
+  <h2>ATUALIZAÇÕES DO CENSO NO PLANTÃO</h2>
+  <table>
+    <thead><tr><th>Data e hora</th><th>Responsável</th><th>Disponibilidade registrada</th><th>Observações</th></tr></thead>
+    <tbody>${censusRows}</tbody>
+  </table>
+  <h2>REGISTROS DE REGULAÇÃO DO PLANTÃO</h2>
   <table>
     <thead><tr>
       <th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th>
@@ -4211,6 +4538,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
 
     const data = buildShiftReportData();
+    const emailSummary = data.emailSummary || {received:0,responded:0,acknowledged:0};
+    const censusRows = censusHistoryExcelRowsMarkup(data.censusUpdates);
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
       return `<tr>
@@ -4249,7 +4578,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   <tr><td colspan="7" class="title">${escapeHtml(data.title)}</td></tr>
   <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="4">${escapeHtml(data.type)}</td></tr>
   <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Status</td><td>${escapeHtml(data.status)}</td><td class="meta">Encerramento</td><td colspan="2">${escapeHtml(data.endedAt || "-")}</td></tr>
+  <tr><td class="meta">E-mails recebidos</td><td>${emailSummary.received || 0}</td><td class="meta">Respondidos</td><td>${emailSummary.responded || 0}</td><td class="meta">Cientes</td><td>${emailSummary.acknowledged || 0}</td><td></td></tr>
+  <tr><td class="meta">Atualizações do censo</td><td>${data.censusUpdates.length}</td><td colspan="5"></td></tr>
   <tr><td colspan="7"></td></tr>
+  <tr><td colspan="7" class="title">Atualizações do censo no plantão</td></tr>
+  <tr><th>Data e hora</th><th>Responsável</th><th colspan="4">Disponibilidade registrada</th><th>Observações</th></tr>
+  ${censusRows}
+  <tr><td colspan="7"></td></tr>
+  <tr><td colspan="7" class="title">Registros de regulação do plantão</td></tr>
   <tr><th>Hora</th><th>Tipo</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
   ${rows || `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`}
 </table>
@@ -4493,9 +4829,20 @@ background: $("background").value.trim(),
       return;
     }
     state.bedCensus = census;
+    if(state.shift && !isShiftClosed()){
+      state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
+      state.shiftCensusUpdates.push({
+        ...JSON.parse(JSON.stringify(census)),
+        id:crypto.randomUUID ? crypto.randomUUID() : `census-${Date.now()}`,
+        shiftId:state.shift.id || null,
+        recordedAt:census.updatedAt
+      });
+    }
     saveState();
     closeBedCensusModal();
-    toast("Censo de leitos registrado.");
+    toast(state.shift && !isShiftClosed()
+      ? "Censo registrado no histórico deste plantão."
+      : "Censo registrado sem vínculo com plantão ativo.");
   });
 
   $("dismissShiftReminder").addEventListener("click", hideShiftReminder);
@@ -4588,6 +4935,7 @@ background: $("background").value.trim(),
       state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
       state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
       state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+      state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
       state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
         infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
         clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
@@ -4597,6 +4945,7 @@ background: $("background").value.trim(),
         performedBy:"",
         updatedAt:null
       };
+      seedLatestCensusForCurrentShift();
       saveState();
       toast("Backup importado e enviado à nuvem.");
     }catch{
