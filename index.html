@@ -1349,6 +1349,8 @@
   .hospub-care-tag.infecto{border-color:#c4b5fd;background:#ede9fe;color:#5b21b6}
   .hospub-care-tag.cm{border-color:#93c5fd;background:#dbeafe;color:#1e40af}
   .hospub-care-tag.mixed{border-color:#a5b4fc;background:linear-gradient(90deg,#ede9fe 0 50%,#dbeafe 50%);color:#312e81}
+  .hospub-care-tag.ppl{border-color:#f0abfc;background:#fae8ff;color:#86198f}
+  .hospub-care-select{width:145px;min-height:34px;padding:6px 28px 6px 8px;border-radius:7px;font-size:11px;font-weight:800}
   .hospub-capacity-input{width:92px;min-height:36px;padding:7px;text-align:center;font-size:13px}
   .hospub-capacity-value{font-weight:800;color:#334155}
   .hospub-metric-tag{display:inline-flex;align-items:center;justify-content:center;min-width:62px;min-height:27px;padding:4px 9px;border:1px solid transparent;border-radius:7px;font-size:12px;font-weight:850}
@@ -1356,6 +1358,7 @@
   .hospub-metric-tag.warning{border-color:#facc15;background:#fef3c7;color:#92400e}
   .hospub-metric-tag.full{border-color:#fca5a5;background:#fee2e2;color:#991b1b}
   .hospub-metric-tag.unknown{border-color:#cbd5e1;background:#f1f5f9;color:#64748b;font-weight:700}
+  .hospub-rate-alert{display:inline-flex;align-items:center;justify-content:center;margin-right:5px;color:#b91c1c;font-size:15px;line-height:1}
   .hospub-privacy-note{display:flex;align-items:flex-start;gap:9px;margin-top:16px;padding:12px 14px;border:1px solid #bfdbfe;border-radius:9px;background:#eff6ff;color:#1e3a8a;font-size:12px;line-height:1.5}
   .hospub-privacy-note strong{font-size:16px;line-height:1}
   .hospub-capacity-help{margin:0;color:#64748b;font-size:12px}
@@ -2007,11 +2010,11 @@
           <div class="hospub-sector-panel-header">
             <div>
               <h4>Ocupação por setor</h4>
-              <p class="hospub-capacity-help" id="hospubCapacityHelp">Configure uma vez o total de leitos operacionais de cada setor.</p>
+              <p class="hospub-capacity-help" id="hospubCapacityHelp">Configure os leitos operacionais e as tags assistenciais de cada setor.</p>
             </div>
             <div class="actions" style="margin-top:0">
               <button class="btn btn-secondary hidden" id="cancelHospubCapacityConfig" type="button">Cancelar</button>
-              <button class="btn btn-secondary" id="toggleHospubCapacityConfig" type="button">Configurar leitos operacionais</button>
+              <button class="btn btn-secondary" id="toggleHospubCapacityConfig" type="button">Configurar leitos e tags</button>
             </div>
           </div>
           <div class="table-wrap" style="border:0;border-radius:0">
@@ -2524,11 +2527,12 @@
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
+  const HOSPUB_CARE_AREA_OPTIONS = ["","INFECTO","CM","INFECTO/CM","INFECTO/PPL","PPL"];
   const HOSPUB_DEFAULT_SECTORS = [
     {key:"clinica-feminina",label:"Clínica Feminina",careArea:"INFECTO/CM"},
     {key:"isolamento",label:"Isolamento",careArea:"INFECTO"},
     {key:"masculina-1",label:"Masculina 1",careArea:"CM"},
-    {key:"masculina-2",label:"Masculina 2",careArea:"INFECTO"},
+    {key:"masculina-2",label:"Masculina 2",careArea:"INFECTO/PPL"},
     {key:"masculina-3",label:"Masculina 3",careArea:"INFECTO"},
     {key:"pa-geral",label:"PA/Geral",careArea:"INFECTO"},
     {key:"pa-internacao",label:"PA/Internação",careArea:"INFECTO"},
@@ -2540,7 +2544,7 @@
   ];
 
   function emptyHospubCensus(){
-    return {sectors:[],capacities:{},capturedAt:null,lastFingerprint:"",lastRecordedShiftId:null};
+    return {sectors:[],capacities:{},careAreas:{},capturedAt:null,lastFingerprint:"",lastRecordedShiftId:null};
   }
 
   function normalizeHospubCensus(value){
@@ -2551,6 +2555,12 @@
       capacities[key] = raw === "" || raw === null || raw === undefined
         ? ""
         : Math.max(0, Number(raw) || 0);
+    });
+    const careAreas = {};
+    Object.entries(source.careAreas || {}).forEach(([key,raw]) => {
+      if(!/^[a-z0-9-]{1,90}$/.test(key)) return;
+      const careArea = String(raw || "").slice(0,30);
+      if(HOSPUB_CARE_AREA_OPTIONS.includes(careArea)) careAreas[key] = careArea;
     });
     const sectors = Array.isArray(source.sectors)
       ? source.sectors.slice(0,50).map(item => {
@@ -2569,6 +2579,7 @@
       ...source,
       sectors,
       capacities,
+      careAreas,
       capturedAt:source.capturedAt || null,
       lastFingerprint:String(source.lastFingerprint || ""),
       lastRecordedShiftId:source.lastRecordedShiftId || null
@@ -2655,6 +2666,7 @@
   let hospubCensusResponseTimer = null;
   let hospubCapacityEditing = false;
   let hospubCapacityDraft = {};
+  let hospubCareAreaDraft = {};
 
   const $ = id => document.getElementById(id);
 
@@ -3409,6 +3421,12 @@
     return Number.isFinite(numeric) ? Math.max(0,numeric) : null;
   }
 
+  function hospubCareAreaFor(sector, source=state.hospubCensus?.careAreas){
+    const key = String(sector?.key || "");
+    if(source && Object.prototype.hasOwnProperty.call(source,key)) return String(source[key] || "");
+    return String(sector?.careArea || "");
+  }
+
   function hospubSectorMetrics(sector, capacities=state.hospubCensus?.capacities){
     const operational = hospubCapacityFor(sector.key,capacities);
     const rawOccupied = sector?.occupied;
@@ -3445,14 +3463,20 @@
     if(!body || !foot) return;
     const sectors = hospubSectorRows();
     const capacities = hospubCapacityEditing ? hospubCapacityDraft : state.hospubCensus.capacities;
+    const careAreas = hospubCapacityEditing ? hospubCareAreaDraft : state.hospubCensus.careAreas;
     body.innerHTML = sectors.map(sector => {
       const metrics = hospubSectorMetrics(sector,capacities);
       const encodedKey = encodeURIComponent(sector.key);
-      const careArea = String(sector.careArea || "");
-      const careClass = careArea === "CM" ? "cm" : (careArea === "INFECTO/CM" ? "mixed" : "infecto");
-      const careTag = careArea
+      const careArea = hospubCareAreaFor(sector,careAreas);
+      const normalizedCareArea = careArea.replace(/\s+/g,"");
+      const careClass = normalizedCareArea === "CM"
+        ? "cm"
+        : (normalizedCareArea === "INFECTO/CM" ? "mixed" : (normalizedCareArea.includes("PPL") ? "ppl" : "infecto"));
+      const careTag = hospubCapacityEditing
+        ? `<select class="hospub-care-select" data-hospub-care-key="${encodedKey}" aria-label="Tag assistencial de ${escapeHtml(sector.label)}">${HOSPUB_CARE_AREA_OPTIONS.map(option => `<option value="${escapeHtml(option)}"${option === careArea ? " selected" : ""}>${escapeHtml(option || "Sem tag")}</option>`).join("")}</select>`
+        : (careArea
         ? `<span class="hospub-care-tag ${careClass}">${escapeHtml(careArea)}</span>`
-        : "";
+        : "");
       const rowClass = hospubSectorRowClass(sector);
       const operationalCell = hospubCapacityEditing
         ? `<input class="hospub-capacity-input" data-hospub-capacity-key="${encodedKey}" type="number" min="0" step="1" value="${metrics.operational ?? ""}" aria-label="Leitos operacionais de ${escapeHtml(sector.label)}">`
@@ -3460,12 +3484,15 @@
       const occupiedText = metrics.occupied === null ? "Aguardando Hospub" : String(metrics.occupied);
       const availableText = metrics.available === null ? "—" : String(metrics.available);
       const rateText = metrics.occupancyRate === null ? "—" : `${metrics.occupancyRate.toFixed(1).replace(".",",")}%`;
+      const rateAlert = metrics.occupancyRate !== null && metrics.occupancyRate >= 100
+        ? '<span class="hospub-rate-alert" role="img" aria-label="Ocupação máxima atingida" title="Ocupação máxima atingida">⚠</span>'
+        : "";
       return `<tr${rowClass ? ` class="${rowClass}"` : ""}>
         <td><div class="hospub-sector-name"><strong>${escapeHtml(sector.label)}</strong>${careTag}</div></td>
         <td>${operationalCell}</td>
         <td><span class="hospub-metric-tag ${metrics.occupied === null ? "unknown" : "available"}">${occupiedText}</span></td>
         <td><span class="hospub-metric-tag ${hospubMetricClass(metrics,"available")}">${availableText}</span></td>
-        <td><span class="hospub-metric-tag ${hospubMetricClass(metrics,"rate")}">${rateText}</span></td>
+        <td><span class="hospub-metric-tag ${hospubMetricClass(metrics,"rate")}">${rateAlert}${rateText}</span></td>
       </tr>`;
     }).join("");
 
@@ -3503,11 +3530,11 @@
       ? "Monitoramento pausado — inicie um plantão"
       : hospubConnectorMessage;
     $("hospubRefreshNow").disabled = !state.shift || isShiftClosed() || hospubScanInProgress;
-    $("toggleHospubCapacityConfig").textContent = hospubCapacityEditing ? "Salvar configuração" : "Configurar leitos operacionais";
+    $("toggleHospubCapacityConfig").textContent = hospubCapacityEditing ? "Salvar configuração" : "Configurar leitos e tags";
     $("cancelHospubCapacityConfig").classList.toggle("hidden",!hospubCapacityEditing);
     $("hospubCapacityHelp").textContent = hospubCapacityEditing
-      ? "Informe o número total de leitos operacionais e clique em Salvar configuração."
-      : "Configure uma vez o total de leitos operacionais de cada setor.";
+      ? "Informe os leitos operacionais, escolha a tag assistencial de cada setor e clique em Salvar configuração."
+      : "Configure os leitos operacionais e as tags assistenciais de cada setor.";
   }
 
   function setHospubConnectorStatus(message,className=""){
@@ -5377,18 +5404,25 @@ background: $("background").value.trim(),
     if(!hospubCapacityEditing){
       hospubCapacityEditing = true;
       hospubCapacityDraft = {...state.hospubCensus.capacities};
+      hospubCareAreaDraft = Object.fromEntries(hospubSectorRows().map(sector => [sector.key,hospubCareAreaFor(sector)]));
       renderHospubOccupancy();
       setTimeout(() => document.querySelector(".hospub-capacity-input")?.focus(),50);
       return;
     }
-    state.hospubCensus.capacities = {...hospubCapacityDraft};
+    state.hospubCensus = normalizeHospubCensus({
+      ...state.hospubCensus,
+      capacities:{...hospubCapacityDraft},
+      careAreas:{...hospubCareAreaDraft}
+    });
     hospubCapacityEditing = false;
+    hospubCareAreaDraft = {};
     saveState();
-    toast("Leitos operacionais salvos.");
+    toast("Leitos e tags assistenciais salvos.");
   });
   $("cancelHospubCapacityConfig")?.addEventListener("click", () => {
     hospubCapacityEditing = false;
     hospubCapacityDraft = {};
+    hospubCareAreaDraft = {};
     renderHospubOccupancy();
   });
   document.addEventListener("input", event => {
@@ -5397,6 +5431,15 @@ background: $("background").value.trim(),
     const key = decodeURIComponent(input.dataset.hospubCapacityKey || "");
     if(!/^[a-z0-9-]{1,90}$/.test(key)) return;
     hospubCapacityDraft[key] = input.value === "" ? "" : Math.max(0,Number(input.value) || 0);
+  });
+  document.addEventListener("change", event => {
+    const select = event.target.closest("[data-hospub-care-key]");
+    if(!select || !hospubCapacityEditing) return;
+    const key = decodeURIComponent(select.dataset.hospubCareKey || "");
+    if(!/^[a-z0-9-]{1,90}$/.test(key)) return;
+    const careArea = String(select.value || "");
+    if(!HOSPUB_CARE_AREA_OPTIONS.includes(careArea)) return;
+    hospubCareAreaDraft[key] = careArea;
   });
 
   $("openBedCensusModal")?.addEventListener("click", openBedCensusModal);

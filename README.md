@@ -105,6 +105,17 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.5 — alerta de lotação e tags configuráveis
+
+- Setores com taxa de ocupação igual ou superior a 100% exibem o símbolo `⚠`
+  dentro da coluna **Taxa de ocupação**.
+- O botão **Configurar leitos e tags** permite escolher individualmente a tag
+  assistencial de cada setor.
+- Opções disponíveis: sem tag, `INFECTO`, `CM`, `INFECTO/CM`,
+  `INFECTO/PPL` e `PPL`.
+- A escolha é salva na nuvem junto com a configuração de leitos.
+- Masculina 2 passa a usar inicialmente a tag `INFECTO/PPL`.
+
 ### Versão 1.11.4 — destaque visual dos setores críticos
 
 - Linhas de PA receberam fundo amarelo suave.

@@ -97,6 +97,18 @@ test("linhas críticas do Hospub recebem cores por prioridade assistencial",() =
   assert.match(html,/if\(key\.startsWith\("pa-"\)\) return "hospub-row-pa"/);
 });
 
+test("ocupação máxima exibe alerta e tags assistenciais são configuráveis",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/metrics\.occupancyRate !== null && metrics\.occupancyRate >= 100/);
+  assert.match(html,/aria-label="Ocupação máxima atingida"/);
+  assert.match(html,/>⚠<\/span>/);
+  assert.match(html,/HOSPUB_CARE_AREA_OPTIONS = \["","INFECTO","CM","INFECTO\/CM","INFECTO\/PPL","PPL"\]/);
+  assert.match(html,/key:"masculina-2",label:"Masculina 2",careArea:"INFECTO\/PPL"/);
+  assert.match(html,/data-hospub-care-key/);
+  assert.match(html,/careAreas:\{\.\.\.hospubCareAreaDraft\}/);
+  assert.match(html,/Configurar leitos e tags/);
+});
+
 test("conector inclui setores PA e transmite apenas totais consolidados",() => {
   const content = fs.readFileSync(new URL("conector-hospub/content-hospub.js",root),"utf8");
   assert.match(content,/labels\.some\(label => label\.startsWith\("PA\/"\)\)/);

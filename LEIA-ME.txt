@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.11.4 com destaque visual dos setores críticos
+SCIR — NIR CEMETRON | Versão 1.11.5 com alerta de lotação e tags configuráveis
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -42,6 +42,9 @@ CAMINHO SIMPLIFICADO
 - Cada setor possui uma tag assistencial INFECTO, CM ou INFECTO/CM ao lado do nome.
 - Linhas do PA aparecem em amarelo, Salas Vermelhas em vermelho e UTIs em laranja.
 - PA/Sala Vermelha segue a prioridade de Sala Vermelha e aparece em vermelho.
+- Setores com 100% ou mais de ocupação exibem o símbolo de alerta ⚠ na coluna da taxa.
+- O botão “Configurar leitos e tags” permite editar e salvar a tag de cada setor.
+- Masculina 2 utiliza inicialmente a tag “INFECTO/PPL”.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br
