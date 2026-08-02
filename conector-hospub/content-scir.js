@@ -1,6 +1,6 @@
 const APP_SOURCE = "scir-hospub-app-v1";
 const CONNECTOR_SOURCE = "scir-hospub-connector-v1";
-const CONNECTOR_VERSION = "1.0.1";
+const CONNECTOR_VERSION = "1.0.2";
 
 function sendToPage(message){
   window.postMessage({source:CONNECTOR_SOURCE,version:CONNECTOR_VERSION,...message},window.location.origin);

@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.11.1 com correção do conector Hospub
+SCIR — NIR CEMETRON | Versão 1.11.2 com leitura de setores sem pacientes
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -34,6 +34,10 @@ CAMINHO SIMPLIFICADO
 - Para instalar o conector, siga o arquivo conector-hospub/INSTALAR.txt.
 - O conector 1.0.1 se ativa automaticamente na página correta do Hospub, inclusive quando a consulta está dentro de um quadro interno.
 - Ao atualizar, abra chrome://extensions e clique em “Recarregar” no cartão do conector.
+- O conector 1.0.2 reconhece “Lista de Pacientes - (0)” como setor vazio válido e continua a atualização se uma clínica isolada falhar.
+- Setores ainda não consultados aparecem como “Aguardando Hospub”, sem serem contabilizados incorretamente como zero.
+- Os ícones dos quatro indicadores de ocupação foram alinhados e padronizados.
+- A tabela de ocupação exibe uma linha final com os totais de todas as colunas e a taxa consolidada.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

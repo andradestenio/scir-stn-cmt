@@ -1313,15 +1313,17 @@
   .hospub-connection-status.connected::before{background:#22c55e}
   .hospub-connection-status.scanning{border-color:#93c5fd;background:#eff6ff;color:#1e40af}
   .hospub-connection-status.scanning::before{background:#3b82f6;animation:hospubPulse 1s infinite alternate}
+  .hospub-connection-status.warning{border-color:#facc15;background:#fffbeb;color:#92400e}
+  .hospub-connection-status.warning::before{background:#eab308}
   .hospub-connection-status.error{border-color:#fca5a5;background:#fef2f2;color:#991b1b}
   .hospub-connection-status.error::before{background:#ef4444}
   @keyframes hospubPulse{to{opacity:.3}}
   .hospub-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
   .hospub-summary-card{display:flex;align-items:center;gap:13px;min-height:102px;padding:17px;border:1px solid #cfd8e3;border-radius:12px;background:#fff}
-  .hospub-summary-icon{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:50%;background:#e8eef6;color:var(--navy)}
-  .hospub-summary-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .hospub-summary-card span{display:block;color:#475569;font-size:12px;font-weight:750}
-  .hospub-summary-card strong{display:block;margin-top:3px;color:var(--navy);font-size:29px;line-height:1}
+  .hospub-summary-card>.hospub-summary-icon{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;align-self:center;border-radius:50%;background:#e8eef6;color:var(--navy);line-height:0}
+  .hospub-summary-card>.hospub-summary-icon svg{display:block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;shape-rendering:geometricPrecision}
+  .hospub-summary-card>div>span{display:block;color:#475569;font-size:12px;font-weight:750}
+  .hospub-summary-card>div>strong{display:block;margin-top:3px;color:var(--navy);font-size:29px;line-height:1}
   .hospub-sector-panel{overflow:hidden;border:1px solid #cfd8e3;border-radius:12px;background:#fff}
   .hospub-sector-panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:15px 17px;border-bottom:1px solid #d8dee8}
   .hospub-sector-panel-header h4{margin:0;color:var(--navy);font-size:17px}
@@ -1330,6 +1332,9 @@
   .hospub-sector-table th{background:#eef3f8;color:var(--navy);font-size:11px;text-transform:uppercase}
   .hospub-sector-table td:not(:first-child),.hospub-sector-table th:not(:first-child){text-align:center}
   .hospub-sector-table tr:last-child td{border-bottom:0}
+  .hospub-sector-table tfoot td{border-top:2px solid #9aabc0;background:#e8eef6;color:var(--navy);font-weight:900}
+  .hospub-sector-table tfoot td:first-child{letter-spacing:.04em;text-transform:uppercase}
+  .hospub-total-number{display:inline-flex;align-items:center;justify-content:center;min-width:62px;min-height:27px;padding:4px 9px;border:1px solid var(--navy);border-radius:7px;background:var(--navy);color:#fff;font-size:12px;font-weight:900}
   .hospub-capacity-input{width:92px;min-height:36px;padding:7px;text-align:center;font-size:13px}
   .hospub-capacity-value{font-weight:800;color:#334155}
   .hospub-metric-tag{display:inline-flex;align-items:center;justify-content:center;min-width:62px;min-height:27px;padding:4px 9px;border:1px solid transparent;border-radius:7px;font-size:12px;font-weight:850}
@@ -2000,6 +2005,7 @@
             <table class="hospub-sector-table">
               <thead><tr><th>Setor</th><th>Leitos operacionais</th><th>Pacientes internados</th><th>Leitos disponíveis</th><th>Taxa de ocupação</th></tr></thead>
               <tbody id="hospubSectorTableBody"></tbody>
+              <tfoot id="hospubSectorTableFoot"></tfoot>
             </table>
           </div>
         </div>
@@ -2534,11 +2540,16 @@
         : Math.max(0, Number(raw) || 0);
     });
     const sectors = Array.isArray(source.sectors)
-      ? source.sectors.slice(0,50).map(item => ({
-          key:String(item?.key || "").slice(0,90),
-          label:String(item?.label || "Setor não identificado").slice(0,100),
-          occupied:Number.isFinite(Number(item?.occupied)) ? Math.max(0,Math.trunc(Number(item.occupied))) : null
-        })).filter(item => /^[a-z0-9-]{1,90}$/.test(item.key))
+      ? source.sectors.slice(0,50).map(item => {
+          const rawOccupied = item?.occupied;
+          return {
+            key:String(item?.key || "").slice(0,90),
+            label:String(item?.label || "Setor não identificado").slice(0,100),
+            occupied:rawOccupied === "" || rawOccupied === null || rawOccupied === undefined
+              ? null
+              : (Number.isFinite(Number(rawOccupied)) ? Math.max(0,Math.trunc(Number(rawOccupied))) : null)
+          };
+        }).filter(item => /^[a-z0-9-]{1,90}$/.test(item.key))
       : [];
     return {
       ...emptyHospubCensus(),
@@ -3386,7 +3397,10 @@
 
   function hospubSectorMetrics(sector, capacities=state.hospubCensus?.capacities){
     const operational = hospubCapacityFor(sector.key,capacities);
-    const occupied = Number.isFinite(Number(sector.occupied)) ? Math.max(0,Number(sector.occupied)) : null;
+    const rawOccupied = sector?.occupied;
+    const occupied = rawOccupied === "" || rawOccupied === null || rawOccupied === undefined
+      ? null
+      : (Number.isFinite(Number(rawOccupied)) ? Math.max(0,Number(rawOccupied)) : null);
     const available = operational === null || occupied === null ? null : operational - occupied;
     const occupancyRate = operational && occupied !== null ? (occupied / operational) * 100 : null;
     return {operational,occupied,available,occupancyRate};
@@ -3405,7 +3419,8 @@
 
   function renderHospubOccupancy(){
     const body = $("hospubSectorTableBody");
-    if(!body) return;
+    const foot = $("hospubSectorTableFoot");
+    if(!body || !foot) return;
     const sectors = hospubSectorRows();
     const capacities = hospubCapacityEditing ? hospubCapacityDraft : state.hospubCensus.capacities;
     body.innerHTML = sectors.map(sector => {
@@ -3426,19 +3441,27 @@
       </tr>`;
     }).join("");
 
-    const configuredMetrics = sectors
-      .map(sector => hospubSectorMetrics(sector,capacities))
-      .filter(item => item.operational !== null && item.occupied !== null);
-    const occupiedTotal = sectors.reduce((sum,sector) => {
-      const value = hospubSectorMetrics(sector,capacities).occupied;
-      return value === null ? sum : sum + value;
-    },0);
-    const hasOccupied = sectors.some(sector => hospubSectorMetrics(sector,capacities).occupied !== null);
-    const operationalTotal = configuredMetrics.reduce((sum,item) => sum + item.operational,0);
+    const sectorMetrics = sectors.map(sector => hospubSectorMetrics(sector,capacities));
+    const operationalMetrics = sectorMetrics.filter(item => item.operational !== null);
+    const occupiedMetrics = sectorMetrics.filter(item => item.occupied !== null);
+    const configuredMetrics = sectorMetrics.filter(item => item.operational !== null && item.occupied !== null);
+    const occupiedTotal = occupiedMetrics.reduce((sum,item) => sum + item.occupied,0);
+    const hasOccupied = occupiedMetrics.length > 0;
+    const operationalTotal = operationalMetrics.reduce((sum,item) => sum + item.operational,0);
     const configuredOccupiedTotal = configuredMetrics.reduce((sum,item) => sum + item.occupied,0);
     const availableTotal = configuredMetrics.reduce((sum,item) => sum + item.available,0);
-    const overallRate = operationalTotal > 0 ? (configuredOccupiedTotal / operationalTotal) * 100 : null;
-    $("hospubOperationalTotal").textContent = configuredMetrics.length ? String(operationalTotal) : "—";
+    const comparableOperationalTotal = configuredMetrics.reduce((sum,item) => sum + item.operational,0);
+    const overallRate = comparableOperationalTotal > 0 ? (configuredOccupiedTotal / comparableOperationalTotal) * 100 : null;
+    const totalMetrics = {available:configuredMetrics.length ? availableTotal : null,occupancyRate:overallRate};
+    const totalRateText = overallRate === null ? "—" : `${overallRate.toFixed(1).replace(".",",")}%`;
+    foot.innerHTML = `<tr>
+      <td>TOTAL</td>
+      <td><span class="hospub-total-number">${operationalMetrics.length ? operationalTotal : "—"}</span></td>
+      <td><span class="hospub-total-number">${hasOccupied ? occupiedTotal : "—"}</span></td>
+      <td><span class="hospub-metric-tag ${hospubMetricClass(totalMetrics,"available")}">${configuredMetrics.length ? availableTotal : "—"}</span></td>
+      <td><span class="hospub-metric-tag ${hospubMetricClass(totalMetrics,"rate")}">${totalRateText}</span></td>
+    </tr>`;
+    $("hospubOperationalTotal").textContent = operationalMetrics.length ? String(operationalTotal) : "—";
     $("hospubOccupiedTotal").textContent = hasOccupied ? String(occupiedTotal) : "—";
     $("hospubAvailableTotal").textContent = configuredMetrics.length ? String(availableTotal) : "—";
     $("hospubOccupancyRate").textContent = overallRate === null ? "—" : `${overallRate.toFixed(1).replace(".",",")}%`;
@@ -3489,11 +3512,16 @@
   function applyHospubCensusUpdate(payload){
     if(!state.shift || isShiftClosed()) return;
     const sectors = Array.isArray(payload?.sectors)
-      ? payload.sectors.slice(0,50).map(item => ({
-          key:String(item?.key || "").slice(0,90),
-          label:String(item?.label || "Setor não identificado").slice(0,100),
-          occupied:Number.isFinite(Number(item?.occupied)) ? Math.max(0,Math.trunc(Number(item.occupied))) : null
-        })).filter(item => /^[a-z0-9-]{1,90}$/.test(item.key) && item.occupied !== null)
+      ? payload.sectors.slice(0,50).map(item => {
+          const rawOccupied = item?.occupied;
+          return {
+            key:String(item?.key || "").slice(0,90),
+            label:String(item?.label || "Setor não identificado").slice(0,100),
+            occupied:rawOccupied === "" || rawOccupied === null || rawOccupied === undefined
+              ? null
+              : (Number.isFinite(Number(rawOccupied)) ? Math.max(0,Math.trunc(Number(rawOccupied))) : null)
+          };
+        }).filter(item => /^[a-z0-9-]{1,90}$/.test(item.key) && item.occupied !== null)
       : [];
     if(!sectors.length){
       hospubScanInProgress = false;
@@ -3505,6 +3533,9 @@
     const capturedAt = safeDate.toISOString();
     const localDate = `${safeDate.getFullYear()}-${String(safeDate.getMonth()+1).padStart(2,"0")}-${String(safeDate.getDate()).padStart(2,"0")}`;
     const localTime = `${String(safeDate.getHours()).padStart(2,"0")}:${String(safeDate.getMinutes()).padStart(2,"0")}`;
+    const skippedSectors = Array.isArray(payload?.skippedSectors)
+      ? payload.skippedSectors.slice(0,50).map(item => String(item?.label || "Setor não identificado").slice(0,100))
+      : [];
     const fingerprint = hospubFingerprint(sectors);
     const shouldRecord = fingerprint !== state.hospubCensus.lastFingerprint
       || state.hospubCensus.lastRecordedShiftId !== state.shift.id;
@@ -3525,15 +3556,24 @@
         censusDate:localDate,
         censusTime:localTime,
         performedBy:"Visual Hospub — automático",
-        observations:"Atualização automática por setor. Nenhum dado identificável do paciente foi armazenado.",
+        observations:skippedSectors.length
+          ? `Atualização parcial pelo Visual Hospub. Setores não lidos: ${skippedSectors.join(", ")}. Nenhum dado identificável do paciente foi armazenado.`
+          : "Atualização automática por setor. Nenhum dado identificável do paciente foi armazenado.",
         hospubSectors:hospubHistorySnapshot(sectors,capturedAt)
       });
     }
     hospubScanInProgress = false;
     clearTimeout(hospubCensusResponseTimer);
-    setHospubConnectorStatus(`Conector Hospub: conectado${hospubConnectorVersion ? ` — v${hospubConnectorVersion}` : ""}`,"connected");
+    setHospubConnectorStatus(
+      skippedSectors.length
+        ? `Atualização parcial — ${skippedSectors.length} setor(es) não lido(s)`
+        : `Conector Hospub: conectado${hospubConnectorVersion ? ` — v${hospubConnectorVersion}` : ""}`,
+      skippedSectors.length ? "warning" : "connected"
+    );
     saveState();
-    toast(shouldRecord ? "Ocupação atualizada e registrada no plantão." : "Ocupação conferida; não houve alteração nos totais.");
+    toast(skippedSectors.length
+      ? `Ocupação atualizada parcialmente; ${skippedSectors.length} setor(es) não foram lidos.`
+      : (shouldRecord ? "Ocupação atualizada e registrada no plantão." : "Ocupação conferida; não houve alteração nos totais."));
   }
 
   function requestHospubCensusUpdate({manual=false}={}){

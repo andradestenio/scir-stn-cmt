@@ -105,6 +105,20 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.2 — leitura de setores sem pacientes
+
+- Corrigida a consulta de setores como **PA/Observação** quando o Hospub mostra
+  somente `Lista de Pacientes - (0)`, sem repetir o nome da clínica no título.
+- A mensagem `Nenhum paciente encontrado para a busca` passa a ser reconhecida
+  como total zero válido.
+- Uma falha isolada deixa de interromper toda a atualização: o conector segue
+  para os setores seguintes e sinaliza atualização parcial.
+- Setores ainda não lidos agora mostram `Aguardando Hospub`, em vez de zero.
+- Os quatro ícones dos indicadores foram centralizados e padronizados em
+  proporção e espessura de traço.
+- A tabela de ocupação agora possui uma linha final `TOTAL`, com leitos
+  operacionais, pacientes internados, leitos disponíveis e taxa consolidada.
+
 ### Versão 1.11.1 — correção de ativação do conector Hospub
 
 - O conector agora se ativa automaticamente na página do Hospub ao receber uma
@@ -146,7 +160,7 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 6. Inicie o plantão no SCIR e abra **Ocupação Hospub**.
 7. Configure os leitos operacionais e clique em **Atualizar do Hospub**.
 
-Ao atualizar da versão 1.11.0, substitua os arquivos, abra
+Ao atualizar de uma versão anterior, substitua os arquivos, abra
 `chrome://extensions` e clique em **Recarregar** no cartão do conector. Se a
 pasta extraída mudou de lugar, remova o conector antigo e carregue novamente a
 nova pasta `conector-hospub`.

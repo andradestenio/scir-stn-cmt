@@ -1,5 +1,5 @@
 SCIR — CONECTOR VISUAL HOSPUB
-Versão 1.0.1
+Versão 1.0.2
 
 INSTALAÇÃO NO GOOGLE CHROME
 
@@ -26,8 +26,11 @@ ATUALIZAÇÃO DA VERSÃO ANTERIOR
    “Carregar sem compactação” para selecionar a nova pasta conector-hospub.
 5. Atualize as abas do Hospub e do SCIR uma vez.
 
-A versão 1.0.1 ativa automaticamente o conector na página correta do Hospub,
+A versão 1.0.2 ativa automaticamente o conector na página correta do Hospub,
 inclusive quando “Consulta por Clínica” estiver dentro de um quadro interno.
+Também reconhece corretamente setores vazios cujo título aparece apenas como
+“Lista de Pacientes - (0)” e continua para as próximas clínicas se uma consulta
+isolada falhar.
 
 FUNCIONAMENTO
 
