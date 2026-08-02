@@ -12,7 +12,7 @@ export default async function handler(req, res){
     if(!isAuthenticated(req)) return json(res, 401, {error:"Sessão expirada."});
     if(req.method !== "PUT") return json(res, 405, {error:"Método não permitido."});
     const body = await readJson(req);
-    const action = ["read","responded","acknowledged"].includes(body.action)
+    const action = ["pending","read","responded","acknowledged"].includes(body.action)
       ? body.action
       : null;
     if(!action) return json(res, 400, {error:"Status inválido."});

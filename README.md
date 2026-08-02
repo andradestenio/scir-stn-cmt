@@ -95,6 +95,16 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - Os indicadores e as atualizações do censo aparecem na tela do relatório, no
   histórico de plantões e nas exportações PDF e Excel.
 
+### Versão 1.10 — edição das ações dos e-mails
+
+- Cada cartão de e-mail possui o campo **Editar ação**, com as opções
+  `Pendente`, `Lido`, `Respondido` e `Ciente 👍🏻`.
+- Um e-mail respondido ou ciente pode ser corrigido para qualquer outro status.
+- Ao retornar para `Pendente` ou `Lido`, o e-mail reaparece automaticamente em
+  **Em acompanhamento** e as contagens de produtividade são recalculadas.
+- A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
+  entre os dispositivos conectados ao SCIR.
+
 ## 1. Criar a base no Supabase
 
 1. Crie um projeto em https://supabase.com.

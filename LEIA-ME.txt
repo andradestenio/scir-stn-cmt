@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.9.0 com produtividade registrada por plantão
+SCIR — NIR CEMETRON | Versão 1.10.0 com edição das ações dos e-mails
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -23,6 +23,8 @@ CAMINHO SIMPLIFICADO
 - E-mails respondidos de plantões anteriores não aparecem no plantão seguinte.
 - Após a leitura, o e-mail pode ser finalizado como “Respondido” ou “Ciente 👍🏻”.
 - “Ciente 👍🏻” aparece em roxo e permanece somente no histórico daquele plantão.
+- O campo “Editar ação” permite trocar qualquer e-mail entre Pendente, Lido, Respondido e Ciente 👍🏻.
+- Ao voltar para Pendente ou Lido, o e-mail reaparece em “Em acompanhamento”.
 - O relatório registra e-mails recebidos, respondidos, cientes e todas as atualizações do censo.
 - Esses indicadores permanecem no histórico do plantão e nas exportações PDF e Excel.
 

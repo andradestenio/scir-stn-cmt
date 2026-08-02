@@ -400,9 +400,41 @@
 
     .email-notification-actions{
       display:flex;
+      align-items:center;
       justify-content:flex-end;
       gap:7px;
       flex-wrap:wrap;
+    }
+
+    .email-status-editor{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      color:#475569;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .email-status-editor select{
+      min-height:32px;
+      max-width:150px;
+      padding:5px 28px 5px 9px;
+      border:1px solid #94a3b8;
+      border-radius:7px;
+      background:#fff;
+      color:#172033;
+      font:inherit;
+      cursor:pointer;
+    }
+
+    .email-status-editor select.pending{border-color:#facc15;background:#fffbeb;color:#92400e}
+    .email-status-editor select.read{border-color:#93c5fd;background:#eff6ff;color:#1e40af}
+    .email-status-editor select.responded{border-color:#86efac;background:#f0fdf4;color:#166534}
+    .email-status-editor select.acknowledged{border-color:#c084fc;background:#faf5ff;color:#6b21a8}
+
+    .email-status-editor select:disabled{
+      opacity:.6;
+      cursor:wait;
     }
 
     .email-mark-read-button{
@@ -1195,6 +1227,10 @@
     .topbar-actions{width:100%}.topbar-actions>.email-notification-button{display:none}.topbar-actions .shift-chip{flex:1}
     .email-notification-popover{position:fixed;top:calc(68px + env(safe-area-inset-top));right:10px;left:10px;width:auto;max-height:calc(100dvh - 88px);border-radius:12px}
     .email-notification-list{max-height:calc(100dvh - 185px)}
+    .email-notification-footer{align-items:flex-start;flex-direction:column}
+    .email-notification-actions{width:100%;justify-content:flex-start}
+    .email-status-editor{width:100%;justify-content:space-between}
+    .email-status-editor select{max-width:none;flex:1}
     .email-notifications-dashboard-list{grid-template-columns:1fr}
     .email-alert-toast{top:calc(72px + env(safe-area-inset-top));right:12px;left:12px;width:auto}
     .email-settings-modal{padding:12px}.email-settings-dialog{max-height:calc(100dvh - 24px);padding:22px 18px;border-radius:14px}
@@ -2518,14 +2554,26 @@
     const encodedEventKey = notification.eventKey
       ? encodeURIComponent(String(notification.eventKey))
       : "";
-    const action = status.action === "final" && encodedEventKey
-      ? `<div class="email-notification-actions">
-          <button class="email-mark-read-button" type="button" data-email-action="responded" data-email-event-key="${encodedEventKey}">Marcar como respondido</button>
-          <button class="email-mark-read-button acknowledged-action" type="button" data-email-action="acknowledged" data-email-event-key="${encodedEventKey}">Ciente 👍🏻</button>
-        </div>`
+    const quickActions = status.action === "final" && encodedEventKey
+      ? `<button class="email-mark-read-button" type="button" data-email-action="responded" data-email-event-key="${encodedEventKey}">Marcar como respondido</button>
+          <button class="email-mark-read-button acknowledged-action" type="button" data-email-action="acknowledged" data-email-event-key="${encodedEventKey}">Ciente 👍🏻</button>`
       : status.action && encodedEventKey
         ? `<button class="email-mark-read-button" type="button" data-email-action="${status.action}" data-email-event-key="${encodedEventKey}">${status.buttonLabel}</button>`
         : "";
+    const statusEditor = encodedEventKey
+      ? `<label class="email-status-editor">
+          <span>Editar ação</span>
+          <select class="${status.key}" data-email-status-editor data-email-event-key="${encodedEventKey}" aria-label="Editar ação deste e-mail">
+            <option value="pending"${status.key === "pending" ? " selected" : ""}>Pendente</option>
+            <option value="read"${status.key === "read" ? " selected" : ""}>Lido</option>
+            <option value="responded"${status.key === "responded" ? " selected" : ""}>Respondido</option>
+            <option value="acknowledged"${status.key === "acknowledged" ? " selected" : ""}>Ciente 👍🏻</option>
+          </select>
+        </label>`
+      : "";
+    const controls = quickActions || statusEditor
+      ? `<div class="email-notification-actions">${quickActions}${statusEditor}</div>`
+      : "";
     return `<article class="email-notification-item${unreadClass} ${status.key}">
       <strong>Novo e-mail recebido</strong>
       <dl>
@@ -2535,7 +2583,7 @@
       </dl>
       <div class="email-notification-footer">
         <span class="email-status-tag ${status.key}">${status.label}</span>
-        ${action}
+        ${controls}
       </div>
     </article>`;
   }
@@ -2829,7 +2877,14 @@
     const updatedKeys = new Set(eventKeys);
     emailNotifications = emailNotifications.map(notification =>
       updatedKeys.has(notification.eventKey)
-        ? action === "responded"
+        ? action === "pending"
+          ? {
+              ...notification,
+              readAt:null,
+              respondedAt:null,
+              acknowledgedAt:null
+            }
+          : action === "responded"
           ? {
               ...notification,
               readAt:notification.readAt || statusAt,
@@ -2843,7 +2898,12 @@
                 acknowledgedAt:notification.acknowledgedAt || statusAt,
                 respondedAt:null
               }
-          : {...notification, readAt:notification.readAt || statusAt}
+          : {
+              ...notification,
+              readAt:notification.readAt || statusAt,
+              respondedAt:null,
+              acknowledgedAt:null
+            }
         : notification
     );
     renderEmailNotifications();
@@ -2851,10 +2911,10 @@
   }
 
   async function updateSingleEmailStatus(eventKey, action, button){
-    if(!eventKey || !["read","responded","acknowledged"].includes(action)) return;
+    if(!eventKey || !["pending","read","responded","acknowledged"].includes(action)) return;
     if(button){
       button.disabled = true;
-      button.textContent = "Salvando…";
+      if(!button.matches("select")) button.textContent = "Salvando…";
     }
     try{
       const result = await cloudRequest("/api/email-notification-status", {
@@ -2866,20 +2926,25 @@
         result.action || action,
         result.statusAt || new Date().toISOString()
       );
-      toast(action === "responded"
-        ? "E-mail marcado como respondido."
-        : action === "acknowledged"
-          ? "Ciência do e-mail registrada."
-          : "E-mail marcado como lido.");
+      const statusMessages = {
+        pending:"E-mail alterado para pendente.",
+        read:"E-mail marcado como lido.",
+        responded:"E-mail marcado como respondido.",
+        acknowledged:"Ciência do e-mail registrada."
+      };
+      toast(statusMessages[action]);
     }catch(error){
       toast(error.message || "Não foi possível atualizar o e-mail.");
       if(button){
         button.disabled = false;
-        button.textContent = action === "responded"
-          ? "Marcar como respondido"
-          : action === "acknowledged"
-            ? "Ciente 👍🏻"
-            : "Marcar como lida";
+        if(button.matches("select")) renderEmailNotifications();
+        else{
+          button.textContent = action === "responded"
+            ? "Marcar como respondido"
+            : action === "acknowledged"
+              ? "Ciente 👍🏻"
+              : "Marcar como lida";
+        }
       }
     }
   }
@@ -4226,6 +4291,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     if(!button) return;
     const eventKey = decodeURIComponent(button.dataset.emailEventKey || "");
     updateSingleEmailStatus(eventKey, button.dataset.emailAction || "", button);
+  });
+  document.addEventListener("change", event => {
+    const select = event.target.closest("[data-email-status-editor]");
+    if(!select) return;
+    const eventKey = decodeURIComponent(select.dataset.emailEventKey || "");
+    updateSingleEmailStatus(eventKey, select.value || "", select);
   });
   document.addEventListener("click", event => {
     if(!$("emailNotificationPopover")?.classList.contains("hidden")
