@@ -1,4 +1,8 @@
-const CONNECTOR_VERSION = "1.0.0";
+(() => {
+if(globalThis.__SCIR_HOSPUB_CONNECTOR_ACTIVE__) return;
+globalThis.__SCIR_HOSPUB_CONNECTOR_ACTIVE__ = true;
+
+const CONNECTOR_VERSION = "1.0.1";
 let scanRunning = false;
 
 function cleanText(value){
@@ -201,3 +205,4 @@ chrome.runtime.onMessage.addListener(message => {
 });
 
 ensureWidget();
+})();

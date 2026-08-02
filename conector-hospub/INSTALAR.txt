@@ -1,4 +1,5 @@
 SCIR — CONECTOR VISUAL HOSPUB
+Versão 1.0.1
 
 INSTALAÇÃO NO GOOGLE CHROME
 
@@ -15,6 +16,18 @@ INSTALAÇÃO NO GOOGLE CHROME
 9. No SCIR, inicie o plantão e abra o módulo “Ocupação Hospub”.
 10. Clique em “Configurar leitos operacionais” e informe uma única vez o total de leitos de cada setor.
 11. Clique em “Atualizar do Hospub” para realizar a primeira conferência.
+
+ATUALIZAÇÃO DA VERSÃO ANTERIOR
+
+1. Substitua os arquivos pelo conteúdo do novo pacote.
+2. Abra chrome://extensions
+3. No cartão “SCIR — Conector Visual Hospub”, clique no botão “Recarregar”.
+4. Se você extraiu o pacote em outra pasta, remova o conector antigo e use
+   “Carregar sem compactação” para selecionar a nova pasta conector-hospub.
+5. Atualize as abas do Hospub e do SCIR uma vez.
+
+A versão 1.0.1 ativa automaticamente o conector na página correta do Hospub,
+inclusive quando “Consulta por Clínica” estiver dentro de um quadro interno.
 
 FUNCIONAMENTO
 

@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.11.0 com módulo Ocupação Hospub
+SCIR — NIR CEMETRON | Versão 1.11.1 com correção do conector Hospub
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -32,6 +32,8 @@ CAMINHO SIMPLIFICADO
 - Todas as opções de PA entram na consulta; opções de teste e “XXXXXXX” são ignoradas.
 - A atualização ocorre a cada cinco minutos apenas com plantão ativo e registra mudanças no histórico.
 - Para instalar o conector, siga o arquivo conector-hospub/INSTALAR.txt.
+- O conector 1.0.1 se ativa automaticamente na página correta do Hospub, inclusive quando a consulta está dentro de um quadro interno.
+- Ao atualizar, abra chrome://extensions e clique em “Recarregar” no cartão do conector.
 
 CONFIGURAÇÃO JÁ DEFINIDA
 - E-mail: nr.cemetron@sesau.ro.gov.br

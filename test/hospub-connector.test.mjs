@@ -25,8 +25,20 @@ test("conector limita o acesso aos endereços do Hospub e do SCIR",() => {
     "https://cemetron-hospub.sesau.ro.gov.br/*",
     "https://scir-stn-cmt.vercel.app/*"
   ]);
-  assert.deepEqual(manifest.permissions,["tabs"]);
+  assert.deepEqual(manifest.permissions,["tabs","scripting"]);
   assert.equal(manifest.permissions.includes("cookies"),false);
+});
+
+test("conector ativa a leitura na aba e no quadro interno corretos",() => {
+  const manifest = JSON.parse(fs.readFileSync(new URL("conector-hospub/manifest.json",root),"utf8"));
+  const background = fs.readFileSync(new URL("conector-hospub/background.js",root),"utf8");
+  const hospub = fs.readFileSync(new URL("conector-hospub/content-hospub.js",root),"utf8");
+  assert.equal(manifest.version,"1.0.1");
+  assert.match(background,/allFrames:true/);
+  assert.match(background,/files:\["content-hospub\.js"\]/);
+  assert.match(background,/\{frameId:target\.frameId\}/);
+  assert.match(background,/inspections\.find\(item => item\.hasClinicSelect\)/);
+  assert.match(hospub,/__SCIR_HOSPUB_CONNECTOR_ACTIVE__/);
 });
 
 test("conector inclui setores PA e transmite apenas totais consolidados",() => {

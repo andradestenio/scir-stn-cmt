@@ -105,6 +105,17 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 - A alteração permanece restrita ao histórico do mesmo plantão e é sincronizada
   entre os dispositivos conectados ao SCIR.
 
+### Versão 1.11.1 — correção de ativação do conector Hospub
+
+- O conector agora se ativa automaticamente na página do Hospub ao receber uma
+  solicitação do SCIR, sem depender apenas da injeção feita ao atualizar a aba.
+- A tela **Consulta por Clínica** também é localizada quando o Hospub a carrega
+  dentro de um quadro interno.
+- Se houver mais de uma aba do Hospub aberta, o conector prioriza aquela que já
+  está exibindo a seleção de clínicas.
+- As mensagens de erro agora diferenciam aba ausente, permissão do Chrome e
+  extensão desatualizada.
+
 ### Versão 1.11 — módulo Ocupação Hospub
 
 - Novo módulo independente **Ocupação Hospub**, sem alterar o censo manual já
@@ -134,6 +145,11 @@ Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dash
 5. No Hospub, mantenha aberta a tela **Internação → Consulta por Clínica**.
 6. Inicie o plantão no SCIR e abra **Ocupação Hospub**.
 7. Configure os leitos operacionais e clique em **Atualizar do Hospub**.
+
+Ao atualizar da versão 1.11.0, substitua os arquivos, abra
+`chrome://extensions` e clique em **Recarregar** no cartão do conector. Se a
+pasta extraída mudou de lugar, remova o conector antigo e carregue novamente a
+nova pasta `conector-hospub`.
 
 Não é necessário executar novo SQL nem cadastrar variável adicional na Vercel.
 
