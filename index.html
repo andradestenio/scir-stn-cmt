@@ -889,7 +889,8 @@
     .sbar-content{padding:16px;min-width:0;line-height:1.55}
     .sbar-content h4{margin:0 0 9px;color:#0f2747;font-size:14px}
     .sbar-content p{margin:5px 0}
-    .sbar-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .sbar-badges{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+    .sbar-assessment-badges{margin-top:0}
     .sbar-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:12px;font-weight:800}
     .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
     .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
@@ -903,7 +904,7 @@
     .sbar-record-group-title.red{background:#fdecec}
     .sbar-record{padding:12px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5}
     .sbar-record:first-of-type{border-top:0}
-    .sbar-record p{margin:3px 0}
+    .sbar-record p{margin:1px 0}
     .sbar-empty{padding:12px;color:#64748b;font-size:13px}
     .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
     .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
@@ -2527,8 +2528,15 @@
             <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Digite livremente ou clique em “Copiar do censo” para preencher com o último censo registrado."></textarea>
           </div>
           <div style="grid-column:1/-1">
-            <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
-            <textarea class="sbar-long-text" id="background" rows="4" placeholder="Registre as ocorrências do plantão."></textarea>
+            <label>B — Background / Contexto</label>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="background">Registro de ocorrências</label>
+            <textarea class="sbar-long-text" id="background" rows="3" placeholder="Registre as ocorrências relevantes do plantão."></textarea>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="professionalAbsence">Ausência de profissionais com impacto regulatório</label>
+            <textarea class="sbar-long-text" id="professionalAbsence" rows="3" placeholder="Registre ausências de profissionais que tenham impacto sobre a regulação."></textarea>
           </div>
           <div style="grid-column:1/-1">
             <label for="assessment">A — Avaliação</label>
@@ -2736,7 +2744,7 @@
     shift: null,
     records: [],
     history: [],
-    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" },
+    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", professionalAbsence:"", assessment:"", recommendation:"" },
     dashboardNotes: "",
     dashboardNotesUpdatedAt: null,
     standardMessages: [],
@@ -2774,10 +2782,12 @@
     operationalStatus:"",
     turnover:"",
     vacancies:"",
-        background:"",
+    background:"",
+    professionalAbsence:"",
     assessment:"",
     recommendation:""
   };
+  state.sbar.professionalAbsence = typeof state.sbar.professionalAbsence === "string" ? state.sbar.professionalAbsence : "";
 
   if(state.shift && !state.shift.status){
     state.shift.status = "EM ANDAMENTO";
@@ -3372,7 +3382,8 @@
         state.records = Array.isArray(state.records) ? state.records : [];
         state.history = Array.isArray(state.history) ? state.history : [];
         state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
-        state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",assessment:"",recommendation:""};
+        state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",professionalAbsence:"",assessment:"",recommendation:""};
+        state.sbar.professionalAbsence = typeof state.sbar.professionalAbsence === "string" ? state.sbar.professionalAbsence : "";
         state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
         state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
         state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
@@ -4560,7 +4571,8 @@ ${regulatorFooterHtml()}</div></body></html>`;
     $("operationalStatus").value = state.sbar.operationalStatus || "";
     $("turnover").value = state.sbar.turnover || "";
     $("vacancies").value = state.sbar.vacancies || "";
-$("background").value = state.sbar.background || "";
+    $("background").value = state.sbar.background || "";
+    $("professionalAbsence").value = state.sbar.professionalAbsence || "";
     $("assessment").value = state.sbar.assessment || "";
     $("recommendation").value = state.sbar.recommendation || "";
   }
@@ -5671,7 +5683,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         operationalStatus:"",
         turnover:"",
         vacancies:"",
-                background:"",
+        background:"",
+        professionalAbsence:"",
         assessment:"",
         recommendation:""
       };
@@ -6242,6 +6255,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       turnover: $("turnover").value,
       vacancies: $("vacancies").value.trim(),
       background: $("background").value.trim(),
+      professionalAbsence: $("professionalAbsence").value.trim(),
       assessment: $("assessment").value.trim(),
       recommendation: $("recommendation").value.trim()
     };
@@ -6266,13 +6280,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       "",
       "S — SITUAÇÃO",
       `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
-      `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
-      `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
       "",
-      "B — BACKGROUND / CONTEXTO — OCORRÊNCIAS DO PLANTÃO",
-      state.sbar.background || "",
+      "B — BACKGROUND / CONTEXTO",
+      `REGISTRO DE OCORRÊNCIAS: ${state.sbar.background || "SEM REGISTROS."}`,
+      `AUSÊNCIA DE PROFISSIONAIS COM IMPACTO REGULATÓRIO: ${state.sbar.professionalAbsence || "NÃO INFORMADA."}`,
       "",
       "A — AVALIAÇÃO",
+      `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
+      `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
       state.sbar.assessment || "",
       "",
       "R — RELATÓRIO DO PLANTÃO",
@@ -6308,18 +6323,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-content">
                 <h4>Situação</h4>
                 <p><strong>Vagas disponíveis:</strong> ${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO")}</p>
-                <div class="sbar-badges">
-                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
-                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
-                </div>
               </div>
             </div>
 
             <div class="sbar-section">
               <div class="sbar-letter">B</div>
               <div class="sbar-content">
-                <h4>Background / Contexto — Ocorrências do plantão</h4>
-                <p>${escapeHtml(state.sbar.background || "Sem ocorrências adicionais registradas.")}</p>
+                <h4>Background / Contexto</h4>
+                <p><strong>Registro de ocorrências:</strong> ${escapeHtml(state.sbar.background || "Sem registros.")}</p>
+                <p><strong>Ausência de profissionais com impacto regulatório:</strong> ${escapeHtml(state.sbar.professionalAbsence || "Não informada.")}</p>
               </div>
             </div>
 
@@ -6327,6 +6339,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-letter">A</div>
               <div class="sbar-content">
                 <h4>Avaliação</h4>
+                <div class="sbar-badges sbar-assessment-badges">
+                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
+                </div>
                 <p>${escapeHtml(state.sbar.assessment || "Sem avaliação adicional registrada.")}</p>
               </div>
             </div>
@@ -6405,43 +6421,46 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Relatório SBAR - NIR CEMETRON</title>
 <style>
-  @page{size:A4;margin:14mm}
+  @page{size:A4;margin:8mm}
   *{box-sizing:border-box}
-  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:10px}
   .sbar-report{color:#111827;background:#fff}
-  .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
-  .sbar-report-header h2{margin:0;color:#0f2747;font-size:20px;letter-spacing:.02em}
-  .sbar-report-header p{margin:6px 0 0;color:#64748b;font-size:13px;font-weight:600}
-  .sbar-report-body{padding:18px 0}
-  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;padding:14px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;margin-bottom:18px}
+  .sbar-report-header{text-align:center;padding:9px 10px;border-bottom:1px solid #dbe3ec}
+  .sbar-report-header h2{margin:0;color:#0f2747;font-size:16px;letter-spacing:.02em}
+  .sbar-report-header p{margin:2px 0 0;color:#64748b;font-size:10px;font-weight:600}
+  .sbar-report-body{padding:7px 0}
+  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 12px;padding:7px 9px;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;margin-bottom:7px;font-size:9.5px}
   .sbar-meta strong{color:#0f2747}
-  .sbar-sections{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
-  .sbar-section{display:grid;grid-template-columns:78px 1fr;border-top:1px solid #dbe3ec}
+  .sbar-sections{border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
+  .sbar-section{display:grid;grid-template-columns:42px 1fr;border-top:1px solid #dbe3ec}
   .sbar-section:first-child{border-top:0}
-  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:15px;background:#e8eef6;color:#0f2747;font-size:17px;font-weight:900}
-  .sbar-content{padding:15px;min-width:0;line-height:1.5}
-  .sbar-content h4{margin:0 0 9px;color:#0f2747;font-size:13px}
-  .sbar-content p{margin:4px 0;font-size:12px}
-  .sbar-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
-  .sbar-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:11px;font-weight:800}
+  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:7px 4px;background:#e8eef6;color:#0f2747;font-size:13px;font-weight:900}
+  .sbar-content{padding:7px 8px;min-width:0;line-height:1.25}
+  .sbar-content h4{margin:0 0 3px;color:#0f2747;font-size:10px}
+  .sbar-content p{margin:2px 0;font-size:9.5px}
+  .sbar-badges{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0 4px}
+  .sbar-badge{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:8.5px;font-weight:800}
   .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
   .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
   .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
   .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
-  .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden;break-inside:avoid}
-  .sbar-record-group-title{padding:8px 11px;font-weight:800;color:#0f2747;font-size:12px}
+  .sbar-record-group{margin-top:5px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
+  .sbar-record-group-title{padding:4px 7px;font-weight:800;color:#0f2747;font-size:9px;break-after:avoid}
   .sbar-record-group-title.yellow{background:#fff7d6}
   .sbar-record-group-title.blue{background:#e8f1ff}
   .sbar-record-group-title.green{background:#e8f7ee}
   .sbar-record-group-title.red{background:#fdecec}
-  .sbar-record{padding:11px;border-top:1px solid #e5e7eb;font-size:11.5px;line-height:1.45;break-inside:avoid}
+  .sbar-record{padding:5px 7px;border-top:1px solid #e5e7eb;font-size:8.8px;line-height:1.22;break-inside:avoid}
   .sbar-record:first-of-type{border-top:0}
   .sbar-record p{margin:3px 0}
-  .sbar-empty{padding:11px;color:#64748b;font-size:11.5px}
-  .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:14px;border-top:1px solid #cbd5e1;font-size:11px;color:#64748b}
-  .sbar-footer strong{display:block;color:#0f2747;font-size:12px;margin-bottom:3px}
+  .sbar-empty{padding:5px 7px;color:#64748b;font-size:8.8px}
+  .sbar-footer{display:flex;justify-content:space-between;gap:10px;margin-top:7px;padding-top:6px;border-top:1px solid #cbd5e1;font-size:8.8px;color:#64748b}
+  .sbar-footer strong{display:block;color:#0f2747;font-size:9.5px;margin-bottom:1px}
   @media print{
-    .sbar-record-group,.sbar-record,.sbar-meta{break-inside:avoid}
+    .sbar-meta{break-inside:avoid}
+    .sbar-section:not(:last-child){break-inside:avoid}
+    .sbar-record{break-inside:avoid}
+    .sbar-record-group{break-inside:auto}
   }
 </style>
 </head>
