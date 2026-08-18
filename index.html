@@ -867,16 +867,47 @@
     .hidden{display:none}
 
     .sbar-box{
-      white-space:pre-wrap;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      background:#f8fafc;
+      background:#fff;
       border:1px solid #cbd5e1;
-      border-radius:10px;
-      padding:18px;
-      line-height:1.55;
+      border-radius:12px;
+      padding:0;
       min-height:420px;
-      max-height:65vh;
+      max-height:72vh;
       overflow:auto;
+    }
+    .sbar-report{color:#111827;background:#fff}
+    .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
+    .sbar-report-header h2{margin:0;color:#0f2747;font-size:22px;letter-spacing:.02em}
+    .sbar-report-header p{margin:6px 0 0;color:#64748b;font-size:14px;font-weight:600}
+    .sbar-report-body{padding:20px}
+    .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;padding:16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;margin-bottom:18px}
+    .sbar-meta strong{color:#0f2747}
+    .sbar-sections{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+    .sbar-section{display:grid;grid-template-columns:90px 1fr;border-top:1px solid #dbe3ec}
+    .sbar-section:first-child{border-top:0}
+    .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:16px;background:#e8eef6;color:#0f2747;font-size:18px;font-weight:900}
+    .sbar-content{padding:16px;min-width:0;line-height:1.55}
+    .sbar-content h4{margin:0 0 9px;color:#0f2747;font-size:14px}
+    .sbar-content p{margin:5px 0}
+    .sbar-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .sbar-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:12px;font-weight:800}
+    .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
+    .sbar-record-group-title{padding:9px 12px;font-weight:800;color:#0f2747}
+    .sbar-record-group-title.yellow{background:#fff7d6}
+    .sbar-record-group-title.blue{background:#e8f1ff}
+    .sbar-record-group-title.green{background:#e8f7ee}
+    .sbar-record-group-title.red{background:#fdecec}
+    .sbar-record{padding:12px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5}
+    .sbar-record:first-of-type{border-top:0}
+    .sbar-record p{margin:3px 0}
+    .sbar-empty{padding:12px;color:#64748b;font-size:13px}
+    .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
+    .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
+    @media(max-width:700px){
+      .sbar-meta{grid-template-columns:1fr}
+      .sbar-section{grid-template-columns:58px 1fr}
+      .sbar-letter{padding:14px 8px}
+      .sbar-footer{flex-direction:column}
     }
 
     .note{
@@ -5724,6 +5755,60 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("addRecord").textContent = "Adicionar registro";
   });
 
+  function sbarShiftLabel(type){
+    const map = {
+      "Manhã":"Manhã (07h–13h)",
+      "Tarde":"Tarde (13h–19h)",
+      "Noite":"Noite (19h–07h)",
+      "Tarde/Noite":"Tarde/Noite (13h–07h)"
+    };
+    return map[type] || type || "NÃO INFORMADO";
+  }
+
+  function sbarRecordMarkup(record){
+    const lines = [
+      ["Horário da solicitação", record.requestTime || ""],
+      ["Paciente", record.patient || ""],
+      ["Unidade de origem", record.origin || ""],
+      ["HD / PROBLEMAS", record.hd || ""],
+      ["Destino", record.destination || ""],
+      ["Status", record.status || ""]
+    ];
+    if(record.module === "blue" && record.blueRecordType){
+      lines.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
+    }
+    if(isEvaluationRecord(record)){
+      lines.push(
+        ["Especialidade", record.evaluationSpecialty || ""],
+        ["Profissional", record.evaluationSpecialist || ""],
+        ["Data", formatEvaluationDate(record.evaluationDate)],
+        ["Horário", record.evaluationTime || ""]
+      );
+      if(record.evaluationGuidance) lines.push(["Orientações", record.evaluationGuidance]);
+    }
+    if(isExamRecord(record)){
+      lines.push(
+        ["Exame", record.examName || ""],
+        ["Data", formatEvaluationDate(record.examDate)],
+        ["Horário", record.examTime || ""]
+      );
+      if(record.examGuidance) lines.push(["Orientações", record.examGuidance]);
+    }
+    return `<div class="sbar-record">${lines.map(([label,value]) => `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`).join("")}</div>`;
+  }
+
+  function sbarGroupMarkup(moduleKey){
+    const records = state.records.filter(r => r.module === moduleKey);
+    const meta = moduleMeta[moduleKey] || {title:"REGISTROS"};
+    const body = records.length
+      ? records.map(sbarRecordMarkup).join("")
+      : `<div class="sbar-empty">Sem registros neste plantão.</div>`;
+    return `<div class="sbar-record-group">
+      <div class="sbar-record-group-title ${moduleKey}">${escapeHtml(meta.title)} <span class="sbar-badge">${records.length}</span></div>
+      ${body}
+    </div>`;
+  }
+
   function buildRecordsText(moduleKey){
     const records = state.records.filter(r => r.module === moduleKey);
     if(!records.length) return "SEM REGISTROS NESTE PLANTÃO.";
@@ -6067,7 +6152,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       operationalStatus: $("operationalStatus").value,
       turnover: $("turnover").value,
       vacancies: $("vacancies").value.trim(),
-background: $("background").value.trim(),
+      background: $("background").value.trim(),
       assessment: $("assessment").value.trim(),
       recommendation: $("recommendation").value.trim()
     };
@@ -6075,53 +6160,124 @@ background: $("background").value.trim(),
 
     const shift = state.shift || {};
     const now = new Date();
-    const generatedAt = now.toLocaleString("pt-BR");
+    const dateLabel = shift.date ? formatDate(shift.date) : "NÃO INFORMADA";
+    const shiftLabel = sbarShiftLabel(shift.type);
+    const professional = shift.professional || "NÃO INFORMADO";
+    const generatedDate = now.toLocaleDateString("pt-BR");
+    const generatedTime = now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    const crmLabel = "CRM/RO 6.115";
 
-    const report = [
-      "RELATÓRIO DO PLANTÃO — NIR CEMETRON",
+    const reportText = [
+      "RELATÓRIO SBAR",
+      "NIR CEMETRON • PASSAGEM DE PLANTÃO",
       "",
-      `DATA: ${shift.date ? formatDate(shift.date) : "NÃO INFORMADA"}`,
-      `PLANTÃO: ${shift.type || "NÃO INFORMADO"}`,
-      `PLANTONISTA: ${shift.professional || "NÃO INFORMADO"}`,
-      `_GERADO AUTOMATICAMENTE EM: ${new Date().toLocaleString("pt-BR")}._`,
+      `DATA: ${dateLabel}`,
+      `PLANTÃO: ${shiftLabel}`,
+      `PLANTONISTA: ${professional}`,
+      `CRM: ${crmLabel}`,
       "",
-      "> *S — SITUAÇÃO*",
+      "S — SITUAÇÃO",
       `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
-      "",
-      "> *B — BACKGROUND / CONTEXTO*",
-      state.sbar.background || "",
-      "",
-      "> *A — AVALIAÇÃO*",
       `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
       `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
+      "",
+      "B — BACKGROUND / CONTEXTO — OCORRÊNCIAS DO PLANTÃO",
+      state.sbar.background || "",
+      "",
+      "A — AVALIAÇÃO",
       state.sbar.assessment || "",
       "",
-      "> *R — RELATÓRIO DO PLANTÃO*",
+      "R — RELATÓRIO DO PLANTÃO",
       state.sbar.recommendation || "",
       "",
-      moduleMeta.yellow.title,
+      moduleMeta.yellow.title, "", buildRecordsText("yellow"), "",
+      moduleMeta.blue.title, "", buildRecordsText("blue"), "",
+      moduleMeta.green.title, "", buildRecordsText("green"), "",
+      moduleMeta.red.title, "", buildRecordsText("red"),
       "",
-      buildRecordsText("yellow"),
-      "",
-      moduleMeta.blue.title,
-      "",
-      buildRecordsText("blue"),
-      "",
-      moduleMeta.green.title,
-      "",
-      buildRecordsText("green"),
-      "",
-      moduleMeta.red.title,
-      "",
-      buildRecordsText("red")
+      `${professional}`,
+      `Médico Regulador | ${crmLabel}`,
+      "NIR CEMETRON",
+      `Emitido em ${generatedDate} às ${generatedTime}`
     ].join("\n");
 
-    $("sbarOutput").textContent = report;
+    const reportHtml = `
+      <div class="sbar-report" data-copy-text="${escapeHtml(reportText)}">
+        <div class="sbar-report-header">
+          <h2>RELATÓRIO SBAR</h2>
+          <p>NIR CEMETRON • PASSAGEM DE PLANTÃO</p>
+        </div>
+        <div class="sbar-report-body">
+          <div class="sbar-meta">
+            <div><strong>Data:</strong> ${escapeHtml(dateLabel)}</div>
+            <div><strong>Plantão:</strong> ${escapeHtml(shiftLabel)}</div>
+            <div><strong>Plantonista:</strong> ${escapeHtml(professional)}</div>
+            <div><strong>CRM:</strong> ${escapeHtml(crmLabel)}</div>
+          </div>
+
+          <div class="sbar-sections">
+            <div class="sbar-section">
+              <div class="sbar-letter">S</div>
+              <div class="sbar-content">
+                <h4>Situação</h4>
+                <p><strong>Vagas disponíveis:</strong> ${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO")}</p>
+                <div class="sbar-badges">
+                  <span class="sbar-badge">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">B</div>
+              <div class="sbar-content">
+                <h4>Background / Contexto — Ocorrências do plantão</h4>
+                <p>${escapeHtml(state.sbar.background || "Sem ocorrências adicionais registradas.")}</p>
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">A</div>
+              <div class="sbar-content">
+                <h4>Avaliação</h4>
+                <p>${escapeHtml(state.sbar.assessment || "Sem avaliação adicional registrada.")}</p>
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">R</div>
+              <div class="sbar-content">
+                <h4>Relatório do plantão</h4>
+                <p>${escapeHtml(state.sbar.recommendation || "Sem observações adicionais registradas.")}</p>
+                ${sbarGroupMarkup("yellow")}
+                ${sbarGroupMarkup("blue")}
+                ${sbarGroupMarkup("green")}
+                ${sbarGroupMarkup("red")}
+              </div>
+            </div>
+          </div>
+
+          <div class="sbar-footer">
+            <div>
+              <strong>${escapeHtml(professional)}</strong>
+              <div>Médico Regulador | ${escapeHtml(crmLabel)}</div>
+              <div>NIR CEMETRON</div>
+            </div>
+            <div>
+              <div>Emitido em ${escapeHtml(generatedDate)}</div>
+              <div>${escapeHtml(generatedTime)}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    $("sbarOutput").innerHTML = reportHtml;
     toast("SBAR gerado/atualizado.");
   });
 
   $("copySbar").addEventListener("click", async () => {
-    const text = $("sbarOutput").textContent;
+    const reportNode = $("sbarOutput").querySelector(".sbar-report");
+    const text = reportNode?.dataset.copyText || $("sbarOutput").textContent;
     if(!text || text.startsWith("Clique em")){
       alert("Gere o SBAR antes de copiar.");
       return;
