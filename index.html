@@ -903,23 +903,21 @@
     .sbar-record-group-title.green{background:#e8f7ee}
     .sbar-record-group-title.red{background:#fdecec}
     .sbar-census-table{margin-top:8px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
-    .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1fr 1.8fr .8fr}
+    .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1.8fr .8fr}
     .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800}
     .sbar-census-head>div,.sbar-census-row>div{padding:9px 11px}
     .sbar-census-row{border-top:1px solid #e5e7eb;font-size:12px}
-    .sbar-census-group{color:#475569;font-weight:700}.sbar-census-value{text-align:center;font-weight:800}
-    .sbar-census-observation{padding:9px 11px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:12px}
+    .sbar-census-value{text-align:center;font-weight:800}
+    .sbar-census-meta{display:flex;flex-wrap:wrap;gap:6px 10px;padding:9px 11px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:12px;color:#475569}.sbar-census-sep{color:#94a3b8}.sbar-census-observation{padding:9px 11px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:12px}
     .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0 14px}
     .sbar-summary-card{padding:12px;border:1px solid #d7dde5;border-radius:10px;background:#f8fafc}
     .sbar-summary-card span{display:block;color:#64748b;font-size:11px;font-weight:700;line-height:1.25}
     .sbar-summary-card strong{display:block;margin-top:5px;color:#0f2747;font-size:21px;line-height:1}
     .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4;border-color:#f0c0c0}
-    .sbar-email-box{margin:10px 0 14px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden}
-    .sbar-email-title{padding:9px 12px;background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800}
-    .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+    .sbar-summary-box,.sbar-email-box{margin:10px 0 14px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}.sbar-summary-title,        .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
     .sbar-email-metric{padding:12px;text-align:center;border-left:1px solid #e5e7eb}.sbar-email-metric:first-child{border-left:0}
     .sbar-email-metric span{display:block;color:#64748b;font-size:11px;font-weight:700}.sbar-email-metric strong{display:block;margin-top:4px;color:#0f2747;font-size:20px}
-    .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
+    .sbar-full-report-page-break{margin-top:14px}.sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
     .sbar-full-group{margin-top:8px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
     .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:#0f2747;font-size:12px;font-weight:800}
     .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
@@ -5892,31 +5890,57 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const census = state.bedCensus || {};
     const inf = census.infectologia || {};
     const med = census.clinica || {};
+
     const rows = [
-      ["Infectologia", "Masculina 2 - Coletivo", inf.masc2],
-      ["Infectologia", "Masculina 3 - Coletivo", inf.masc3],
-      ["Infectologia", "Feminina - Coletivo", inf.fem],
-      ["Infectologia", "Isolamento - TB", inf.tb],
-      ["Infectologia", "UTI Coletivo", inf.utiColetivo],
-      ["Infectologia", "UTI Isolamento", inf.utiIsolamento],
-      ["Clínica Médica", "Masculina 1 - Coletivo", med.masc1],
-      ["Clínica Médica", "Masculina 1 - Isolamento", med.masc1Isolamento],
-      ["Clínica Médica", "Feminina - Coletivo", med.fem],
-      ["Clínica Médica", "UTI Geral - Coletivo", med.utiGeral]
-    ].filter(([, , value]) => value !== null && value !== undefined && String(value).trim() !== "");
+      ["Masculina 2 - Coletivo", inf.masc2],
+      ["Masculina 3 - Coletivo", inf.masc3],
+      ["Feminina - Coletivo", inf.fem],
+      ["Isolamento - TB", inf.tb],
+      ["UTI Coletivo", inf.utiColetivo],
+      ["UTI Isolamento", inf.utiIsolamento],
+      ["Masculina 1 - Coletivo", med.masc1],
+      ["Masculina 1 - Isolamento", med.masc1Isolamento],
+      ["Feminina - Coletivo", med.fem],
+      ["UTI Geral - Coletivo", med.utiGeral]
+    ]
+      .filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== "")
+      .sort((a,b) => a[0].localeCompare(b[0], "pt-BR", {sensitivity:"base"}));
+
     if(!rows.length) return "";
-    const body = rows.map(([group, clinic, value]) => `
+
+    const body = rows.map(([sector, value]) => `
       <div class="sbar-census-row">
-        <div class="sbar-census-group">${escapeHtml(group)}</div>
-        <div>${escapeHtml(clinic)}</div>
+        <div>${escapeHtml(sector)}</div>
         <div class="sbar-census-value">${escapeHtml(String(value))}</div>
       </div>`).join("");
+
+    const meta = [];
+    if(census.performedBy && String(census.performedBy).trim()){
+      meta.push(`<strong>Responsável:</strong> ${escapeHtml(String(census.performedBy).trim())}`);
+    }
+    if(census.date){
+      meta.push(`<strong>Data:</strong> ${escapeHtml(formatDate(census.date))}`);
+    }
+    if(census.time){
+      meta.push(`<strong>Horário:</strong> ${escapeHtml(String(census.time))}`);
+    }
+
+    const metaHtml = meta.length
+      ? `<div class="sbar-census-meta">${meta.join("<span class='sbar-census-sep'>•</span>")}</div>`
+      : "";
+
     const observation = census.observations && String(census.observations).trim()
       ? `<div class="sbar-census-observation"><strong>Observações:</strong> ${escapeHtml(String(census.observations).trim())}</div>`
       : "";
+
     return `<div class="sbar-census-table">
-      <div class="sbar-census-head"><div>Clínica</div><div>Setor</div><div>Leitos disponíveis</div></div>
-      ${body}${observation}
+      <div class="sbar-census-head">
+        <div>Setor</div>
+        <div>Leitos disponíveis</div>
+      </div>
+      ${body}
+      ${metaHtml}
+      ${observation}
     </div>`;
   }
 
@@ -6398,12 +6422,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
       state.sbar.assessment || "",
       "",
-      "R — RESUMO DO PLANTÃO",
+      "R — RELATÓRIO DO PLANTÃO",
       ...(() => {
         const counts = sbarSummaryCounts();
         const mail = sbarEmailSummary();
         return [
-          `TOTAL: ${counts.total}`,
+          `NÚMERO DE OCORRÊNCIAS: ${counts.total}`,
           `PENDÊNCIAS: ${counts.yellow}`,
           `TRANSFERÊNCIAS / AVALIAÇÕES / EXAMES: ${counts.blue}`,
           `AUTORIZAÇÕES: ${counts.green}`,
@@ -6478,15 +6502,18 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">R</div>
               <div class="sbar-content">
-                <h4>Resumo do plantão</h4>
+                <h4>Relatório do plantão</h4>
                 ${(() => {
                   const counts = sbarSummaryCounts();
-                  return `<div class="sbar-summary-grid">
-                    <div class="sbar-summary-card"><span>Total</span><strong>${counts.total}</strong></div>
-                    <div class="sbar-summary-card yellow"><span>Pendências</span><strong>${counts.yellow}</strong></div>
-                    <div class="sbar-summary-card blue"><span>Transferências / Avaliações / Exames</span><strong>${counts.blue}</strong></div>
-                    <div class="sbar-summary-card green"><span>Autorizações</span><strong>${counts.green}</strong></div>
-                    <div class="sbar-summary-card red"><span>Negativas</span><strong>${counts.red}</strong></div>
+                  return `<div class="sbar-summary-box">
+                    <div class="sbar-summary-title">Resumo do plantão</div>
+                    <div class="sbar-summary-grid">
+                      <div class="sbar-summary-card"><span>Número de ocorrências</span><strong>${counts.total}</strong></div>
+                      <div class="sbar-summary-card yellow"><span>Pendências</span><strong>${counts.yellow}</strong></div>
+                      <div class="sbar-summary-card blue"><span>Transferências / Avaliações / Exames</span><strong>${counts.blue}</strong></div>
+                      <div class="sbar-summary-card green"><span>Autorizações</span><strong>${counts.green}</strong></div>
+                      <div class="sbar-summary-card red"><span>Negativas</span><strong>${counts.red}</strong></div>
+                    </div>
                   </div>`;
                 })()}
                 ${(() => {
@@ -6500,11 +6527,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                     </div>
                   </div>`;
                 })()}
-                <div class="sbar-full-report-title">Relatório completo</div>
-                ${sbarFullGroupMarkup("yellow")}
-                ${sbarFullGroupMarkup("blue")}
-                ${sbarFullGroupMarkup("green")}
-                ${sbarFullGroupMarkup("red")}
+                <div class="sbar-full-report-page-break">
+                  <div class="sbar-full-report-title">Relatório completo</div>
+                  ${sbarFullGroupMarkup("yellow")}
+                  ${sbarFullGroupMarkup("blue")}
+                  ${sbarFullGroupMarkup("green")}
+                  ${sbarFullGroupMarkup("red")}
+                </div>
               </div>
             </div>
           </div>
@@ -6600,19 +6629,19 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-record-group-title.green{background:#e8f7ee}
   .sbar-record-group-title.red{background:#fdecec}
   .sbar-census-table{margin-top:5px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
-  .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1fr 1.7fr .8fr}
+  .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1.8fr .8fr}
   .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:9px;font-weight:800}
   .sbar-census-head>div,.sbar-census-row>div{padding:4px 6px}.sbar-census-row{border-top:1px solid #e5e7eb;font-size:8.8px}
-  .sbar-census-group{font-weight:700;color:#475569}.sbar-census-value{text-align:center;font-weight:800}
-  .sbar-census-observation{padding:5px 6px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:8.8px}
+  .sbar-census-value{text-align:center;font-weight:800}
+  .sbar-census-meta{display:flex;flex-wrap:wrap;gap:4px 7px;padding:5px 6px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:8.8px;color:#475569}.sbar-census-sep{color:#94a3b8}.sbar-census-observation{padding:5px 6px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:8.8px}
   .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:5px 0 6px}
   .sbar-summary-card{padding:6px;border:1px solid #d7dde5;border-radius:7px;background:#f8fafc}
   .sbar-summary-card span{display:block;color:#64748b;font-size:7.8px;font-weight:700;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:3px;color:#0f2747;font-size:13px;line-height:1}
   .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4;border-color:#f0c0c0}
-  .sbar-email-box{margin:5px 0 6px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden}.sbar-email-title{padding:4px 6px;background:#e8eef6;color:#0f2747;font-size:8.8px;font-weight:800}
+  .sbar-summary-box,.sbar-email-box{margin:5px 0 6px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:4px 6px;background:#e8eef6;color:#0f2747;font-size:8.8px;font-weight:800}
   .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:5px;text-align:center;border-left:1px solid #e5e7eb}.sbar-email-metric:first-child{border-left:0}
   .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:700}.sbar-email-metric strong{display:block;margin-top:2px;color:#0f2747;font-size:12px}
-  .sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
+  .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:2mm}.sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
   .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
   .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
   .sbar-count-pill{display:inline-flex;min-width:20px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
@@ -6628,7 +6657,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     .sbar-meta{break-inside:avoid}
     .sbar-section:not(:last-child){break-inside:avoid}
     .sbar-record{break-inside:avoid}
-    .sbar-record-group{break-inside:auto}
+    .sbar-record-group,.sbar-full-group{break-inside:auto}
+    .sbar-record-full{break-inside:avoid}
+    .sbar-summary-box,.sbar-email-box{break-inside:avoid}
+    .sbar-full-report-page-break{break-before:page;page-break-before:always}
   }
 </style>
 </head>
