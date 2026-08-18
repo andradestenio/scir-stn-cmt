@@ -5838,6 +5838,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     return lines.join("\n");
   }
 
+  function sbarProfessionalNameOnly(value){
+    return String(value || "")
+      .replace(/\s*\|\s*CRM\s*\/?\s*RO\s*[\d.\-]+.*$/i, "")
+      .replace(/\s+CRM\s*\/?\s*RO\s*[\d.\-]+.*$/i, "")
+      .trim();
+  }
+
   function sbarOperationalStatusClass(status){
     const normalized = String(status || "").trim().toLowerCase();
     if(normalized === "normal") return "status-normal";
@@ -6298,7 +6305,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       moduleMeta.green.title, "", buildRecordsText("green"), "",
       moduleMeta.red.title, "", buildRecordsText("red"),
       "",
-      `${professional}`,
+      `${sbarProfessionalNameOnly(professional)}`,
       `Médico Regulador | ${crmLabel}`,
       "NIR CEMETRON",
       `Emitido em ${generatedDate} às ${generatedTime}`
@@ -6362,7 +6369,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
           <div class="sbar-footer">
             <div>
-              <strong>${escapeHtml(professional)}</strong>
+              <strong>${escapeHtml(sbarProfessionalNameOnly(professional))}</strong>
               <div>Médico Regulador | ${escapeHtml(crmLabel)}</div>
               <div>NIR CEMETRON</div>
             </div>
