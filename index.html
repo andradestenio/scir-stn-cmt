@@ -1688,6 +1688,36 @@
   }
 </style>
 
+
+<style id="evaluation-report-style">
+  .blue-record-details{
+    margin-top:4px;
+    padding:14px;
+    border:1px solid #bfdbfe;
+    border-radius:10px;
+    background:#f8fbff;
+  }
+  .blue-record-details-header{margin-bottom:12px}
+  .blue-record-details-header strong{display:block;color:var(--navy);font-size:13px}
+  .blue-record-details-header span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+  .blue-record-details-grid{margin:0}
+  .evaluation-summary{
+    grid-column:1/-1;
+    margin-top:4px;
+    padding:10px 12px;
+    border-left:4px solid var(--blue);
+    border-radius:7px;
+    background:#eff6ff;
+    color:#334155;
+    line-height:1.55;
+  }
+  .evaluation-summary strong{color:var(--navy)}
+  .btn-evaluation{background:#1d4ed8;color:#fff}
+  @media(max-width:700px){
+    .blue-record-details{padding:12px}
+  }
+</style>
+
 </head>
 <body>
   <div class="login-screen" id="loginScreen">
@@ -2089,6 +2119,47 @@
           <div>
             <label for="destination">Destino</label>
             <input id="destination" placeholder="Unidade, setor, avaliação ou exame">
+          </div>
+          <div id="blueRecordDetails" class="blue-record-details hidden" style="grid-column:1/-1">
+            <div class="blue-record-details-header">
+              <strong>Detalhamento — Transferências externas / Avaliações / Exames</strong>
+              <span>Selecione o tipo para registrar as informações específicas.</span>
+            </div>
+            <div class="form-grid blue-record-details-grid">
+              <div>
+                <label for="blueRecordType">Tipo de registro</label>
+                <select id="blueRecordType">
+                  <option value="">Selecione</option>
+                  <option value="transferencia">Transferência externa</option>
+                  <option value="avaliacao">Avaliação</option>
+                  <option value="exame">Exame</option>
+                </select>
+              </div>
+              <div id="evaluationSpecialtyField" class="evaluation-only hidden">
+                <label for="evaluationSpecialty">Especialidade</label>
+                <input id="evaluationSpecialty" placeholder="Ex.: Cardiologia">
+              </div>
+              <div id="evaluationSpecialistField" class="evaluation-only hidden">
+                <label for="evaluationSpecialist">Médico/Especialista</label>
+                <input id="evaluationSpecialist" placeholder="Nome do especialista">
+              </div>
+              <div id="evaluationLocationField" class="evaluation-only hidden">
+                <label for="evaluationLocation">Local da avaliação</label>
+                <input id="evaluationLocation" placeholder="Unidade, setor ou consultório">
+              </div>
+              <div id="evaluationDateField" class="evaluation-only hidden">
+                <label for="evaluationDate">Data da avaliação</label>
+                <input id="evaluationDate" type="date">
+              </div>
+              <div id="evaluationTimeField" class="evaluation-only hidden">
+                <label for="evaluationTime">Horário da avaliação</label>
+                <input id="evaluationTime" type="time">
+              </div>
+              <div id="evaluationGuidanceField" class="evaluation-only hidden" style="grid-column:1/-1">
+                <label for="evaluationGuidance">Orientações</label>
+                <textarea id="evaluationGuidance" placeholder="Documentação, exames, preparo, transporte ou outras orientações para a avaliação."></textarea>
+              </div>
+            </div>
           </div>
           <div style="grid-column:1/-1">
             <label for="status">Status</label>
@@ -3948,13 +4019,139 @@
           <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
           <div><strong>Destino:</strong> ${escapeHtml(record.destination)}</div>
           <div><strong>Status:</strong> ${escapeHtml(record.status)}</div>
+          ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
+          ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
+            <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
+            <strong>Especialista:</strong> ${escapeHtml(record.evaluationSpecialist || "Não informado")}<br>
+            <strong>Local:</strong> ${escapeHtml(record.evaluationLocation || "Não informado")}<br>
+            <strong>Data/Horário:</strong> ${escapeHtml(formatEvaluationDate(record.evaluationDate))} às ${escapeHtml(record.evaluationTime || "Não informado")}
+          </div>` : ""}
         </div>
         <div class="record-footer">
+          ${isEvaluationRecord(record) ? `<button class="btn btn-evaluation" onclick="openEvaluationReport('${record.id}')">Informe para avaliação</button>` : ""}
           ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
           ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
           <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : ""}
         </div>
       </div>`;
+  }
+
+
+  function blueRecordTypeLabel(value){
+    return ({transferencia:"Transferência externa",avaliacao:"Avaliação",exame:"Exame"})[value] || "";
+  }
+
+  function isEvaluationRecord(record){
+    return !!record && record.module === "blue" && record.blueRecordType === "avaliacao";
+  }
+
+  function formatEvaluationDate(value){
+    if(!value) return "Não informada";
+    const parts = String(value).split("-");
+    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : value;
+  }
+
+  function updateBlueRecordFields(){
+    const isBlue = $("module")?.value === "blue";
+    $("blueRecordDetails")?.classList.toggle("hidden", !isBlue);
+    const isEvaluation = isBlue && $("blueRecordType")?.value === "avaliacao";
+    document.querySelectorAll(".evaluation-only").forEach(el => el.classList.toggle("hidden", !isEvaluation));
+  }
+
+  function clearBlueRecordFields(){
+    ["blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationLocation","evaluationDate","evaluationTime","evaluationGuidance"].forEach(id => {
+      if($(id)) $(id).value = "";
+    });
+    updateBlueRecordFields();
+  }
+
+  function buildEvaluationReportText(record){
+    return [
+      "INFORME PARA AVALIAÇÃO",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Hipótese diagnóstica: ${record.hd || ""}`,
+      "",
+      "Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:",
+      "",
+      `Especialidade: ${record.evaluationSpecialty || ""}`,
+      `Médico/Especialista: ${record.evaluationSpecialist || ""}`,
+      `Local da avaliação: ${record.evaluationLocation || ""}`,
+      `Data: ${formatEvaluationDate(record.evaluationDate)}`,
+      `Horário: ${record.evaluationTime || ""}`,
+      "",
+      "Orientações:",
+      record.evaluationGuidance || "Sem orientações adicionais registradas.",
+      "",
+      "Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.",
+      "",
+      "NIR CEMETRON"
+    ].join("\n");
+  }
+
+  window.openEvaluationReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+    const reportText = buildEvaluationReportText(record);
+    const printWindow = window.open("", "_blank", "width=900,height=760");
+    if(!printWindow){
+      alert("O navegador bloqueou a abertura do informe. Permita pop-ups para este site.");
+      return;
+    }
+    const guidance = escapeHtml(record.evaluationGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
+    printWindow.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Informe para Avaliação</title>
+      <style>
+        @page{size:A4;margin:18mm}
+        body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+        .sheet{max-width:780px;margin:0 auto}
+        h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+        .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+        .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+        .intro{margin:20px 0 14px;line-height:1.6}
+        table{width:100%;border-collapse:collapse;margin:0 0 18px}
+        th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
+        th{width:30%;background:#e8eef6;color:#0f2747}
+        .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}
+        .closing{margin-top:18px;line-height:1.6}
+        .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+        .screen-actions{display:flex;justify-content:center;gap:10px;margin:0 0 20px}
+        button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+        button.secondary{background:#e5e7eb;color:#111827}
+        @media print{.screen-actions{display:none}}
+      </style></head><body><div class="sheet">
+      <div class="screen-actions">
+        <button onclick="window.print()">Gerar PDF / Imprimir</button>
+        <button class="secondary" id="copyEvaluationReport">Copiar informe</button>
+      </div>
+      <h1>INFORME PARA AVALIAÇÃO</h1>
+      <div class="subtitle">NIR CEMETRON</div>
+      <div class="patient">
+        <strong>Paciente:</strong> ${escapeHtml(record.patient)}<br>
+        <strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}<br>
+        <strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd)}
+      </div>
+      <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
+      <table>
+        <tr><th>Especialidade</th><td>${escapeHtml(record.evaluationSpecialty)}</td></tr>
+        <tr><th>Médico/Especialista</th><td>${escapeHtml(record.evaluationSpecialist)}</td></tr>
+        <tr><th>Local da avaliação</th><td>${escapeHtml(record.evaluationLocation)}</td></tr>
+        <tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.evaluationDate))}</td></tr>
+        <tr><th>Horário</th><td>${escapeHtml(record.evaluationTime)}</td></tr>
+      </table>
+      <strong>Orientações</strong>
+      <div class="guidance">${guidance}</div>
+      <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
+      <div class="footer">NIR CEMETRON</div>
+      <script>
+        const reportText = ${repr(reportText)};
+        document.getElementById("copyEvaluationReport").addEventListener("click", async () => {
+          try{ await navigator.clipboard.writeText(reportText); alert("Informe copiado."); }
+          catch(e){ alert("Não foi possível copiar automaticamente."); }
+        });
+      <\/script>
+      </div></body></html>`);
+    printWindow.document.close();
   }
 
   function renderGrouped(targetId, compact=false){
@@ -4670,7 +4867,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderEmailNotifications();
 
     const locked = isShiftClosed();
-    ["module","requestTime","patient","origin","hd","destination","status","addRecord","clearForm"].forEach(id => {
+    ["module","requestTime","patient","origin","hd","destination","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationLocation","evaluationDate","evaluationTime","evaluationGuidance","addRecord","clearForm"].forEach(id => {
       if($(id)) $(id).disabled = locked;
     });
   }
@@ -4691,6 +4888,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = record.hd || "";
     $("destination").value = record.destination || "";
     $("status").value = record.status || "";
+    $("blueRecordType").value = record.blueRecordType || "";
+    $("evaluationSpecialty").value = record.evaluationSpecialty || "";
+    $("evaluationSpecialist").value = record.evaluationSpecialist || "";
+    $("evaluationLocation").value = record.evaluationLocation || "";
+    $("evaluationDate").value = record.evaluationDate || "";
+    $("evaluationTime").value = record.evaluationTime || "";
+    $("evaluationGuidance").value = record.evaluationGuidance || "";
+    updateBlueRecordFields();
     $("addRecord").textContent = "Atualizar registro";
 
     document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
@@ -4896,6 +5101,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   });
 
+  $("module").addEventListener("change", updateBlueRecordFields);
+  $("blueRecordType").addEventListener("change", updateBlueRecordFields);
+  updateBlueRecordFields();
+
   $("addRecord").addEventListener("click", () => {
     if(!state.shift){
       alert("Inicie e salve o plantão antes de cadastrar registros.");
@@ -4914,11 +5123,26 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       origin: $("origin").value.trim(),
       hd: $("hd").value.trim(),
       destination: $("destination").value.trim(),
-      status: $("status").value.trim()
+      status: $("status").value.trim(),
+      blueRecordType: $("module").value === "blue" ? $("blueRecordType").value : "",
+      evaluationSpecialty: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialty").value.trim() : "",
+      evaluationSpecialist: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialist").value.trim() : "",
+      evaluationLocation: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationLocation").value.trim() : "",
+      evaluationDate: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationDate").value : "",
+      evaluationTime: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationTime").value : "",
+      evaluationGuidance: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationGuidance").value.trim() : ""
     };
 
     if(!record.patient || !record.origin || !record.hd || !record.destination || !record.status){
       alert("Preencha todos os campos do registro.");
+      return;
+    }
+    if(record.module === "blue" && !record.blueRecordType){
+      alert("Selecione o tipo do registro: Transferência externa, Avaliação ou Exame.");
+      return;
+    }
+    if(isEvaluationRecord(record) && (!record.evaluationSpecialty || !record.evaluationSpecialist || !record.evaluationLocation || !record.evaluationDate || !record.evaluationTime)){
+      alert("Para uma avaliação, informe especialidade, médico/especialista, local, data e horário.");
       return;
     }
 
@@ -4940,10 +5164,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = "";
     $("destination").value = "";
     $("status").value = "";
+    clearBlueRecordFields();
   });
 
   $("clearForm").addEventListener("click", () => {
     ["patient","origin","hd","destination","status"].forEach(id => $(id).value = "");
+    clearBlueRecordFields();
     $("requestTime").value = getCurrentTime();
     editingRecordId = null;
     $("addRecord").textContent = "Adicionar registro";
@@ -4959,7 +5185,16 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `UNIDADE DE ORIGEM: ${r.origin}`,
       `HD: ${r.hd}`,
       `DESTINO: ${r.destination}`,
-      `STATUS: ${r.status}`
+      `STATUS: ${r.status}`,
+      ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
+      ...(isEvaluationRecord(r) ? [
+        `ESPECIALIDADE: ${r.evaluationSpecialty || ""}`,
+        `MÉDICO/ESPECIALISTA: ${r.evaluationSpecialist || ""}`,
+        `LOCAL DA AVALIAÇÃO: ${r.evaluationLocation || ""}`,
+        `DATA DA AVALIAÇÃO: ${formatEvaluationDate(r.evaluationDate)}`,
+        `HORÁRIO DA AVALIAÇÃO: ${r.evaluationTime || ""}`,
+        `ORIENTAÇÕES: ${r.evaluationGuidance || ""}`
+      ] : [])
     ].join("\n")).join("\n\n\n\n");
   }
 
