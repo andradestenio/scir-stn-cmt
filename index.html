@@ -2114,7 +2114,7 @@
           </div>
           <div>
             <label for="hd">HD</label>
-            <input id="hd" placeholder="Hipótese diagnóstica">
+            <input id="hd" placeholder="Hipóteses diagnósticas / Problemas">
           </div>
           <div>
             <label for="destination">Destino</label>
@@ -4146,7 +4146,7 @@
       "",
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
-      `Hipótese diagnóstica: ${record.hd || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       "",
       "Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:",
       "",
@@ -4182,10 +4182,13 @@
   .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
   .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
   .intro{margin:20px 0 14px;line-height:1.6}
-  table{width:100%;border-collapse:collapse;margin:0 0 18px}
-  th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
-  th{width:30%;background:#e8eef6;color:#0f2747}
-  .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}
+  .details-card{margin:0 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}
+  .detail-row{display:grid;grid-template-columns:30% 1fr;min-height:46px;border-top:1px solid #dbe3ec}
+  .detail-row:first-child{border-top:0}
+  .detail-label{padding:11px 13px;background:#e8eef6;color:#0f2747;font-size:13px;font-weight:700}
+  .detail-value{padding:11px 13px;background:#fff;color:#111827;font-size:13px}
+  .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55}
+  @media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #dbe3ec}}
   .closing{margin-top:18px;line-height:1.6}
   .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
@@ -4211,16 +4214,16 @@
   <div class="patient">
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
-    <strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd || "")}
+    <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}
   </div>
   <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
-  <table>
-    <tr><th>Especialidade</th><td>${escapeHtml(record.evaluationSpecialty || "")}</td></tr>
-    <tr><th>Profissional</th><td>${escapeHtml(record.evaluationSpecialist || "")}</td></tr>
-    <tr><th>Local da avaliação</th><td>${escapeHtml(record.destination || record.evaluationLocation || "")}</td></tr>
-    <tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.evaluationDate))}</td></tr>
-    <tr><th>Horário</th><td>${escapeHtml(record.evaluationTime || "")}</td></tr>
-  </table>
+  <div class="details-card">
+    <div class="detail-row"><div class="detail-label">Especialidade</div><div class="detail-value">${escapeHtml(record.evaluationSpecialty || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Profissional</div><div class="detail-value">${escapeHtml(record.evaluationSpecialist || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Local da avaliação</div><div class="detail-value">${escapeHtml(record.destination || record.evaluationLocation || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.evaluationDate))}</div></div>
+    <div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.evaluationTime || "")}</div></div>
+  </div>
   <strong>Orientações</strong>
   <div class="guidance">${guidance}</div>
   <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
@@ -4344,7 +4347,7 @@
       "",
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
-      `Hipótese diagnóstica: ${record.hd || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       "",
       "Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:",
       "",
@@ -4367,16 +4370,16 @@
     return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Informe para Exame</title>
 <style>
-@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:0 0 18px}th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}th{width:30%;background:#e8eef6;color:#0f2747}.guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}.details-card{margin:0 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}.detail-row{display:grid;grid-template-columns:30% 1fr;min-height:46px;border-top:1px solid #dbe3ec}.detail-row:first-child{border-top:0}.detail-label{padding:11px 13px;background:#e8eef6;color:#0f2747;font-size:13px;font-weight:700}.detail-value{padding:11px 13px;background:#fff;color:#111827;font-size:13px}.guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55}@media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #dbe3ec}}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
   .regulator-signature strong{color:#0f2747;font-size:13px}
   .document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
 </style></head><body><div class="sheet">
 <div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar</button></div>
 <h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
-<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd || "")}</div>
+<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
 <p class="intro">Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:</p>
-<table><tr><th>Exame</th><td>${escapeHtml(record.examName || "")}</td></tr><tr><th>Local do exame</th><td>${escapeHtml(record.destination || record.examLocation || "")}</td></tr><tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.examDate))}</td></tr><tr><th>Horário</th><td>${escapeHtml(record.examTime || "")}</td></tr></table>
+<div class="details-card"><div class="detail-row"><div class="detail-label">Exame</div><div class="detail-value">${escapeHtml(record.examName || "")}</div></div><div class="detail-row"><div class="detail-label">Local do exame</div><div class="detail-value">${escapeHtml(record.destination || record.examLocation || "")}</div></div><div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.examDate))}</div></div><div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.examTime || "")}</div></div></div>
 <strong>Orientações</strong><div class="guidance">${guidance}</div>
 <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.</p>
 ${regulatorFooterHtml()}</div></body></html>`;
@@ -4594,11 +4597,11 @@ $("background").value = state.sbar.background || "";
       `Paciente: ${record.patient || ""}`,
       "",
       "Encaminhar paciente com:",
-      "✔️ Documentação completa;",
-      "✔️ Exame COVID NEGATIVO;",
-      "✔️ Exames agendados, se houver;",
-      "✔️ Exames de imagem e respectivos laudos, se houver;",
-      "✔️ Evolução de enfermagem com as datas dos dispositivos.",
+      "✔️ Exame COVID-19 NEGATIVO;",
+      "✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;",
+      "✔️ Exames agendados, quando houver;",
+      "✔️ Exames de imagem realizados e respectivos laudos, quando houver;",
+      "✔️ Evolução de enfermagem atualizada, contendo obrigatoriamente as datas de inserção dos dispositivos invasivos (cateter venoso central, sonda vesical, sonda enteral, drenos e outros, quando existentes).",
       "",
       "Atenciosamente,",
       REGULATOR_INFO.name,
@@ -4628,7 +4631,7 @@ $("background").value = state.sbar.background || "";
   th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
   th{width:30%;background:#e8eef6;color:#0f2747}
   .checklist{padding:14px 16px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.75}
-  .checklist div{margin:2px 0}
+  .checklist div{margin:8px 0;line-height:1.65}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
   .regulator-signature strong{color:#0f2747;font-size:13px}
   .document-issued{text-align:right;color:#64748b;white-space:nowrap}
@@ -4654,11 +4657,11 @@ $("background").value = state.sbar.background || "";
   </div>
   <p class="intro"><strong>Encaminhar paciente com:</strong></p>
   <div class="checklist">
-    <div>✓ Documentação completa;</div>
-    <div>✓ Exame COVID NEGATIVO;</div>
-    <div>✓ Exames agendados, se houver;</div>
-    <div>✓ Exames de imagem e respectivos laudos, se houver;</div>
-    <div>✓ Evolução de enfermagem com as datas dos dispositivos.</div>
+    <div>✔️ Exame COVID-19 NEGATIVO;</div>
+    <div>✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;</div>
+    <div>✔️ Exames agendados, quando houver;</div>
+    <div>✔️ Exames de imagem realizados e respectivos laudos, quando houver;</div>
+    <div>✔️ Evolução de enfermagem atualizada, contendo obrigatoriamente as datas de inserção dos dispositivos invasivos (cateter venoso central, sonda vesical, sonda enteral, drenos e outros, quando existentes).</div>
   </div>
   ${regulatorFooterHtml()}
 </div>
@@ -4674,7 +4677,7 @@ $("background").value = state.sbar.background || "";
       "",
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
-      `Hipótese diagnóstica: ${record.hd || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       `Destino solicitado: ${record.destination || ""}`,
       "",
       "Desfecho: Negado",
@@ -4702,11 +4705,10 @@ $("background").value = state.sbar.background || "";
   h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
   .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
   .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
-  table{width:100%;border-collapse:collapse;margin:20px 0 18px}
-  th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
-  th{width:30%;background:#e8eef6;color:#0f2747}
-  .outcome{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;font-weight:800}
-  .guidance{min-height:100px;margin-top:7px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;line-height:1.6;white-space:pre-wrap}
+  .outcome-card{margin:20px 0 18px;padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc}
+  .outcome-label{display:block;margin-bottom:8px;color:#0f2747;font-size:13px;font-weight:800}
+  .outcome{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;font-weight:800}
+  .guidance{min-height:100px;margin-top:7px;padding:13px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.6;white-space:pre-wrap}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
   .regulator-signature strong{color:#0f2747;font-size:13px}
   .document-issued{text-align:right;color:#64748b;white-space:nowrap}
@@ -4730,16 +4732,14 @@ $("background").value = state.sbar.background || "";
   <div class="patient">
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
-    <strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd || "")}<br>
+    <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}<br>
     <strong>Destino solicitado:</strong> ${escapeHtml(record.destination || "")}
   </div>
 
-  <table>
-    <tr>
-      <th>Desfecho</th>
-      <td><span class="outcome">Negado</span></td>
-    </tr>
-  </table>
+  <div class="outcome-card">
+    <span class="outcome-label">Desfecho</span>
+    <span class="outcome">Negado</span>
+  </div>
 
   <strong>Orientações</strong>
   <div class="guidance">${escapeHtml(record.status || "")}</div>
@@ -5702,7 +5702,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `HORÁRIO DA SOLICITAÇÃO: ${r.requestTime}`,
       `PACIENTE: ${r.patient}`,
       `UNIDADE DE ORIGEM: ${r.origin}`,
-      `HD: ${r.hd}`,
+      `Hipóteses diagnósticas / Problemas: ${r.hd}`,
       `DESTINO: ${r.destination}`,
       `STATUS: ${r.status}`,
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
