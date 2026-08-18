@@ -4056,13 +4056,47 @@
             <button class="btn btn-secondary" onclick="copyExamReport('${record.id}')">Copiar informe</button>
             <button class="btn btn-pdf" onclick="printExamReport('${record.id}')">Gerar PDF / Imprimir</button>
           ` : ""}
-          ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
+          ${record.module === "green" ? `
+            <button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Visualizar autorização</button>
+            <button class="btn btn-secondary" onclick="copyAuthorization('${record.id}')">Copiar autorização</button>
+            <button class="btn btn-pdf" onclick="printAuthorization('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
           ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
           <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : ""}
         </div>
       </div>`;
   }
 
+
+
+  const REGULATOR_INFO = Object.freeze({
+    name: "Stênio Andrade",
+    role: "Médico Regulador",
+    crm: "CRM/RO 6115",
+    unit: "NIR CEMETRON"
+  });
+
+  function getIssueDateTime(){
+    const now = new Date();
+    return {
+      date: now.toLocaleDateString("pt-BR"),
+      time: now.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"})
+    };
+  }
+
+  function regulatorFooterHtml(){
+    const issued = getIssueDateTime();
+    return `<div class="document-footer">
+      <div class="regulator-signature">
+        <strong>${escapeHtml(REGULATOR_INFO.name)}</strong><br>
+        ${escapeHtml(REGULATOR_INFO.role)} | ${escapeHtml(REGULATOR_INFO.crm)}<br>
+        ${escapeHtml(REGULATOR_INFO.unit)}
+      </div>
+      <div class="document-issued">
+        Emitido em ${escapeHtml(issued.date)} às ${escapeHtml(issued.time)}
+      </div>
+    </div>`;
+  }
 
   function blueRecordTypeLabel(value){
     return ({transferencia:"Transferência externa",avaliacao:"Avaliação",exame:"Exame"})[value] || "";
@@ -4153,6 +4187,9 @@
   .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}
   .closing{margin-top:18px;line-height:1.6}
   .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}
   .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
   button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
   button.secondary{background:#e5e7eb;color:#111827}
@@ -4186,7 +4223,7 @@
   <strong>Orientações</strong>
   <div class="guidance">${guidance}</div>
   <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
-  <div class="footer">NIR CEMETRON</div>
+  ${regulatorFooterHtml()}
 </div>
 </body>
 </html>`;
@@ -4329,7 +4366,10 @@
     return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Informe para Exame</title>
 <style>
-@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:0 0 18px}th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}th{width:30%;background:#e8eef6;color:#0f2747}.guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:0 0 18px}th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}th{width:30%;background:#e8eef6;color:#0f2747}.guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
 </style></head><body><div class="sheet">
 <div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar informe</button></div>
 <h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
@@ -4338,7 +4378,7 @@
 <table><tr><th>Exame</th><td>${escapeHtml(record.examName || "")}</td></tr><tr><th>Local do exame</th><td>${escapeHtml(record.destination || record.examLocation || "")}</td></tr><tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.examDate))}</td></tr><tr><th>Horário</th><td>${escapeHtml(record.examTime || "")}</td></tr></table>
 <strong>Orientações</strong><div class="guidance">${guidance}</div>
 <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.</p>
-<div class="footer">NIR CEMETRON</div></div></body></html>`;
+${regulatorFooterHtml()}</div></body></html>`;
   }
 
   window.copyExamReport = async function(id){
@@ -4543,19 +4583,149 @@ $("background").value = state.sbar.background || "";
     $("authVacancy").value = record.destination || "";
   }
 
-  window.openAuthorization = function(id){
-    loadAuthorizationRecord(id);
-
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-    const authButton = $("authorizationNavButton");
-    authButton.classList.remove("hidden");
-    authButton.classList.add("active");
-
-    document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-    $("autorizacaoTransferencia").classList.remove("hidden");
-    window.scrollTo({top:0, behavior:"smooth"});
-    toast("Paciente carregado para autorização.");
+  function buildAuthorizationText(record){
+    const issued = getIssueDateTime();
+    return [
+      "AUTORIZAÇÃO DE TRANSFERÊNCIA",
+      "",
+      "Segue autorização de transferência para o paciente em questão.",
+      "",
+      "🔺 ATENÇÃO 🔺",
+      "",
+      `Proveniente: ${record.origin || ""}`,
+      `Vaga disponibilizada: ${record.destination || ""}`,
+      `Paciente: ${record.patient || ""}`,
+      "",
+      "Encaminhar paciente com:",
+      "✔️ Documentação completa;",
+      "✔️ Exame COVID NEGATIVO;",
+      "✔️ Exames agendados, se houver;",
+      "✔️ Exames de imagem e respectivos laudos, se houver;",
+      "✔️ Evolução de enfermagem com as datas dos dispositivos.",
+      "",
+      "Atenciosamente,",
+      REGULATOR_INFO.name,
+      `${REGULATOR_INFO.role} | ${REGULATOR_INFO.crm}`,
+      REGULATOR_INFO.unit,
+      `Emitido em ${issued.date} às ${issued.time}`
+    ].join("\n");
   }
+
+  function buildAuthorizationHtml(record, showActions=true){
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autorização de Transferência</title>
+<style>
+  @page{size:A4;margin:18mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sheet{max-width:780px;margin:0 auto;padding:18px}
+  h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+  .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+  .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+  .intro{margin:20px 0 14px;line-height:1.6}
+  .attention{margin:16px 0;padding:11px 14px;border:1px solid #fecaca;border-radius:8px;background:#fff7f7;color:#991b1b;font-weight:700;text-align:center}
+  table{width:100%;border-collapse:collapse;margin:0 0 18px}
+  th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
+  th{width:30%;background:#e8eef6;color:#0f2747}
+  .checklist{padding:14px 16px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.75}
+  .checklist div{margin:2px 0}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}
+  .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#e5e7eb;color:#111827}
+  @media(max-width:600px){.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}
+  @media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="screen-actions">
+    <button id="authorizationPrintBtn" type="button">Gerar PDF / Imprimir</button>
+    <button class="secondary" id="authorizationCopyBtn" type="button">Copiar autorização</button>
+  </div>
+  <h1>AUTORIZAÇÃO DE TRANSFERÊNCIA</h1>
+  <div class="subtitle">NIR CEMETRON</div>
+  <p class="intro">Segue autorização de transferência para o paciente em questão.</p>
+  <div class="attention">ATENÇÃO</div>
+  <div class="patient">
+    <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
+    <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
+    <strong>Vaga disponibilizada / Destino:</strong> ${escapeHtml(record.destination || "")}
+  </div>
+  <p class="intro"><strong>Encaminhar paciente com:</strong></p>
+  <div class="checklist">
+    <div>✓ Documentação completa;</div>
+    <div>✓ Exame COVID NEGATIVO;</div>
+    <div>✓ Exames agendados, se houver;</div>
+    <div>✓ Exames de imagem e respectivos laudos, se houver;</div>
+    <div>✓ Evolução de enfermagem com as datas dos dispositivos.</div>
+  </div>
+  ${regulatorFooterHtml()}
+</div>
+</body>
+</html>`;
+  }
+
+  window.copyAuthorization = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const text = buildAuthorizationText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Autorização copiada. Pronta para colar no WhatsApp.");
+    else window.prompt("Copie a autorização abaixo:", text);
+  };
+
+  window.printAuthorization = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+    printWindow.document.open();
+    printWindow.document.write(buildAuthorizationHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      try{ printWindow.focus(); printWindow.print(); }
+      catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela da autorização."); }
+    }, 450);
+  };
+
+  window.openAuthorization = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){
+      alert("O navegador bloqueou a abertura da autorização. Autorize pop-ups para este site.");
+      return;
+    }
+    reportWindow.document.open();
+    reportWindow.document.write(buildAuthorizationHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("authorizationPrintBtn");
+      const copyBtn = reportWindow.document.getElementById("authorizationCopyBtn");
+      if(printBtn) printBtn.addEventListener("click", () => { reportWindow.focus(); reportWindow.print(); });
+      if(copyBtn) copyBtn.addEventListener("click", async () => {
+        const copied = await copyTextWithFallback(buildAuthorizationText(record));
+        if(copied){
+          copyBtn.textContent = "Copiado!";
+          setTimeout(() => copyBtn.textContent = "Copiar autorização", 1400);
+        }else{
+          reportWindow.prompt("Copie a autorização abaixo:", buildAuthorizationText(record));
+        }
+      });
+    }, 120);
+  };
 
 
   function getFilteredHistory(){
@@ -5430,17 +5600,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ...(isEvaluationRecord(r) ? [
         `ESPECIALIDADE: ${r.evaluationSpecialty || ""}`,
         `PROFISSIONAL: ${r.evaluationSpecialist || ""}`,
-        `LOCAL DA AVALIAÇÃO: ${r.destination || r.evaluationLocation || ""}`,
-        `DATA DA AVALIAÇÃO: ${formatEvaluationDate(r.evaluationDate)}`,
-        `HORÁRIO DA AVALIAÇÃO: ${r.evaluationTime || ""}`,
-        `ORIENTAÇÕES: ${r.evaluationGuidance || ""}`
+        `DATA: ${formatEvaluationDate(r.evaluationDate)}`,
+        `HORÁRIO: ${r.evaluationTime || ""}`,
+        ...(r.evaluationGuidance ? [`ORIENTAÇÕES: ${r.evaluationGuidance}`] : [])
       ] : []),
       ...(isExamRecord(r) ? [
         `EXAME: ${r.examName || ""}`,
-        `LOCAL DO EXAME: ${r.destination || r.examLocation || ""}`,
-        `DATA DO EXAME: ${formatEvaluationDate(r.examDate)}`,
-        `HORÁRIO DO EXAME: ${r.examTime || ""}`,
-        `ORIENTAÇÕES: ${r.examGuidance || ""}`
+        `DATA: ${formatEvaluationDate(r.examDate)}`,
+        `HORÁRIO: ${r.examTime || ""}`,
+        ...(r.examGuidance ? [`ORIENTAÇÕES: ${r.examGuidance}`] : [])
       ] : [])
     ].join("\n")).join("\n\n\n\n");
   }
