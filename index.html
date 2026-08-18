@@ -4600,6 +4600,7 @@ $("background").value = state.sbar.background || "";
       "Desfecho: Transferência / Internação Autorizada",
       "",
       "Orientações:",
+      "Enviar junto ao paciente:",
       "✔️ Exame COVID-19 NEGATIVO;",
       "✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;",
       "✔️ Exames agendados, quando houver;",
@@ -4641,6 +4642,7 @@ $("background").value = state.sbar.background || "";
   .decision-value{background:#fff;color:#111827;font-size:13px;overflow-wrap:anywhere}
   .decision-value.orientation{display:block;line-height:1.65}
   .decision-value.orientation div{margin:7px 0}
+  .decision-value.orientation .orientation-intro{margin:0 0 10px 0;color:#0f2747}
   .outcome-authorized{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;background:#dcfce7;color:#166534;border:1px solid #86efac;font-weight:800}
   @media(max-width:600px){.decision-row{grid-template-columns:1fr}.decision-label{border-bottom:1px solid #dbe3ec}}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
@@ -4674,6 +4676,7 @@ $("background").value = state.sbar.background || "";
     <div class="decision-row">
       <div class="decision-label">Orientações</div>
       <div class="decision-value orientation">
+        <div class="orientation-intro"><strong>Enviar junto ao paciente:</strong></div>
         <div>✔️ Exame COVID-19 NEGATIVO;</div>
         <div>✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;</div>
         <div>✔️ Exames agendados, quando houver;</div>
