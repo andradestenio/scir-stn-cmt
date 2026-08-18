@@ -2123,7 +2123,7 @@
           <div id="blueRecordDetails" class="blue-record-details hidden" style="grid-column:1/-1">
             <div class="blue-record-details-header">
               <strong>Detalhamento — Transferências externas / Avaliações / Exames</strong>
-              <span>Selecione o tipo para registrar as informações específicas.</span>
+              <span>Selecione o tipo para registrar as informações específicas. O campo Destino será utilizado como local da avaliação ou do exame.</span>
             </div>
             <div class="form-grid blue-record-details-grid">
               <div>
@@ -2140,12 +2140,8 @@
                 <input id="evaluationSpecialty" placeholder="Ex.: Cardiologia">
               </div>
               <div id="evaluationSpecialistField" class="evaluation-only hidden">
-                <label for="evaluationSpecialist">Médico/Especialista</label>
-                <input id="evaluationSpecialist" placeholder="Nome do especialista">
-              </div>
-              <div id="evaluationLocationField" class="evaluation-only hidden">
-                <label for="evaluationLocation">Local da avaliação</label>
-                <input id="evaluationLocation" placeholder="Unidade, setor ou consultório">
+                <label for="evaluationSpecialist">Profissional</label>
+                <input id="evaluationSpecialist" placeholder="Nome do profissional">
               </div>
               <div id="evaluationDateField" class="evaluation-only hidden">
                 <label for="evaluationDate">Data da avaliação</label>
@@ -2158,6 +2154,23 @@
               <div id="evaluationGuidanceField" class="evaluation-only hidden" style="grid-column:1/-1">
                 <label for="evaluationGuidance">Orientações</label>
                 <textarea id="evaluationGuidance" placeholder="Documentação, exames, preparo, transporte ou outras orientações para a avaliação."></textarea>
+              </div>
+
+              <div id="examNameField" class="exam-only hidden">
+                <label for="examName">Exame</label>
+                <input id="examName" placeholder="Ex.: Tomografia de crânio">
+              </div>
+              <div id="examDateField" class="exam-only hidden">
+                <label for="examDate">Data do exame</label>
+                <input id="examDate" type="date">
+              </div>
+              <div id="examTimeField" class="exam-only hidden">
+                <label for="examTime">Horário do exame</label>
+                <input id="examTime" type="time">
+              </div>
+              <div id="examGuidanceField" class="exam-only hidden" style="grid-column:1/-1">
+                <label for="examGuidance">Orientações</label>
+                <textarea id="examGuidance" placeholder="Preparo, jejum, documentação, transporte ou outras orientações para o exame."></textarea>
               </div>
             </div>
           </div>
@@ -4022,13 +4035,27 @@
           ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
           ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
             <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
-            <strong>Especialista:</strong> ${escapeHtml(record.evaluationSpecialist || "Não informado")}<br>
-            <strong>Local:</strong> ${escapeHtml(record.evaluationLocation || "Não informado")}<br>
+            <strong>Profissional:</strong> ${escapeHtml(record.evaluationSpecialist || "Não informado")}<br>
+            <strong>Local:</strong> ${escapeHtml(record.destination || record.evaluationLocation || "Não informado")}<br>
             <strong>Data/Horário:</strong> ${escapeHtml(formatEvaluationDate(record.evaluationDate))} às ${escapeHtml(record.evaluationTime || "Não informado")}
+          </div>` : ""}
+          ${isExamRecord(record) ? `<div class="evaluation-summary">
+            <strong>Exame:</strong> ${escapeHtml(record.examName || "Não informado")}<br>
+            <strong>Local:</strong> ${escapeHtml(record.destination || record.examLocation || "Não informado")}<br>
+            <strong>Data/Horário:</strong> ${escapeHtml(formatEvaluationDate(record.examDate))} às ${escapeHtml(record.examTime || "Não informado")}
           </div>` : ""}
         </div>
         <div class="record-footer">
-          ${isEvaluationRecord(record) ? `<button class="btn btn-evaluation" onclick="openEvaluationReport('${record.id}')">Informe para avaliação</button>` : ""}
+          ${isEvaluationRecord(record) ? `
+            <button class="btn btn-evaluation" onclick="openEvaluationReport('${record.id}')">Visualizar informe</button>
+            <button class="btn btn-secondary" onclick="copyEvaluationReport('${record.id}')">Copiar informe</button>
+            <button class="btn btn-pdf" onclick="printEvaluationReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
+          ${isExamRecord(record) ? `
+            <button class="btn btn-evaluation" onclick="openExamReport('${record.id}')">Visualizar informe do exame</button>
+            <button class="btn btn-secondary" onclick="copyExamReport('${record.id}')">Copiar informe</button>
+            <button class="btn btn-pdf" onclick="printExamReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
           ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
           ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
           <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : ""}
@@ -4045,6 +4072,10 @@
     return !!record && record.module === "blue" && record.blueRecordType === "avaliacao";
   }
 
+  function isExamRecord(record){
+    return !!record && record.module === "blue" && record.blueRecordType === "exame";
+  }
+
   function formatEvaluationDate(value){
     if(!value) return "Não informada";
     const parts = String(value).split("-");
@@ -4054,12 +4085,21 @@
   function updateBlueRecordFields(){
     const isBlue = $("module")?.value === "blue";
     $("blueRecordDetails")?.classList.toggle("hidden", !isBlue);
-    const isEvaluation = isBlue && $("blueRecordType")?.value === "avaliacao";
+
+    const selectedType = $("blueRecordType")?.value || "";
+    const isEvaluation = isBlue && selectedType === "avaliacao";
+    const isExam = isBlue && selectedType === "exame";
+
     document.querySelectorAll(".evaluation-only").forEach(el => el.classList.toggle("hidden", !isEvaluation));
+    document.querySelectorAll(".exam-only").forEach(el => el.classList.toggle("hidden", !isExam));
   }
 
   function clearBlueRecordFields(){
-    ["blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationLocation","evaluationDate","evaluationTime","evaluationGuidance"].forEach(id => {
+    [
+      "blueRecordType",
+      "evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance",
+      "examName","examDate","examTime","examGuidance"
+    ].forEach(id => {
       if($(id)) $(id).value = "";
     });
     updateBlueRecordFields();
@@ -4076,8 +4116,8 @@
       "Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:",
       "",
       `Especialidade: ${record.evaluationSpecialty || ""}`,
-      `Médico/Especialista: ${record.evaluationSpecialist || ""}`,
-      `Local da avaliação: ${record.evaluationLocation || ""}`,
+      `Profissional: ${record.evaluationSpecialist || ""}`,
+      `Local da avaliação: ${record.destination || record.evaluationLocation || ""}`,
       `Data: ${formatEvaluationDate(record.evaluationDate)}`,
       `Horário: ${record.evaluationTime || ""}`,
       "",
@@ -4090,69 +4130,259 @@
     ].join("\n");
   }
 
+  function buildEvaluationReportHtml(record, showActions=true){
+    const guidance = escapeHtml(record.evaluationGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe para Avaliação</title>
+<style>
+  @page{size:A4;margin:18mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sheet{max-width:780px;margin:0 auto;padding:18px}
+  h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+  .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+  .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+  .intro{margin:20px 0 14px;line-height:1.6}
+  table{width:100%;border-collapse:collapse;margin:0 0 18px}
+  th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
+  th{width:30%;background:#e8eef6;color:#0f2747}
+  .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}
+  .closing{margin-top:18px;line-height:1.6}
+  .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+  .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#e5e7eb;color:#111827}
+  @media print{
+    .screen-actions{display:none!important}
+    .sheet{max-width:none;padding:0}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="screen-actions">
+    <button id="printBtn" type="button">Gerar PDF / Imprimir</button>
+    <button class="secondary" id="copyBtn" type="button">Copiar informe</button>
+  </div>
+  <h1>INFORME PARA AVALIAÇÃO</h1>
+  <div class="subtitle">NIR CEMETRON</div>
+  <div class="patient">
+    <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
+    <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
+    <strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd || "")}
+  </div>
+  <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
+  <table>
+    <tr><th>Especialidade</th><td>${escapeHtml(record.evaluationSpecialty || "")}</td></tr>
+    <tr><th>Profissional</th><td>${escapeHtml(record.evaluationSpecialist || "")}</td></tr>
+    <tr><th>Local da avaliação</th><td>${escapeHtml(record.destination || record.evaluationLocation || "")}</td></tr>
+    <tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.evaluationDate))}</td></tr>
+    <tr><th>Horário</th><td>${escapeHtml(record.evaluationTime || "")}</td></tr>
+  </table>
+  <strong>Orientações</strong>
+  <div class="guidance">${guidance}</div>
+  <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
+  <div class="footer">NIR CEMETRON</div>
+</div>
+</body>
+</html>`;
+  }
+
+  async function copyTextWithFallback(text){
+    try{
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch(e){}
+
+    try{
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly","");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      area.style.top = "0";
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      area.setSelectionRange(0, area.value.length);
+      const ok = document.execCommand("copy");
+      document.body.removeChild(area);
+      return ok;
+    }catch(e){
+      return false;
+    }
+  }
+
+  window.copyEvaluationReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+
+    const text = buildEvaluationReportText(record);
+    const copied = await copyTextWithFallback(text);
+
+    if(copied){
+      toast("Informe para avaliação copiado. Pronto para colar no WhatsApp.");
+    }else{
+      window.prompt("Copie o informe abaixo:", text);
+    }
+  };
+
+  window.printEvaluationReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(buildEvaluationReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
+      }
+    }, 450);
+  };
+
   window.openEvaluationReport = function(id){
     const record = state.records.find(r => r.id === id);
     if(!isEvaluationRecord(record)) return;
-    const reportText = buildEvaluationReportText(record);
-    const printWindow = window.open("", "_blank", "width=900,height=760");
-    if(!printWindow){
-      alert("O navegador bloqueou a abertura do informe. Permita pop-ups para este site.");
+
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){
+      alert("O navegador bloqueou a abertura do informe. Autorize pop-ups para este site.");
       return;
     }
-    const guidance = escapeHtml(record.evaluationGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
-    printWindow.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Informe para Avaliação</title>
-      <style>
-        @page{size:A4;margin:18mm}
-        body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
-        .sheet{max-width:780px;margin:0 auto}
-        h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
-        .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
-        .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
-        .intro{margin:20px 0 14px;line-height:1.6}
-        table{width:100%;border-collapse:collapse;margin:0 0 18px}
-        th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
-        th{width:30%;background:#e8eef6;color:#0f2747}
-        .guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}
-        .closing{margin-top:18px;line-height:1.6}
-        .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
-        .screen-actions{display:flex;justify-content:center;gap:10px;margin:0 0 20px}
-        button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
-        button.secondary{background:#e5e7eb;color:#111827}
-        @media print{.screen-actions{display:none}}
-      </style></head><body><div class="sheet">
-      <div class="screen-actions">
-        <button onclick="window.print()">Gerar PDF / Imprimir</button>
-        <button class="secondary" id="copyEvaluationReport">Copiar informe</button>
-      </div>
-      <h1>INFORME PARA AVALIAÇÃO</h1>
-      <div class="subtitle">NIR CEMETRON</div>
-      <div class="patient">
-        <strong>Paciente:</strong> ${escapeHtml(record.patient)}<br>
-        <strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}<br>
-        <strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd)}
-      </div>
-      <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
-      <table>
-        <tr><th>Especialidade</th><td>${escapeHtml(record.evaluationSpecialty)}</td></tr>
-        <tr><th>Médico/Especialista</th><td>${escapeHtml(record.evaluationSpecialist)}</td></tr>
-        <tr><th>Local da avaliação</th><td>${escapeHtml(record.evaluationLocation)}</td></tr>
-        <tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.evaluationDate))}</td></tr>
-        <tr><th>Horário</th><td>${escapeHtml(record.evaluationTime)}</td></tr>
-      </table>
-      <strong>Orientações</strong>
-      <div class="guidance">${guidance}</div>
-      <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
-      <div class="footer">NIR CEMETRON</div>
-      <script>
-        const reportText = ${repr(reportText)};
-        document.getElementById("copyEvaluationReport").addEventListener("click", async () => {
-          try{ await navigator.clipboard.writeText(reportText); alert("Informe copiado."); }
-          catch(e){ alert("Não foi possível copiar automaticamente."); }
+
+    reportWindow.document.open();
+    reportWindow.document.write(buildEvaluationReportHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("printBtn");
+      const copyBtn = reportWindow.document.getElementById("copyBtn");
+
+      if(printBtn){
+        printBtn.addEventListener("click", () => {
+          reportWindow.focus();
+          reportWindow.print();
         });
-      <\/script>
-      </div></body></html>`);
-    printWindow.document.close();
+      }
+
+      if(copyBtn){
+        copyBtn.addEventListener("click", async () => {
+          const text = buildEvaluationReportText(record);
+          const copied = await copyTextWithFallback(text);
+          if(copied){
+            copyBtn.textContent = "Copiado!";
+            setTimeout(() => copyBtn.textContent = "Copiar informe", 1400);
+          }else{
+            reportWindow.prompt("Copie o informe abaixo:", text);
+          }
+        });
+      }
+    }, 120);
+  };
+
+
+  function buildExamReportText(record){
+    return [
+      "INFORME PARA EXAME",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Hipótese diagnóstica: ${record.hd || ""}`,
+      "",
+      "Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:",
+      "",
+      `Exame: ${record.examName || ""}`,
+      `Local do exame: ${record.destination || record.examLocation || ""}`,
+      `Data: ${formatEvaluationDate(record.examDate)}`,
+      `Horário: ${record.examTime || ""}`,
+      "",
+      "Orientações:",
+      record.examGuidance || "Sem orientações adicionais registradas.",
+      "",
+      "Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.",
+      "",
+      "NIR CEMETRON"
+    ].join("\n");
   }
+
+  function buildExamReportHtml(record, showActions=true){
+    const guidance = escapeHtml(record.examGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe para Exame</title>
+<style>
+@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}table{width:100%;border-collapse:collapse;margin:0 0 18px}th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}th{width:30%;background:#e8eef6;color:#0f2747}.guidance{min-height:80px;padding:13px;border:1px solid #cbd5e1;border-radius:8px;line-height:1.55}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+</style></head><body><div class="sheet">
+<div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar informe</button></div>
+<h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
+<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Hipótese diagnóstica:</strong> ${escapeHtml(record.hd || "")}</div>
+<p class="intro">Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:</p>
+<table><tr><th>Exame</th><td>${escapeHtml(record.examName || "")}</td></tr><tr><th>Local do exame</th><td>${escapeHtml(record.destination || record.examLocation || "")}</td></tr><tr><th>Data</th><td>${escapeHtml(formatEvaluationDate(record.examDate))}</td></tr><tr><th>Horário</th><td>${escapeHtml(record.examTime || "")}</td></tr></table>
+<strong>Orientações</strong><div class="guidance">${guidance}</div>
+<p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.</p>
+<div class="footer">NIR CEMETRON</div></div></body></html>`;
+  }
+
+  window.copyExamReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const text = buildExamReportText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Informe do exame copiado. Pronto para colar no WhatsApp.");
+    else window.prompt("Copie o informe abaixo:", text);
+  };
+
+  window.printExamReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){ alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente."); return; }
+    printWindow.document.open();
+    printWindow.document.write(buildExamReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { try{ printWindow.focus(); printWindow.print(); } catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe."); } }, 450);
+  };
+
+  window.openExamReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){ alert("O navegador bloqueou a abertura do informe. Autorize pop-ups para este site."); return; }
+    reportWindow.document.open();
+    reportWindow.document.write(buildExamReportHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("examPrintBtn");
+      const copyBtn = reportWindow.document.getElementById("examCopyBtn");
+      if(printBtn) printBtn.addEventListener("click", () => { reportWindow.focus(); reportWindow.print(); });
+      if(copyBtn) copyBtn.addEventListener("click", async () => {
+        const copied = await copyTextWithFallback(buildExamReportText(record));
+        if(copied){ copyBtn.textContent = "Copiado!"; setTimeout(() => copyBtn.textContent = "Copiar informe", 1400); }
+        else reportWindow.prompt("Copie o informe abaixo:", buildExamReportText(record));
+      });
+    }, 120);
+  };
+
 
   function renderGrouped(targetId, compact=false){
     const target = $(targetId);
@@ -4867,7 +5097,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderEmailNotifications();
 
     const locked = isShiftClosed();
-    ["module","requestTime","patient","origin","hd","destination","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationLocation","evaluationDate","evaluationTime","evaluationGuidance","addRecord","clearForm"].forEach(id => {
+    ["module","requestTime","patient","origin","hd","destination","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance","examName","examDate","examTime","examGuidance","addRecord","clearForm"].forEach(id => {
       if($(id)) $(id).disabled = locked;
     });
   }
@@ -4891,10 +5121,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("blueRecordType").value = record.blueRecordType || "";
     $("evaluationSpecialty").value = record.evaluationSpecialty || "";
     $("evaluationSpecialist").value = record.evaluationSpecialist || "";
-    $("evaluationLocation").value = record.evaluationLocation || "";
     $("evaluationDate").value = record.evaluationDate || "";
     $("evaluationTime").value = record.evaluationTime || "";
     $("evaluationGuidance").value = record.evaluationGuidance || "";
+    $("examName").value = record.examName || "";
+    $("examDate").value = record.examDate || "";
+    $("examTime").value = record.examTime || "";
+    $("examGuidance").value = record.examGuidance || "";
     updateBlueRecordFields();
     $("addRecord").textContent = "Atualizar registro";
 
@@ -5127,10 +5360,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       blueRecordType: $("module").value === "blue" ? $("blueRecordType").value : "",
       evaluationSpecialty: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialty").value.trim() : "",
       evaluationSpecialist: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialist").value.trim() : "",
-      evaluationLocation: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationLocation").value.trim() : "",
       evaluationDate: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationDate").value : "",
       evaluationTime: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationTime").value : "",
-      evaluationGuidance: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationGuidance").value.trim() : ""
+      evaluationGuidance: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationGuidance").value.trim() : "",
+      examName: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examName").value.trim() : "",
+      examDate: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examDate").value : "",
+      examTime: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examTime").value : "",
+      examGuidance: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examGuidance").value.trim() : ""
     };
 
     if(!record.patient || !record.origin || !record.hd || !record.destination || !record.status){
@@ -5141,8 +5377,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       alert("Selecione o tipo do registro: Transferência externa, Avaliação ou Exame.");
       return;
     }
-    if(isEvaluationRecord(record) && (!record.evaluationSpecialty || !record.evaluationSpecialist || !record.evaluationLocation || !record.evaluationDate || !record.evaluationTime)){
-      alert("Para uma avaliação, informe especialidade, médico/especialista, local, data e horário.");
+    if(isEvaluationRecord(record) && (!record.evaluationSpecialty || !record.evaluationSpecialist || !record.evaluationDate || !record.evaluationTime)){
+      alert("Para uma avaliação, informe especialidade, profissional, destino, data e horário.");
+      return;
+    }
+    if(isExamRecord(record) && (!record.examName || !record.examDate || !record.examTime)){
+      alert("Para um exame, informe exame, destino, data e horário.");
       return;
     }
 
@@ -5189,11 +5429,18 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
       ...(isEvaluationRecord(r) ? [
         `ESPECIALIDADE: ${r.evaluationSpecialty || ""}`,
-        `MÉDICO/ESPECIALISTA: ${r.evaluationSpecialist || ""}`,
-        `LOCAL DA AVALIAÇÃO: ${r.evaluationLocation || ""}`,
+        `PROFISSIONAL: ${r.evaluationSpecialist || ""}`,
+        `LOCAL DA AVALIAÇÃO: ${r.destination || r.evaluationLocation || ""}`,
         `DATA DA AVALIAÇÃO: ${formatEvaluationDate(r.evaluationDate)}`,
         `HORÁRIO DA AVALIAÇÃO: ${r.evaluationTime || ""}`,
         `ORIENTAÇÕES: ${r.evaluationGuidance || ""}`
+      ] : []),
+      ...(isExamRecord(r) ? [
+        `EXAME: ${r.examName || ""}`,
+        `LOCAL DO EXAME: ${r.destination || r.examLocation || ""}`,
+        `DATA DO EXAME: ${formatEvaluationDate(r.examDate)}`,
+        `HORÁRIO DO EXAME: ${r.examTime || ""}`,
+        `ORIENTAÇÕES: ${r.examGuidance || ""}`
       ] : [])
     ].join("\n")).join("\n\n\n\n");
   }
