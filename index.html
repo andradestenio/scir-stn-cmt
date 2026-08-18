@@ -5703,7 +5703,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `HORÁRIO DA SOLICITAÇÃO: ${r.requestTime}`,
       `PACIENTE: ${r.patient}`,
       `UNIDADE DE ORIGEM: ${r.origin}`,
-      `Hipóteses diagnósticas / Problemas: ${r.hd}`,
+      `HD / PROBLEMAS: ${r.hd}`,
       `DESTINO: ${r.destination}`,
       `STATUS: ${r.status}`,
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
