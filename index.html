@@ -902,6 +902,30 @@
     .sbar-record-group-title.blue{background:#e8f1ff}
     .sbar-record-group-title.green{background:#e8f7ee}
     .sbar-record-group-title.red{background:#fdecec}
+    .sbar-census-table{margin-top:8px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+    .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1fr 1.8fr .8fr}
+    .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-census-head>div,.sbar-census-row>div{padding:9px 11px}
+    .sbar-census-row{border-top:1px solid #e5e7eb;font-size:12px}
+    .sbar-census-group{color:#475569;font-weight:700}.sbar-census-value{text-align:center;font-weight:800}
+    .sbar-census-observation{padding:9px 11px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:12px}
+    .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0 14px}
+    .sbar-summary-card{padding:12px;border:1px solid #d7dde5;border-radius:10px;background:#f8fafc}
+    .sbar-summary-card span{display:block;color:#64748b;font-size:11px;font-weight:700;line-height:1.25}
+    .sbar-summary-card strong{display:block;margin-top:5px;color:#0f2747;font-size:21px;line-height:1}
+    .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4;border-color:#f0c0c0}
+    .sbar-email-box{margin:10px 0 14px;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden}
+    .sbar-email-title{padding:9px 12px;background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+    .sbar-email-metric{padding:12px;text-align:center;border-left:1px solid #e5e7eb}.sbar-email-metric:first-child{border-left:0}
+    .sbar-email-metric span{display:block;color:#64748b;font-size:11px;font-weight:700}.sbar-email-metric strong{display:block;margin-top:4px;color:#0f2747;font-size:20px}
+    .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
+    .sbar-full-group{margin-top:8px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
+    .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+    .sbar-count-pill{display:inline-flex;min-width:26px;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
+    .sbar-record-full{padding:11px 12px;border-top:1px solid #e5e7eb;font-size:12px;line-height:1.45}
+    .sbar-record-full:first-of-type{border-top:0}.sbar-record-line{display:grid;grid-template-columns:170px 1fr;gap:8px;margin:3px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
     .sbar-record{padding:12px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5}
     .sbar-record:first-of-type{border-top:0}
     .sbar-record p{margin:2px 0}
@@ -5864,6 +5888,83 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     return map[type] || type || "NÃO INFORMADO";
   }
 
+  function sbarCensusTableMarkup(){
+    const census = state.bedCensus || {};
+    const inf = census.infectologia || {};
+    const med = census.clinica || {};
+    const rows = [
+      ["Infectologia", "Masculina 2 - Coletivo", inf.masc2],
+      ["Infectologia", "Masculina 3 - Coletivo", inf.masc3],
+      ["Infectologia", "Feminina - Coletivo", inf.fem],
+      ["Infectologia", "Isolamento - TB", inf.tb],
+      ["Infectologia", "UTI Coletivo", inf.utiColetivo],
+      ["Infectologia", "UTI Isolamento", inf.utiIsolamento],
+      ["Clínica Médica", "Masculina 1 - Coletivo", med.masc1],
+      ["Clínica Médica", "Masculina 1 - Isolamento", med.masc1Isolamento],
+      ["Clínica Médica", "Feminina - Coletivo", med.fem],
+      ["Clínica Médica", "UTI Geral - Coletivo", med.utiGeral]
+    ].filter(([, , value]) => value !== null && value !== undefined && String(value).trim() !== "");
+    if(!rows.length) return "";
+    const body = rows.map(([group, clinic, value]) => `
+      <div class="sbar-census-row">
+        <div class="sbar-census-group">${escapeHtml(group)}</div>
+        <div>${escapeHtml(clinic)}</div>
+        <div class="sbar-census-value">${escapeHtml(String(value))}</div>
+      </div>`).join("");
+    const observation = census.observations && String(census.observations).trim()
+      ? `<div class="sbar-census-observation"><strong>Observações:</strong> ${escapeHtml(String(census.observations).trim())}</div>`
+      : "";
+    return `<div class="sbar-census-table">
+      <div class="sbar-census-head"><div>Clínica</div><div>Setor</div><div>Leitos disponíveis</div></div>
+      ${body}${observation}
+    </div>`;
+  }
+
+  function sbarSummaryCounts(){
+    const records = Array.isArray(state.records) ? state.records : [];
+    const count = key => records.filter(r => r.module === key).length;
+    return {total:records.length,yellow:count("yellow"),blue:count("blue"),green:count("green"),red:count("red")};
+  }
+
+  function sbarEmailSummary(){
+    const archivedItem = state.shift?.id ? state.history.find(item => item.id === state.shift.id) : null;
+    const summary = archivedItem?.emailSummary || (typeof buildEmailProductivitySummary === "function" ? buildEmailProductivitySummary() : {});
+    return {
+      received:Number(summary?.received || 0),
+      acknowledged:Number(summary?.acknowledged || 0),
+      responded:Number(summary?.responded || 0)
+    };
+  }
+
+  function sbarRecordFullMarkup(record){
+    const rows = [
+      ["Horário da solicitação", record.requestTime || ""],
+      ["Paciente", record.patient || ""],
+      ["Unidade de origem", record.origin || ""],
+      ["HD / PROBLEMAS", record.hd || ""],
+      ["Destino", record.destination || ""],
+      ["Status", record.status || ""]
+    ];
+    if(record.module === "blue" && record.blueRecordType) rows.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
+    if(isEvaluationRecord(record)){
+      rows.push(["Especialidade",record.evaluationSpecialty || ""],["Profissional",record.evaluationSpecialist || ""],["Data",formatEvaluationDate(record.evaluationDate)],["Horário",record.evaluationTime || ""],["Orientações",record.evaluationGuidance || ""]);
+    }
+    if(isExamRecord(record)){
+      rows.push(["Exame",record.examName || ""],["Data",formatEvaluationDate(record.examDate)],["Horário",record.examTime || ""],["Orientações",record.examGuidance || ""]);
+    }
+    return `<div class="sbar-record-full">${rows.map(([label,value]) => `<div class="sbar-record-line"><strong>${escapeHtml(label)}:</strong><span>${escapeHtml(value)}</span></div>`).join("")}</div>`;
+  }
+
+  function sbarFullGroupMarkup(moduleKey){
+    const records = state.records.filter(r => r.module === moduleKey);
+    const meta = moduleMeta[moduleKey] || {title:"REGISTROS"};
+    const body = records.length ? records.map(sbarRecordFullMarkup).join("") : `<div class="sbar-empty">Sem registros neste plantão.</div>`;
+    return `<div class="sbar-full-group ${moduleKey}">
+      <div class="sbar-full-group-title"><span>${escapeHtml(meta.title)}</span><span class="sbar-count-pill">${records.length}</span></div>
+      ${body}
+    </div>`;
+  }
+
   function sbarRecordMarkup(record){
     const lines = [
       ["Horário da solicitação", record.requestTime || ""],
@@ -6246,15 +6347,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     toast("Registros atualizados.");
   });
 
+  let sbarVacanciesFromCensus = false;
   $("copyCensusToVacancies")?.addEventListener("click", () => {
     const text = buildLatestCensusVacanciesText();
-    if(!text){
-      alert("Ainda não há um censo diário registrado para copiar.");
-      return;
-    }
+    if(!text){ alert("Ainda não há um censo diário registrado para copiar."); return; }
     $("vacancies").value = text;
+    sbarVacanciesFromCensus = true;
     toast("Vagas disponíveis preenchidas com o último censo diário.");
   });
+  $("vacancies")?.addEventListener("input", () => { sbarVacanciesFromCensus = false; });
 
   $("generateSbar").addEventListener("click", () => {
     state.sbar = {
@@ -6297,8 +6398,25 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
       state.sbar.assessment || "",
       "",
-      "R — RELATÓRIO DO PLANTÃO",
-      state.sbar.recommendation || "",
+      "R — RESUMO DO PLANTÃO",
+      ...(() => {
+        const counts = sbarSummaryCounts();
+        const mail = sbarEmailSummary();
+        return [
+          `TOTAL: ${counts.total}`,
+          `PENDÊNCIAS: ${counts.yellow}`,
+          `TRANSFERÊNCIAS / AVALIAÇÕES / EXAMES: ${counts.blue}`,
+          `AUTORIZAÇÕES: ${counts.green}`,
+          `NEGATIVAS: ${counts.red}`,
+          "",
+          "PRODUTIVIDADE DE E-MAILS",
+          `RECEBIDOS: ${mail.received}`,
+          `CIENTES: ${mail.acknowledged}`,
+          `RESPONDIDOS: ${mail.responded}`,
+          "",
+          "RELATÓRIO COMPLETO"
+        ];
+      })(),
       "",
       moduleMeta.yellow.title, "", buildRecordsText("yellow"), "",
       moduleMeta.blue.title, "", buildRecordsText("blue"), "",
@@ -6329,7 +6447,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-letter">S</div>
               <div class="sbar-content">
                 <h4>Situação</h4>
-                <p><strong>Vagas disponíveis:</strong> ${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO")}</p>
+                <p><strong>Vagas disponíveis:</strong></p>
+                ${sbarVacanciesFromCensus && sbarCensusTableMarkup()
+                  ? sbarCensusTableMarkup()
+                  : `<p>${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO").replace(/\n/g,"<br>")}</p>`}
               </div>
             </div>
 
@@ -6357,12 +6478,33 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">R</div>
               <div class="sbar-content">
-                <h4>Relatório do plantão</h4>
-                <p>${escapeHtml(state.sbar.recommendation || "Sem observações adicionais registradas.")}</p>
-                ${sbarGroupMarkup("yellow")}
-                ${sbarGroupMarkup("blue")}
-                ${sbarGroupMarkup("green")}
-                ${sbarGroupMarkup("red")}
+                <h4>Resumo do plantão</h4>
+                ${(() => {
+                  const counts = sbarSummaryCounts();
+                  return `<div class="sbar-summary-grid">
+                    <div class="sbar-summary-card"><span>Total</span><strong>${counts.total}</strong></div>
+                    <div class="sbar-summary-card yellow"><span>Pendências</span><strong>${counts.yellow}</strong></div>
+                    <div class="sbar-summary-card blue"><span>Transferências / Avaliações / Exames</span><strong>${counts.blue}</strong></div>
+                    <div class="sbar-summary-card green"><span>Autorizações</span><strong>${counts.green}</strong></div>
+                    <div class="sbar-summary-card red"><span>Negativas</span><strong>${counts.red}</strong></div>
+                  </div>`;
+                })()}
+                ${(() => {
+                  const mail = sbarEmailSummary();
+                  return `<div class="sbar-email-box">
+                    <div class="sbar-email-title">Produtividade de e-mails</div>
+                    <div class="sbar-email-grid">
+                      <div class="sbar-email-metric"><span>Recebidos</span><strong>${mail.received}</strong></div>
+                      <div class="sbar-email-metric"><span>Cientes</span><strong>${mail.acknowledged}</strong></div>
+                      <div class="sbar-email-metric"><span>Respondidos</span><strong>${mail.responded}</strong></div>
+                    </div>
+                  </div>`;
+                })()}
+                <div class="sbar-full-report-title">Relatório completo</div>
+                ${sbarFullGroupMarkup("yellow")}
+                ${sbarFullGroupMarkup("blue")}
+                ${sbarFullGroupMarkup("green")}
+                ${sbarFullGroupMarkup("red")}
               </div>
             </div>
           </div>
@@ -6457,6 +6599,25 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-record-group-title.blue{background:#e8f1ff}
   .sbar-record-group-title.green{background:#e8f7ee}
   .sbar-record-group-title.red{background:#fdecec}
+  .sbar-census-table{margin-top:5px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
+  .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1fr 1.7fr .8fr}
+  .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:9px;font-weight:800}
+  .sbar-census-head>div,.sbar-census-row>div{padding:4px 6px}.sbar-census-row{border-top:1px solid #e5e7eb;font-size:8.8px}
+  .sbar-census-group{font-weight:700;color:#475569}.sbar-census-value{text-align:center;font-weight:800}
+  .sbar-census-observation{padding:5px 6px;border-top:1px solid #e5e7eb;background:#f8fafc;font-size:8.8px}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:5px 0 6px}
+  .sbar-summary-card{padding:6px;border:1px solid #d7dde5;border-radius:7px;background:#f8fafc}
+  .sbar-summary-card span{display:block;color:#64748b;font-size:7.8px;font-weight:700;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:3px;color:#0f2747;font-size:13px;line-height:1}
+  .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4;border-color:#f0c0c0}
+  .sbar-email-box{margin:5px 0 6px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden}.sbar-email-title{padding:4px 6px;background:#e8eef6;color:#0f2747;font-size:8.8px;font-weight:800}
+  .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:5px;text-align:center;border-left:1px solid #e5e7eb}.sbar-email-metric:first-child{border-left:0}
+  .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:700}.sbar-email-metric strong{display:block;margin-top:2px;color:#0f2747;font-size:12px}
+  .sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
+  .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
+  .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+  .sbar-count-pill{display:inline-flex;min-width:20px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
+  .sbar-record-full{padding:5px 7px;border-top:1px solid #e5e7eb;font-size:8.8px;line-height:1.22;break-inside:avoid}.sbar-record-full:first-of-type{border-top:0}
+  .sbar-record-line{display:grid;grid-template-columns:120px 1fr;gap:5px;margin:1px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
   .sbar-record{padding:7px 9px;border-top:1px solid #e5e7eb;font-size:9.8px;line-height:1.3;break-inside:avoid}
   .sbar-record:first-of-type{border-top:0}
   .sbar-record p{margin:3px 0}
