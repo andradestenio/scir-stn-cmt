@@ -891,6 +891,10 @@
     .sbar-content p{margin:5px 0}
     .sbar-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .sbar-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:12px;font-weight:800}
+    .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
+    .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
+    .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+    .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
     .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
     .sbar-record-group-title{padding:9px 12px;font-weight:800;color:#0f2747}
     .sbar-record-group-title.yellow{background:#fff7d6}
@@ -903,11 +907,34 @@
     .sbar-empty{padding:12px;color:#64748b;font-size:13px}
     .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
     .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
+    .sbar-print-wrapper{background:#fff;color:#111827}
+    @media print{
+      body{background:#fff!important}
+      .sbar-report{border:0!important}
+      .sbar-report-body{padding:0!important}
+      .sbar-record-group,.sbar-sections,.sbar-meta{break-inside:avoid}
+      .sbar-record{break-inside:avoid}
+    }
     @media(max-width:700px){
       .sbar-meta{grid-template-columns:1fr}
       .sbar-section{grid-template-columns:58px 1fr}
       .sbar-letter{padding:14px 8px}
       .sbar-footer{flex-direction:column}
+    }
+
+    .field-label-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+    }
+    .field-label-row label{margin:0}
+    .btn-inline{
+      padding:6px 10px;
+      font-size:12px;
+      min-height:auto;
+      white-space:nowrap;
     }
 
     .note{
@@ -2493,8 +2520,11 @@
             </select>
           </div>
           <div style="grid-column:1/-1">
-            <label for="vacancies">Vagas disponíveis</label>
-            <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Registre as vagas disponíveis, setores lotados, bloqueios, restrições e demais informações relevantes."></textarea>
+            <div class="field-label-row">
+              <label for="vacancies">Vagas disponíveis</label>
+              <button class="btn btn-secondary btn-inline" id="copyCensusToVacancies" type="button">Copiar do censo</button>
+            </div>
+            <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Digite livremente ou clique em “Copiar do censo” para preencher com o último censo registrado."></textarea>
           </div>
           <div style="grid-column:1/-1">
             <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
@@ -2513,6 +2543,7 @@
         <div class="actions">
           <button class="btn btn-primary" id="generateSbar">Gerar/Atualizar SBAR</button>
           <button class="btn btn-secondary" id="copySbar">Copiar SBAR</button>
+          <button class="btn btn-pdf" id="printSbar">Gerar PDF / Imprimir</button>
         </div>
 
         <p class="note">Cada campo dos registros será exibido em uma linha própria no relatório.</p>
@@ -5755,6 +5786,54 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("addRecord").textContent = "Adicionar registro";
   });
 
+  function buildLatestCensusVacanciesText(){
+    const census = state.bedCensus || {};
+    const inf = census.infectologia || {};
+    const med = census.clinica || {};
+    const lines = [];
+
+    const add = (label, value) => {
+      const raw = value === null || value === undefined ? "" : String(value).trim();
+      if(raw === "") return;
+      lines.push(`${label}: ${raw}`);
+    };
+
+    add("Infectologia - Masculina 2 - Coletivo", inf.masc2);
+    add("Infectologia - Masculina 3 - Coletivo", inf.masc3);
+    add("Infectologia - Feminina - Coletivo", inf.fem);
+    add("Infectologia - Isolamento - TB", inf.tb);
+    add("Infectologia - UTI Coletivo", inf.utiColetivo);
+    add("Infectologia - UTI Isolamento", inf.utiIsolamento);
+
+    add("Clínica Médica - Masculina 1 - Coletivo", med.masc1);
+    add("Clínica Médica - Masculina 1 - Isolamento", med.masc1Isolamento);
+    add("Clínica Médica - Feminina - Coletivo", med.fem);
+    add("Clínica Médica - UTI Geral - Coletivo", med.utiGeral);
+
+    if(census.observations && String(census.observations).trim()){
+      lines.push(`Observações: ${String(census.observations).trim()}`);
+    }
+
+    if(census.date || census.time || census.performedBy){
+      const meta = [];
+      if(census.date) meta.push(formatDate(census.date));
+      if(census.time) meta.push(census.time);
+      if(census.performedBy) meta.push(`Responsável: ${census.performedBy}`);
+      if(meta.length) lines.push(`Último censo: ${meta.join(" | ")}`);
+    }
+
+    return lines.join("\n");
+  }
+
+  function sbarOperationalStatusClass(status){
+    const normalized = String(status || "").trim().toLowerCase();
+    if(normalized === "normal") return "status-normal";
+    if(normalized === "atenção" || normalized === "atencao") return "status-attention";
+    if(normalized === "alta tensão" || normalized === "alta tensao") return "status-high";
+    if(normalized === "colapso operacional") return "status-collapse";
+    return "";
+  }
+
   function sbarShiftLabel(type){
     const map = {
       "Manhã":"Manhã (07h–13h)",
@@ -6147,6 +6226,16 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     toast("Registros atualizados.");
   });
 
+  $("copyCensusToVacancies")?.addEventListener("click", () => {
+    const text = buildLatestCensusVacanciesText();
+    if(!text){
+      alert("Ainda não há um censo diário registrado para copiar.");
+      return;
+    }
+    $("vacancies").value = text;
+    toast("Vagas disponíveis preenchidas com o último censo diário.");
+  });
+
   $("generateSbar").addEventListener("click", () => {
     state.sbar = {
       operationalStatus: $("operationalStatus").value,
@@ -6173,8 +6262,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       "",
       `DATA: ${dateLabel}`,
       `PLANTÃO: ${shiftLabel}`,
-      `PLANTONISTA: ${professional}`,
-      `CRM: ${crmLabel}`,
+      `PLANTONISTA: ${professional} | ${crmLabel}`,
       "",
       "S — SITUAÇÃO",
       `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
@@ -6211,8 +6299,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
           <div class="sbar-meta">
             <div><strong>Data:</strong> ${escapeHtml(dateLabel)}</div>
             <div><strong>Plantão:</strong> ${escapeHtml(shiftLabel)}</div>
-            <div><strong>Plantonista:</strong> ${escapeHtml(professional)}</div>
-            <div><strong>CRM:</strong> ${escapeHtml(crmLabel)}</div>
+            <div><strong>Plantonista:</strong> ${escapeHtml(professional)} | ${escapeHtml(crmLabel)}</div>
           </div>
 
           <div class="sbar-sections">
@@ -6222,7 +6309,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 <h4>Situação</h4>
                 <p><strong>Vagas disponíveis:</strong> ${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO")}</p>
                 <div class="sbar-badges">
-                  <span class="sbar-badge">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
                   <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
                 </div>
               </div>
@@ -6294,6 +6381,87 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
     toast("SBAR copiado com sucesso.");
   });
+
+  $("printSbar").addEventListener("click", () => {
+    const reportNode = $("sbarOutput").querySelector(".sbar-report");
+    if(!reportNode){
+      alert("Gere o SBAR antes de criar o PDF ou imprimir.");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank", "width=1100,height=850");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+
+    const reportHtml = reportNode.outerHTML;
+
+    printWindow.document.open();
+    printWindow.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório SBAR - NIR CEMETRON</title>
+<style>
+  @page{size:A4;margin:14mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sbar-report{color:#111827;background:#fff}
+  .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
+  .sbar-report-header h2{margin:0;color:#0f2747;font-size:20px;letter-spacing:.02em}
+  .sbar-report-header p{margin:6px 0 0;color:#64748b;font-size:13px;font-weight:600}
+  .sbar-report-body{padding:18px 0}
+  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;padding:14px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;margin-bottom:18px}
+  .sbar-meta strong{color:#0f2747}
+  .sbar-sections{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+  .sbar-section{display:grid;grid-template-columns:78px 1fr;border-top:1px solid #dbe3ec}
+  .sbar-section:first-child{border-top:0}
+  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:15px;background:#e8eef6;color:#0f2747;font-size:17px;font-weight:900}
+  .sbar-content{padding:15px;min-width:0;line-height:1.5}
+  .sbar-content h4{margin:0 0 9px;color:#0f2747;font-size:13px}
+  .sbar-content p{margin:4px 0;font-size:12px}
+  .sbar-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .sbar-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:11px;font-weight:800}
+  .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
+  .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
+  .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+  .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+  .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden;break-inside:avoid}
+  .sbar-record-group-title{padding:8px 11px;font-weight:800;color:#0f2747;font-size:12px}
+  .sbar-record-group-title.yellow{background:#fff7d6}
+  .sbar-record-group-title.blue{background:#e8f1ff}
+  .sbar-record-group-title.green{background:#e8f7ee}
+  .sbar-record-group-title.red{background:#fdecec}
+  .sbar-record{padding:11px;border-top:1px solid #e5e7eb;font-size:11.5px;line-height:1.45;break-inside:avoid}
+  .sbar-record:first-of-type{border-top:0}
+  .sbar-record p{margin:3px 0}
+  .sbar-empty{padding:11px;color:#64748b;font-size:11.5px}
+  .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:14px;border-top:1px solid #cbd5e1;font-size:11px;color:#64748b}
+  .sbar-footer strong{display:block;color:#0f2747;font-size:12px;margin-bottom:3px}
+  @media print{
+    .sbar-record-group,.sbar-record,.sbar-meta{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+${reportHtml}
+</body>
+</html>`);
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do relatório.");
+      }
+    }, 450);
+  });
+
 
   if(!$("shiftDate").value){
     $("shiftDate").value = new Date().toISOString().slice(0,10);
