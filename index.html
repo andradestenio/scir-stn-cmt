@@ -904,7 +904,7 @@
     .sbar-record-group-title.red{background:#fdecec}
     .sbar-record{padding:12px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5}
     .sbar-record:first-of-type{border-top:0}
-    .sbar-record p{margin:1px 0}
+    .sbar-record p{margin:2px 0}
     .sbar-empty{padding:12px;color:#64748b;font-size:13px}
     .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
     .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
@@ -6283,7 +6283,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       "",
       `DATA: ${dateLabel}`,
       `PLANTÃO: ${shiftLabel}`,
-      `PLANTONISTA: ${professional} | ${crmLabel}`,
+      `PLANTONISTA: ${sbarProfessionalNameOnly(professional)} | ${crmLabel}`,
       "",
       "S — SITUAÇÃO",
       `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
@@ -6321,7 +6321,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
           <div class="sbar-meta">
             <div><strong>Data:</strong> ${escapeHtml(dateLabel)}</div>
             <div><strong>Plantão:</strong> ${escapeHtml(shiftLabel)}</div>
-            <div><strong>Plantonista:</strong> ${escapeHtml(professional)} | ${escapeHtml(crmLabel)}</div>
+            <div><strong>Plantonista:</strong> ${escapeHtml(sbarProfessionalNameOnly(professional))} | ${escapeHtml(crmLabel)}</div>
           </div>
 
           <div class="sbar-sections">
@@ -6428,41 +6428,41 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Relatório SBAR - NIR CEMETRON</title>
 <style>
-  @page{size:A4;margin:8mm}
+  @page{size:A4;margin:10mm}
   *{box-sizing:border-box}
-  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:10px}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:11px}
   .sbar-report{color:#111827;background:#fff}
-  .sbar-report-header{text-align:center;padding:9px 10px;border-bottom:1px solid #dbe3ec}
-  .sbar-report-header h2{margin:0;color:#0f2747;font-size:16px;letter-spacing:.02em}
-  .sbar-report-header p{margin:2px 0 0;color:#64748b;font-size:10px;font-weight:600}
-  .sbar-report-body{padding:7px 0}
-  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 12px;padding:7px 9px;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;margin-bottom:7px;font-size:9.5px}
+  .sbar-report-header{text-align:center;padding:13px 12px;border-bottom:1px solid #dbe3ec}
+  .sbar-report-header h2{margin:0;color:#0f2747;font-size:18px;letter-spacing:.02em}
+  .sbar-report-header p{margin:4px 0 0;color:#64748b;font-size:11px;font-weight:600}
+  .sbar-report-body{padding:10px 0}
+  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 16px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;margin-bottom:10px;font-size:10.5px}
   .sbar-meta strong{color:#0f2747}
-  .sbar-sections{border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
-  .sbar-section{display:grid;grid-template-columns:42px 1fr;border-top:1px solid #dbe3ec}
+  .sbar-sections{border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}
+  .sbar-section{display:grid;grid-template-columns:52px 1fr;border-top:1px solid #dbe3ec}
   .sbar-section:first-child{border-top:0}
-  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:7px 4px;background:#e8eef6;color:#0f2747;font-size:13px;font-weight:900}
-  .sbar-content{padding:7px 8px;min-width:0;line-height:1.25}
-  .sbar-content h4{margin:0 0 3px;color:#0f2747;font-size:10px}
-  .sbar-content p{margin:2px 0;font-size:9.5px}
-  .sbar-badges{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0 4px}
-  .sbar-badge{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:8.5px;font-weight:800}
+  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:10px 6px;background:#e8eef6;color:#0f2747;font-size:15px;font-weight:900}
+  .sbar-content{padding:10px 11px;min-width:0;line-height:1.35}
+  .sbar-content h4{margin:0 0 5px;color:#0f2747;font-size:11px}
+  .sbar-content p{margin:3px 0;font-size:10.5px}
+  .sbar-badges{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0 6px}
+  .sbar-badge{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:9.5px;font-weight:800}
   .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
   .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
   .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
   .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
-  .sbar-record-group{margin-top:5px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
-  .sbar-record-group-title{padding:4px 7px;font-weight:800;color:#0f2747;font-size:9px;break-after:avoid}
+  .sbar-record-group{margin-top:7px;border:1px solid #dbe3ec;border-radius:8px;overflow:hidden;break-inside:auto}
+  .sbar-record-group-title{padding:6px 8px;font-weight:800;color:#0f2747;font-size:10px;break-after:avoid}
   .sbar-record-group-title.yellow{background:#fff7d6}
   .sbar-record-group-title.blue{background:#e8f1ff}
   .sbar-record-group-title.green{background:#e8f7ee}
   .sbar-record-group-title.red{background:#fdecec}
-  .sbar-record{padding:5px 7px;border-top:1px solid #e5e7eb;font-size:8.8px;line-height:1.22;break-inside:avoid}
+  .sbar-record{padding:7px 9px;border-top:1px solid #e5e7eb;font-size:9.8px;line-height:1.3;break-inside:avoid}
   .sbar-record:first-of-type{border-top:0}
   .sbar-record p{margin:3px 0}
-  .sbar-empty{padding:5px 7px;color:#64748b;font-size:8.8px}
-  .sbar-footer{display:flex;justify-content:space-between;gap:10px;margin-top:7px;padding-top:6px;border-top:1px solid #cbd5e1;font-size:8.8px;color:#64748b}
-  .sbar-footer strong{display:block;color:#0f2747;font-size:9.5px;margin-bottom:1px}
+  .sbar-empty{padding:7px 9px;color:#64748b;font-size:9.8px}
+  .sbar-footer{display:flex;justify-content:space-between;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid #cbd5e1;font-size:9.8px;color:#64748b}
+  .sbar-footer strong{display:block;color:#0f2747;font-size:10.5px;margin-bottom:2px}
   @media print{
     .sbar-meta{break-inside:avoid}
     .sbar-section:not(:last-child){break-inside:avoid}
