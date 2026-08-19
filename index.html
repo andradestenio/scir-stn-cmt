@@ -914,8 +914,8 @@
     .sbar-census-row{border-top:1px solid #e5e7eb;font-size:12px}
     .sbar-sector-cell{display:flex;align-items:center;gap:8px;min-width:0}
     .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.02em;flex:0 0 auto}
-    .sbar-sector-tag.infecto{background:#e8f1ff;color:#1d4ed8;border:1px solid #bfdbfe}
-    .sbar-sector-tag.cm{background:#eef2f7;color:#475569;border:1px solid #cbd5e1}
+    .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
+    .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
     .sbar-census-value{text-align:center;font-weight:800}
     .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 310px;border-top:1px solid #e5e7eb;background:#f8fafc}
     .sbar-census-observation-block{padding:12px 14px;min-width:0}
@@ -924,7 +924,8 @@
     .sbar-census-meta-block{padding:12px 14px;border-left:1px solid #dbe3ec;display:flex;flex-direction:column;justify-content:center;gap:5px;color:#64748b;font-size:12px;line-height:1.45}
     .sbar-census-meta-block strong{color:#475569}
 
-    .sbar-background-card{border:1px solid #dbe3ec;border-radius:12px;padding:13px 14px;background:#fff;margin-top:10px}
+    .sbar-background-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .sbar-background-card{border:1px solid #dbe3ec;border-radius:12px;padding:13px 14px;background:#fff;}
     .sbar-background-card-title{color:#64748b;font-size:12px;font-weight:700;margin-bottom:6px}
     .sbar-background-card-text{color:#64748b;font-size:12px;line-height:1.55}
 
@@ -974,6 +975,7 @@
       .sbar-meta{grid-template-columns:1fr}
       .sbar-section{grid-template-columns:58px 1fr}
       .sbar-letter{padding:14px 8px}
+      .sbar-background-grid{grid-template-columns:1fr}
       .sbar-summary-grid{grid-template-columns:1fr 1fr}
       .sbar-summary-card{border-right:0;border-bottom:1px solid #dbe3ec}
       .sbar-summary-card:last-child{border-bottom:0}
@@ -5976,8 +5978,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const body = rows.map(([tag,sector,value]) => `
       <div class="sbar-census-row">
         <div class="sbar-sector-cell">
-          <span class="sbar-sector-tag ${tag === "INFECTO" ? "infecto" : "cm"}">${tag}</span>
           <span>${escapeHtml(sector)}</span>
+          <span class="sbar-sector-tag ${tag === "INFECTO" ? "infecto" : "cm"}">${tag}</span>
         </div>
         <div class="sbar-census-value">${escapeHtml(String(value))}</div>
       </div>`).join("");
@@ -5992,7 +5994,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ${body}
       <div class="sbar-census-details">
         <div class="sbar-census-observation-block">
-          <div class="sbar-census-detail-label sbar-title-with-icon">${sbarIcon("note","sm")}<span>Observações</span></div>
+          <div class="sbar-census-detail-label">Observações</div>
           <div class="sbar-census-observation-text">${escapeHtml(observations)}</div>
         </div>
         <div class="sbar-census-meta-block">
@@ -6530,7 +6532,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">S</div>
               <div class="sbar-content">
-                <h4 class="sbar-title-with-icon">${sbarIcon("bed")}<span>Situação</span></h4>
+                <h4>Situação</h4>
                 <p><strong>Vagas disponíveis:</strong></p>
                 ${sbarVacanciesFromCensus && sbarCensusTableMarkup()
                   ? sbarCensusTableMarkup()
@@ -6541,14 +6543,16 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">B</div>
               <div class="sbar-content">
-                <h4 class="sbar-title-with-icon">${sbarIcon("document")}<span>Background / Contexto</span></h4>
-                <div class="sbar-background-card">
-                  <div class="sbar-background-card-title sbar-title-with-icon">${sbarIcon("list","sm")}<span>Registro de ocorrências</span></div>
-                  <div class="sbar-background-card-text">${escapeHtml(state.sbar.background || "")}</div>
-                </div>
-                <div class="sbar-background-card">
-                  <div class="sbar-background-card-title sbar-title-with-icon">${sbarIcon("users","sm")}<span>Ausência de profissionais com impacto regulatório</span></div>
-                  <div class="sbar-background-card-text">${escapeHtml(state.sbar.professionalAbsence || "")}</div>
+                <h4>Background / Contexto</h4>
+                <div class="sbar-background-grid">
+                  <div class="sbar-background-card">
+                    <div class="sbar-background-card-title">Registro de ocorrências</div>
+                    <div class="sbar-background-card-text">${escapeHtml(state.sbar.background || "")}</div>
+                  </div>
+                  <div class="sbar-background-card">
+                    <div class="sbar-background-card-title">Ausência de profissionais com impacto regulatório</div>
+                    <div class="sbar-background-card-text">${escapeHtml(state.sbar.professionalAbsence || "")}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -6556,10 +6560,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">A</div>
               <div class="sbar-content">
-                <h4 class="sbar-title-with-icon">${sbarIcon("chart")}<span>Avaliação</span></h4>
+                <h4>Avaliação</h4>
                 <div class="sbar-badges sbar-assessment-badges">
-                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)} sbar-title-with-icon">${sbarIcon("warning","sm")}<span>Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span></span>
-                  <span class="sbar-badge sbar-title-with-icon">${sbarIcon("rotate","sm")}<span>Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span></span>
+                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
                 </div>
                 <p>${escapeHtml(state.sbar.assessment || "Sem avaliação adicional registrada.")}</p>
               </div>
@@ -6568,11 +6572,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <div class="sbar-section">
               <div class="sbar-letter">R</div>
               <div class="sbar-content">
-                <h4 class="sbar-title-with-icon">${sbarIcon("document")}<span>Relatório do plantão</span></h4>
+                <h4>Relatório do plantão</h4>
                 ${(() => {
                   const counts = sbarSummaryCounts();
                   return `<div class="sbar-summary-box">
-                    <div class="sbar-summary-title sbar-title-with-icon">${sbarIcon("summary")}<span>Resumo do plantão</span></div>
+                    <div class="sbar-summary-title">Resumo do plantão</div>
                     <div class="sbar-summary-grid">
                       <div class="sbar-summary-card">${sbarIcon("list","lg")}<span>Número de ocorrências</span><strong>${counts.total}</strong></div>
                       <div class="sbar-summary-card yellow">${sbarIcon("hourglass","lg")}<span>Pendências</span><strong>${counts.yellow}</strong></div>
@@ -6585,7 +6589,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 ${(() => {
                   const mail = sbarEmailSummary();
                   return `<div class="sbar-email-box">
-                    <div class="sbar-email-title sbar-title-with-icon">${sbarIcon("mail")}<span>Produtividade de e-mails</span></div>
+                    <div class="sbar-email-title">Produtividade de e-mails</div>
                     <div class="sbar-email-grid">
                       <div class="sbar-email-metric">${sbarIcon("inbox","lg")}<span>Recebidos</span><strong>${mail.received}</strong></div>
                       <div class="sbar-email-metric">${sbarIcon("eye","lg")}<span>Cientes</span><strong>${mail.acknowledged}</strong></div>
@@ -6611,7 +6615,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div>NIR CEMETRON</div>
             </div>
             <div>
-              <div class="sbar-title-with-icon">${sbarIcon("clock","sm")}<span>Emitido em ${escapeHtml(generatedDate)}</span></div>
+              <div>Emitido em ${escapeHtml(generatedDate)}</div>
               <div>${escapeHtml(generatedTime)}</div>
             </div>
           </div>
@@ -6731,8 +6735,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   .sbar-sector-cell{display:flex;align-items:center;gap:4px;min-width:0}
   .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:1px 4px;border-radius:999px;font-size:6.8px;font-weight:800;flex:0 0 auto}
-  .sbar-sector-tag.infecto{background:#e8f1ff;color:#1d4ed8;border:1px solid #bfdbfe}
-  .sbar-sector-tag.cm{background:#eef2f7;color:#475569;border:1px solid #cbd5e1}
+  .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
+  .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
   .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 190px;border-top:1px solid #e5e7eb;background:#f8fafc}
   .sbar-census-observation-block{padding:6px 7px;min-width:0}
   .sbar-census-detail-label{margin-bottom:3px;color:#0f2747;font-size:8.5px;font-weight:800}
@@ -6768,6 +6772,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-icon-sm{width:9px;height:9px}
   .sbar-icon-lg{width:16px;height:16px;stroke-width:1.7}
   .sbar-title-with-icon{display:flex;align-items:center;gap:4px}
+
+  .sbar-background-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px}
+  .sbar-background-card{margin-top:0}
 </style>
 </head>
 <body>
