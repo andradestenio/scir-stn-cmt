@@ -923,25 +923,25 @@
     .sbar-background-card-title{color:#64748b;font-size:12px;font-weight:700;margin-bottom:6px}
     .sbar-background-card-text{color:#64748b;font-size:12px;line-height:1.55}
 
-    .sbar-summary-box,.sbar-email-box{margin:14px 0 18px;border:1px solid #cbd5e1;border-radius:16px;overflow:hidden;background:#fff}
-    .sbar-summary-title,.sbar-email-title{padding:16px 18px;background:#eef5f0;color:#111827;font-size:16px;font-weight:500}
+    .sbar-summary-box,.sbar-email-box{margin:16px 0 20px;border:1px solid #cbd5e1;border-radius:16px;overflow:hidden;background:#fff}
+    .sbar-summary-title,.sbar-email-title{padding:16px 18px;background:#eef4fb;color:#0f2747;font-size:16px;font-weight:600;border-bottom:1px solid #dbe3ec}
     .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
-    .sbar-summary-card{padding:18px 16px;border-right:1px solid #dbe3ec;background:#f8fafc;min-height:122px}
+    .sbar-summary-card{padding:20px 18px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:128px;display:flex;flex-direction:column;justify-content:center}
     .sbar-summary-card:last-child{border-right:0}
-    .sbar-summary-card span{display:block;color:#64748b;font-size:13px;font-weight:500;line-height:1.35}
-    .sbar-summary-card strong{display:block;margin-top:12px;color:#475569;font-size:30px;font-weight:500;line-height:1}
+    .sbar-summary-card span{display:block;color:#64748b;font-size:13px;font-weight:600;line-height:1.35}
+    .sbar-summary-card strong{display:block;margin-top:10px;color:#334155;font-size:30px;font-weight:500;line-height:1}
     .sbar-summary-card.yellow{background:#fffaf0}
     .sbar-summary-card.blue{background:#f2f7ff}
-    .sbar-summary-card.green{background:#f1fbf5}
-    .sbar-summary-card.red{background:#fff4f4}
+    .sbar-summary-card.green{background:#f2fbf7}
+    .sbar-summary-card.red{background:#fff5f5}
 
     .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
-    .sbar-email-metric{padding:20px 16px;text-align:center;border-left:1px solid #dbe3ec;background:#fff;min-height:118px}
+    .sbar-email-metric{padding:24px 18px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:132px;display:flex;flex-direction:column;justify-content:center}
     .sbar-email-metric:first-child{border-left:0;background:#f8fafc}
-    .sbar-email-metric:nth-child(2){background:#f1fbf5}
+    .sbar-email-metric:nth-child(2){background:#f2fbf7}
     .sbar-email-metric:nth-child(3){background:#f7f5ff}
-    .sbar-email-metric span{display:block;color:#64748b;font-size:13px;font-weight:500}
-    .sbar-email-metric strong{display:block;margin-top:12px;color:#475569;font-size:30px;font-weight:500}
+    .sbar-email-metric span{display:block;color:#64748b;font-size:13px;font-weight:600}
+    .sbar-email-metric strong{display:block;margin-top:12px;color:#334155;font-size:30px;font-weight:500}
 
     .sbar-full-report-page-break{margin-top:14px}
     .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
@@ -6668,13 +6668,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-census-head>div,.sbar-census-row>div{padding:4px 6px}.sbar-census-row{border-top:1px solid #e5e7eb;font-size:8.8px}
   .sbar-census-value{text-align:center;font-weight:800}
   .sbar-census-value{text-align:center;font-weight:800}
-  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:0;padding:6px}
-  .sbar-summary-card{padding:7px 6px;border:1px solid #d7dde5;border-radius:7px;background:#fff;min-height:48px}
-  .sbar-summary-card span{display:block;color:#64748b;font-size:7.6px;font-weight:700;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:3px;color:#0f2747;font-size:13px;line-height:1}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+  .sbar-summary-card{padding:8px 7px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:52px}
+  .sbar-summary-card span{display:block;color:#64748b;font-size:7.8px;font-weight:600;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500;line-height:1}
   .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4}.sbar-summary-card:last-child{border-right:0}
-  .sbar-summary-box,.sbar-email-box{margin:5px 0 6px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:11px 14px;background:#e8eef6;color:#0f2747;font-size:13px;font-weight:800;letter-spacing:.01em}
-  .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:5px;text-align:center;border-left:1px solid #e5e7eb}.sbar-email-metric:first-child{border-left:0}
-  .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:700}.sbar-email-metric strong{display:block;margin-top:2px;color:#0f2747;font-size:12px}
+  .sbar-summary-box,.sbar-email-box{margin:6px 0 8px;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:6px 8px;background:#eef4fb;color:#0f2747;font-size:9.5px;font-weight:600;border-bottom:1px solid #dbe3ec}
+  .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:9px 7px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:52px}.sbar-email-metric:first-child{border-left:0}
+  .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:600}.sbar-email-metric strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500}
   .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:2mm}.sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
   .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
   .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
@@ -6710,7 +6710,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-background-card-title{color:#64748b;font-size:8.5px;font-weight:700;margin-bottom:2px}
   .sbar-background-card-text{color:#64748b;font-size:8.5px;line-height:1.3}
   .sbar-summary-box,.sbar-email-box{margin:5px 0 7px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
-  .sbar-summary-title,.sbar-email-title{padding:5px 7px;background:#eef5f0;color:#111827;font-size:9px;font-weight:500}
+  .sbar-summary-title,.sbar-email-title{padding:5px 7px;background:#eef4fb;color:#111827;font-size:9px;font-weight:500}
   .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
   .sbar-summary-card{padding:7px 6px;border-right:1px solid #dbe3ec;background:#f8fafc;min-height:50px}
   .sbar-summary-card span{display:block;color:#64748b;font-size:7.5px;font-weight:500;line-height:1.15}
@@ -6721,6 +6721,16 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-email-metric:first-child{border-left:0;background:#f8fafc}.sbar-email-metric:nth-child(2){background:#f1fbf5}.sbar-email-metric:nth-child(3){background:#f7f5ff}
   .sbar-email-metric span{display:block;color:#64748b;font-size:7.5px;font-weight:500}
   .sbar-email-metric strong{display:block;margin-top:3px;color:#475569;font-size:13px;font-weight:500}
+
+.sbar-summary-card:last-child{border-right:0}
+.sbar-summary-card.yellow{background:#fffaf0}
+.sbar-summary-card.blue{background:#f2f7ff}
+.sbar-summary-card.green{background:#f2fbf7}
+.sbar-summary-card.red{background:#fff5f5}
+
+.sbar-email-metric:first-child{border-left:0;background:#f8fafc}
+.sbar-email-metric:nth-child(2){background:#f2fbf7}
+.sbar-email-metric:nth-child(3){background:#f7f5ff}
 </style>
 </head>
 <body>
