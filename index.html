@@ -897,6 +897,8 @@
     .rich-output{line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
     .rich-output p{margin:0}.rich-output ul,.rich-output ol{margin:4px 0 4px 18px;padding:0}.rich-output li{margin:1px 0}
     .status-rich-output{white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+    .record-status-rich{white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;tab-size:4;line-height:1.45}
+    .record-status-rich p{margin:0}.record-status-rich ul,.record-status-rich ol{margin:4px 0 4px 18px;padding:0}
     .sbar-report{color:#111827;background:#fff}
     .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
     .sbar-report-header h2{margin:0;color:#0f2747;font-size:22px;letter-spacing:.02em}
@@ -4325,6 +4327,36 @@
     return `<div class="rich-output">${escapeHtml(plainValue || "").replace(/\n/g,"<br>")}</div>`;
   }
 
+  function recordStatusDocumentHtml(record){
+    const safe = sanitizeRichHtml(record?.statusHtml || "");
+    if(richPlainText(safe)){
+      return `<div class="record-status-rich">${safe}</div>`;
+    }
+    return `<div class="record-status-rich">${escapeHtml(record?.status || "")}</div>`;
+  }
+
+  function recordStatusDocumentText(record){
+    return richPlainText(record?.statusHtml || "") || String(record?.status || "");
+  }
+
+  function recordStatusDocumentCss(){
+    return `.record-status-rich{
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      tab-size:4;
+      line-height:1.55;
+    }
+    .record-status-rich p{margin:0}
+    .record-status-rich ul,.record-status-rich ol{margin:4px 0 4px 20px;padding:0}
+    .record-status-rich li{margin:1px 0}
+    .record-status-rich font[color],.record-status-rich span[style]{
+      -webkit-print-color-adjust:exact!important;
+      print-color-adjust:exact!important;
+    }`;
+  }
+
+
   function getRichEditorHtml(field){
     return sanitizeRichHtml($(`${field}Editor`)?.innerHTML || "");
   }
@@ -4430,7 +4462,7 @@
           <div><strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}</div>
           <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
           <div><strong>Destino:</strong> ${escapeHtml(record.destination)}</div>
-          <div><strong>Status:</strong> ${richHtmlForOutput(record.statusHtml, record.status)}</div>
+          <div><strong>Status:</strong> ${recordStatusDocumentHtml(record)}</div>
           ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
           ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
             <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
@@ -4949,7 +4981,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td><div class="status-pill status-rich-output">${richHtmlForOutput(record.statusHtml, record.status)}</div></td>
+            <td><div class="status-pill status-rich-output">${recordStatusDocumentHtml(record)}</div></td>
             <td>
               <div class="table-actions">
                 ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
@@ -5005,6 +5037,8 @@ ${regulatorFooterHtml()}</div></body></html>`;
       "Desfecho: Transferência / Internação Autorizada",
       "",
       "Orientações:",
+      recordStatusDocumentText(record),
+      recordStatusDocumentText(record) ? "" : null,
       "Enviar junto ao paciente:",
       "✔️ Exame COVID-19 NEGATIVO;",
       "✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;",
@@ -5058,6 +5092,10 @@ ${regulatorFooterHtml()}</div></body></html>`;
   button.secondary{background:#e5e7eb;color:#111827}
   @media(max-width:600px){.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}
   @media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+
+  ${recordStatusDocumentCss()}
+  .record-status-note{margin:0 0 13px;padding:10px 12px;border:1px solid #dbe3ec;border-radius:8px;background:#f8fafc}
+  @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style>
 </head>
 <body>
@@ -5081,6 +5119,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <div class="decision-row">
       <div class="decision-label">Orientações</div>
       <div class="decision-value orientation">
+        ${recordStatusDocumentText(record) ? `<div class="record-status-note">${recordStatusDocumentHtml(record)}</div>` : ""}
         <div class="orientation-intro"><strong>Enviar junto ao paciente:</strong></div>
         <div>✔️ Exame COVID-19 NEGATIVO;</div>
         <div>✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;</div>
@@ -5108,7 +5147,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       `Destino solicitado: ${record.destination || ""}`,
       "",
       "Desfecho: Transferência / Internação Negada",
-      `Orientações: ${record.status || ""}`,
+      `Orientações: ${recordStatusDocumentText(record)}`,
       "",
       REGULATOR_INFO.name,
       `${REGULATOR_INFO.role} | ${REGULATOR_INFO.crm}`,
@@ -5149,6 +5188,9 @@ ${regulatorFooterHtml()}</div></body></html>`;
   button.secondary{background:#e5e7eb;color:#111827}
   @media(max-width:600px){.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}
   @media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+
+  ${recordStatusDocumentCss()}
+  @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style>
 </head>
 <body>
@@ -5175,7 +5217,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     </div>
     <div class="decision-row">
       <div class="decision-label">Orientações</div>
-      <div class="decision-value orientation">${escapeHtml(record.status || "")}</div>
+      <div class="decision-value orientation">${recordStatusDocumentHtml(record)}</div>
     </div>
   </div>
 
@@ -5346,7 +5388,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
+            <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="8" class="empty-table">Sem registros neste plantão.</td></tr>`;
@@ -5393,7 +5435,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
+        <td>${recordStatusDocumentHtml(record)}</td>
       </tr>`;
     }).join("") : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
 
@@ -5401,7 +5443,10 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}h2{margin:14px 0 7px;color:#0f2747;font-size:13px}
     .productivity{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}.metric{padding:8px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;font-size:11px}.metric strong{display:block;margin-top:3px;font-size:17px;color:#0f2747}
     table{width:100%;border-collapse:collapse;font-size:10px}th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
-    td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}</style></head>
+    td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}
+    ${recordStatusDocumentCss()}
+    @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+    </style></head>
     <body><h1>${escapeHtml(data.title)}</h1><div class="meta"><strong>Data:</strong> ${escapeHtml(data.date)}<br>
     <strong>Plantão:</strong> ${escapeHtml(data.type)}<br><strong>Plantonista:</strong> ${escapeHtml(data.professional)}<br>
     <strong>Encerramento:</strong> ${escapeHtml(data.endedAt)}</div>
@@ -5438,7 +5483,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
 
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
-      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td></tr>`;
+      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${recordStatusDocumentHtml(record)}</td></tr>`;
     }).join("");
 
     const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
@@ -6494,7 +6539,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
+            <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
@@ -6516,6 +6561,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
   td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}
   .footer{margin-top:12px;font-size:10px;color:#6b7280}
+
+    ${recordStatusDocumentCss()}
+    @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style>
 </head>
 <body>
@@ -6590,7 +6638,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
+        <td>${recordStatusDocumentHtml(record)}</td>
       </tr>`;
     }).join("");
 
