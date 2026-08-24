@@ -880,6 +880,23 @@
     .sbar-icon-lg{width:27px;height:27px;stroke-width:1.7}
     .sbar-title-with-icon{display:flex;align-items:center;gap:8px}
     .sbar-metric-icon{margin-bottom:8px}
+    .rich-source{display:none!important}
+    .rich-shell{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+    .rich-shell:focus-within{border-color:#5b82b2;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+    .rich-toolbar{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:7px 8px;background:#f8fafc;border-bottom:1px solid #dbe3ec}
+    .rich-btn{height:29px;min-width:31px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f2747;font-size:13px;font-weight:700;cursor:pointer;padding:0 7px}
+    .rich-btn:hover{background:#eef4fb;border-color:#9fb6d2}
+    .rich-divider{width:1px;height:22px;background:#dbe3ec;margin:0 2px}
+    .rich-color{width:25px;height:25px;min-width:25px;border:2px solid #fff!important;outline:1px solid #cbd5e1;border-radius:50%!important;cursor:pointer;padding:0!important}
+    .rich-color.black{background:#111827}.rich-color.navy{background:#0f2747}.rich-color.blue{background:#2563eb}.rich-color.green{background:#166534}.rich-color.red{background:#b42318}.rich-color.purple{background:#7e57c2}
+    .rich-editor{min-height:96px;padding:10px 12px;outline:none;font-size:13px;line-height:1.5;color:#111827;overflow-wrap:anywhere;white-space:pre-wrap;tab-size:4}
+    .rich-editor.medium{min-height:112px}.rich-editor.long{min-height:132px}
+    .rich-editor:empty:before{content:attr(data-placeholder);color:#94a3b8;pointer-events:none}
+    .rich-editor p{margin:0}.rich-editor ul,.rich-editor ol{margin:4px 0 4px 22px;padding:0}
+    .rich-help{margin-top:6px;font-size:11px;color:#64748b}
+    .rich-output{line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+    .rich-output p{margin:0}.rich-output ul,.rich-output ol{margin:4px 0 4px 18px;padding:0}.rich-output li{margin:1px 0}
+    .status-rich-output{white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
     .sbar-report{color:#111827;background:#fff}
     .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
     .sbar-report-header h2{margin:0;color:#0f2747;font-size:22px;letter-spacing:.02em}
@@ -2296,7 +2313,28 @@
           </div>
           <div style="grid-column:1/-1">
             <label for="status">Status</label>
-            <textarea id="status" placeholder="Descreva o status atual da demanda"></textarea>
+            <textarea class="rich-source" id="status" placeholder="Descreva o status atual da demanda"></textarea>
+            <div class="rich-shell" data-rich-field="status">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="statusEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Descreva o status atual da demanda" spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
         </div>
         <div class="actions">
@@ -2586,26 +2624,131 @@
               <label for="vacancies">Vagas disponíveis</label>
               <button class="btn btn-secondary btn-inline" id="copyCensusToVacancies" type="button">Copiar do censo</button>
             </div>
-            <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Digite livremente ou clique em “Copiar do censo” para preencher com o último censo registrado."></textarea>
+            <textarea class="sbar-long-text rich-source" id="vacancies" rows="4" placeholder="Digite livremente ou clique em “Copiar do censo” para preencher com o último censo registrado."></textarea>
+            <div class="rich-shell" data-rich-field="vacancies">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="vacanciesEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Digite livremente ou use “Copiar do censo”." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label>B — Background / Contexto</label>
           </div>
           <div style="grid-column:1/-1">
             <label for="background">Registro de ocorrências</label>
-            <textarea class="sbar-long-text" id="background" rows="3" placeholder="Registre as ocorrências relevantes do plantão."></textarea>
+            <textarea class="sbar-long-text rich-source" id="background" rows="3" placeholder="Registre as ocorrências relevantes do plantão."></textarea>
+            <div class="rich-shell" data-rich-field="background">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="backgroundEditor" class="rich-editor " contenteditable="true" data-placeholder="Registro de ocorrências do plantão." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label for="professionalAbsence">Ausência de profissionais com impacto regulatório</label>
-            <textarea class="sbar-long-text" id="professionalAbsence" rows="3" placeholder="Registre ausências de profissionais que tenham impacto sobre a regulação."></textarea>
+            <textarea class="sbar-long-text rich-source" id="professionalAbsence" rows="3" placeholder="Registre ausências de profissionais que tenham impacto sobre a regulação."></textarea>
+            <div class="rich-shell" data-rich-field="professionalAbsence">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="professionalAbsenceEditor" class="rich-editor " contenteditable="true" data-placeholder="Ausência de profissionais com impacto regulatório." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label for="assessment">A — Avaliação</label>
-            <textarea class="sbar-long-text" id="assessment" rows="4" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+            <textarea class="sbar-long-text rich-source" id="assessment" rows="4" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+            <div class="rich-shell" data-rich-field="assessment">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="assessmentEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Avaliação do cenário regulatório." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label for="recommendation">R — Relatório do plantão</label>
-            <textarea class="sbar-long-text" id="recommendation" rows="4" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+            <textarea class="sbar-long-text rich-source" id="recommendation" rows="4" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+            <div class="rich-shell" data-rich-field="recommendation">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="recommendationEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Relatório/resumo do plantão." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
         </div>
 
@@ -4126,6 +4269,128 @@
       .replaceAll("'","&#039;");
   }
 
+  const RICH_ALLOWED_COLORS = new Set([
+    "#111827","#0f2747","#2563eb","#166534","#b42318","#7e57c2",
+    "rgb(17, 24, 39)","rgb(15, 39, 71)","rgb(37, 99, 235)",
+    "rgb(22, 101, 52)","rgb(180, 35, 24)","rgb(126, 87, 194)"
+  ]);
+  const SBAR_RICH_FIELDS = ["vacancies","background","professionalAbsence","assessment","recommendation"];
+
+  function sanitizeRichHtml(input){
+    const template = document.createElement("template");
+    template.innerHTML = String(input || "");
+    const allowed = new Set(["B","STRONG","I","EM","U","BR","P","DIV","UL","OL","LI","SPAN","FONT"]);
+    const clean = node => {
+      [...node.childNodes].forEach(child => {
+        if(child.nodeType === Node.ELEMENT_NODE){
+          if(!allowed.has(child.tagName)){
+            const frag = document.createDocumentFragment();
+            while(child.firstChild) frag.appendChild(child.firstChild);
+            child.replaceWith(frag);
+            return;
+          }
+          [...child.attributes].forEach(attr => {
+            const name = attr.name.toLowerCase();
+            if(child.tagName === "FONT" && name === "color"){
+              if(!RICH_ALLOWED_COLORS.has(String(attr.value || "").toLowerCase())) child.removeAttribute(attr.name);
+              return;
+            }
+            if(name === "style"){
+              const color = child.style.color ? child.style.color.toLowerCase() : "";
+              child.removeAttribute("style");
+              if(color && RICH_ALLOWED_COLORS.has(color)) child.style.color = color;
+              return;
+            }
+            child.removeAttribute(attr.name);
+          });
+          clean(child);
+        }else if(child.nodeType !== Node.TEXT_NODE){
+          child.remove();
+        }
+      });
+    };
+    clean(template.content);
+    return template.innerHTML;
+  }
+
+  function richPlainText(value){
+    const div = document.createElement("div");
+    div.innerHTML = sanitizeRichHtml(value || "");
+    return (div.innerText || div.textContent || "").replace(/\u00a0/g," ").trim();
+  }
+
+  function richHtmlForOutput(htmlValue, plainValue=""){
+    const safe = sanitizeRichHtml(htmlValue || "");
+    if(richPlainText(safe)) return `<div class="rich-output">${safe}</div>`;
+    return `<div class="rich-output">${escapeHtml(plainValue || "").replace(/\n/g,"<br>")}</div>`;
+  }
+
+  function getRichEditorHtml(field){
+    return sanitizeRichHtml($(`${field}Editor`)?.innerHTML || "");
+  }
+
+  function syncRichSource(field){
+    const editor = $(`${field}Editor`);
+    const source = $(field);
+    if(editor && source) source.value = richPlainText(editor.innerHTML);
+  }
+
+  function setRichEditorValue(field, richHtml, plainText){
+    const editor = $(`${field}Editor`);
+    if(!editor) return;
+    const safe = sanitizeRichHtml(richHtml || "");
+    editor.innerHTML = richPlainText(safe)
+      ? safe
+      : escapeHtml(plainText || "").replace(/\n/g,"<br>");
+    syncRichSource(field);
+  }
+
+  function initRichEditor(field){
+    const shell = document.querySelector(`[data-rich-field="${field}"]`);
+    const editor = $(`${field}Editor`);
+    if(!shell || !editor || shell.dataset.richReady === "1") return;
+    shell.dataset.richReady = "1";
+
+    shell.querySelectorAll("[data-rich-cmd]").forEach(btn => {
+      btn.addEventListener("mousedown", event => event.preventDefault());
+      btn.addEventListener("click", () => {
+        editor.focus();
+        document.execCommand(btn.dataset.richCmd, false, null);
+        syncRichSource(field);
+      });
+    });
+
+    shell.querySelectorAll("[data-rich-color]").forEach(btn => {
+      btn.addEventListener("mousedown", event => event.preventDefault());
+      btn.addEventListener("click", () => {
+        editor.focus();
+        document.execCommand("foreColor", false, btn.dataset.richColor);
+        syncRichSource(field);
+      });
+    });
+
+    shell.querySelector('[data-rich-action="clear"]')?.addEventListener("click", () => {
+      editor.focus();
+      document.execCommand("removeFormat", false, null);
+      syncRichSource(field);
+    });
+
+    editor.addEventListener("input", () => syncRichSource(field));
+    editor.addEventListener("blur", () => {
+      editor.innerHTML = sanitizeRichHtml(editor.innerHTML);
+      syncRichSource(field);
+    });
+    editor.addEventListener("paste", event => {
+      event.preventDefault();
+      const text = (event.clipboardData || window.clipboardData).getData("text/plain");
+      document.execCommand("insertText", false, text);
+    });
+  }
+
+  function initAllRichEditors(){
+    ["status", ...SBAR_RICH_FIELDS].forEach(initRichEditor);
+  }
+
   function renderShift(){
     const closed = isShiftClosed();
 
@@ -4165,7 +4430,7 @@
           <div><strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}</div>
           <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
           <div><strong>Destino:</strong> ${escapeHtml(record.destination)}</div>
-          <div><strong>Status:</strong> ${escapeHtml(record.status)}</div>
+          <div><strong>Status:</strong> ${richHtmlForOutput(record.statusHtml, record.status)}</div>
           ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
           ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
             <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
@@ -4636,6 +4901,11 @@ ${regulatorFooterHtml()}</div></body></html>`;
     $("professionalAbsence").value = state.sbar.professionalAbsence || "";
     $("assessment").value = state.sbar.assessment || "";
     $("recommendation").value = state.sbar.recommendation || "";
+    state.sbar.richHtml = state.sbar.richHtml && typeof state.sbar.richHtml === "object" ? state.sbar.richHtml : {};
+    SBAR_RICH_FIELDS.forEach(field => {
+      initRichEditor(field);
+      setRichEditorValue(field, state.sbar.richHtml[field] || "", state.sbar[field] || "");
+    });
   }
 
   function renderShiftReportTable(){
@@ -4679,7 +4949,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td><span class="status-pill">${escapeHtml(record.status)}</span></td>
+            <td><div class="status-pill status-rich-output">${richHtmlForOutput(record.statusHtml, record.status)}</div></td>
             <td>
               <div class="table-actions">
                 ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
@@ -5076,7 +5346,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${escapeHtml(record.status)}</td>
+            <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="8" class="empty-table">Sem registros neste plantão.</td></tr>`;
@@ -5123,7 +5393,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${escapeHtml(record.status)}</td>
+        <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
       </tr>`;
     }).join("") : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
 
@@ -5168,7 +5438,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
 
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
-      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${escapeHtml(record.status)}</td></tr>`;
+      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td></tr>`;
     }).join("");
 
     const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
@@ -5540,6 +5810,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderDashboardTools();
     renderEmailNotifications();
 
+    initAllRichEditors();
+    const statusEditor = $("statusEditor");
+    if(statusEditor){
+      statusEditor.contentEditable = isShiftClosed() ? "false" : "true";
+      statusEditor.classList.toggle("disabled", isShiftClosed());
+    }
+
     const locked = isShiftClosed();
     ["module","requestTime","patient","origin","hd","destination","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance","examName","examDate","examTime","examGuidance","addRecord","clearForm"].forEach(id => {
       if($(id)) $(id).disabled = locked;
@@ -5562,6 +5839,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = record.hd || "";
     $("destination").value = record.destination || "";
     $("status").value = record.status || "";
+    initRichEditor("status");
+    setRichEditorValue("status", record.statusHtml || "", record.status || "");
     $("blueRecordType").value = record.blueRecordType || "";
     $("evaluationSpecialty").value = record.evaluationSpecialty || "";
     $("evaluationSpecialist").value = record.evaluationSpecialist || "";
@@ -5747,7 +6026,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         background:"",
         professionalAbsence:"",
         assessment:"",
-        recommendation:""
+        recommendation:"",
+        richHtml:{}
       };
       $("sbarOutput").textContent = "Clique em “Gerar/Atualizar SBAR” para montar o relatório.";
       toast("Novo plantão iniciado.");
@@ -5793,6 +6073,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
 
+    initRichEditor("status");
+    syncRichSource("status");
+
     const record = {
       id: editingRecordId || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
       module: $("module").value,
@@ -5802,6 +6085,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       hd: $("hd").value.trim(),
       destination: $("destination").value.trim(),
       status: $("status").value.trim(),
+      statusHtml: getRichEditorHtml("status"),
       blueRecordType: $("module").value === "blue" ? $("blueRecordType").value : "",
       evaluationSpecialty: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialty").value.trim() : "",
       evaluationSpecialist: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialist").value.trim() : "",
@@ -5849,11 +6133,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = "";
     $("destination").value = "";
     $("status").value = "";
+    setRichEditorValue("status", "", "");
     clearBlueRecordFields();
   });
 
   $("clearForm").addEventListener("click", () => {
     ["patient","origin","hd","destination","status"].forEach(id => $(id).value = "");
+    setRichEditorValue("status", "", "");
     clearBlueRecordFields();
     $("requestTime").value = getCurrentTime();
     editingRecordId = null;
@@ -6038,7 +6324,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     if(isExamRecord(record)){
       rows.push(["Exame",record.examName || ""],["Data",formatEvaluationDate(record.examDate)],["Horário",record.examTime || ""],["Orientações",record.examGuidance || ""]);
     }
-    return `<div class="sbar-record-full">${rows.map(([label,value]) => `<div class="sbar-record-line"><strong>${escapeHtml(label)}:</strong><span>${escapeHtml(value)}</span></div>`).join("")}</div>`;
+    return `<div class="sbar-record-full">${rows.map(([label,value]) => {
+      const content = label === "Status"
+        ? richHtmlForOutput(record.statusHtml, value)
+        : `<span>${escapeHtml(value)}</span>`;
+      return `<div class="sbar-record-line"><strong>${escapeHtml(label)}:</strong>${content}</div>`;
+    }).join("")}</div>`;
   }
 
   function sbarFullGroupMarkup(moduleKey){
@@ -6203,7 +6494,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${escapeHtml(record.status)}</td>
+            <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
@@ -6299,7 +6590,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${escapeHtml(record.status)}</td>
+        <td>${sanitizeRichHtml(record.statusHtml || "") || escapeHtml(record.status)}</td>
       </tr>`;
     }).join("");
 
@@ -6438,12 +6729,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const text = buildLatestCensusVacanciesText();
     if(!text){ alert("Ainda não há um censo diário registrado para copiar."); return; }
     $("vacancies").value = text;
+    initRichEditor("vacancies");
+    setRichEditorValue("vacancies", escapeHtml(text).replace(/\n/g,"<br>"), text);
     sbarVacanciesFromCensus = true;
     toast("Vagas disponíveis preenchidas com o último censo diário.");
   });
   $("vacancies")?.addEventListener("input", () => { sbarVacanciesFromCensus = false; });
 
   $("generateSbar").addEventListener("click", () => {
+    SBAR_RICH_FIELDS.forEach(syncRichSource);
     state.sbar = {
       operationalStatus: $("operationalStatus").value,
       turnover: $("turnover").value,
@@ -6451,7 +6745,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       background: $("background").value.trim(),
       professionalAbsence: $("professionalAbsence").value.trim(),
       assessment: $("assessment").value.trim(),
-      recommendation: $("recommendation").value.trim()
+      recommendation: $("recommendation").value.trim(),
+      richHtml: Object.fromEntries(SBAR_RICH_FIELDS.map(field => [field, getRichEditorHtml(field)]))
     };
     saveState();
 
@@ -6536,7 +6831,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 <p><strong>Vagas disponíveis:</strong></p>
                 ${sbarVacanciesFromCensus && sbarCensusTableMarkup()
                   ? sbarCensusTableMarkup()
-                  : `<p>${escapeHtml(state.sbar.vacancies || "NÃO INFORMADO").replace(/\n/g,"<br>")}</p>`}
+                  : `${richHtmlForOutput(state.sbar.richHtml?.vacancies, state.sbar.vacancies || "NÃO INFORMADO")}`}
               </div>
             </div>
 
@@ -6547,11 +6842,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 <div class="sbar-background-grid">
                   <div class="sbar-background-card">
                     <div class="sbar-background-card-title">Registro de ocorrências</div>
-                    <div class="sbar-background-card-text">${escapeHtml(state.sbar.background || "")}</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.background, state.sbar.background || "")}</div>
                   </div>
                   <div class="sbar-background-card">
                     <div class="sbar-background-card-title">Ausência de profissionais com impacto regulatório</div>
-                    <div class="sbar-background-card-text">${escapeHtml(state.sbar.professionalAbsence || "")}</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.professionalAbsence, state.sbar.professionalAbsence || "")}</div>
                   </div>
                 </div>
               </div>
@@ -6565,7 +6860,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                   <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
                   <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
                 </div>
-                <p>${escapeHtml(state.sbar.assessment || "Sem avaliação adicional registrada.")}</p>
+                ${richHtmlForOutput(state.sbar.richHtml?.assessment, state.sbar.assessment || "Sem avaliação adicional registrada.")}
               </div>
             </div>
 
@@ -6775,6 +7070,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   .sbar-background-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px}
   .sbar-background-card{margin-top:0}
+
+  html,body,.sbar-report{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .rich-output,.status-rich-output{white-space:pre-wrap!important;overflow-wrap:anywhere!important;tab-size:4!important}
+  .rich-output p{margin:0!important}
+  .rich-output ul,.rich-output ol{margin:3px 0 3px 16px!important;padding:0!important}
+  .rich-output li{margin:1px 0!important}
 </style>
 </head>
 <body>
