@@ -1250,7 +1250,25 @@
       .record-grid{grid-template-columns:1fr}
       .shift-productivity-summary{grid-template-columns:1fr}
     }
-  </style>
+  
+    .regulator-footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;align-items:flex-start;gap:18px;line-height:1.15}
+    .regulator-footer-identification strong{display:block;color:#0f2747;font-size:10px;font-weight:700}
+    .regulator-footer-identification div,.regulator-footer-issued{color:#5f7188;font-size:9px}
+    .regulator-footer-issued{text-align:right}
+
+    .sbar-next-page-note{
+      margin:14px 0 0;
+      padding:10px 14px;
+      border-top:1px solid #d7e0ea;
+      color:#5f7188;
+      font-size:11px;
+      font-style:italic;
+      text-align:center;
+      line-height:1.35;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+</style>
   <style>.calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}
     .hours-summary-card{
       position:relative;
@@ -4504,9 +4522,52 @@
   const REGULATOR_INFO = Object.freeze({
     name: "Stênio Andrade",
     role: "Médico Regulador",
-    crm: "CRM/RO 6115",
+    crm: "CRM/RO 6.115",
     unit: "NIR CEMETRON"
   });
+
+  function regulatorFooterHtml(issueDate="", issueTime=""){
+    const dateTime = issueDate || issueTime
+      ? `<div class="regulator-footer-issued">${issueDate ? `Emitido em ${escapeHtml(issueDate)}` : ""}${issueDate && issueTime ? "<br>" : ""}${issueTime ? escapeHtml(issueTime) : ""}</div>`
+      : "";
+    return `<div class="regulator-footer">
+      <div class="regulator-footer-identification">
+        <strong>${escapeHtml(REGULATOR_INFO.name)}</strong>
+        <div>${escapeHtml(REGULATOR_INFO.role)} | ${escapeHtml(REGULATOR_INFO.crm)}</div>
+        <div>${escapeHtml(REGULATOR_INFO.unit)}</div>
+      </div>
+      ${dateTime}
+    </div>`;
+  }
+
+  function regulatorFooterCss(){
+    return `.regulator-footer{
+      margin-top:18px;
+      padding-top:8px;
+      border-top:1px solid #cbd5e1;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      page-break-inside:avoid;
+      break-inside:avoid;
+      font-family:Arial,sans-serif;
+      line-height:1.15;
+    }
+    .regulator-footer-identification strong{
+      display:block;
+      color:#0f2747;
+      font-size:10px;
+      font-weight:700;
+    }
+    .regulator-footer-identification div,
+    .regulator-footer-issued{
+      color:#5f7188;
+      font-size:9px;
+      font-weight:400;
+    }
+    .regulator-footer-issued{text-align:right;}`;
+  }
 
   function getIssueDateTime(){
     const now = new Date();
@@ -5096,6 +5157,8 @@ ${regulatorFooterHtml()}</div></body></html>`;
   ${recordStatusDocumentCss()}
   .record-status-note{margin:0 0 13px;padding:10px 12px;border:1px solid #dbe3ec;border-radius:8px;background:#f8fafc}
   @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+
+  ${regulatorFooterCss()}
 </style>
 </head>
 <body>
@@ -5191,6 +5254,8 @@ ${regulatorFooterHtml()}</div></body></html>`;
 
   ${recordStatusDocumentCss()}
   @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+
+  ${regulatorFooterCss()}
 </style>
 </head>
 <body>
@@ -6938,7 +7003,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                       <div class="sbar-email-metric">${sbarIcon("eye","lg")}<span>Cientes</span><strong>${mail.acknowledged}</strong></div>
                       <div class="sbar-email-metric">${sbarIcon("send","lg")}<span>Respondidos</span><strong>${mail.responded}</strong></div>
                     </div>
-                  </div>`;
+                  </div>
+          <div class="sbar-next-page-note">Relatório detalhado no plantão na próxima página.</div>
+`;
                 })()}
                 <div class="sbar-full-report-page-break">
                   <div class="sbar-full-report-title">Relatório completo</div>
@@ -6951,17 +7018,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             </div>
           </div>
 
-          <div class="sbar-footer">
-            <div>
-              <strong>${escapeHtml(sbarProfessionalNameOnly(professional))}</strong>
-              <div>Médico Regulador | ${escapeHtml(crmLabel)}</div>
-              <div>NIR CEMETRON</div>
-            </div>
-            <div>
-              <div>Emitido em ${escapeHtml(generatedDate)}</div>
-              <div>${escapeHtml(generatedTime)}</div>
-            </div>
-          </div>
+          ${regulatorFooterHtml(generatedDate, generatedTime)}
         </div>
       </div>`;
 
@@ -7124,6 +7181,21 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .rich-output p{margin:0!important}
   .rich-output ul,.rich-output ol{margin:3px 0 3px 16px!important;padding:0!important}
   .rich-output li{margin:1px 0!important}
+
+  ${regulatorFooterCss()}
+
+    .sbar-next-page-note{
+      margin:14px 0 0;
+      padding:10px 14px;
+      border-top:1px solid #d7e0ea;
+      color:#5f7188;
+      font-size:11px;
+      font-style:italic;
+      text-align:center;
+      line-height:1.35;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
 </style>
 </head>
 <body>
