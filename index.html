@@ -867,16 +867,155 @@
     .hidden{display:none}
 
     .sbar-box{
-      white-space:pre-wrap;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      background:#f8fafc;
+      background:#fff;
       border:1px solid #cbd5e1;
-      border-radius:10px;
-      padding:18px;
-      line-height:1.55;
+      border-radius:12px;
+      padding:0;
       min-height:420px;
-      max-height:65vh;
+      max-height:72vh;
       overflow:auto;
+    }
+    .sbar-icon{width:18px;height:18px;stroke:#0f2747;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+    .sbar-icon-sm{width:15px;height:15px}
+    .sbar-icon-lg{width:27px;height:27px;stroke-width:1.7}
+    .sbar-title-with-icon{display:flex;align-items:center;gap:8px}
+    .sbar-metric-icon{margin-bottom:8px}
+    .rich-source{display:none!important}
+    .rich-shell{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+    .rich-shell:focus-within{border-color:#5b82b2;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+    .rich-toolbar{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:7px 8px;background:#f8fafc;border-bottom:1px solid #dbe3ec}
+    .rich-btn{height:29px;min-width:31px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f2747;font-size:13px;font-weight:700;cursor:pointer;padding:0 7px}
+    .rich-btn:hover{background:#eef4fb;border-color:#9fb6d2}
+    .rich-divider{width:1px;height:22px;background:#dbe3ec;margin:0 2px}
+    .rich-color{width:25px;height:25px;min-width:25px;border:2px solid #fff!important;outline:1px solid #cbd5e1;border-radius:50%!important;cursor:pointer;padding:0!important}
+    .rich-color.black{background:#111827}.rich-color.navy{background:#0f2747}.rich-color.blue{background:#2563eb}.rich-color.green{background:#166534}.rich-color.red{background:#b42318}.rich-color.purple{background:#7e57c2}
+    .rich-editor{min-height:96px;padding:10px 12px;outline:none;font-size:13px;line-height:1.5;color:#111827;overflow-wrap:anywhere;white-space:pre-wrap;tab-size:4}
+    .rich-editor.medium{min-height:112px}.rich-editor.long{min-height:132px}
+    .rich-editor:empty:before{content:attr(data-placeholder);color:#94a3b8;pointer-events:none}
+    .rich-editor p{margin:0}.rich-editor ul,.rich-editor ol{margin:4px 0 4px 22px;padding:0}
+    .rich-help{margin-top:6px;font-size:11px;color:#64748b}
+    .rich-output{line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+    .rich-output p{margin:0}.rich-output ul,.rich-output ol{margin:4px 0 4px 18px;padding:0}.rich-output li{margin:1px 0}
+    .status-rich-output{white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+    .record-status-rich{white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;tab-size:4;line-height:1.45}
+    .record-status-rich p{margin:0}.record-status-rich ul,.record-status-rich ol{margin:4px 0 4px 18px;padding:0}
+    .sbar-report{color:#111827;background:#fff}
+    .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
+    .sbar-report-header h2{margin:0;color:#0f2747;font-size:22px;letter-spacing:.02em}
+    .sbar-report-header p{margin:6px 0 0;color:#64748b;font-size:14px;font-weight:600}
+    .sbar-report-body{padding:20px}
+    .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;padding:16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;margin-bottom:18px}
+    .sbar-meta strong{color:#0f2747}
+    .sbar-sections{border:1px solid #cbd5e1;border-radius:10px;overflow:hidden;background:#fff}
+    .sbar-section{display:grid;grid-template-columns:90px 1fr;border-top:1px solid #dbe3ec}
+    .sbar-section:first-child{border-top:0}
+    .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:16px;background:#e8eef6;color:#0f2747;font-size:18px;font-weight:900}
+    .sbar-content{padding:16px;min-width:0;line-height:1.55}
+    .sbar-content h4{margin:0 0 9px;color:#0f2747;font-size:14px}
+    .sbar-content p{margin:5px 0}
+    .sbar-badges{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+    .sbar-assessment-badges{margin-top:0}
+    .sbar-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:12px;font-weight:800}
+    .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
+    .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
+    .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+    .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+    .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
+    .sbar-record-group-title{padding:9px 12px;font-weight:800;color:#0f2747}
+    .sbar-record-group-title.yellow{background:#fff7d6}
+    .sbar-record-group-title.blue{background:#e8f1ff}
+    .sbar-record-group-title.green{background:#e8f7ee}
+    .sbar-record-group-title.red{background:#fdecec}
+    .sbar-census-table{margin-top:8px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff}
+    .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1.8fr .8fr}
+    .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-census-head>div,.sbar-census-row>div{padding:9px 11px}
+    .sbar-census-row{border-top:1px solid #e5e7eb;font-size:12px}
+    .sbar-sector-cell{display:flex;align-items:center;gap:8px;min-width:0}
+    .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.02em;flex:0 0 auto}
+    .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
+    .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
+    .sbar-census-value{text-align:center;font-weight:800}
+    .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 310px;border-top:1px solid #e5e7eb;background:#f8fafc}
+    .sbar-census-observation-block{padding:12px 14px;min-width:0}
+    .sbar-census-detail-label{margin-bottom:5px;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-census-observation-text{min-height:22px;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+    .sbar-census-meta-block{padding:12px 14px;border-left:1px solid #dbe3ec;display:flex;flex-direction:column;justify-content:center;gap:5px;color:#64748b;font-size:12px;line-height:1.45}
+    .sbar-census-meta-block strong{color:#475569}
+
+    .sbar-background-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .sbar-background-card{border:1px solid #dbe3ec;border-radius:12px;padding:13px 14px;background:#fff;}
+    .sbar-background-card-title{color:#64748b;font-size:12px;font-weight:700;margin-bottom:6px}
+    .sbar-background-card-text{color:#64748b;font-size:12px;line-height:1.55}
+
+    .sbar-summary-box,.sbar-email-box{margin:16px 0 20px;border:1px solid #cbd5e1;border-radius:16px;overflow:hidden;background:#fff}
+    .sbar-summary-title,.sbar-email-title{padding:16px 18px;background:#eef4fb;color:#0f2747;font-size:16px;font-weight:600;border-bottom:1px solid #dbe3ec}
+    .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+    .sbar-summary-card{padding:20px 18px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:128px;display:flex;flex-direction:column;justify-content:center}
+    .sbar-summary-card:last-child{border-right:0}
+    .sbar-summary-card span{display:block;color:#64748b;font-size:13px;font-weight:600;line-height:1.35}
+    .sbar-summary-card strong{display:block;margin-top:10px;color:#334155;font-size:30px;font-weight:500;line-height:1}
+    .sbar-summary-card.yellow{background:#fffaf0}
+    .sbar-summary-card.blue{background:#f2f7ff}
+    .sbar-summary-card.green{background:#f2fbf7}
+    .sbar-summary-card.red{background:#fff5f5}
+
+    .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+    .sbar-email-metric{padding:24px 18px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:132px;display:flex;flex-direction:column;justify-content:center}
+    .sbar-email-metric:first-child{border-left:0;background:#f8fafc}
+    .sbar-email-metric:nth-child(2){background:#f2fbf7}
+    .sbar-email-metric:nth-child(3){background:#f7f5ff}
+    .sbar-email-metric span{display:block;color:#64748b;font-size:13px;font-weight:600}
+    .sbar-email-metric strong{display:block;margin-top:12px;color:#334155;font-size:30px;font-weight:500}
+
+    .sbar-full-report-page-break{margin-top:14px}
+    .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
+    .sbar-full-group{margin-top:8px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
+    .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:#0f2747;font-size:12px;font-weight:800}
+    .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+    .sbar-count-pill{display:inline-flex;min-width:26px;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
+    .sbar-record-full{padding:11px 12px;border-top:1px solid #e5e7eb;font-size:12px;line-height:1.45}
+    .sbar-record-full:first-of-type{border-top:0}.sbar-record-line{display:grid;grid-template-columns:170px 1fr;gap:8px;margin:3px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
+    .sbar-record{padding:12px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5}
+    .sbar-record:first-of-type{border-top:0}
+    .sbar-record p{margin:2px 0}
+    .sbar-empty{padding:12px;color:#64748b;font-size:13px}
+    .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
+    .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
+    .sbar-print-wrapper{background:#fff;color:#111827}
+    @media print{
+      body{background:#fff!important}
+      .sbar-report{border:0!important}
+      .sbar-report-body{padding:0!important}
+      .sbar-record-group,.sbar-sections,.sbar-meta{break-inside:avoid}
+      .sbar-record{break-inside:avoid}
+    }
+    @media(max-width:700px){
+      .sbar-meta{grid-template-columns:1fr}
+      .sbar-section{grid-template-columns:58px 1fr}
+      .sbar-letter{padding:14px 8px}
+      .sbar-background-grid{grid-template-columns:1fr}
+      .sbar-summary-grid{grid-template-columns:1fr 1fr}
+      .sbar-summary-card{border-right:0;border-bottom:1px solid #dbe3ec}
+      .sbar-summary-card:last-child{border-bottom:0}
+      .sbar-census-details{grid-template-columns:1fr}
+      .sbar-census-meta-block{border-left:0;border-top:1px solid #dbe3ec}
+      .sbar-footer{flex-direction:column}
+    }
+
+    .field-label-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+    }
+    .field-label-row label{margin:0}
+    .btn-inline{
+      padding:6px 10px;
+      font-size:12px;
+      min-height:auto;
+      white-space:nowrap;
     }
 
     .note{
@@ -1111,7 +1250,25 @@
       .record-grid{grid-template-columns:1fr}
       .shift-productivity-summary{grid-template-columns:1fr}
     }
-  </style>
+  
+    .regulator-footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;align-items:flex-start;gap:18px;line-height:1.15}
+    .regulator-footer-identification strong{display:block;color:#0f2747;font-size:10px;font-weight:700}
+    .regulator-footer-identification div,.regulator-footer-issued{color:#5f7188;font-size:9px}
+    .regulator-footer-issued{text-align:right}
+
+    .sbar-next-page-note{
+      margin:14px 0 0;
+      padding:10px 14px;
+      border-top:1px solid #d7e0ea;
+      color:#5f7188;
+      font-size:11px;
+      font-style:italic;
+      text-align:center;
+      line-height:1.35;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+</style>
   <style>.calendar-export-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.calendar-export-actions .btn{min-width:190px}
     .hours-summary-card{
       position:relative;
@@ -1147,6 +1304,9 @@
 <style>
   .cloud-bar{position:fixed;right:16px;bottom:16px;z-index:900;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 6px 24px rgba(15,39,71,.18);font-size:12px;color:var(--muted)}
   .cloud-bar.online{color:#166534;border-color:#86efac}.cloud-bar.error{color:#991b1b;border-color:#fca5a5}
+  .login-screen{position:fixed;inset:0;z-index:2000;background:linear-gradient(135deg,#091a30,#173a67);display:grid;place-items:center;padding:20px}
+  .login-screen.hidden{display:none}.login-card{width:min(420px,100%);background:#fff;border-radius:16px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+  .login-card h2{margin:0 0 8px;color:var(--navy)}.login-card p{margin:0 0 20px;color:var(--muted);line-height:1.5}.login-card .field{margin-bottom:14px}.login-error{min-height:20px;color:#b91c1c;font-size:13px;margin-top:12px}
 </style>
 <style>
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -1157,6 +1317,27 @@
   .brand-logo-box{display:flex;align-items:center;justify-content:center;margin-bottom:15px;padding:9px 10px;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.14)}
   .brand-logo-box img{display:block;width:100%;max-width:210px;height:auto}
 
+  .login-screen{overflow-y:auto;padding:24px;background:radial-gradient(circle at 12% 15%,rgba(79,142,220,.28),transparent 30%),linear-gradient(135deg,#071628 0%,#0f2747 52%,#173a67 100%)}
+  .login-shell{width:min(900px,100%);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(380px,.95fr);overflow:hidden;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:#fff;box-shadow:0 30px 90px rgba(2,8,23,.42)}
+  .login-brand-panel{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:560px;padding:42px;color:#fff;background:linear-gradient(160deg,#0b213c,#173a67)}
+  .login-brand-panel::before,.login-brand-panel::after{content:"";position:absolute;z-index:-1;border-radius:50%;background:rgba(255,255,255,.06)}
+  .login-brand-panel::before{width:260px;height:260px;right:-100px;top:-95px}.login-brand-panel::after{width:190px;height:190px;left:-85px;bottom:-85px}
+  .login-logo-surface{display:flex;align-items:center;justify-content:center;width:min(290px,100%);padding:14px 18px;border-radius:14px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+  .login-logo-surface img{display:block;width:100%;max-width:226px;height:auto}
+  .login-eyebrow{display:block;margin-bottom:10px;color:#93c5fd;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+  .login-brand-panel h1{max-width:420px;margin:0 0 13px;font-size:31px;line-height:1.15;letter-spacing:-.02em}
+  .login-brand-panel p{max-width:430px;margin:0;color:#dbeafe;font-size:15px;line-height:1.65}
+  .login-features{display:grid;gap:10px;margin:24px 0 0;padding:0;list-style:none;color:#e2e8f0;font-size:13px}
+  .login-features li{display:flex;align-items:center;gap:9px}.login-feature-icon{display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:rgba(76,175,114,.2);color:#86efac;font-weight:900}
+  .login-card{display:flex;flex-direction:column;justify-content:center;width:auto;padding:48px 44px;border-radius:0;box-shadow:none}
+  .login-form-heading{margin-bottom:26px}.login-form-heading .login-access-label{display:block;margin-bottom:8px;color:var(--navy-2);font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+  .login-card h2{margin:0 0 9px;font-size:28px;letter-spacing:-.02em}.login-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+  .login-card .field{margin-bottom:17px}.login-card label{font-size:13px}.login-card input{min-height:48px;padding:12px 13px;border-color:#b8c3d1;background:#f8fafc}.login-card input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(79,142,220,.12);outline:0}
+  .password-field{position:relative}.password-field input{padding-right:82px}.password-toggle{position:absolute;top:50%;right:7px;transform:translateY(-50%);min-height:36px;padding:0 9px;border:0;border-radius:7px;background:#e8eef6;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer}
+  .login-submit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:50px;margin-top:3px;border-radius:10px;font-size:15px;box-shadow:0 8px 18px rgba(15,39,71,.2)}
+  .login-error{display:flex;align-items:center;min-height:22px;margin-top:12px;color:#b91c1c;font-size:13px;line-height:1.4}
+  .login-security-note{display:flex;align-items:flex-start;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;color:#64748b;font-size:11px;line-height:1.5}
+  .login-security-note span:first-child{font-size:14px}
   .dashboard-panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}.dashboard-panel-header h3{margin-bottom:4px}.dashboard-panel-header p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
   .dashboard-notes{min-height:170px;line-height:1.55}.note-save-meta{align-self:center;color:var(--muted);font-size:12px}
   .standard-message-form{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:12px;align-items:start}.standard-message-form .message-text-field{grid-row:span 2}.standard-message-form textarea{min-height:112px}
@@ -1238,6 +1419,9 @@
     .calendar-export-actions{display:grid;grid-template-columns:1fr;gap:8px}.calendar-export-actions .btn{width:100%;min-width:0}
     .cloud-bar{right:10px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:calc(100vw - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .toast{left:12px;right:12px;bottom:calc(64px + env(safe-area-inset-bottom));text-align:center}
+    .login-screen{display:block;padding:12px;padding-top:calc(12px + env(safe-area-inset-top));padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .login-shell{display:block;margin:auto;border-radius:17px}.login-brand-panel{display:block;min-height:0;padding:22px 20px 20px}.login-logo-surface{width:230px;max-width:100%;padding:10px 13px;border-radius:10px}.login-brand-copy{margin-top:20px}.login-eyebrow{margin-bottom:7px}.login-brand-panel h1{margin-bottom:8px;font-size:22px}.login-brand-panel p{font-size:13px;line-height:1.5}.login-features{display:none}
+    .login-card{padding:26px 20px;border-radius:0}.login-form-heading{margin-bottom:20px}.login-card h2{font-size:24px}.login-card .btn{width:100%;min-height:48px}
     .dashboard-panel-header{display:block}.dashboard-panel-header p{margin-bottom:10px}.standard-message-form{display:block}.standard-message-form>div{margin-bottom:12px}.standard-messages-list{grid-template-columns:1fr}.standard-message-actions{display:grid;grid-template-columns:1fr 1fr}.standard-message-actions .btn{width:100%}.reminder-modal{padding:12px}.reminder-dialog{padding:24px 20px;border-radius:15px}
   }
 
@@ -1464,6 +1648,35 @@
     flex:1 0 auto;
   }
 
+  .sidebar-footer-actions{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.16);
+  }
+
+  .sidebar-logout-button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-height:44px;
+    padding:11px 12px;
+    border:0;
+    border-radius:8px;
+    background:transparent;
+    color:#dbeafe;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+    transition:background-color .18s ease,color .18s ease,transform .18s ease;
+  }
+
+  .sidebar-logout-button:hover{
+    color:#fff;
+    background:rgba(255,255,255,.12);
+    transform:translateX(2px);
+  }
+
   .records-chart-panel{
     overflow:hidden;
   }
@@ -1595,6 +1808,16 @@
   }
 
   @media(max-width:700px){
+    .sidebar-footer-actions{
+      padding-bottom:calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .sidebar-logout-button{
+      min-height:49px;
+      padding:13px 14px;
+      font-size:15px;
+    }
+
     .records-chart-layout{
       padding-left:0;
       padding-right:0;
@@ -1619,6 +1842,36 @@
       width:100%;
       min-width:0;
     }
+  }
+</style>
+
+
+<style id="evaluation-report-style">
+  .blue-record-details{
+    margin-top:4px;
+    padding:14px;
+    border:1px solid #bfdbfe;
+    border-radius:10px;
+    background:#f8fbff;
+  }
+  .blue-record-details-header{margin-bottom:12px}
+  .blue-record-details-header strong{display:block;color:var(--navy);font-size:13px}
+  .blue-record-details-header span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+  .blue-record-details-grid{margin:0}
+  .evaluation-summary{
+    grid-column:1/-1;
+    margin-top:4px;
+    padding:10px 12px;
+    border-left:4px solid var(--blue);
+    border-radius:7px;
+    background:#eff6ff;
+    color:#334155;
+    line-height:1.55;
+  }
+  .evaluation-summary strong{color:var(--navy)}
+  .btn-evaluation{background:#1d4ed8;color:#fff}
+  @media(max-width:700px){
+    .blue-record-details{padding:12px}
   }
 </style>
 
@@ -1756,6 +2009,7 @@
           <button class="btn btn-danger" id="closeShift">Encerrar plantão</button>
           <button class="btn btn-secondary" id="exportBackup">Exportar backup</button>
           <button class="btn btn-secondary" id="importBackup">Importar backup</button>
+          <button class="btn btn-secondary" id="restoreLocalRecovery" type="button">Recuperar cópia local anterior</button>
           <input id="backupFile" type="file" accept="application/json,.json" class="hidden">
           
         </div>
@@ -1981,15 +2235,90 @@
           </div>
           <div>
             <label for="hd">HD</label>
-            <input id="hd" placeholder="Hipótese diagnóstica">
+            <input id="hd" placeholder="Hipóteses diagnósticas / Problemas">
           </div>
           <div>
             <label for="destination">Destino</label>
             <input id="destination" placeholder="Unidade, setor, avaliação ou exame">
           </div>
+          <div id="blueRecordDetails" class="blue-record-details hidden" style="grid-column:1/-1">
+            <div class="blue-record-details-header">
+              <strong>Detalhamento — Transferências externas / Avaliações / Exames</strong>
+              <span>Selecione o tipo para registrar as informações específicas. O campo Destino será utilizado como local da avaliação ou do exame.</span>
+            </div>
+            <div class="form-grid blue-record-details-grid">
+              <div>
+                <label for="blueRecordType">Tipo de registro</label>
+                <select id="blueRecordType">
+                  <option value="">Selecione</option>
+                  <option value="transferencia">Transferência externa</option>
+                  <option value="avaliacao">Avaliação</option>
+                  <option value="exame">Exame</option>
+                </select>
+              </div>
+              <div id="evaluationSpecialtyField" class="evaluation-only hidden">
+                <label for="evaluationSpecialty">Especialidade</label>
+                <input id="evaluationSpecialty" placeholder="Ex.: Cardiologia">
+              </div>
+              <div id="evaluationSpecialistField" class="evaluation-only hidden">
+                <label for="evaluationSpecialist">Profissional</label>
+                <input id="evaluationSpecialist" placeholder="Nome do profissional">
+              </div>
+              <div id="evaluationDateField" class="evaluation-only hidden">
+                <label for="evaluationDate">Data da avaliação</label>
+                <input id="evaluationDate" type="date">
+              </div>
+              <div id="evaluationTimeField" class="evaluation-only hidden">
+                <label for="evaluationTime">Horário da avaliação</label>
+                <input id="evaluationTime" type="time">
+              </div>
+              <div id="evaluationGuidanceField" class="evaluation-only hidden" style="grid-column:1/-1">
+                <label for="evaluationGuidance">Orientações</label>
+                <textarea id="evaluationGuidance" placeholder="Documentação, exames, preparo, transporte ou outras orientações para a avaliação."></textarea>
+              </div>
+
+              <div id="examNameField" class="exam-only hidden">
+                <label for="examName">Exame</label>
+                <input id="examName" placeholder="Ex.: Tomografia de crânio">
+              </div>
+              <div id="examDateField" class="exam-only hidden">
+                <label for="examDate">Data do exame</label>
+                <input id="examDate" type="date">
+              </div>
+              <div id="examTimeField" class="exam-only hidden">
+                <label for="examTime">Horário do exame</label>
+                <input id="examTime" type="time">
+              </div>
+              <div id="examGuidanceField" class="exam-only hidden" style="grid-column:1/-1">
+                <label for="examGuidance">Orientações</label>
+                <textarea id="examGuidance" placeholder="Preparo, jejum, documentação, transporte ou outras orientações para o exame."></textarea>
+              </div>
+            </div>
+          </div>
           <div style="grid-column:1/-1">
             <label for="status">Status</label>
-            <textarea id="status" placeholder="Descreva o status atual da demanda"></textarea>
+            <textarea class="rich-source" id="status" placeholder="Descreva o status atual da demanda"></textarea>
+            <div class="rich-shell" data-rich-field="status">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="statusEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Descreva o status atual da demanda" spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
         </div>
         <div class="actions">
@@ -2084,7 +2413,7 @@
 
         <div class="actions">
           <button class="btn btn-primary" id="generateAuthorization">Gerar/Atualizar autorização</button>
-          <button class="btn btn-secondary" id="copyAuthorization">Copiar autorização</button>
+          <button class="btn btn-secondary" id="copyAuthorization">Copiar</button>
         </div>
       </div>
 
@@ -2275,26 +2604,142 @@
             </select>
           </div>
           <div style="grid-column:1/-1">
-            <label for="vacancies">Vagas disponíveis</label>
-            <textarea class="sbar-long-text" id="vacancies" rows="4" placeholder="Registre as vagas disponíveis, setores lotados, bloqueios, restrições e demais informações relevantes."></textarea>
+            <div class="field-label-row">
+              <label for="vacancies">Vagas disponíveis</label>
+              <button class="btn btn-secondary btn-inline" id="copyCensusToVacancies" type="button">Copiar do censo</button>
+            </div>
+            <textarea class="sbar-long-text rich-source" id="vacancies" rows="4" placeholder="Digite livremente ou clique em “Copiar do censo” para preencher com o último censo registrado."></textarea>
+            <div class="rich-shell" data-rich-field="vacancies">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="vacanciesEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Digite livremente ou use “Copiar do censo”." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
-            <label for="background">B — Background / Contexto — Ocorrências do plantão</label>
-            <textarea class="sbar-long-text" id="background" rows="4" placeholder="Registre as ocorrências do plantão."></textarea>
+            <label>B — Background / Contexto</label>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="background">Registro de ocorrências</label>
+            <textarea class="sbar-long-text rich-source" id="background" rows="3" placeholder="Registre as ocorrências relevantes do plantão."></textarea>
+            <div class="rich-shell" data-rich-field="background">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="backgroundEditor" class="rich-editor " contenteditable="true" data-placeholder="Registro de ocorrências do plantão." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="professionalAbsence">Ausência de profissionais com impacto regulatório</label>
+            <textarea class="sbar-long-text rich-source" id="professionalAbsence" rows="3" placeholder="Registre ausências de profissionais que tenham impacto sobre a regulação."></textarea>
+            <div class="rich-shell" data-rich-field="professionalAbsence">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="professionalAbsenceEditor" class="rich-editor " contenteditable="true" data-placeholder="Ausência de profissionais com impacto regulatório." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label for="assessment">A — Avaliação</label>
-            <textarea class="sbar-long-text" id="assessment" rows="4" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+            <textarea class="sbar-long-text rich-source" id="assessment" rows="4" placeholder="Avaliação do cenário, pendências, limitações e riscos identificados."></textarea>
+            <div class="rich-shell" data-rich-field="assessment">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="assessmentEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Avaliação do cenário regulatório." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
           <div style="grid-column:1/-1">
             <label for="recommendation">R — Relatório do plantão</label>
-            <textarea class="sbar-long-text" id="recommendation" rows="4" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+            <textarea class="sbar-long-text rich-source" id="recommendation" rows="4" placeholder="Registre o resumo final do plantão, ocorrências relevantes, encaminhamentos e pendências."></textarea>
+            <div class="rich-shell" data-rich-field="recommendation">
+              <div class="rich-toolbar" role="toolbar" aria-label="Formatação">
+                <button type="button" class="rich-btn" data-rich-cmd="bold" title="Negrito"><b>B</b></button>
+                <button type="button" class="rich-btn" data-rich-cmd="italic" title="Itálico"><i>I</i></button>
+                <button type="button" class="rich-btn" data-rich-cmd="underline" title="Sublinhado"><u>U</u></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-cmd="insertUnorderedList">• Lista</button>
+                <button type="button" class="rich-btn" data-rich-cmd="insertOrderedList">1. Lista</button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-color black" data-rich-color="#111827" title="Preto"></button>
+                <button type="button" class="rich-color navy" data-rich-color="#0f2747" title="Azul-marinho"></button>
+                <button type="button" class="rich-color blue" data-rich-color="#2563eb" title="Azul"></button>
+                <button type="button" class="rich-color green" data-rich-color="#166534" title="Verde"></button>
+                <button type="button" class="rich-color red" data-rich-color="#b42318" title="Vermelho"></button>
+                <button type="button" class="rich-color purple" data-rich-color="#7e57c2" title="Roxo"></button>
+                <span class="rich-divider"></span>
+                <button type="button" class="rich-btn" data-rich-action="clear">Limpar formato</button>
+              </div>
+              <div id="recommendationEditor" class="rich-editor medium" contenteditable="true" data-placeholder="Relatório/resumo do plantão." spellcheck="true"></div>
+            </div>
+            <div class="rich-help">A formatação, Enter, linhas em branco e espaçamento serão preservados no relatório e no PDF.</div>
           </div>
         </div>
 
         <div class="actions">
           <button class="btn btn-primary" id="generateSbar">Gerar/Atualizar SBAR</button>
           <button class="btn btn-secondary" id="copySbar">Copiar SBAR</button>
+          <button class="btn btn-pdf" id="printSbar">Gerar PDF / Imprimir</button>
         </div>
 
         <p class="note">Cada campo dos registros será exibido em uma linha própria no relatório.</p>
@@ -2421,6 +2866,8 @@
   };
 
   const STORAGE_KEY = "nirCemetronFinalStateV2";
+  const RECOVERY_STORAGE_KEY = "nirCemetronRecoveryStateV1";
+  const LOCAL_SAVE_TIME_STORAGE_KEY = "nirCemetronLocalSavedAtV1";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -2483,11 +2930,56 @@
     };
   }
 
-  let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+  function readLocalState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(error){
+      console.error("A cópia local principal está inválida; tentando recuperação.", error);
+      try{
+        const recovery = localStorage.getItem(RECOVERY_STORAGE_KEY);
+        return recovery ? JSON.parse(recovery) : null;
+      }catch{
+        return null;
+      }
+    }
+  }
+
+  function persistStateLocally(nextState, {preserveCurrent=true}={}){
+    const serialized = JSON.stringify(nextState);
+    const current = localStorage.getItem(STORAGE_KEY);
+    if(preserveCurrent && current && current !== serialized){
+      try{
+        JSON.parse(current);
+        localStorage.setItem(RECOVERY_STORAGE_KEY, current);
+      }catch(error){
+        console.error("Não foi possível preservar a cópia local anterior.", error);
+      }
+    }
+    localStorage.setItem(STORAGE_KEY, serialized);
+    localStorage.setItem(LOCAL_SAVE_TIME_STORAGE_KEY, new Date().toISOString());
+  }
+
+  function stateHasOperationalData(candidate){
+    if(!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return false;
+    const collections = [
+      candidate.records,
+      candidate.history,
+      candidate.calendarShifts,
+      candidate.standardMessages,
+      candidate.shiftCensusUpdates,
+      candidate.hospubCensus?.sectors
+    ];
+    if(collections.some(items => Array.isArray(items) && items.length)) return true;
+    if(candidate.shift || candidate.dashboardNotes || candidate.bedCensus?.updatedAt || candidate.hospubCensus?.capturedAt) return true;
+    return Object.values(candidate.sbar || {}).some(value => String(value || "").trim());
+  }
+
+  let state = readLocalState() || {
     shift: null,
     records: [],
     history: [],
-    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", assessment:"", recommendation:"" },
+    sbar: { operationalStatus:"", turnover:"", vacancies:"", background:"", professionalAbsence:"", assessment:"", recommendation:"" },
     dashboardNotes: "",
     dashboardNotesUpdatedAt: null,
     standardMessages: [],
@@ -2525,10 +3017,12 @@
     operationalStatus:"",
     turnover:"",
     vacancies:"",
-        background:"",
+    background:"",
+    professionalAbsence:"",
     assessment:"",
     recommendation:""
   };
+  state.sbar.professionalAbsence = typeof state.sbar.professionalAbsence === "string" ? state.sbar.professionalAbsence : "";
 
   if(state.shift && !state.shift.status){
     state.shift.status = "EM ANDAMENTO";
@@ -2597,6 +3091,7 @@
   }
 
   let cloudSaveTimer = null;
+  let cloudRetryTimer = null;
   let cloudSaveChain = Promise.resolve();
 
   function setCloudStatus(message, type=""){
@@ -2612,8 +3107,26 @@
       headers:{"Content-Type":"application/json", ...(options.headers || {})}
     });
     const body = await response.json().catch(() => ({}));
-    if(!response.ok) throw new Error(body.error || "Falha ao acessar a base em nuvem.");
+    if(!response.ok){
+      const error = new Error(body.error || "Falha ao acessar a base em nuvem.");
+      error.status = response.status;
+      error.code = body.code || "CLOUD_REQUEST_FAILED";
+      throw error;
+    }
     return body;
+  }
+
+  function synchronizationFailureLabel(error){
+    if(error?.code === "SUPABASE_NOT_CONFIGURED"){
+      return "Dados locais protegidos • base não configurada";
+    }
+    if(error?.code === "SUPABASE_AUTH_FAILED"){
+      return "Dados locais protegidos • chave da base rejeitada";
+    }
+    if(error?.code === "SUPABASE_RESOURCE_NOT_FOUND"){
+      return "Dados locais protegidos • tabela não encontrada";
+    }
+    return "Dados locais protegidos • sincronização pendente";
   }
 
   function emailReceivedTime(value){
@@ -3083,21 +3596,23 @@
 
   function queueCloudSave(){
     clearTimeout(cloudSaveTimer);
-    setCloudStatus("Salvando…");
+    clearTimeout(cloudRetryTimer);
+    setCloudStatus("Dados salvos localmente • sincronizando…");
     cloudSaveTimer = setTimeout(() => {
       const snapshot = JSON.parse(JSON.stringify(state));
       cloudSaveChain = cloudSaveChain
         .then(() => cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state:snapshot})}))
         .then(() => setCloudStatus("Dados sincronizados", "online"))
         .catch(error => {
-          setCloudStatus("Falha na sincronização", "error");
+          setCloudStatus(synchronizationFailureLabel(error), "error");
           console.error(error);
+          cloudRetryTimer = setTimeout(queueCloudSave, 15000);
         });
     }, 350);
   }
 
   function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    persistStateLocally(state);
     renderAll();
     queueCloudSave();
   }
@@ -3107,27 +3622,33 @@
     try{
       const result = await cloudRequest("/api/state");
       if(result.exists && result.state){
-        state = result.state;
-        state.records = Array.isArray(state.records) ? state.records : [];
-        state.history = Array.isArray(state.history) ? state.history : [];
-        state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
-        state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",assessment:"",recommendation:""};
-        state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
-        state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
-        state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
-        state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
-        state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
-        state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
-          infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
-          clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
-          observations:"",
-          censusDate:"",
-          censusTime:"",
-          performedBy:"",
-          updatedAt:null
-        };
-        seedLatestCensusForCurrentShift();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if(stateHasOperationalData(state) && !stateHasOperationalData(result.state)){
+          await cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state})});
+          setCloudStatus("Dados locais recuperados e sincronizados", "online");
+        }else{
+          state = result.state;
+          state.records = Array.isArray(state.records) ? state.records : [];
+          state.history = Array.isArray(state.history) ? state.history : [];
+          state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+          state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",professionalAbsence:"",assessment:"",recommendation:""};
+          state.sbar.professionalAbsence = typeof state.sbar.professionalAbsence === "string" ? state.sbar.professionalAbsence : "";
+          state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
+          state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
+          state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+          state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
+          state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
+          state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
+            infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+            clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
+            observations:"",
+            censusDate:"",
+            censusTime:"",
+            performedBy:"",
+            updatedAt:null
+          };
+          seedLatestCensusForCurrentShift();
+          persistStateLocally(state);
+        }
       }else{
         await cloudRequest("/api/state", {method:"PUT", body:JSON.stringify({state})});
       }
@@ -3138,8 +3659,10 @@
       startHospubCensusPolling();
       setCloudStatus("Dados sincronizados", "online");
     }catch(error){
-      setCloudStatus("Base indisponível", "error");
+      setCloudStatus(synchronizationFailureLabel(error), "error");
       console.error(error);
+      clearTimeout(cloudRetryTimer);
+      cloudRetryTimer = setTimeout(loadCloudState, 15000);
     }
   }
 
@@ -3607,14 +4130,14 @@
 
     if($("bedCensusLastUpdate")){
       if(census.censusDate && census.censusTime){
-        $("bedCensusLastUpdate").textContent = `${formatDate(census.censusDate)} às ${census.censusTime}`;
+        $("bedCensusLastUpdate").textContent = `Atualização: ${formatDate(census.censusDate)} às ${census.censusTime}`;
       }else{
-        $("bedCensusLastUpdate").textContent = census.updatedAt ? formatDateTime(census.updatedAt) : "Nenhum censo registrado.";
+        $("bedCensusLastUpdate").textContent = census.updatedAt ? `Atualização: ${formatDateTime(census.updatedAt)}` : "Nenhum censo registrado.";
       }
     }
 
     if($("bedCensusPerformedBy")){
-      $("bedCensusPerformedBy").textContent = census.performedBy ? `Realizado por: ${census.performedBy}` : "";
+      $("bedCensusPerformedBy").textContent = census.performedBy ? `Responsável pelo preenchimento: ${census.performedBy}` : "";
     }
 
     if($("bedCensusObservationsResult")){
@@ -3792,6 +4315,158 @@
       .replaceAll("'","&#039;");
   }
 
+  const RICH_ALLOWED_COLORS = new Set([
+    "#111827","#0f2747","#2563eb","#166534","#b42318","#7e57c2",
+    "rgb(17, 24, 39)","rgb(15, 39, 71)","rgb(37, 99, 235)",
+    "rgb(22, 101, 52)","rgb(180, 35, 24)","rgb(126, 87, 194)"
+  ]);
+  const SBAR_RICH_FIELDS = ["vacancies","background","professionalAbsence","assessment","recommendation"];
+
+  function sanitizeRichHtml(input){
+    const template = document.createElement("template");
+    template.innerHTML = String(input || "");
+    const allowed = new Set(["B","STRONG","I","EM","U","BR","P","DIV","UL","OL","LI","SPAN","FONT"]);
+    const clean = node => {
+      [...node.childNodes].forEach(child => {
+        if(child.nodeType === Node.ELEMENT_NODE){
+          if(!allowed.has(child.tagName)){
+            const frag = document.createDocumentFragment();
+            while(child.firstChild) frag.appendChild(child.firstChild);
+            child.replaceWith(frag);
+            return;
+          }
+          [...child.attributes].forEach(attr => {
+            const name = attr.name.toLowerCase();
+            if(child.tagName === "FONT" && name === "color"){
+              if(!RICH_ALLOWED_COLORS.has(String(attr.value || "").toLowerCase())) child.removeAttribute(attr.name);
+              return;
+            }
+            if(name === "style"){
+              const color = child.style.color ? child.style.color.toLowerCase() : "";
+              child.removeAttribute("style");
+              if(color && RICH_ALLOWED_COLORS.has(color)) child.style.color = color;
+              return;
+            }
+            child.removeAttribute(attr.name);
+          });
+          clean(child);
+        }else if(child.nodeType !== Node.TEXT_NODE){
+          child.remove();
+        }
+      });
+    };
+    clean(template.content);
+    return template.innerHTML;
+  }
+
+  function richPlainText(value){
+    const div = document.createElement("div");
+    div.innerHTML = sanitizeRichHtml(value || "");
+    return (div.innerText || div.textContent || "").replace(/\u00a0/g," ").trim();
+  }
+
+  function richHtmlForOutput(htmlValue, plainValue=""){
+    const safe = sanitizeRichHtml(htmlValue || "");
+    if(richPlainText(safe)) return `<div class="rich-output">${safe}</div>`;
+    return `<div class="rich-output">${escapeHtml(plainValue || "").replace(/\n/g,"<br>")}</div>`;
+  }
+
+  function recordStatusDocumentHtml(record){
+    const safe = sanitizeRichHtml(record?.statusHtml || "");
+    if(richPlainText(safe)){
+      return `<div class="record-status-rich">${safe}</div>`;
+    }
+    return `<div class="record-status-rich">${escapeHtml(record?.status || "")}</div>`;
+  }
+
+  function recordStatusDocumentText(record){
+    return richPlainText(record?.statusHtml || "") || String(record?.status || "");
+  }
+
+  function recordStatusDocumentCss(){
+    return `.record-status-rich{
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      tab-size:4;
+      line-height:1.55;
+    }
+    .record-status-rich p{margin:0}
+    .record-status-rich ul,.record-status-rich ol{margin:4px 0 4px 20px;padding:0}
+    .record-status-rich li{margin:1px 0}
+    .record-status-rich font[color],.record-status-rich span[style]{
+      -webkit-print-color-adjust:exact!important;
+      print-color-adjust:exact!important;
+    }`;
+  }
+
+
+  function getRichEditorHtml(field){
+    return sanitizeRichHtml($(`${field}Editor`)?.innerHTML || "");
+  }
+
+  function syncRichSource(field){
+    const editor = $(`${field}Editor`);
+    const source = $(field);
+    if(editor && source) source.value = richPlainText(editor.innerHTML);
+  }
+
+  function setRichEditorValue(field, richHtml, plainText){
+    const editor = $(`${field}Editor`);
+    if(!editor) return;
+    const safe = sanitizeRichHtml(richHtml || "");
+    editor.innerHTML = richPlainText(safe)
+      ? safe
+      : escapeHtml(plainText || "").replace(/\n/g,"<br>");
+    syncRichSource(field);
+  }
+
+  function initRichEditor(field){
+    const shell = document.querySelector(`[data-rich-field="${field}"]`);
+    const editor = $(`${field}Editor`);
+    if(!shell || !editor || shell.dataset.richReady === "1") return;
+    shell.dataset.richReady = "1";
+
+    shell.querySelectorAll("[data-rich-cmd]").forEach(btn => {
+      btn.addEventListener("mousedown", event => event.preventDefault());
+      btn.addEventListener("click", () => {
+        editor.focus();
+        document.execCommand(btn.dataset.richCmd, false, null);
+        syncRichSource(field);
+      });
+    });
+
+    shell.querySelectorAll("[data-rich-color]").forEach(btn => {
+      btn.addEventListener("mousedown", event => event.preventDefault());
+      btn.addEventListener("click", () => {
+        editor.focus();
+        document.execCommand("foreColor", false, btn.dataset.richColor);
+        syncRichSource(field);
+      });
+    });
+
+    shell.querySelector('[data-rich-action="clear"]')?.addEventListener("click", () => {
+      editor.focus();
+      document.execCommand("removeFormat", false, null);
+      syncRichSource(field);
+    });
+
+    editor.addEventListener("input", () => syncRichSource(field));
+    editor.addEventListener("blur", () => {
+      editor.innerHTML = sanitizeRichHtml(editor.innerHTML);
+      syncRichSource(field);
+    });
+    editor.addEventListener("paste", event => {
+      event.preventDefault();
+      const text = (event.clipboardData || window.clipboardData).getData("text/plain");
+      document.execCommand("insertText", false, text);
+    });
+  }
+
+  function initAllRichEditors(){
+    ["status", ...SBAR_RICH_FIELDS].forEach(initRichEditor);
+  }
+
   function renderShift(){
     const closed = isShiftClosed();
 
@@ -3831,15 +4506,446 @@
           <div><strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}</div>
           <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
           <div><strong>Destino:</strong> ${escapeHtml(record.destination)}</div>
-          <div><strong>Status:</strong> ${escapeHtml(record.status)}</div>
+          <div><strong>Status:</strong> ${recordStatusDocumentHtml(record)}</div>
+          ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
+          ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
+            <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
+            <strong>Profissional:</strong> ${escapeHtml(record.evaluationSpecialist || "Não informado")}<br>
+            <strong>Local:</strong> ${escapeHtml(record.destination || record.evaluationLocation || "Não informado")}<br>
+            <strong>Data/Horário:</strong> ${escapeHtml(formatEvaluationDate(record.evaluationDate))} às ${escapeHtml(record.evaluationTime || "Não informado")}
+          </div>` : ""}
+          ${isExamRecord(record) ? `<div class="evaluation-summary">
+            <strong>Exame:</strong> ${escapeHtml(record.examName || "Não informado")}<br>
+            <strong>Local:</strong> ${escapeHtml(record.destination || record.examLocation || "Não informado")}<br>
+            <strong>Data/Horário:</strong> ${escapeHtml(formatEvaluationDate(record.examDate))} às ${escapeHtml(record.examTime || "Não informado")}
+          </div>` : ""}
         </div>
         <div class="record-footer">
-          ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
+          ${isEvaluationRecord(record) ? `
+            <button class="btn btn-secondary" onclick="copyEvaluationReport('${record.id}')">Copiar</button>
+            <button class="btn btn-pdf" onclick="printEvaluationReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
+          ${isExamRecord(record) ? `
+            <button class="btn btn-secondary" onclick="copyExamReport('${record.id}')">Copiar</button>
+            <button class="btn btn-pdf" onclick="printExamReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
+          ${record.module === "green" ? `
+            <button class="btn btn-secondary" onclick="copyAuthorization('${record.id}')">Copiar</button>
+            <button class="btn btn-pdf" onclick="printAuthorization('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
+          ${record.module === "red" ? `
+            <button class="btn btn-secondary" onclick="copyNegativeReport('${record.id}')">Copiar</button>
+            <button class="btn btn-pdf" onclick="printNegativeReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
           ${!isShiftClosed() ? `<button class="btn btn-edit" onclick="editRecord('${record.id}')">Editar</button>
           <button class="btn btn-danger" onclick="deleteRecord('${record.id}')">Excluir</button>` : ""}
         </div>
       </div>`;
   }
+
+
+
+  const REGULATOR_INFO = Object.freeze({
+    name: "Stênio Andrade",
+    role: "Médico Regulador",
+    crm: "CRM/RO 6.115",
+    unit: "NIR CEMETRON"
+  });
+
+  function regulatorFooterHtml(issueDate="", issueTime=""){
+    const dateTime = issueDate || issueTime
+      ? `<div class="regulator-footer-issued">${issueDate ? `Emitido em ${escapeHtml(issueDate)}` : ""}${issueDate && issueTime ? "<br>" : ""}${issueTime ? escapeHtml(issueTime) : ""}</div>`
+      : "";
+    return `<div class="regulator-footer">
+      <div class="regulator-footer-identification">
+        <strong>${escapeHtml(REGULATOR_INFO.name)}</strong>
+        <div>${escapeHtml(REGULATOR_INFO.role)} | ${escapeHtml(REGULATOR_INFO.crm)}</div>
+        <div>${escapeHtml(REGULATOR_INFO.unit)}</div>
+      </div>
+      ${dateTime}
+    </div>`;
+  }
+
+  function regulatorFooterCss(){
+    return `.regulator-footer{
+      margin-top:18px;
+      padding-top:8px;
+      border-top:1px solid #cbd5e1;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      page-break-inside:avoid;
+      break-inside:avoid;
+      font-family:Arial,sans-serif;
+      line-height:1.15;
+    }
+    .regulator-footer-identification strong{
+      display:block;
+      color:#0f2747;
+      font-size:10px;
+      font-weight:700;
+    }
+    .regulator-footer-identification div,
+    .regulator-footer-issued{
+      color:#5f7188;
+      font-size:9px;
+      font-weight:400;
+    }
+    .regulator-footer-issued{text-align:right;}`;
+  }
+
+  function getIssueDateTime(){
+    const now = new Date();
+    return {
+      date: now.toLocaleDateString("pt-BR"),
+      time: now.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"})
+    };
+  }
+
+  function regulatorFooterHtml(){
+    const issued = getIssueDateTime();
+    return `<div class="document-footer">
+      <div class="regulator-signature">
+        <strong>${escapeHtml(REGULATOR_INFO.name)}</strong><br>
+        ${escapeHtml(REGULATOR_INFO.role)} | ${escapeHtml(REGULATOR_INFO.crm)}<br>
+        ${escapeHtml(REGULATOR_INFO.unit)}
+      </div>
+      <div class="document-issued">
+        Emitido em ${escapeHtml(issued.date)} às ${escapeHtml(issued.time)}
+      </div>
+    </div>`;
+  }
+
+  function blueRecordTypeLabel(value){
+    return ({transferencia:"Transferência externa",avaliacao:"Avaliação",exame:"Exame"})[value] || "";
+  }
+
+  function isEvaluationRecord(record){
+    return !!record && record.module === "blue" && record.blueRecordType === "avaliacao";
+  }
+
+  function isExamRecord(record){
+    return !!record && record.module === "blue" && record.blueRecordType === "exame";
+  }
+
+  function formatEvaluationDate(value){
+    if(!value) return "Não informada";
+    const parts = String(value).split("-");
+    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : value;
+  }
+
+  function updateBlueRecordFields(){
+    const isBlue = $("module")?.value === "blue";
+    $("blueRecordDetails")?.classList.toggle("hidden", !isBlue);
+
+    const selectedType = $("blueRecordType")?.value || "";
+    const isEvaluation = isBlue && selectedType === "avaliacao";
+    const isExam = isBlue && selectedType === "exame";
+
+    document.querySelectorAll(".evaluation-only").forEach(el => el.classList.toggle("hidden", !isEvaluation));
+    document.querySelectorAll(".exam-only").forEach(el => el.classList.toggle("hidden", !isExam));
+  }
+
+  function clearBlueRecordFields(){
+    [
+      "blueRecordType",
+      "evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance",
+      "examName","examDate","examTime","examGuidance"
+    ].forEach(id => {
+      if($(id)) $(id).value = "";
+    });
+    updateBlueRecordFields();
+  }
+
+  function buildEvaluationReportText(record){
+    return [
+      "INFORME PARA AVALIAÇÃO",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
+      "",
+      "Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:",
+      "",
+      `Especialidade: ${record.evaluationSpecialty || ""}`,
+      `Profissional: ${record.evaluationSpecialist || ""}`,
+      `Local da avaliação: ${record.destination || record.evaluationLocation || ""}`,
+      `Data: ${formatEvaluationDate(record.evaluationDate)}`,
+      `Horário: ${record.evaluationTime || ""}`,
+      "",
+      "Orientações:",
+      record.evaluationGuidance || "Sem orientações adicionais registradas.",
+      "",
+      "Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.",
+      "",
+      "NIR CEMETRON"
+    ].join("\n");
+  }
+
+  function buildEvaluationReportHtml(record, showActions=true){
+    const guidance = escapeHtml(record.evaluationGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe para Avaliação</title>
+<style>
+  @page{size:A4;margin:18mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sheet{max-width:780px;margin:0 auto;padding:18px}
+  h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+  .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+  .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+  .intro{margin:20px 0 14px;line-height:1.6}
+  .details-card{margin:0 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}
+  .detail-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #dbe3ec;align-items:stretch}
+  .detail-row:first-child{border-top:0}
+  .detail-label,.detail-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}
+  .detail-label{background:#e8eef6;color:#0f2747;font-size:13px;font-weight:700}
+  .detail-value{background:#fff;color:#111827;font-size:13px;font-weight:400;overflow-wrap:anywhere;word-break:normal}
+  .guidance{min-height:80px;padding:13px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55;overflow-wrap:anywhere}
+  @media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #dbe3ec}}
+  .closing{margin-top:18px;line-height:1.6}
+  .footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}
+  .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#e5e7eb;color:#111827}
+  @media print{
+    .screen-actions{display:none!important}
+    .sheet{max-width:none;padding:0}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="screen-actions">
+    <button id="printBtn" type="button">Gerar PDF / Imprimir</button>
+    <button class="secondary" id="copyBtn" type="button">Copiar</button>
+  </div>
+  <h1>INFORME PARA AVALIAÇÃO</h1>
+  <div class="subtitle">NIR CEMETRON</div>
+  <div class="patient">
+    <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
+    <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
+    <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}
+  </div>
+  <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
+  <div class="details-card">
+    <div class="detail-row"><div class="detail-label">Especialidade</div><div class="detail-value">${escapeHtml(record.evaluationSpecialty || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Profissional</div><div class="detail-value">${escapeHtml(record.evaluationSpecialist || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Local da avaliação</div><div class="detail-value">${escapeHtml(record.destination || record.evaluationLocation || "")}</div></div>
+    <div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.evaluationDate))}</div></div>
+    <div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.evaluationTime || "")}</div></div>
+  </div>
+  <strong>Orientações</strong>
+  <div class="guidance">${guidance}</div>
+  <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
+  ${regulatorFooterHtml()}
+</div>
+</body>
+</html>`;
+  }
+
+  async function copyTextWithFallback(text){
+    try{
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch(e){}
+
+    try{
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly","");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      area.style.top = "0";
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      area.setSelectionRange(0, area.value.length);
+      const ok = document.execCommand("copy");
+      document.body.removeChild(area);
+      return ok;
+    }catch(e){
+      return false;
+    }
+  }
+
+  window.copyEvaluationReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+
+    const text = buildEvaluationReportText(record);
+    const copied = await copyTextWithFallback(text);
+
+    if(copied){
+      toast("Informe para avaliação copiado. Pronto para colar no WhatsApp.");
+    }else{
+      window.prompt("Copie o informe abaixo:", text);
+    }
+  };
+
+  window.printEvaluationReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(buildEvaluationReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
+      }
+    }, 450);
+  };
+
+  window.openEvaluationReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isEvaluationRecord(record)) return;
+
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){
+      alert("O navegador bloqueou a abertura do informe. Autorize pop-ups para este site.");
+      return;
+    }
+
+    reportWindow.document.open();
+    reportWindow.document.write(buildEvaluationReportHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("printBtn");
+      const copyBtn = reportWindow.document.getElementById("copyBtn");
+
+      if(printBtn){
+        printBtn.addEventListener("click", () => {
+          reportWindow.focus();
+          reportWindow.print();
+        });
+      }
+
+      if(copyBtn){
+        copyBtn.addEventListener("click", async () => {
+          const text = buildEvaluationReportText(record);
+          const copied = await copyTextWithFallback(text);
+          if(copied){
+            copyBtn.textContent = "Copiado!";
+            setTimeout(() => copyBtn.textContent = "Copiar informe", 1400);
+          }else{
+            reportWindow.prompt("Copie o informe abaixo:", text);
+          }
+        });
+      }
+    }, 120);
+  };
+
+
+  function buildExamReportText(record){
+    return [
+      "INFORME PARA EXAME",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
+      "",
+      "Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:",
+      "",
+      `Exame: ${record.examName || ""}`,
+      `Local do exame: ${record.destination || record.examLocation || ""}`,
+      `Data: ${formatEvaluationDate(record.examDate)}`,
+      `Horário: ${record.examTime || ""}`,
+      "",
+      "Orientações:",
+      record.examGuidance || "Sem orientações adicionais registradas.",
+      "",
+      "Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.",
+      "",
+      "NIR CEMETRON"
+    ].join("\n");
+  }
+
+  function buildExamReportHtml(record, showActions=true){
+    const guidance = escapeHtml(record.examGuidance || "Sem orientações adicionais registradas.").replace(/\n/g,"<br>");
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe para Exame</title>
+<style>
+@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}.details-card{margin:0 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}.detail-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #dbe3ec;align-items:stretch}.detail-row:first-child{border-top:0}.detail-label,.detail-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}.detail-label{background:#e8eef6;color:#0f2747;font-size:13px;font-weight:700}.detail-value{background:#fff;color:#111827;font-size:13px;font-weight:400;overflow-wrap:anywhere;word-break:normal}.guidance{min-height:80px;padding:13px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55;overflow-wrap:anywhere}@media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #dbe3ec}}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+</style></head><body><div class="sheet">
+<div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar</button></div>
+<h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
+<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
+<p class="intro">Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:</p>
+<div class="details-card"><div class="detail-row"><div class="detail-label">Exame</div><div class="detail-value">${escapeHtml(record.examName || "")}</div></div><div class="detail-row"><div class="detail-label">Local do exame</div><div class="detail-value">${escapeHtml(record.destination || record.examLocation || "")}</div></div><div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.examDate))}</div></div><div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.examTime || "")}</div></div></div>
+<strong>Orientações</strong><div class="guidance">${guidance}</div>
+<p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.</p>
+${regulatorFooterHtml()}</div></body></html>`;
+  }
+
+  window.copyExamReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const text = buildExamReportText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Informe do exame copiado. Pronto para colar no WhatsApp.");
+    else window.prompt("Copie o informe abaixo:", text);
+  };
+
+  window.printExamReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){ alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente."); return; }
+    printWindow.document.open();
+    printWindow.document.write(buildExamReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { try{ printWindow.focus(); printWindow.print(); } catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe."); } }, 450);
+  };
+
+  window.openExamReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExamRecord(record)) return;
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){ alert("O navegador bloqueou a abertura do informe. Autorize pop-ups para este site."); return; }
+    reportWindow.document.open();
+    reportWindow.document.write(buildExamReportHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("examPrintBtn");
+      const copyBtn = reportWindow.document.getElementById("examCopyBtn");
+      if(printBtn) printBtn.addEventListener("click", () => { reportWindow.focus(); reportWindow.print(); });
+      if(copyBtn) copyBtn.addEventListener("click", async () => {
+        const copied = await copyTextWithFallback(buildExamReportText(record));
+        if(copied){ copyBtn.textContent = "Copiado!"; setTimeout(() => copyBtn.textContent = "Copiar informe", 1400); }
+        else reportWindow.prompt("Copie o informe abaixo:", buildExamReportText(record));
+      });
+    }, 120);
+  };
+
 
   function renderGrouped(targetId, compact=false){
     const target = $(targetId);
@@ -3910,9 +5016,15 @@
     $("operationalStatus").value = state.sbar.operationalStatus || "";
     $("turnover").value = state.sbar.turnover || "";
     $("vacancies").value = state.sbar.vacancies || "";
-$("background").value = state.sbar.background || "";
+    $("background").value = state.sbar.background || "";
+    $("professionalAbsence").value = state.sbar.professionalAbsence || "";
     $("assessment").value = state.sbar.assessment || "";
     $("recommendation").value = state.sbar.recommendation || "";
+    state.sbar.richHtml = state.sbar.richHtml && typeof state.sbar.richHtml === "object" ? state.sbar.richHtml : {};
+    SBAR_RICH_FIELDS.forEach(field => {
+      initRichEditor(field);
+      setRichEditorValue(field, state.sbar.richHtml[field] || "", state.sbar[field] || "");
+    });
   }
 
   function renderShiftReportTable(){
@@ -3956,7 +5068,7 @@ $("background").value = state.sbar.background || "";
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td><span class="status-pill">${escapeHtml(record.status)}</span></td>
+            <td><div class="status-pill status-rich-output">${recordStatusDocumentHtml(record)}</div></td>
             <td>
               <div class="table-actions">
                 ${record.module === "green" ? `<button class="btn btn-primary" onclick="openAuthorization('${record.id}')">Gerar autorização</button>` : ""}
@@ -4000,19 +5112,297 @@ $("background").value = state.sbar.background || "";
     $("authVacancy").value = record.destination || "";
   }
 
-  window.openAuthorization = function(id){
-    loadAuthorizationRecord(id);
-
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-    const authButton = $("authorizationNavButton");
-    authButton.classList.remove("hidden");
-    authButton.classList.add("active");
-
-    document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-    $("autorizacaoTransferencia").classList.remove("hidden");
-    window.scrollTo({top:0, behavior:"smooth"});
-    toast("Paciente carregado para autorização.");
+  function buildAuthorizationText(record){
+    const issued = getIssueDateTime();
+    return [
+      "PARECER DO REGULADOR",
+      "",
+      `Proveniente: ${record.origin || ""}`,
+      `Vaga disponibilizada: ${record.destination || ""}`,
+      `Paciente: ${record.patient || ""}`,
+      "",
+      "Desfecho: Transferência / Internação Autorizada",
+      "",
+      "Orientações:",
+      recordStatusDocumentText(record),
+      recordStatusDocumentText(record) ? "" : null,
+      "Enviar junto ao paciente:",
+      "✔️ Exame COVID-19 NEGATIVO;",
+      "✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;",
+      "✔️ Exames agendados, quando houver;",
+      "✔️ Exames de imagem realizados e respectivos laudos, quando houver;",
+      "✔️ Evolução de enfermagem atualizada, contendo obrigatoriamente as datas de inserção dos dispositivos invasivos (cateter venoso central, sonda vesical, sonda enteral, drenos e outros, quando existentes).",
+      "",
+      "Atenciosamente,",
+      REGULATOR_INFO.name,
+      `${REGULATOR_INFO.role} | ${REGULATOR_INFO.crm}`,
+      REGULATOR_INFO.unit,
+      `Emitido em ${issued.date} às ${issued.time}`
+    ].join("\n");
   }
+
+  function buildAuthorizationHtml(record, showActions=true){
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parecer do Regulador</title>
+<style>
+  @page{size:A4;margin:18mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sheet{max-width:780px;margin:0 auto;padding:18px}
+  h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+  .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+  .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+  .intro{margin:20px 0 14px;line-height:1.6}
+  table{width:100%;border-collapse:collapse;margin:0 0 18px}
+  th,td{padding:10px 11px;border:1px solid #cbd5e1;text-align:left;vertical-align:top;font-size:13px}
+  th{width:30%;background:#e8eef6;color:#0f2747}
+  .decision-card{margin:20px 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}
+  .decision-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #dbe3ec;align-items:stretch}
+  .decision-row:first-child{border-top:0}
+  .decision-label,.decision-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}
+  .decision-label{background:#eef5f0;color:#0f2747;font-size:13px;font-weight:700}
+  .decision-value{background:#fff;color:#111827;font-size:13px;overflow-wrap:anywhere}
+  .decision-value.orientation{display:block;line-height:1.65}
+  .decision-value.orientation div{margin:7px 0}
+  .decision-value.orientation .orientation-intro{margin:0 0 10px 0;color:#0f2747}
+  .outcome-authorized{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;background:#dcfce7;color:#166534;border:1px solid #86efac;font-weight:800}
+  @media(max-width:600px){.decision-row{grid-template-columns:1fr}.decision-label{border-bottom:1px solid #dbe3ec}}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}
+  .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#e5e7eb;color:#111827}
+  @media(max-width:600px){.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}
+  @media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+
+  ${recordStatusDocumentCss()}
+  .record-status-note{margin:0 0 13px;padding:10px 12px;border:1px solid #dbe3ec;border-radius:8px;background:#f8fafc}
+  @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+
+  ${regulatorFooterCss()}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="screen-actions">
+    <button id="authorizationPrintBtn" type="button">Gerar PDF / Imprimir</button>
+    <button class="secondary" id="authorizationCopyBtn" type="button">Copiar</button>
+  </div>
+  <h1>PARECER DO REGULADOR</h1>
+  <div class="subtitle">NIR CEMETRON</div>
+  <div class="patient">
+    <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
+    <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
+    <strong>Vaga disponibilizada / Destino:</strong> ${escapeHtml(record.destination || "")}
+  </div>
+  <div class="decision-card">
+    <div class="decision-row">
+      <div class="decision-label">Desfecho</div>
+      <div class="decision-value"><span class="outcome-authorized">Transferência / Internação Autorizada</span></div>
+    </div>
+    <div class="decision-row">
+      <div class="decision-label">Orientações</div>
+      <div class="decision-value orientation">
+        ${recordStatusDocumentText(record) ? `<div class="record-status-note">${recordStatusDocumentHtml(record)}</div>` : ""}
+        <div class="orientation-intro"><strong>Enviar junto ao paciente:</strong></div>
+        <div>✔️ Exame COVID-19 NEGATIVO;</div>
+        <div>✔️ Documentação completa, incluindo prontuário, evoluções médicas, prescrições, exames laboratoriais e demais documentos assistenciais;</div>
+        <div>✔️ Exames agendados, quando houver;</div>
+        <div>✔️ Exames de imagem realizados e respectivos laudos, quando houver;</div>
+        <div>✔️ Evolução de enfermagem atualizada, contendo obrigatoriamente as datas de inserção dos dispositivos invasivos (cateter venoso central, sonda vesical, sonda enteral, drenos e outros, quando existentes).</div>
+      </div>
+    </div>
+  </div>
+  ${regulatorFooterHtml()}
+</div>
+</body>
+</html>`;
+  }
+
+
+  function buildNegativeReportText(record){
+    const issued = getIssueDateTime();
+    return [
+      "PARECER DO REGULADOR",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
+      `Destino solicitado: ${record.destination || ""}`,
+      "",
+      "Desfecho: Transferência / Internação Negada",
+      `Orientações: ${recordStatusDocumentText(record)}`,
+      "",
+      REGULATOR_INFO.name,
+      `${REGULATOR_INFO.role} | ${REGULATOR_INFO.crm}`,
+      REGULATOR_INFO.unit,
+      `Emitido em ${issued.date} às ${issued.time}`
+    ].join("\n");
+  }
+
+  function buildNegativeReportHtml(record, showActions=true){
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parecer do Regulador</title>
+<style>
+  @page{size:A4;margin:18mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}
+  .sheet{max-width:780px;margin:0 auto;padding:18px}
+  h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}
+  .subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}
+  .patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}
+  .decision-card{margin:20px 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}
+  .decision-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #dbe3ec;align-items:stretch}
+  .decision-row:first-child{border-top:0}
+  .decision-label,.decision-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}
+  .decision-label{background:#f7eeee;color:#0f2747;font-size:13px;font-weight:700}
+  .decision-value{background:#fff;color:#111827;font-size:13px;overflow-wrap:anywhere}
+  .decision-value.orientation{display:block;line-height:1.65;white-space:pre-wrap}
+  .outcome-denied{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;font-weight:800}
+  @media(max-width:600px){.decision-row{grid-template-columns:1fr}.decision-label{border-bottom:1px solid #dbe3ec}}
+  .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
+  .regulator-signature strong{color:#0f2747;font-size:13px}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}
+  .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#e5e7eb;color:#111827}
+  @media(max-width:600px){.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}
+  @media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+
+  ${recordStatusDocumentCss()}
+  @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+
+  ${regulatorFooterCss()}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="screen-actions">
+    <button id="negativePrintBtn" type="button">Gerar PDF / Imprimir</button>
+    <button class="secondary" id="negativeCopyBtn" type="button">Copiar</button>
+  </div>
+
+  <h1>PARECER DO REGULADOR</h1>
+  <div class="subtitle">NIR CEMETRON</div>
+
+  <div class="patient">
+    <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
+    <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
+    <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}<br>
+    <strong>Destino solicitado:</strong> ${escapeHtml(record.destination || "")}
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-row">
+      <div class="decision-label">Desfecho</div>
+      <div class="decision-value"><span class="outcome-denied">Transferência / Internação Negada</span></div>
+    </div>
+    <div class="decision-row">
+      <div class="decision-label">Orientações</div>
+      <div class="decision-value orientation">${recordStatusDocumentHtml(record)}</div>
+    </div>
+  </div>
+
+  ${regulatorFooterHtml()}
+</div>
+</body>
+</html>`;
+  }
+
+  window.copyNegativeReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "red") return;
+    const text = buildNegativeReportText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Negativa copiada. Pronta para colar no WhatsApp.");
+    else window.prompt("Copie o informe abaixo:", text);
+  };
+
+  window.printNegativeReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "red") return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+    printWindow.document.open();
+    printWindow.document.write(buildNegativeReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
+      }
+    }, 450);
+  };
+
+  window.copyAuthorization = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const text = buildAuthorizationText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Autorização copiada. Pronta para colar no WhatsApp.");
+    else window.prompt("Copie a autorização abaixo:", text);
+  };
+
+  window.printAuthorization = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+    printWindow.document.open();
+    printWindow.document.write(buildAuthorizationHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      try{ printWindow.focus(); printWindow.print(); }
+      catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela da autorização."); }
+    }, 450);
+  };
+
+  window.openAuthorization = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!record || record.module !== "green") return;
+    const reportWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!reportWindow){
+      alert("O navegador bloqueou a abertura da autorização. Autorize pop-ups para este site.");
+      return;
+    }
+    reportWindow.document.open();
+    reportWindow.document.write(buildAuthorizationHtml(record, true));
+    reportWindow.document.close();
+    reportWindow.focus();
+    setTimeout(() => {
+      const printBtn = reportWindow.document.getElementById("authorizationPrintBtn");
+      const copyBtn = reportWindow.document.getElementById("authorizationCopyBtn");
+      if(printBtn) printBtn.addEventListener("click", () => { reportWindow.focus(); reportWindow.print(); });
+      if(copyBtn) copyBtn.addEventListener("click", async () => {
+        const copied = await copyTextWithFallback(buildAuthorizationText(record));
+        if(copied){
+          copyBtn.textContent = "Copiado!";
+          setTimeout(() => copyBtn.textContent = "Copiar autorização", 1400);
+        }else{
+          reportWindow.prompt("Copie a autorização abaixo:", buildAuthorizationText(record));
+        }
+      });
+    }, 120);
+  };
 
 
   function getFilteredHistory(){
@@ -4089,7 +5479,7 @@ $("background").value = state.sbar.background || "";
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${escapeHtml(record.status)}</td>
+            <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="8" class="empty-table">Sem registros neste plantão.</td></tr>`;
@@ -4136,7 +5526,7 @@ $("background").value = state.sbar.background || "";
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${escapeHtml(record.status)}</td>
+        <td>${recordStatusDocumentHtml(record)}</td>
       </tr>`;
     }).join("") : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
 
@@ -4144,7 +5534,10 @@ $("background").value = state.sbar.background || "";
     <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}h2{margin:14px 0 7px;color:#0f2747;font-size:13px}
     .productivity{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}.metric{padding:8px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;font-size:11px}.metric strong{display:block;margin-top:3px;font-size:17px;color:#0f2747}
     table{width:100%;border-collapse:collapse;font-size:10px}th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
-    td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}</style></head>
+    td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}.meta{margin-bottom:14px;font-size:12px;line-height:1.6}
+    ${recordStatusDocumentCss()}
+    @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+    </style></head>
     <body><h1>${escapeHtml(data.title)}</h1><div class="meta"><strong>Data:</strong> ${escapeHtml(data.date)}<br>
     <strong>Plantão:</strong> ${escapeHtml(data.type)}<br><strong>Plantonista:</strong> ${escapeHtml(data.professional)}<br>
     <strong>Encerramento:</strong> ${escapeHtml(data.endedAt)}</div>
@@ -4181,7 +5574,7 @@ $("background").value = state.sbar.background || "";
 
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
-      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${escapeHtml(record.status)}</td></tr>`;
+      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(record.destination)}</td><td>${recordStatusDocumentHtml(record)}</td></tr>`;
     }).join("");
 
     const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
@@ -4553,8 +5946,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderDashboardTools();
     renderEmailNotifications();
 
+    initAllRichEditors();
+    const statusEditor = $("statusEditor");
+    if(statusEditor){
+      statusEditor.contentEditable = isShiftClosed() ? "false" : "true";
+      statusEditor.classList.toggle("disabled", isShiftClosed());
+    }
+
     const locked = isShiftClosed();
-    ["module","requestTime","patient","origin","hd","destination","status","addRecord","clearForm"].forEach(id => {
+    ["module","requestTime","patient","origin","hd","destination","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance","examName","examDate","examTime","examGuidance","addRecord","clearForm"].forEach(id => {
       if($(id)) $(id).disabled = locked;
     });
   }
@@ -4575,6 +5975,19 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = record.hd || "";
     $("destination").value = record.destination || "";
     $("status").value = record.status || "";
+    initRichEditor("status");
+    setRichEditorValue("status", record.statusHtml || "", record.status || "");
+    $("blueRecordType").value = record.blueRecordType || "";
+    $("evaluationSpecialty").value = record.evaluationSpecialty || "";
+    $("evaluationSpecialist").value = record.evaluationSpecialist || "";
+    $("evaluationDate").value = record.evaluationDate || "";
+    $("evaluationTime").value = record.evaluationTime || "";
+    $("evaluationGuidance").value = record.evaluationGuidance || "";
+    $("examName").value = record.examName || "";
+    $("examDate").value = record.examDate || "";
+    $("examTime").value = record.examTime || "";
+    $("examGuidance").value = record.examGuidance || "";
+    updateBlueRecordFields();
     $("addRecord").textContent = "Atualizar registro";
 
     document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
@@ -4746,9 +6159,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         operationalStatus:"",
         turnover:"",
         vacancies:"",
-                background:"",
+        background:"",
+        professionalAbsence:"",
         assessment:"",
-        recommendation:""
+        recommendation:"",
+        richHtml:{}
       };
       $("sbarOutput").textContent = "Clique em “Gerar/Atualizar SBAR” para montar o relatório.";
       toast("Novo plantão iniciado.");
@@ -4780,6 +6195,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   });
 
+  $("module").addEventListener("change", updateBlueRecordFields);
+  $("blueRecordType").addEventListener("change", updateBlueRecordFields);
+  updateBlueRecordFields();
+
   $("addRecord").addEventListener("click", () => {
     if(!state.shift){
       alert("Inicie e salve o plantão antes de cadastrar registros.");
@@ -4790,6 +6209,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
 
+    initRichEditor("status");
+    syncRichSource("status");
+
     const record = {
       id: editingRecordId || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
       module: $("module").value,
@@ -4798,11 +6220,34 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       origin: $("origin").value.trim(),
       hd: $("hd").value.trim(),
       destination: $("destination").value.trim(),
-      status: $("status").value.trim()
+      status: $("status").value.trim(),
+      statusHtml: getRichEditorHtml("status"),
+      blueRecordType: $("module").value === "blue" ? $("blueRecordType").value : "",
+      evaluationSpecialty: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialty").value.trim() : "",
+      evaluationSpecialist: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationSpecialist").value.trim() : "",
+      evaluationDate: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationDate").value : "",
+      evaluationTime: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationTime").value : "",
+      evaluationGuidance: $("module").value === "blue" && $("blueRecordType").value === "avaliacao" ? $("evaluationGuidance").value.trim() : "",
+      examName: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examName").value.trim() : "",
+      examDate: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examDate").value : "",
+      examTime: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examTime").value : "",
+      examGuidance: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examGuidance").value.trim() : ""
     };
 
     if(!record.patient || !record.origin || !record.hd || !record.destination || !record.status){
       alert("Preencha todos os campos do registro.");
+      return;
+    }
+    if(record.module === "blue" && !record.blueRecordType){
+      alert("Selecione o tipo do registro: Transferência externa, Avaliação ou Exame.");
+      return;
+    }
+    if(isEvaluationRecord(record) && (!record.evaluationSpecialty || !record.evaluationSpecialist || !record.evaluationDate || !record.evaluationTime)){
+      alert("Para uma avaliação, informe especialidade, profissional, destino, data e horário.");
+      return;
+    }
+    if(isExamRecord(record) && (!record.examName || !record.examDate || !record.examTime)){
+      alert("Para um exame, informe exame, destino, data e horário.");
       return;
     }
 
@@ -4824,14 +6269,258 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = "";
     $("destination").value = "";
     $("status").value = "";
+    setRichEditorValue("status", "", "");
+    clearBlueRecordFields();
   });
 
   $("clearForm").addEventListener("click", () => {
     ["patient","origin","hd","destination","status"].forEach(id => $(id).value = "");
+    setRichEditorValue("status", "", "");
+    clearBlueRecordFields();
     $("requestTime").value = getCurrentTime();
     editingRecordId = null;
     $("addRecord").textContent = "Adicionar registro";
   });
+
+  function buildLatestCensusVacanciesText(){
+    const census = state.bedCensus || {};
+    const inf = census.infectologia || {};
+    const med = census.clinica || {};
+    const lines = [];
+
+    const add = (label, value) => {
+      const raw = value === null || value === undefined ? "" : String(value).trim();
+      if(raw === "") return;
+      lines.push(`${label}: ${raw}`);
+    };
+
+    add("Infectologia - Masculina 2 - Coletivo", inf.masc2);
+    add("Infectologia - Masculina 3 - Coletivo", inf.masc3);
+    add("Infectologia - Feminina - Coletivo", inf.fem);
+    add("Infectologia - Isolamento - TB", inf.tb);
+    add("Infectologia - UTI Coletivo", inf.utiColetivo);
+    add("Infectologia - UTI Isolamento", inf.utiIsolamento);
+
+    add("Clínica Médica - Masculina 1 - Coletivo", med.masc1);
+    add("Clínica Médica - Masculina 1 - Isolamento", med.masc1Isolamento);
+    add("Clínica Médica - Feminina - Coletivo", med.fem);
+    add("Clínica Médica - UTI Geral - Coletivo", med.utiGeral);
+
+    if(census.observations && String(census.observations).trim()){
+      lines.push(`Observações: ${String(census.observations).trim()}`);
+    }
+
+    if(census.censusDate || census.censusTime || census.performedBy || census.updatedAt){
+      const meta = [];
+      const copiedDate = census.censusDate || (census.updatedAt ? String(census.updatedAt).slice(0,10) : "");
+      const copiedTime = census.censusTime || (census.updatedAt ? new Date(census.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}) : "");
+      if(census.performedBy) meta.push(`Responsável pelo preenchimento: ${census.performedBy}`);
+      if(copiedDate) meta.push(`Data da atualização: ${formatDate(copiedDate)}`);
+      if(copiedTime) meta.push(`Hora da atualização: ${copiedTime}`);
+      if(meta.length) lines.push(meta.join(" | "));
+    }
+
+    return lines.join("\n");
+  }
+
+  function sbarProfessionalNameOnly(value){
+    return String(value || "")
+      .replace(/\s*\|\s*CRM\s*\/?\s*RO\s*[\d.\-]+.*$/i, "")
+      .replace(/\s+CRM\s*\/?\s*RO\s*[\d.\-]+.*$/i, "")
+      .trim();
+  }
+
+  function sbarOperationalStatusClass(status){
+    const normalized = String(status || "").trim().toLowerCase();
+    if(normalized === "normal") return "status-normal";
+    if(normalized === "atenção" || normalized === "atencao") return "status-attention";
+    if(normalized === "alta tensão" || normalized === "alta tensao") return "status-high";
+    if(normalized === "colapso operacional") return "status-collapse";
+    return "";
+  }
+
+  function sbarShiftLabel(type){
+    const map = {
+      "Manhã":"Manhã (07h–13h)",
+      "Tarde":"Tarde (13h–19h)",
+      "Noite":"Noite (19h–07h)",
+      "Tarde/Noite":"Tarde/Noite (13h–07h)"
+    };
+    return map[type] || type || "NÃO INFORMADO";
+  }
+
+  function sbarIcon(name, size="md"){
+    const cls = size === "lg" ? "sbar-icon sbar-icon-lg" : size === "sm" ? "sbar-icon sbar-icon-sm" : "sbar-icon";
+    const icons = {
+      calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+      clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      bed:'<path d="M3 19v-8h18v8M3 15h18M6 11V8h5a3 3 0 0 1 3 3M3 19v2M21 19v2"/>',
+      note:'<path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/>',
+      document:'<path d="M6 3h9l3 3v15H6zM14 3v4h4M9 12h6M9 16h6"/>',
+      list:'<path d="M4 5h16M4 12h16M4 19h16M2 5h.01M2 12h.01M2 19h.01"/>',
+      users:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0M14 20a5 5 0 0 1 7 0"/>',
+      chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+      warning:'<path d="M12 3 2 21h20L12 3zM12 9v4M12 17h.01"/>',
+      rotate:'<path d="M20 7h-7M16 3l4 4-4 4M4 17h7M8 13l-4 4 4 4"/>',
+      summary:'<path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/>',
+      hourglass:'<path d="M6 3h12M6 21h12M8 3c0 5 8 5 8 10s-8 5-8 8M16 3c0 5-8 5-8 10s8 5 8 8"/>',
+      transfer:'<path d="M20 7H7M16 3l4 4-4 4M4 17h13M8 13l-4 4 4 4"/>',
+      check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+      x:'<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
+      mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+      inbox:'<path d="M4 4h16v16H4zM4 14h4l2 3h4l2-3h4"/>',
+      eye:'<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/>',
+      send:'<path d="M4 20h16V9H8l-4 4zM14 4l6 5-6 5"/>'
+    };
+    return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.document}</svg>`;
+  }
+
+  function sbarCensusTableMarkup(){
+    const census = state.bedCensus || {};
+    const inf = census.infectologia || {};
+    const med = census.clinica || {};
+    const rows = [
+      ["INFECTO","Masculina 2 - Coletivo",inf.masc2],
+      ["INFECTO","Masculina 3 - Coletivo",inf.masc3],
+      ["INFECTO","Feminina - Coletivo",inf.fem],
+      ["INFECTO","Isolamento - TB",inf.tb],
+      ["INFECTO","UTI Coletivo",inf.utiColetivo],
+      ["INFECTO","UTI Isolamento",inf.utiIsolamento],
+      ["CM","Masculina 1 - Coletivo",med.masc1],
+      ["CM","Masculina 1 - Isolamento",med.masc1Isolamento],
+      ["CM","Feminina - Coletivo",med.fem],
+      ["CM","UTI Geral - Coletivo",med.utiGeral]
+    ]
+      .filter(([, , value]) => value !== null && value !== undefined && String(value).trim() !== "")
+      .sort((a,b) => a[1].localeCompare(b[1],"pt-BR",{sensitivity:"base"}));
+
+    if(!rows.length) return "";
+
+    const body = rows.map(([tag,sector,value]) => `
+      <div class="sbar-census-row">
+        <div class="sbar-sector-cell">
+          <span>${escapeHtml(sector)}</span>
+          <span class="sbar-sector-tag ${tag === "INFECTO" ? "infecto" : "cm"}">${tag}</span>
+        </div>
+        <div class="sbar-census-value">${escapeHtml(String(value))}</div>
+      </div>`).join("");
+
+    const updateDate = census.censusDate || (census.updatedAt ? String(census.updatedAt).slice(0,10) : "");
+    const updateTime = census.censusTime || (census.updatedAt ? new Date(census.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}) : "");
+    const performedBy = census.performedBy && String(census.performedBy).trim() ? String(census.performedBy).trim() : "";
+    const observations = census.observations && String(census.observations).trim() ? String(census.observations).trim() : "";
+
+    return `<div class="sbar-census-table">
+      <div class="sbar-census-head"><div>Setor</div><div>Leitos disponíveis</div></div>
+      ${body}
+      <div class="sbar-census-details">
+        <div class="sbar-census-observation-block">
+          <div class="sbar-census-detail-label">Observações</div>
+          <div class="sbar-census-observation-text">${escapeHtml(observations)}</div>
+        </div>
+        <div class="sbar-census-meta-block">
+          <div class="sbar-title-with-icon">${sbarIcon("user","sm")}<span><strong>Responsável:</strong> ${escapeHtml(performedBy)}</span></div>
+          <div class="sbar-title-with-icon">${sbarIcon("calendar","sm")}<span><strong>Data:</strong> ${escapeHtml(updateDate ? formatDate(updateDate) : "")}</span></div>
+          <div class="sbar-title-with-icon">${sbarIcon("clock","sm")}<span><strong>Horário:</strong> ${escapeHtml(updateTime)}</span></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function sbarSummaryCounts(){
+    const records = Array.isArray(state.records) ? state.records : [];
+    const count = key => records.filter(r => r.module === key).length;
+    return {total:records.length,yellow:count("yellow"),blue:count("blue"),green:count("green"),red:count("red")};
+  }
+
+  function sbarEmailSummary(){
+    const archivedItem = state.shift?.id ? state.history.find(item => item.id === state.shift.id) : null;
+    const summary = archivedItem?.emailSummary || (typeof buildEmailProductivitySummary === "function" ? buildEmailProductivitySummary() : {});
+    return {
+      received:Number(summary?.received || 0),
+      acknowledged:Number(summary?.acknowledged || 0),
+      responded:Number(summary?.responded || 0)
+    };
+  }
+
+  function sbarRecordFullMarkup(record){
+    const rows = [
+      ["Horário da solicitação", record.requestTime || ""],
+      ["Paciente", record.patient || ""],
+      ["Unidade de origem", record.origin || ""],
+      ["HD / PROBLEMAS", record.hd || ""],
+      ["Destino", record.destination || ""],
+      ["Status", record.status || ""]
+    ];
+    if(record.module === "blue" && record.blueRecordType) rows.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
+    if(isEvaluationRecord(record)){
+      rows.push(["Especialidade",record.evaluationSpecialty || ""],["Profissional",record.evaluationSpecialist || ""],["Data",formatEvaluationDate(record.evaluationDate)],["Horário",record.evaluationTime || ""],["Orientações",record.evaluationGuidance || ""]);
+    }
+    if(isExamRecord(record)){
+      rows.push(["Exame",record.examName || ""],["Data",formatEvaluationDate(record.examDate)],["Horário",record.examTime || ""],["Orientações",record.examGuidance || ""]);
+    }
+    return `<div class="sbar-record-full">${rows.map(([label,value]) => {
+      const content = label === "Status"
+        ? richHtmlForOutput(record.statusHtml, value)
+        : `<span>${escapeHtml(value)}</span>`;
+      return `<div class="sbar-record-line"><strong>${escapeHtml(label)}:</strong>${content}</div>`;
+    }).join("")}</div>`;
+  }
+
+  function sbarFullGroupMarkup(moduleKey){
+    const records = state.records.filter(r => r.module === moduleKey);
+    const meta = moduleMeta[moduleKey] || {title:"REGISTROS"};
+    const body = records.length ? records.map(sbarRecordFullMarkup).join("") : `<div class="sbar-empty">Sem registros neste plantão.</div>`;
+    return `<div class="sbar-full-group ${moduleKey}">
+      <div class="sbar-full-group-title"><span>${escapeHtml(meta.title)}</span><span class="sbar-count-pill">${records.length}</span></div>
+      ${body}
+    </div>`;
+  }
+
+  function sbarRecordMarkup(record){
+    const lines = [
+      ["Horário da solicitação", record.requestTime || ""],
+      ["Paciente", record.patient || ""],
+      ["Unidade de origem", record.origin || ""],
+      ["HD / PROBLEMAS", record.hd || ""],
+      ["Destino", record.destination || ""],
+      ["Status", record.status || ""]
+    ];
+    if(record.module === "blue" && record.blueRecordType){
+      lines.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
+    }
+    if(isEvaluationRecord(record)){
+      lines.push(
+        ["Especialidade", record.evaluationSpecialty || ""],
+        ["Profissional", record.evaluationSpecialist || ""],
+        ["Data", formatEvaluationDate(record.evaluationDate)],
+        ["Horário", record.evaluationTime || ""]
+      );
+      if(record.evaluationGuidance) lines.push(["Orientações", record.evaluationGuidance]);
+    }
+    if(isExamRecord(record)){
+      lines.push(
+        ["Exame", record.examName || ""],
+        ["Data", formatEvaluationDate(record.examDate)],
+        ["Horário", record.examTime || ""]
+      );
+      if(record.examGuidance) lines.push(["Orientações", record.examGuidance]);
+    }
+    return `<div class="sbar-record">${lines.map(([label,value]) => `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`).join("")}</div>`;
+  }
+
+  function sbarGroupMarkup(moduleKey){
+    const records = state.records.filter(r => r.module === moduleKey);
+    const meta = moduleMeta[moduleKey] || {title:"REGISTROS"};
+    const body = records.length
+      ? records.map(sbarRecordMarkup).join("")
+      : `<div class="sbar-empty">Sem registros neste plantão.</div>`;
+    return `<div class="sbar-record-group">
+      <div class="sbar-record-group-title ${moduleKey}">${escapeHtml(meta.title)} <span class="sbar-badge">${records.length}</span></div>
+      ${body}
+    </div>`;
+  }
 
   function buildRecordsText(moduleKey){
     const records = state.records.filter(r => r.module === moduleKey);
@@ -4841,9 +6530,23 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `HORÁRIO DA SOLICITAÇÃO: ${r.requestTime}`,
       `PACIENTE: ${r.patient}`,
       `UNIDADE DE ORIGEM: ${r.origin}`,
-      `HD: ${r.hd}`,
+      `HD / PROBLEMAS: ${r.hd}`,
       `DESTINO: ${r.destination}`,
-      `STATUS: ${r.status}`
+      `STATUS: ${r.status}`,
+      ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
+      ...(isEvaluationRecord(r) ? [
+        `ESPECIALIDADE: ${r.evaluationSpecialty || ""}`,
+        `PROFISSIONAL: ${r.evaluationSpecialist || ""}`,
+        `DATA: ${formatEvaluationDate(r.evaluationDate)}`,
+        `HORÁRIO: ${r.evaluationTime || ""}`,
+        ...(r.evaluationGuidance ? [`ORIENTAÇÕES: ${r.evaluationGuidance}`] : [])
+      ] : []),
+      ...(isExamRecord(r) ? [
+        `EXAME: ${r.examName || ""}`,
+        `DATA: ${formatEvaluationDate(r.examDate)}`,
+        `HORÁRIO: ${r.examTime || ""}`,
+        ...(r.examGuidance ? [`ORIENTAÇÕES: ${r.examGuidance}`] : [])
+      ] : [])
     ].join("\n")).join("\n\n\n\n");
   }
 
@@ -4927,7 +6630,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
             <td>${escapeHtml(record.destination)}</td>
-            <td>${escapeHtml(record.status)}</td>
+            <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
       : `<tr><td colspan="7">Sem registros neste plantão.</td></tr>`;
@@ -4949,6 +6652,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   th{background:#0f2747;color:white;text-align:left;padding:7px;border:1px solid #cbd5e1}
   td{padding:7px;border:1px solid #cbd5e1;vertical-align:top}
   .footer{margin-top:12px;font-size:10px;color:#6b7280}
+
+    ${recordStatusDocumentCss()}
+    @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style>
 </head>
 <body>
@@ -5023,7 +6729,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(record.destination)}</td>
-        <td>${escapeHtml(record.status)}</td>
+        <td>${recordStatusDocumentHtml(record)}</td>
       </tr>`;
     }).join("");
 
@@ -5157,66 +6863,198 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     toast("Registros atualizados.");
   });
 
+  let sbarVacanciesFromCensus = false;
+  $("copyCensusToVacancies")?.addEventListener("click", () => {
+    const text = buildLatestCensusVacanciesText();
+    if(!text){ alert("Ainda não há um censo diário registrado para copiar."); return; }
+    $("vacancies").value = text;
+    initRichEditor("vacancies");
+    setRichEditorValue("vacancies", escapeHtml(text).replace(/\n/g,"<br>"), text);
+    sbarVacanciesFromCensus = true;
+    toast("Vagas disponíveis preenchidas com o último censo diário.");
+  });
+  $("vacancies")?.addEventListener("input", () => { sbarVacanciesFromCensus = false; });
+
   $("generateSbar").addEventListener("click", () => {
+    SBAR_RICH_FIELDS.forEach(syncRichSource);
     state.sbar = {
       operationalStatus: $("operationalStatus").value,
       turnover: $("turnover").value,
       vacancies: $("vacancies").value.trim(),
-background: $("background").value.trim(),
+      background: $("background").value.trim(),
+      professionalAbsence: $("professionalAbsence").value.trim(),
       assessment: $("assessment").value.trim(),
-      recommendation: $("recommendation").value.trim()
+      recommendation: $("recommendation").value.trim(),
+      richHtml: Object.fromEntries(SBAR_RICH_FIELDS.map(field => [field, getRichEditorHtml(field)]))
     };
     saveState();
 
     const shift = state.shift || {};
     const now = new Date();
-    const generatedAt = now.toLocaleString("pt-BR");
+    const dateLabel = shift.date ? formatDate(shift.date) : "NÃO INFORMADA";
+    const shiftLabel = sbarShiftLabel(shift.type);
+    const professional = shift.professional || "NÃO INFORMADO";
+    const generatedDate = now.toLocaleDateString("pt-BR");
+    const generatedTime = now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+    const crmLabel = "CRM/RO 6.115";
 
-    const report = [
-      "RELATÓRIO DO PLANTÃO — NIR CEMETRON",
+    const reportText = [
+      "RELATÓRIO SBAR",
+      "NIR CEMETRON • PASSAGEM DE PLANTÃO",
       "",
-      `DATA: ${shift.date ? formatDate(shift.date) : "NÃO INFORMADA"}`,
-      `PLANTÃO: ${shift.type || "NÃO INFORMADO"}`,
-      `PLANTONISTA: ${shift.professional || "NÃO INFORMADO"}`,
-      `_GERADO AUTOMATICAMENTE EM: ${new Date().toLocaleString("pt-BR")}._`,
+      `DATA: ${dateLabel}`,
+      `PLANTÃO: ${shiftLabel}`,
+      `PLANTONISTA: ${sbarProfessionalNameOnly(professional)} | ${crmLabel}`,
       "",
-      "> *S — SITUAÇÃO*",
+      "S — SITUAÇÃO",
       `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
       "",
-      "> *B — BACKGROUND / CONTEXTO*",
-      state.sbar.background || "",
+      "B — BACKGROUND / CONTEXTO",
+      `REGISTRO DE OCORRÊNCIAS: ${state.sbar.background || "SEM REGISTROS."}`,
+      `AUSÊNCIA DE PROFISSIONAIS COM IMPACTO REGULATÓRIO: ${state.sbar.professionalAbsence || "NÃO INFORMADA."}`,
       "",
-      "> *A — AVALIAÇÃO*",
+      "A — AVALIAÇÃO",
       `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
       `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
       state.sbar.assessment || "",
       "",
-      "> *R — RELATÓRIO DO PLANTÃO*",
-      state.sbar.recommendation || "",
+      "R — RELATÓRIO DO PLANTÃO",
+      ...(() => {
+        const counts = sbarSummaryCounts();
+        const mail = sbarEmailSummary();
+        return [
+          `NÚMERO DE OCORRÊNCIAS: ${counts.total}`,
+          `PENDÊNCIAS: ${counts.yellow}`,
+          `TRANSFERÊNCIAS / AVALIAÇÕES / EXAMES: ${counts.blue}`,
+          `AUTORIZAÇÕES: ${counts.green}`,
+          `NEGATIVAS: ${counts.red}`,
+          "",
+          "PRODUTIVIDADE DE E-MAILS",
+          `RECEBIDOS: ${mail.received}`,
+          `CIENTES: ${mail.acknowledged}`,
+          `RESPONDIDOS: ${mail.responded}`,
+          "",
+          "RELATÓRIO COMPLETO"
+        ];
+      })(),
       "",
-      moduleMeta.yellow.title,
+      moduleMeta.yellow.title, "", buildRecordsText("yellow"), "",
+      moduleMeta.blue.title, "", buildRecordsText("blue"), "",
+      moduleMeta.green.title, "", buildRecordsText("green"), "",
+      moduleMeta.red.title, "", buildRecordsText("red"),
       "",
-      buildRecordsText("yellow"),
-      "",
-      moduleMeta.blue.title,
-      "",
-      buildRecordsText("blue"),
-      "",
-      moduleMeta.green.title,
-      "",
-      buildRecordsText("green"),
-      "",
-      moduleMeta.red.title,
-      "",
-      buildRecordsText("red")
+      `${sbarProfessionalNameOnly(professional)}`,
+      `Médico Regulador | ${crmLabel}`,
+      "NIR CEMETRON",
+      `Emitido em ${generatedDate} às ${generatedTime}`
     ].join("\n");
 
-    $("sbarOutput").textContent = report;
+    const reportHtml = `
+      <div class="sbar-report" data-copy-text="${escapeHtml(reportText)}">
+        <div class="sbar-report-header">
+          <h2>RELATÓRIO SBAR</h2>
+          <p>NIR CEMETRON • PASSAGEM DE PLANTÃO</p>
+        </div>
+        <div class="sbar-report-body">
+          <div class="sbar-meta">
+            <div class="sbar-title-with-icon">${sbarIcon("calendar","sm")}<span><strong>Data:</strong> ${escapeHtml(dateLabel)}</span></div>
+            <div class="sbar-title-with-icon">${sbarIcon("clock","sm")}<span><strong>Plantão:</strong> ${escapeHtml(shiftLabel)}</span></div>
+            <div class="sbar-title-with-icon">${sbarIcon("user","sm")}<span><strong>Plantonista:</strong> ${escapeHtml(sbarProfessionalNameOnly(professional))} | ${escapeHtml(crmLabel)}</span></div>
+          </div>
+
+          <div class="sbar-sections">
+            <div class="sbar-section">
+              <div class="sbar-letter">S</div>
+              <div class="sbar-content">
+                <h4>Situação</h4>
+                <p><strong>Vagas disponíveis:</strong></p>
+                ${sbarVacanciesFromCensus && sbarCensusTableMarkup()
+                  ? sbarCensusTableMarkup()
+                  : `${richHtmlForOutput(state.sbar.richHtml?.vacancies, state.sbar.vacancies || "NÃO INFORMADO")}`}
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">B</div>
+              <div class="sbar-content">
+                <h4>Background / Contexto</h4>
+                <div class="sbar-background-grid">
+                  <div class="sbar-background-card">
+                    <div class="sbar-background-card-title">Registro de ocorrências</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.background, state.sbar.background || "")}</div>
+                  </div>
+                  <div class="sbar-background-card">
+                    <div class="sbar-background-card-title">Ausência de profissionais com impacto regulatório</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.professionalAbsence, state.sbar.professionalAbsence || "")}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">A</div>
+              <div class="sbar-content">
+                <h4>Avaliação</h4>
+                <div class="sbar-badges sbar-assessment-badges">
+                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
+                </div>
+                ${richHtmlForOutput(state.sbar.richHtml?.assessment, state.sbar.assessment || "Sem avaliação adicional registrada.")}
+              </div>
+            </div>
+
+            <div class="sbar-section">
+              <div class="sbar-letter">R</div>
+              <div class="sbar-content">
+                <h4>Relatório do plantão</h4>
+                ${(() => {
+                  const counts = sbarSummaryCounts();
+                  return `<div class="sbar-summary-box">
+                    <div class="sbar-summary-title">Resumo do plantão</div>
+                    <div class="sbar-summary-grid">
+                      <div class="sbar-summary-card">${sbarIcon("list","lg")}<span>Número de ocorrências</span><strong>${counts.total}</strong></div>
+                      <div class="sbar-summary-card yellow">${sbarIcon("hourglass","lg")}<span>Pendências</span><strong>${counts.yellow}</strong></div>
+                      <div class="sbar-summary-card blue">${sbarIcon("transfer","lg")}<span>Transferências / Avaliações / Exames</span><strong>${counts.blue}</strong></div>
+                      <div class="sbar-summary-card green">${sbarIcon("check","lg")}<span>Autorizações</span><strong>${counts.green}</strong></div>
+                      <div class="sbar-summary-card red">${sbarIcon("x","lg")}<span>Negativas</span><strong>${counts.red}</strong></div>
+                    </div>
+                  </div>`;
+                })()}
+                ${(() => {
+                  const mail = sbarEmailSummary();
+                  return `<div class="sbar-email-box">
+                    <div class="sbar-email-title">Produtividade de e-mails</div>
+                    <div class="sbar-email-grid">
+                      <div class="sbar-email-metric">${sbarIcon("inbox","lg")}<span>Recebidos</span><strong>${mail.received}</strong></div>
+                      <div class="sbar-email-metric">${sbarIcon("eye","lg")}<span>Cientes</span><strong>${mail.acknowledged}</strong></div>
+                      <div class="sbar-email-metric">${sbarIcon("send","lg")}<span>Respondidos</span><strong>${mail.responded}</strong></div>
+                    </div>
+                  </div>
+          <div class="sbar-next-page-note">Relatório detalhado no plantão na próxima página.</div>
+`;
+                })()}
+                <div class="sbar-full-report-page-break">
+                  <div class="sbar-full-report-title">Relatório completo</div>
+                  ${sbarFullGroupMarkup("yellow")}
+                  ${sbarFullGroupMarkup("blue")}
+                  ${sbarFullGroupMarkup("green")}
+                  ${sbarFullGroupMarkup("red")}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          ${regulatorFooterHtml(generatedDate, generatedTime)}
+        </div>
+      </div>`;
+
+    $("sbarOutput").innerHTML = reportHtml;
     toast("SBAR gerado/atualizado.");
   });
 
   $("copySbar").addEventListener("click", async () => {
-    const text = $("sbarOutput").textContent;
+    const reportNode = $("sbarOutput").querySelector(".sbar-report");
+    const text = reportNode?.dataset.copyText || $("sbarOutput").textContent;
     if(!text || text.startsWith("Clique em")){
       alert("Gere o SBAR antes de copiar.");
       return;
@@ -5233,6 +7071,176 @@ background: $("background").value.trim(),
     }
     toast("SBAR copiado com sucesso.");
   });
+
+  $("printSbar").addEventListener("click", () => {
+    const reportNode = $("sbarOutput").querySelector(".sbar-report");
+    if(!reportNode){
+      alert("Gere o SBAR antes de criar o PDF ou imprimir.");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank", "width=1100,height=850");
+    if(!printWindow){
+      alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente.");
+      return;
+    }
+
+    const reportHtml = reportNode.outerHTML;
+
+    printWindow.document.open();
+    printWindow.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório SBAR - NIR CEMETRON</title>
+<style>
+  @page{size:A4;margin:10mm}
+  *{box-sizing:border-box}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:11px}
+  .sbar-report{color:#111827;background:#fff}
+  .sbar-report-header{text-align:center;padding:13px 12px;border-bottom:1px solid #dbe3ec}
+  .sbar-report-header h2{margin:0;color:#0f2747;font-size:18px;letter-spacing:.02em}
+  .sbar-report-header p{margin:4px 0 0;color:#64748b;font-size:11px;font-weight:600}
+  .sbar-report-body{padding:10px 0}
+  .sbar-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 16px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;margin-bottom:10px;font-size:10.5px}
+  .sbar-meta strong{color:#0f2747}
+  .sbar-sections{border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}
+  .sbar-section{display:grid;grid-template-columns:52px 1fr;border-top:1px solid #dbe3ec}
+  .sbar-section:first-child{border-top:0}
+  .sbar-letter{display:flex;align-items:flex-start;justify-content:center;padding:10px 6px;background:#e8eef6;color:#0f2747;font-size:15px;font-weight:900}
+  .sbar-content{padding:10px 11px;min-width:0;line-height:1.35}
+  .sbar-content h4{margin:0 0 5px;color:#0f2747;font-size:11px}
+  .sbar-content p{margin:3px 0;font-size:10.5px}
+  .sbar-badges{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0 6px}
+  .sbar-badge{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:#eef2f7;color:#0f2747;border:1px solid #d1d9e5;font-size:9.5px;font-weight:800}
+  .sbar-badge.status-normal{background:#dcfce7;color:#166534;border-color:#86efac}
+  .sbar-badge.status-attention{background:#fef9c3;color:#854d0e;border-color:#fde047}
+  .sbar-badge.status-high{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+  .sbar-badge.status-collapse{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+  .sbar-record-group{margin-top:7px;border:1px solid #dbe3ec;border-radius:8px;overflow:hidden;break-inside:auto}
+  .sbar-record-group-title{padding:6px 8px;font-weight:800;color:#0f2747;font-size:10px;break-after:avoid}
+  .sbar-record-group-title.yellow{background:#fff7d6}
+  .sbar-record-group-title.blue{background:#e8f1ff}
+  .sbar-record-group-title.green{background:#e8f7ee}
+  .sbar-record-group-title.red{background:#fdecec}
+  .sbar-census-table{margin-top:5px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
+  .sbar-census-head,.sbar-census-row{display:grid;grid-template-columns:1.8fr .8fr}
+  .sbar-census-head{background:#e8eef6;color:#0f2747;font-size:9px;font-weight:800}
+  .sbar-census-head>div,.sbar-census-row>div{padding:4px 6px}.sbar-census-row{border-top:1px solid #e5e7eb;font-size:8.8px}
+  .sbar-census-value{text-align:center;font-weight:800}
+  .sbar-census-value{text-align:center;font-weight:800}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+  .sbar-summary-card{padding:8px 7px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:52px}
+  .sbar-summary-card span{display:block;color:#64748b;font-size:7.8px;font-weight:600;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500;line-height:1}
+  .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4}.sbar-summary-card:last-child{border-right:0}
+  .sbar-summary-box,.sbar-email-box{margin:6px 0 8px;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:6px 8px;background:#eef4fb;color:#0f2747;font-size:9.5px;font-weight:600;border-bottom:1px solid #dbe3ec}
+  .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:9px 7px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:52px}.sbar-email-metric:first-child{border-left:0}
+  .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:600}.sbar-email-metric strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500}
+  .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:2mm}.sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
+  .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
+  .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+  .sbar-count-pill{display:inline-flex;min-width:20px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
+  .sbar-record-full{padding:5px 7px;border-top:1px solid #e5e7eb;font-size:8.8px;line-height:1.22;break-inside:avoid}.sbar-record-full:first-of-type{border-top:0}
+  .sbar-record-line{display:grid;grid-template-columns:120px 1fr;gap:5px;margin:1px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
+  .sbar-record{padding:7px 9px;border-top:1px solid #e5e7eb;font-size:9.8px;line-height:1.3;break-inside:avoid}
+  .sbar-record:first-of-type{border-top:0}
+  .sbar-record p{margin:3px 0}
+  .sbar-empty{padding:7px 9px;color:#64748b;font-size:9.8px}
+  .sbar-footer{display:flex;justify-content:space-between;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid #cbd5e1;font-size:9.8px;color:#64748b}
+  .sbar-footer strong{display:block;color:#0f2747;font-size:10.5px;margin-bottom:2px}
+  @media print{
+    .sbar-meta{break-inside:avoid}
+    .sbar-section:not(:last-child){break-inside:avoid}
+    .sbar-record{break-inside:avoid}
+    .sbar-record-group,.sbar-full-group{break-inside:auto}
+    .sbar-record-full{break-inside:avoid}
+    .sbar-summary-box,.sbar-email-box{break-inside:avoid}
+    .sbar-full-report-page-break{break-before:page;page-break-before:always}
+  }
+
+  .sbar-sector-cell{display:flex;align-items:center;gap:4px;min-width:0}
+  .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:1px 4px;border-radius:999px;font-size:6.8px;font-weight:800;flex:0 0 auto}
+  .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
+  .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
+  .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 190px;border-top:1px solid #e5e7eb;background:#f8fafc}
+  .sbar-census-observation-block{padding:6px 7px;min-width:0}
+  .sbar-census-detail-label{margin-bottom:3px;color:#0f2747;font-size:8.5px;font-weight:800}
+  .sbar-census-observation-text{min-height:12px;font-size:8.5px;line-height:1.3;overflow-wrap:anywhere}
+  .sbar-census-meta-block{padding:6px 7px;border-left:1px solid #dbe3ec;display:flex;flex-direction:column;justify-content:center;gap:2px;color:#64748b;font-size:8.3px;line-height:1.3}
+  .sbar-background-card{border:1px solid #dbe3ec;border-radius:7px;padding:6px 7px;background:#fff;margin-top:4px}
+  .sbar-background-card-title{color:#64748b;font-size:8.5px;font-weight:700;margin-bottom:2px}
+  .sbar-background-card-text{color:#64748b;font-size:8.5px;line-height:1.3}
+  .sbar-summary-box,.sbar-email-box{margin:5px 0 7px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
+  .sbar-summary-title,.sbar-email-title{padding:5px 7px;background:#eef4fb;color:#111827;font-size:9px;font-weight:500}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+  .sbar-summary-card{padding:7px 6px;border-right:1px solid #dbe3ec;background:#f8fafc;min-height:50px}
+  .sbar-summary-card span{display:block;color:#64748b;font-size:7.5px;font-weight:500;line-height:1.15}
+  .sbar-summary-card strong{display:block;margin-top:3px;color:#475569;font-size:13px;font-weight:500;line-height:1}
+  .sbar-summary-card.yellow{background:#fffaf0}.sbar-summary-card.blue{background:#f2f7ff}.sbar-summary-card.green{background:#f1fbf5}.sbar-summary-card.red{background:#fff4f4}
+  .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+  .sbar-email-metric{padding:7px 6px;text-align:center;border-left:1px solid #dbe3ec;background:#fff;min-height:48px}
+  .sbar-email-metric:first-child{border-left:0;background:#f8fafc}.sbar-email-metric:nth-child(2){background:#f1fbf5}.sbar-email-metric:nth-child(3){background:#f7f5ff}
+  .sbar-email-metric span{display:block;color:#64748b;font-size:7.5px;font-weight:500}
+  .sbar-email-metric strong{display:block;margin-top:3px;color:#475569;font-size:13px;font-weight:500}
+
+.sbar-summary-card:last-child{border-right:0}
+.sbar-summary-card.yellow{background:#fffaf0}
+.sbar-summary-card.blue{background:#f2f7ff}
+.sbar-summary-card.green{background:#f2fbf7}
+.sbar-summary-card.red{background:#fff5f5}
+
+.sbar-email-metric:first-child{border-left:0;background:#f8fafc}
+.sbar-email-metric:nth-child(2){background:#f2fbf7}
+.sbar-email-metric:nth-child(3){background:#f7f5ff}
+
+  .sbar-icon{width:12px;height:12px;stroke:#0f2747;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+  .sbar-icon-sm{width:9px;height:9px}
+  .sbar-icon-lg{width:16px;height:16px;stroke-width:1.7}
+  .sbar-title-with-icon{display:flex;align-items:center;gap:4px}
+
+  .sbar-background-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px}
+  .sbar-background-card{margin-top:0}
+
+  html,body,.sbar-report{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .rich-output,.status-rich-output{white-space:pre-wrap!important;overflow-wrap:anywhere!important;tab-size:4!important}
+  .rich-output p{margin:0!important}
+  .rich-output ul,.rich-output ol{margin:3px 0 3px 16px!important;padding:0!important}
+  .rich-output li{margin:1px 0!important}
+
+  ${regulatorFooterCss()}
+
+    .sbar-next-page-note{
+      margin:14px 0 0;
+      padding:10px 14px;
+      border-top:1px solid #d7e0ea;
+      color:#5f7188;
+      font-size:11px;
+      font-style:italic;
+      text-align:center;
+      line-height:1.35;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+</style>
+</head>
+<body>
+${reportHtml}
+</body>
+</html>`);
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do relatório.");
+      }
+    }, 450);
+  });
+
 
   if(!$("shiftDate").value){
     $("shiftDate").value = new Date().toISOString().slice(0,10);
@@ -5394,6 +7402,35 @@ background: $("background").value.trim(),
     const stamp = new Date().toISOString().slice(0,10);
     downloadBlob(JSON.stringify(state, null, 2), "application/json;charset=utf-8", `backup_scir_${stamp}.json`);
     toast("Backup exportado.");
+  });
+
+  $("restoreLocalRecovery").addEventListener("click", () => {
+    const recoveryRaw = localStorage.getItem(RECOVERY_STORAGE_KEY);
+    if(!recoveryRaw){
+      alert("Ainda não existe uma cópia local anterior disponível neste navegador.");
+      return;
+    }
+    if(!confirm("Restaurar a cópia local anterior? O estado atual ficará preservado como cópia de recuperação.")) return;
+    try{
+      const recovered = JSON.parse(recoveryRaw);
+      if(!recovered || typeof recovered !== "object" || Array.isArray(recovered)) throw new Error();
+      const currentRaw = localStorage.getItem(STORAGE_KEY);
+      state = recovered;
+      localStorage.setItem(STORAGE_KEY, recoveryRaw);
+      if(currentRaw) localStorage.setItem(RECOVERY_STORAGE_KEY, currentRaw);
+      localStorage.setItem(LOCAL_SAVE_TIME_STORAGE_KEY, new Date().toISOString());
+      state.records = Array.isArray(state.records) ? state.records : [];
+      state.history = Array.isArray(state.history) ? state.history : [];
+      state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
+      state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+      state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
+      state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
+      renderAll();
+      queueCloudSave();
+      toast("Cópia local anterior restaurada e enviada para sincronização.");
+    }catch{
+      alert("A cópia local anterior não pôde ser restaurada.");
+    }
   });
 
   $("importBackup").addEventListener("click", () => $("backupFile").click());

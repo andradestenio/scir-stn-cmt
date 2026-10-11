@@ -8,6 +8,22 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dashboard. O arquivo JSON gerado pelo migrador local pode ser selecionado em **Importar backup** para substituir a base vazia e enviá-la ao Supabase.
 
+### Versão 1.12.1 — sincronização corrigida e proteção local
+
+- Corrige a autenticação da base para chaves novas `sb_secret_`, enviadas
+  somente pelo cabeçalho `apikey`, conforme o padrão atual do Supabase.
+- Mantém compatibilidade com chaves legadas `service_role` em formato JWT.
+- Cada alteração é salva primeiro no navegador e preserva uma cópia local
+  anterior para recuperação.
+- Uma base remota vazia não substitui automaticamente dados locais existentes;
+  o conteúdo local é reenviado para a nuvem.
+- O botão **Recuperar cópia local anterior** permite restaurar a versão local
+  imediatamente anterior sem perder o estado atual.
+- Se a nuvem falhar, o SCIR continua funcionando com os dados locais e tenta
+  sincronizar novamente a cada 15 segundos.
+- A faixa de status informa que os dados locais estão protegidos enquanto a
+  sincronização estiver pendente.
+
 ### Versão 1.12 — acesso direto sem login
 
 - A página de login e o botão **Sair** foram removidos.

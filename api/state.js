@@ -1,6 +1,16 @@
 import {json, readJson} from "../lib/http.js";
 import {getState, putState} from "../lib/supabase.js";
 
+function databaseErrorCode(error){
+  if(String(error?.message || "").includes("Supabase não configurado")){
+    return "SUPABASE_NOT_CONFIGURED";
+  }
+  if(error?.status === 401 || error?.status === 403) return "SUPABASE_AUTH_FAILED";
+  if(error?.status === 404) return "SUPABASE_RESOURCE_NOT_FOUND";
+  if(error?.status === 400) return "SUPABASE_REQUEST_REJECTED";
+  return "SUPABASE_UNAVAILABLE";
+}
+
 export default async function handler(req, res){
   try{
     if(req.method === "GET"){
@@ -16,6 +26,9 @@ export default async function handler(req, res){
     return json(res, 405, {error:"Método não permitido."});
   }catch(error){
     console.error(error);
-    return json(res, 500, {error:"Não foi possível acessar a base de dados."});
+    return json(res, 500, {
+      error:"Não foi possível acessar a base de dados.",
+      code:databaseErrorCode(error)
+    });
   }
 }
