@@ -8,6 +8,10 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dashboard. O arquivo JSON gerado pelo migrador local pode ser selecionado em **Importar backup** para substituir a base vazia e enviá-la ao Supabase.
 
+### Versão 1.12.2 — texto do PDF SBAR
+
+- Corrige a observação para **“Relatório detalhado do plantão nas próximas páginas.”**
+
 ### Versão 1.12.1 — sincronização corrigida e proteção local
 
 - Corrige a autenticação da base para chaves novas `sb_secret_`, enviadas
