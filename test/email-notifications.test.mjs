@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import {createSessionCookie} from "../lib/auth.js";
 import listHandler from "../api/email-notifications.js";
 import statusHandler from "../api/email-notification-status.js";
 import {
@@ -17,6 +16,15 @@ import {
 process.env.SUPABASE_URL = "https://example.supabase.co";
 process.env.SUPABASE_SECRET_KEY = "supabase-secret";
 process.env.SESSION_SECRET = "12345678901234567890123456789012";
+
+test("abre diretamente sem formulário de login ou ação de sair", () => {
+  const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  assert.doesNotMatch(html, /id="loginScreen"/);
+  assert.doesNotMatch(html, /id="loginForm"/);
+  assert.doesNotMatch(html, /id="logoutButton"/);
+  assert.doesNotMatch(html, /\/api\/login/);
+  assert.doesNotMatch(html, /\/api\/logout/);
+});
 
 function responseRecorder(){
   return {
@@ -80,7 +88,6 @@ test("lista somente as notificações vinculadas ao plantão solicitado", async 
   try{
     const req = {
       method:"GET",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       query:{historyShiftId:"plantao-atual"}
     };
     const res = responseRecorder();
@@ -129,7 +136,6 @@ test("persiste a marcação de e-mail como lido", async () => {
   try{
     const req = {
       method:"PUT",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       body:{eventKey:"message-1", action:"read"}
     };
     const res = responseRecorder();
@@ -174,7 +180,6 @@ test("evolui um e-mail lido para respondido", async () => {
   try{
     const req = {
       method:"PUT",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       body:{eventKey:"message-2", action:"responded"}
     };
     const res = responseRecorder();
@@ -217,7 +222,6 @@ test("permite editar um e-mail respondido para ciente", async () => {
   try{
     const req = {
       method:"PUT",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       body:{eventKey:"message-ciente", action:"acknowledged"}
     };
     const res = responseRecorder();
@@ -260,7 +264,6 @@ test("permite devolver um e-mail ciente para pendente", async () => {
   try{
     const req = {
       method:"PUT",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       body:{eventKey:"message-reaberta", action:"pending"}
     };
     const res = responseRecorder();
@@ -303,7 +306,6 @@ test("permite editar um e-mail finalizado para lido", async () => {
   try{
     const req = {
       method:"PUT",
-      headers:{cookie:createSessionCookie().split(";")[0]},
       body:{eventKey:"message-lida", action:"read"}
     };
     const res = responseRecorder();

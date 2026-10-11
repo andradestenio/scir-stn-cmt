@@ -8,6 +8,14 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dashboard. O arquivo JSON gerado pelo migrador local pode ser selecionado em **Importar backup** para substituir a base vazia e enviá-la ao Supabase.
 
+### Versão 1.12 — acesso direto sem login
+
+- A página de login e o botão **Sair** foram removidos.
+- O SCIR abre diretamente no Dashboard e carrega a base integrada sem cookie de sessão.
+- Sincronização, notificações de e-mail e configuração do Zimbra funcionam sem autenticação prévia no SCIR.
+- `ADMIN_USERNAME` e `ADMIN_PASSWORD` deixaram de ser necessários na Vercel.
+- `SESSION_SECRET` continua obrigatório exclusivamente para criptografar a senha do Zimbra.
+
 ### Versão 1.2 — celular e tablet
 
 - Menu lateral recolhível com fundo de proteção e fechamento automático ao navegar.
@@ -227,9 +235,7 @@ Crie um repositório vazio e envie **todo o conteúdo desta pasta**, mantendo as
 | --- | --- |
 | `SUPABASE_URL` | Project URL do Supabase |
 | `SUPABASE_SECRET_KEY` | Secret key `sb_secret_...` do Supabase |
-| `ADMIN_USERNAME` | Seu usuário de acesso |
-| `ADMIN_PASSWORD` | Uma senha forte |
-| `SESSION_SECRET` | Texto aleatório com pelo menos 32 caracteres |
+| `SESSION_SECRET` | Texto aleatório com pelo menos 32 caracteres, usado para proteger a senha do Zimbra |
 
 5. Clique em **Deploy**.
 
@@ -256,19 +262,19 @@ tablet ou celular.
 
 ## Migração dos dados atuais
 
-Se a nova versão substituir um site já publicado **no mesmo domínio**, abra-a primeiro no navegador que contém os dados antigos. Após o login, se a base estiver vazia, o sistema envia automaticamente a cópia local existente ao Supabase.
+Se a nova versão substituir um site já publicado **no mesmo domínio**, abra-a primeiro no navegador que contém os dados antigos. Se a base estiver vazia, o sistema envia automaticamente a cópia local existente ao Supabase.
 
 Se o sistema anterior era aberto como arquivo HTML no computador ou estava em outro domínio, o navegador não permite que o novo site leia diretamente aqueles dados. Nesse caso, obtenha o JSON da base antiga e use **Importar backup**. A chave usada pela versão anterior é `nirCemetronFinalStateV2`. No Chrome, ela pode ser consultada em Ferramentas do desenvolvedor → Application → Local Storage. Guarde uma cópia antes de qualquer migração.
 
-Depois da primeira migração, todos os dispositivos autenticados passam a compartilhar a mesma base. O botão **Exportar backup** gera uma cópia JSON para segurança ou transferência manual.
+Depois da primeira migração, todos os dispositivos que acessarem o endereço do SCIR passam a compartilhar a mesma base. O botão **Exportar backup** gera uma cópia JSON para segurança ou transferência manual.
 
 ## Segurança
 
 - A chave privilegiada do Supabase fica somente nas funções da Vercel e nunca é enviada ao navegador.
-- O acesso usa cookie seguro, HttpOnly e validade de 12 horas.
+- O SCIR abre diretamente, sem usuário, senha ou cookie de sessão. Portanto, o endereço publicado deve ser compartilhado somente com a equipe autorizada.
 - A tabela não permite acesso direto pelas chaves públicas do Supabase.
 - A senha do Zimbra é criptografada com AES-256-GCM usando uma chave derivada
-  do `SESSION_SECRET` já configurado na Vercel.
+  do `SESSION_SECRET` configurado na Vercel.
 - A senha nunca é incluída no pacote, no GitHub ou nas respostas enviadas ao navegador.
 - Corpo e anexos do e-mail não são processados.
 - Não publique arquivos `.env` nem coloque senhas diretamente no código.

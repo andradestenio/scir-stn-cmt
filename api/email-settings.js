@@ -1,4 +1,3 @@
-import {isAuthenticated} from "../lib/auth.js";
 import {json, readJson} from "../lib/http.js";
 import {
   configureZimbra,
@@ -7,7 +6,6 @@ import {
 
 export default async function handler(req, res){
   try{
-    if(!isAuthenticated(req)) return json(res, 401, {error:"Sessão expirada."});
     if(req.method === "GET"){
       return json(res, 200, {integration:await getPublicEmailIntegration()});
     }

@@ -1,4 +1,3 @@
-import {isAuthenticated} from "../lib/auth.js";
 import {json} from "../lib/http.js";
 import {listEmailNotifications} from "../lib/supabase.js";
 import {
@@ -32,7 +31,6 @@ function requestedShiftStartedAt(req){
 
 export default async function handler(req, res){
   try{
-    if(!isAuthenticated(req)) return json(res, 401, {error:"Sessão expirada."});
     if(req.method !== "GET") return json(res, 405, {error:"Método não permitido."});
 
     const shiftId = requestedShiftId(req);

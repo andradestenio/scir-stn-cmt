@@ -1,10 +1,11 @@
-SCIR — NIR CEMETRON | Versão 1.11.6 com alerta de paciente em Sala Vermelha
+SCIR — NIR CEMETRON | Versão 1.12.0 com acesso direto sem login
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
 - Não é necessário executar novo SQL no Supabase.
 - Não é necessário cadastrar nova variável na Vercel.
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
+- O SCIR abre diretamente no Dashboard, sem página de login e sem botão Sair.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.
 - Cada e-mail novo durante o plantão gera um alerta visual e um sinal sonoro alto de três tons.
@@ -78,4 +79,4 @@ VALIDAÇÕES EXECUTADAS
 - Início e pausa do monitoramento vinculados ao plantão ativo.
 - Resumo por status e histórico de respondidos validados.
 - Auditoria npm: nenhuma vulnerabilidade encontrada.
-- Login, nuvem, registros, censo, calendário e módulos laterais preservados.
+- Acesso direto, nuvem, registros, censo, calendário e módulos laterais validados.

@@ -1,10 +1,8 @@
-import {isAuthenticated} from "../lib/auth.js";
 import {json, readJson} from "../lib/http.js";
 import {getState, putState} from "../lib/supabase.js";
 
 export default async function handler(req, res){
   try{
-    if(!isAuthenticated(req)) return json(res, 401, {error:"Sessão expirada."});
     if(req.method === "GET"){
       const row = await getState();
       return json(res, 200, row ? {exists:true, state:row.state, updatedAt:row.updated_at} : {exists:false});

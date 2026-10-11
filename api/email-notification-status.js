@@ -1,4 +1,3 @@
-import {isAuthenticated} from "../lib/auth.js";
 import {json, readJson} from "../lib/http.js";
 import {updateEmailNotificationsStatus} from "../lib/supabase.js";
 
@@ -9,7 +8,6 @@ function validEventKey(value){
 
 export default async function handler(req, res){
   try{
-    if(!isAuthenticated(req)) return json(res, 401, {error:"Sessão expirada."});
     if(req.method !== "PUT") return json(res, 405, {error:"Método não permitido."});
     const body = await readJson(req);
     const action = ["pending","read","responded","acknowledged"].includes(body.action)
