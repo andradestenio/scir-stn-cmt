@@ -8,6 +8,20 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.1 — destino assistido em todos os registros
+
+- Disponibiliza as opções de destino do CEMETRON em todos os tipos de registro, mantendo o preenchimento livre.
+- Unifica enfermaria e leito em um único campo **Enfermaria/Leito** nas autorizações.
+- Mantém compatibilidade com registros criados na versão anterior.
+
+### Versão 1.16.0 — cadastro assistido de transferências
+
+- Adiciona sugestões de unidades de origem, mantendo o campo livre para outras unidades.
+- Nas autorizações de transferência/internação, oferece os destinos do CEMETRON previamente cadastrados.
+- Inclui a identificação da enfermaria e do leito nas autorizações.
+- Leva destino, enfermaria e leito para os cartões, relatórios, histórico, SBAR e documentos de autorização.
+- Remove **Autorização de transferência** da barra lateral e mantém a função dentro de **Novo registro**.
+
 ### Versão 1.15.0 — estatísticas dos plantões
 
 - Cria a aba **Estatísticas**, baseada exclusivamente no histórico de plantões encerrados.

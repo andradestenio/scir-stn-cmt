@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.15.0 com estatísticas dos plantões
+SCIR — NIR CEMETRON | Versão 1.16.1 com destino assistido em todos os registros
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -21,6 +21,10 @@ CAMINHO SIMPLIFICADO
 - Os resultados podem ser filtrados por período, turno, plantonista, tipo de registro, origem, destino e texto livre.
 - Os indicadores incluem registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
 - A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
+- O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
+- Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.
+- Nas autorizações, enfermaria e leito são preenchidos em um único campo “Enfermaria/Leito”.
+- A autorização permanece em “Novo registro” e não aparece mais como módulo separado na barra lateral.
 - “Segurança e backup dos dados” aparece abaixo do módulo “Censo diário”.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.

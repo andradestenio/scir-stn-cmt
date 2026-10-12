@@ -58,6 +58,28 @@ test("abre diretamente sem formulário de login ou ação de sair", () => {
   assert.match(html, /function buildStatisticsData\(\)/);
   assert.match(html, /function exportStatisticsExcel\(\)/);
   assert.match(html, /state\.history\s*\.filter\(item => item\?\.shift\?\.status === "ENCERRADO"\)/);
+  assert.doesNotMatch(html, /id="authorizationNavButton"/);
+  assert.doesNotMatch(html, /id="autorizacaoTransferencia"/);
+  assert.doesNotMatch(html, /openAuthorization\(/);
+  assert.match(html, /id="origin" list="originOptions"/);
+  assert.match(html, /<option value="HEPSJPII"><\/option>/);
+  assert.match(html, /<option value="PA José Adelino"><\/option>/);
+  assert.match(html, /id="destination" list="destinationOptions"/);
+  assert.match(html, /id="destinationOptions"/);
+  assert.match(html, /<option value="CEMETRON > Pronto Atendimento"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > UTI Infectologia"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > UTI Clínica"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > CMM1"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > CMM2"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > CMM3"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > CMF"><\/option>/);
+  assert.match(html, /<option value="CEMETRON > Isolamento"><\/option>/);
+  assert.doesNotMatch(html, /id="authorizationWard"/);
+  assert.doesNotMatch(html, /id="authorizationBed"/);
+  assert.match(html, /id="authorizationWardBed"/);
+  assert.match(html, /Enfermaria\/Leito/);
+  assert.doesNotMatch(html, /destination\.removeAttribute\("list"\)/);
+  assert.match(html, /function recordDestinationText\(record\)/);
   assert.ok(
     html.indexOf('<div class="panel data-security-panel">') > html.indexOf('<div class="panel bed-census-panel">'),
     "a área de segurança deve aparecer depois do censo diário"
