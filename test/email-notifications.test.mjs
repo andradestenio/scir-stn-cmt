@@ -28,7 +28,15 @@ test("abre diretamente sem formulário de login ou ação de sair", () => {
   assert.match(html, /Dados locais protegidos/);
   assert.match(html, /setTimeout\(queueCloudSave, 15000\)/);
   assert.match(html, /id="restoreLocalRecovery"/);
-  assert.match(html, /stateHasOperationalData\(state\) && !stateHasOperationalData\(result\.state\)/);
+  assert.match(html, /const localMustBePreserved = stateHasOperationalData\(state\)/);
+  assert.match(html, /localSavedAt > remoteUpdatedAt \+ 1000/);
+  assert.match(html, /id="syncDiagnostic"/);
+  assert.match(html, /id="testCloudSync"/);
+  assert.match(html, /scir-nir-cemetron-backup/);
+  assert.match(html, /backup_scir_antes_importacao/);
+  assert.match(html, /href="https:\/\/drive\.google\.com\/drive\/folders\/1iRZoOjgvfqfpR_ImLDd6KnYzxULIWsBl"/);
+  assert.match(html, /<span class="nav-label">Escalas CEMETRON<\/span>/);
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
 });
 
 function responseRecorder(){

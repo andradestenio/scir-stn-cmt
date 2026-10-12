@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.12.1 com sincronização corrigida e proteção local
+SCIR — NIR CEMETRON | Versão 1.13.1 com acesso às Escalas CEMETRON
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -10,6 +10,11 @@ CAMINHO SIMPLIFICADO
 - Uma base vazia não substitui dados locais existentes; o sistema reenvia a cópia local.
 - O botão “Recuperar cópia local anterior” restaura a versão imediatamente anterior.
 - Se a nuvem ficar indisponível, o SCIR mantém os dados locais e tenta sincronizar novamente a cada 15 segundos.
+- A área “Segurança e backup dos dados” mostra as últimas gravações local e em nuvem.
+- “Testar sincronização” informa a causa específica da falha sem expor chaves.
+- “Exportar backup” gera um JSON identificado; “Importar backup” aceita também backups antigos.
+- Antes de importar, o SCIR baixa uma cópia automática do estado atual e preserva a versão anterior no navegador.
+- O link “Escalas CEMETRON” na barra lateral abre a pasta do Google Drive em uma nova aba.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.
 - Cada e-mail novo durante o plantão gera um alerta visual e um sinal sonoro alto de três tons.

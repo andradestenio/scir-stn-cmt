@@ -6,7 +6,22 @@ Versão preparada para publicação na Vercel com base PostgreSQL no Supabase. O
 
 Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, preservando as pastas `api`, `lib` e `supabase`. As variáveis já cadastradas na Vercel não precisam ser cadastradas novamente. Após o envio ao GitHub, aguarde o deploy automático ou faça **Deployments → Redeploy**.
 
-Esta versão inclui os botões **Exportar backup** e **Importar backup** no Dashboard. O arquivo JSON gerado pelo migrador local pode ser selecionado em **Importar backup** para substituir a base vazia e enviá-la ao Supabase.
+Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
+
+### Versão 1.13.1 — acesso às escalas
+
+- Adiciona à barra lateral o link **Escalas CEMETRON**, que abre a pasta institucional no Google Drive em uma nova aba.
+
+### Versão 1.13.0 — diagnóstico da nuvem e central de backup
+
+- Corrige valores do Supabase colados com espaços, aspas ou com o caminho `/rest/v1` incluído na URL.
+- Faz uma segunda tentativa automática em falhas transitórias e aplica tempo-limite às consultas.
+- Mostra a causa específica da falha sem revelar URL completa, chave ou outros dados sensíveis.
+- Preserva a cópia local quando ela for mais recente que a versão encontrada na nuvem.
+- Cria no Dashboard a área **Segurança e backup dos dados**, com datas das últimas gravações local e remota.
+- Adiciona o botão **Testar sincronização**.
+- Exporta backups identificados e mantém compatibilidade com os arquivos JSON antigos.
+- Antes de importar, baixa automaticamente um backup do estado atual e mantém uma cópia de recuperação no navegador.
 
 ### Versão 1.12.2 — texto do PDF SBAR
 
