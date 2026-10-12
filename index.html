@@ -1355,6 +1355,7 @@
   .dashboard-notes{min-height:170px;line-height:1.55}.note-save-meta{align-self:center;color:var(--muted);font-size:12px}
   .standard-message-form{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:12px;align-items:start}.standard-message-form .message-text-field{grid-row:span 2}.standard-message-form textarea{min-height:112px}
   .standard-messages-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.standard-message-card{display:flex;flex-direction:column;min-width:0;padding:15px;border:1px solid var(--line);border-radius:11px;background:#f8fafc}.standard-message-title{margin:0 0 8px;color:var(--navy);font-size:15px;line-height:1.35}.standard-message-text{flex:1;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#374151;font-size:13px;line-height:1.55}.standard-message-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0}.standard-message-actions .btn{min-height:38px;padding:8px 11px;font-size:12px}.standard-messages-empty{grid-column:1/-1;padding:24px;border:1px dashed #cbd5e1;border-radius:10px;text-align:center;color:var(--muted);font-size:13px}
+  .scale-link-form{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(220px,.65fr) minmax(280px,1.5fr);gap:12px;align-items:end}.scale-link-form .actions{grid-column:1/-1;margin-top:0}.scale-links-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}.scale-link-card{display:flex;flex-direction:column;min-width:0;padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc}.scale-link-title{margin:0;color:var(--navy);font-size:16px;line-height:1.35}.scale-link-reference{margin:6px 0 0;color:#475569;font-size:13px;line-height:1.45}.scale-link-address{margin:12px 0 0;padding:9px 11px;border-radius:8px;background:#e8eef6;color:#334155;font-size:12px;overflow-wrap:anywhere}.scale-link-updated{margin:9px 0 0;color:#64748b;font-size:11px}.scale-link-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:14px}.scale-link-actions .btn{min-height:38px;padding:8px 11px;font-size:12px;text-decoration:none}.scale-links-empty{grid-column:1/-1;padding:28px 18px;border:1px dashed #94a3b8;border-radius:11px;text-align:center;color:#64748b;font-size:13px;line-height:1.55}
   .reminder-modal{position:fixed;inset:0;z-index:3200;display:grid;place-items:center;padding:20px;background:rgba(2,8,23,.7);opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}.reminder-modal.show{opacity:1;visibility:visible}.reminder-dialog{width:min(430px,100%);padding:30px;border:1px solid rgba(255,255,255,.25);border-radius:18px;background:#fff;text-align:center;box-shadow:0 28px 80px rgba(0,0,0,.38);transform:translateY(12px) scale(.98);transition:.2s}.reminder-modal.show .reminder-dialog{transform:none}.reminder-symbol{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:#e8eef6;color:var(--navy);font-size:28px;font-weight:900}.reminder-eyebrow{display:block;margin-bottom:7px;color:var(--navy-2);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.reminder-dialog h3{margin:0 0 9px;color:var(--navy);font-size:22px}.reminder-dialog p{margin:0 0 22px;color:#475569;font-size:15px;line-height:1.6}.reminder-dialog .btn{width:100%;min-height:48px}
 
   @media(max-width:1024px){
@@ -1435,7 +1436,7 @@
     .login-screen{display:block;padding:12px;padding-top:calc(12px + env(safe-area-inset-top));padding-bottom:calc(12px + env(safe-area-inset-bottom))}
     .login-shell{display:block;margin:auto;border-radius:17px}.login-brand-panel{display:block;min-height:0;padding:22px 20px 20px}.login-logo-surface{width:230px;max-width:100%;padding:10px 13px;border-radius:10px}.login-brand-copy{margin-top:20px}.login-eyebrow{margin-bottom:7px}.login-brand-panel h1{margin-bottom:8px;font-size:22px}.login-brand-panel p{font-size:13px;line-height:1.5}.login-features{display:none}
     .login-card{padding:26px 20px;border-radius:0}.login-form-heading{margin-bottom:20px}.login-card h2{font-size:24px}.login-card .btn{width:100%;min-height:48px}
-    .dashboard-panel-header{display:block}.dashboard-panel-header p{margin-bottom:10px}.standard-message-form{display:block}.standard-message-form>div{margin-bottom:12px}.standard-messages-list{grid-template-columns:1fr}.standard-message-actions{display:grid;grid-template-columns:1fr 1fr}.standard-message-actions .btn{width:100%}.reminder-modal{padding:12px}.reminder-dialog{padding:24px 20px;border-radius:15px}
+    .dashboard-panel-header{display:block}.dashboard-panel-header p{margin-bottom:10px}.standard-message-form,.scale-link-form{display:block}.standard-message-form>div,.scale-link-form>div{margin-bottom:12px}.standard-messages-list,.scale-links-list{grid-template-columns:1fr}.standard-message-actions,.scale-link-actions{display:grid;grid-template-columns:1fr 1fr}.standard-message-actions .btn,.scale-link-actions .btn{width:100%}.reminder-modal{padding:12px}.reminder-dialog{padding:24px 20px;border-radius:15px}
     .data-security-grid{grid-template-columns:1fr}.backup-actions{display:grid;grid-template-columns:1fr}.backup-actions .btn{width:100%}
   }
 
@@ -1933,10 +1934,10 @@
       <span class="nav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><path d="M7.5 14h.01M12 14h.01M16.5 14h.01M7.5 18h.01M12 18h.01"/></svg>
       </span><span class="nav-label">Meus plantões</span></button>
-      <a class="sidebar-link" href="https://drive.google.com/drive/folders/1iRZoOjgvfqfpR_ImLDd6KnYzxULIWsBl" target="_blank" rel="noopener noreferrer" aria-label="Abrir Escalas CEMETRON no Google Drive em uma nova aba">
+      <button data-view="consultarEscalas">
       <span class="nav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M3.5 6.5h6l2 2h9v10a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2Z"/><path d="M1.5 10.5h19"/></svg>
-      </span><span class="nav-label">Escalas CEMETRON</span></a>
+      </span><span class="nav-label">Consultar escalas</span></button>
       <button id="authorizationNavButton" data-view="autorizacaoTransferencia" class="hidden">
       <span class="nav-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M18 7l-3 3"/><path d="M17 17H6l3 3M6 17l3-3"/></svg>
@@ -2032,34 +2033,6 @@
         <div id="closedShiftNotice" class="locked-note hidden">
           Este plantão está encerrado. Os registros permanecem disponíveis para consulta e exportação.
         </div>
-      </div>
-
-      <div class="panel data-security-panel">
-        <div class="dashboard-panel-header">
-          <div>
-            <h3>Segurança e backup dos dados</h3>
-            <p>Acompanhe a cópia local, teste a nuvem e faça exportação ou restauração manual.</p>
-          </div>
-        </div>
-        <div class="data-security-grid">
-          <div class="data-security-card">
-            <strong>Cópia neste navegador</strong>
-            <span id="localBackupStatus">Proteção local ativa.</span>
-          </div>
-          <div class="data-security-card">
-            <strong>Última sincronização em nuvem</strong>
-            <span id="cloudBackupStatus">Ainda não confirmada.</span>
-          </div>
-        </div>
-        <div class="sync-diagnostic" id="syncDiagnostic" role="status">Verificando a conexão com a nuvem…</div>
-        <div class="backup-actions">
-          <button class="btn btn-primary" id="exportBackup" type="button">Exportar backup</button>
-          <button class="btn btn-secondary" id="importBackup" type="button">Importar backup</button>
-          <button class="btn btn-secondary" id="restoreLocalRecovery" type="button">Recuperar cópia local anterior</button>
-          <button class="btn btn-secondary" id="testCloudSync" type="button">Testar sincronização</button>
-          <input id="backupFile" type="file" accept="application/json,.json" class="hidden">
-        </div>
-        <p class="backup-note">Antes de importar, o SCIR baixa automaticamente uma cópia de segurança do estado atual e também preserva a versão anterior neste navegador.</p>
       </div>
 
       <div class="panel">
@@ -2164,6 +2137,34 @@
         </div>
       </div>
 
+      <div class="panel data-security-panel">
+        <div class="dashboard-panel-header">
+          <div>
+            <h3>Segurança e backup dos dados</h3>
+            <p>Acompanhe a cópia local, teste a nuvem e faça exportação ou restauração manual.</p>
+          </div>
+        </div>
+        <div class="data-security-grid">
+          <div class="data-security-card">
+            <strong>Cópia neste navegador</strong>
+            <span id="localBackupStatus">Proteção local ativa.</span>
+          </div>
+          <div class="data-security-card">
+            <strong>Última sincronização em nuvem</strong>
+            <span id="cloudBackupStatus">Ainda não confirmada.</span>
+          </div>
+        </div>
+        <div class="sync-diagnostic" id="syncDiagnostic" role="status">Verificando a conexão com a nuvem…</div>
+        <div class="backup-actions">
+          <button class="btn btn-primary" id="exportBackup" type="button">Exportar backup</button>
+          <button class="btn btn-secondary" id="importBackup" type="button">Importar backup</button>
+          <button class="btn btn-secondary" id="restoreLocalRecovery" type="button">Recuperar cópia local anterior</button>
+          <button class="btn btn-secondary" id="testCloudSync" type="button">Testar sincronização</button>
+          <input id="backupFile" type="file" accept="application/json,.json" class="hidden">
+        </div>
+        <p class="backup-note">Antes de importar, o SCIR baixa automaticamente uma cópia de segurança do estado atual e também preserva a versão anterior neste navegador.</p>
+      </div>
+
 
     </section>
 
@@ -2249,6 +2250,36 @@
           </div>
         </div>
         <div class="standard-messages-list" id="standardMessagesList"></div>
+      </div>
+    </section>
+
+    <section id="consultarEscalas" class="view hidden">
+      <div class="panel">
+        <div class="dashboard-panel-header">
+          <div>
+            <h3>Consultar escalas</h3>
+            <p>Cadastre um acesso para cada escala específica. Os links ficam salvos com os demais dados do SCIR e são incluídos nos backups.</p>
+          </div>
+        </div>
+        <div class="scale-link-form">
+          <div>
+            <label for="scaleLinkName">Nome da escala</label>
+            <input id="scaleLinkName" maxlength="120" placeholder="Ex.: Escala médica — outubro/2026">
+          </div>
+          <div>
+            <label for="scaleLinkReference">Competência ou setor</label>
+            <input id="scaleLinkReference" maxlength="120" placeholder="Ex.: Outubro/2026 · NIR">
+          </div>
+          <div>
+            <label for="scaleLinkUrl">Link da escala</label>
+            <input id="scaleLinkUrl" type="url" inputmode="url" maxlength="2000" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="saveScaleLink" type="button">Salvar escala</button>
+            <button class="btn btn-secondary" id="cancelScaleLink" type="button">Limpar</button>
+          </div>
+        </div>
+        <div class="scale-links-list" id="scaleLinksList" aria-live="polite"></div>
       </div>
     </section>
 
@@ -2915,7 +2946,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.13.1";
+  const SCIR_VERSION = "1.14.0";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -2978,6 +3009,36 @@
     };
   }
 
+  function normalizeScaleLinkUrl(value){
+    const raw = String(value || "").trim();
+    if(!raw || raw.length > 2000) return "";
+    try{
+      const parsed = new URL(raw);
+      return parsed.protocol === "https:" || parsed.protocol === "http:" ? parsed.toString() : "";
+    }catch{
+      return "";
+    }
+  }
+
+  function normalizeScaleLinks(value){
+    if(!Array.isArray(value)) return [];
+    return value.slice(0,200).map((item,index) => {
+      if(!item || typeof item !== "object" || Array.isArray(item)) return null;
+      const url = normalizeScaleLinkUrl(item.url);
+      if(!url) return null;
+      const rawId = String(item.id || "");
+      const id = /^[a-zA-Z0-9_-]{1,120}$/.test(rawId) ? rawId : `scale-link-legacy-${index}`;
+      return {
+        id,
+        name:String(item.name || "Escala sem nome").trim().slice(0,120) || "Escala sem nome",
+        reference:String(item.reference || "").trim().slice(0,120),
+        url,
+        createdAt:item.createdAt || null,
+        updatedAt:item.updatedAt || item.createdAt || null
+      };
+    }).filter(Boolean);
+  }
+
   function readLocalState(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -3015,6 +3076,7 @@
       candidate.history,
       candidate.calendarShifts,
       candidate.standardMessages,
+      candidate.scaleLinks,
       candidate.shiftCensusUpdates,
       candidate.hospubCensus?.sectors
     ];
@@ -3031,6 +3093,7 @@
     dashboardNotes: "",
     dashboardNotesUpdatedAt: null,
     standardMessages: [],
+    scaleLinks: [],
     shiftCensusUpdates: [],
     hospubCensus:emptyHospubCensus(),
     bedCensus: {
@@ -3050,6 +3113,7 @@
   state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
   state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
   state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+  state.scaleLinks = normalizeScaleLinks(state.scaleLinks);
   state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
   state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
   state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
@@ -3081,6 +3145,7 @@
   let selectedHistoryId = null;
   let calendarEditingId = null;
   let editingStandardMessageId = null;
+  let editingScaleLinkId = null;
   let calendarCurrentDate = new Date();
   const EMAIL_LAST_READ_STORAGE_KEY = "scirEmailLastReadAtV1";
   const EMAIL_SOUND_STORAGE_KEY = "scirEmailSoundEnabledV1";
@@ -3751,6 +3816,7 @@
           state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
           state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
           state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+          state.scaleLinks = normalizeScaleLinks(state.scaleLinks);
           state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
           state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
           state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
@@ -4334,6 +4400,54 @@
         </div>
       </article>`).join("") : '<div class="standard-messages-empty">Nenhuma mensagem padrão cadastrada.</div>';
   }
+
+  function renderScaleLinks(){
+    const container = $("scaleLinksList");
+    if(!container) return;
+    const links = normalizeScaleLinks(state.scaleLinks)
+      .sort((a,b) => String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || "")));
+    container.innerHTML = links.length ? links.map(link => `
+      <article class="scale-link-card">
+        <h4 class="scale-link-title">${escapeHtml(link.name)}</h4>
+        ${link.reference ? `<p class="scale-link-reference">${escapeHtml(link.reference)}</p>` : ""}
+        <p class="scale-link-address">${escapeHtml(link.url)}</p>
+        ${link.updatedAt ? `<p class="scale-link-updated">Atualizado em ${escapeHtml(formatDateTime(link.updatedAt))}</p>` : ""}
+        <div class="scale-link-actions">
+          <a class="btn btn-primary" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">Abrir escala</a>
+          <button class="btn btn-edit" type="button" onclick="editScaleLink('${link.id}')">Editar</button>
+          <button class="btn btn-danger" type="button" onclick="deleteScaleLink('${link.id}')">Excluir</button>
+        </div>
+      </article>`).join("") : '<div class="scale-links-empty">Nenhuma escala cadastrada. Preencha os campos acima para adicionar o primeiro link.</div>';
+  }
+
+  function clearScaleLinkForm(){
+    editingScaleLinkId = null;
+    $("scaleLinkName").value = "";
+    $("scaleLinkReference").value = "";
+    $("scaleLinkUrl").value = "";
+    $("saveScaleLink").textContent = "Salvar escala";
+  }
+
+  window.editScaleLink = function(id){
+    const link = state.scaleLinks.find(item => item.id === id);
+    if(!link) return;
+    editingScaleLinkId = id;
+    $("scaleLinkName").value = link.name || "";
+    $("scaleLinkReference").value = link.reference || "";
+    $("scaleLinkUrl").value = link.url || "";
+    $("saveScaleLink").textContent = "Atualizar escala";
+    $("scaleLinkName").focus();
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
+
+  window.deleteScaleLink = function(id){
+    const link = state.scaleLinks.find(item => item.id === id);
+    if(!link || !confirm(`Deseja excluir o acesso à escala “${link.name}”?`)) return;
+    state.scaleLinks = state.scaleLinks.filter(item => item.id !== id);
+    if(editingScaleLinkId === id) clearScaleLinkForm();
+    saveState();
+    toast("Escala excluída.");
+  };
 
   function clearStandardMessageForm(){
     editingStandardMessageId = null;
@@ -6061,6 +6175,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderBedCensus();
     renderHospubOccupancy();
     renderDashboardTools();
+    renderScaleLinks();
     renderEmailNotifications();
     renderDataSafety();
 
@@ -6144,10 +6259,6 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       closeMobileMenu();
       window.scrollTo({top:0, behavior:"smooth"});
     });
-  });
-
-  document.querySelectorAll("nav .sidebar-link").forEach(link => {
-    link.addEventListener("click", closeMobileMenu);
   });
 
   $("mobileMenuButton").addEventListener("click", () => {
@@ -7516,6 +7627,50 @@ ${reportHtml}
 
   $("cancelStandardMessage").addEventListener("click", clearStandardMessageForm);
 
+  $("saveScaleLink").addEventListener("click", () => {
+    const name = $("scaleLinkName").value.trim();
+    const reference = $("scaleLinkReference").value.trim();
+    const url = normalizeScaleLinkUrl($("scaleLinkUrl").value);
+    if(!name){
+      alert("Informe o nome da escala.");
+      $("scaleLinkName").focus();
+      return;
+    }
+    if(!url){
+      alert("Informe um link válido iniciado por https:// ou http://.");
+      $("scaleLinkUrl").focus();
+      return;
+    }
+    const now = new Date().toISOString();
+    if(editingScaleLinkId){
+      const index = state.scaleLinks.findIndex(item => item.id === editingScaleLinkId);
+      if(index >= 0){
+        state.scaleLinks[index] = {
+          ...state.scaleLinks[index],
+          name:name.slice(0,120),
+          reference:reference.slice(0,120),
+          url,
+          updatedAt:now
+        };
+      }
+      toast("Escala atualizada.");
+    }else{
+      state.scaleLinks.push({
+        id:crypto.randomUUID ? crypto.randomUUID() : `scale-link-${Date.now()}`,
+        name:name.slice(0,120),
+        reference:reference.slice(0,120),
+        url,
+        createdAt:now,
+        updatedAt:now
+      });
+      toast("Escala cadastrada.");
+    }
+    clearScaleLinkForm();
+    saveState();
+  });
+
+  $("cancelScaleLink").addEventListener("click", clearScaleLinkForm);
+
   $("openFullShiftReport")?.addEventListener("click", () => {
     document.querySelector('nav button[data-view="relatorioPlantao"]')?.click();
   });
@@ -7595,6 +7750,7 @@ ${reportHtml}
       state.history = Array.isArray(state.history) ? state.history : [];
       state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
       state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+      state.scaleLinks = normalizeScaleLinks(state.scaleLinks);
       state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
       state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
       renderAll();
@@ -7621,6 +7777,7 @@ ${reportHtml}
       state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
       state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
       state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
+      state.scaleLinks = normalizeScaleLinks(state.scaleLinks);
       state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
       state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
       state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {

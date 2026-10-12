@@ -34,9 +34,21 @@ test("abre diretamente sem formulário de login ou ação de sair", () => {
   assert.match(html, /id="testCloudSync"/);
   assert.match(html, /scir-nir-cemetron-backup/);
   assert.match(html, /backup_scir_antes_importacao/);
-  assert.match(html, /href="https:\/\/drive\.google\.com\/drive\/folders\/1iRZoOjgvfqfpR_ImLDd6KnYzxULIWsBl"/);
-  assert.match(html, /<span class="nav-label">Escalas CEMETRON<\/span>/);
-  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+  assert.doesNotMatch(html, /1iRZoOjgvfqfpR_ImLDd6KnYzxULIWsBl/);
+  assert.match(html, /<button data-view="consultarEscalas">/);
+  assert.match(html, /<span class="nav-label">Consultar escalas<\/span>/);
+  assert.match(html, /<section id="consultarEscalas" class="view hidden">/);
+  assert.match(html, /id="scaleLinkName"/);
+  assert.match(html, /id="scaleLinkReference"/);
+  assert.match(html, /id="scaleLinkUrl"/);
+  assert.match(html, /id="saveScaleLink"/);
+  assert.match(html, /id="scaleLinksList"/);
+  assert.match(html, /state\.scaleLinks = normalizeScaleLinks\(state\.scaleLinks\)/);
+  assert.match(html, /Abrir escala<\/a>/);
+  assert.ok(
+    html.indexOf('<div class="panel data-security-panel">') > html.indexOf('<div class="panel bed-census-panel">'),
+    "a área de segurança deve aparecer depois do censo diário"
+  );
 });
 
 function responseRecorder(){

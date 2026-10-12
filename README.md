@@ -8,6 +8,18 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.14.0 — módulo de escalas
+
+- Substitui o acesso direto ao Google Drive por uma página interna **Consultar escalas**.
+- Permite cadastrar, editar, abrir e excluir links individuais, identificados por nome e competência ou setor.
+- Inclui os links cadastrados na cópia local, na sincronização em nuvem e nos arquivos de backup.
+- Mantém **Segurança e backup dos dados** abaixo do módulo **Censo diário**.
+
+### Versão 1.13.2 — organização do Dashboard
+
+- Renomeia o link da barra lateral para **Consultar escalas**.
+- Move **Segurança e backup dos dados** para depois do módulo **Censo diário**.
+
 ### Versão 1.13.1 — acesso às escalas
 
 - Adiciona à barra lateral o link **Escalas CEMETRON**, que abre a pasta institucional no Google Drive em uma nova aba.
