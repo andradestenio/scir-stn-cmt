@@ -45,6 +45,19 @@ test("abre diretamente sem formulário de login ou ação de sair", () => {
   assert.match(html, /id="scaleLinksList"/);
   assert.match(html, /state\.scaleLinks = normalizeScaleLinks\(state\.scaleLinks\)/);
   assert.match(html, /Abrir escala<\/a>/);
+  assert.match(html, /<button data-view="estatisticas">/);
+  assert.match(html, /<section id="estatisticas" class="view hidden">/);
+  assert.match(html, /id="statisticsStartDate"/);
+  assert.match(html, /id="statisticsEndDate"/);
+  assert.match(html, /id="statisticsShiftType"/);
+  assert.match(html, /id="statisticsProfessional"/);
+  assert.match(html, /id="statisticsModule"/);
+  assert.match(html, /id="statisticsOrigin"/);
+  assert.match(html, /id="statisticsDestination"/);
+  assert.match(html, /id="statisticsSearch"/);
+  assert.match(html, /function buildStatisticsData\(\)/);
+  assert.match(html, /function exportStatisticsExcel\(\)/);
+  assert.match(html, /state\.history\s*\.filter\(item => item\?\.shift\?\.status === "ENCERRADO"\)/);
   assert.ok(
     html.indexOf('<div class="panel data-security-panel">') > html.indexOf('<div class="panel bed-census-panel">'),
     "a área de segurança deve aparecer depois do censo diário"

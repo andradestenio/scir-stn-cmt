@@ -8,6 +8,14 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.15.0 — estatísticas dos plantões
+
+- Cria a aba **Estatísticas**, baseada exclusivamente no histórico de plantões encerrados.
+- Adiciona filtros combináveis por período, tipo de plantão, plantonista, categoria do registro, origem, destino e busca textual.
+- Exibe plantões analisados, registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
+- Apresenta distribuição por categoria, evolução diária, principais unidades de origem e destinos e detalhamento dos registros.
+- Exporta todos os resultados filtrados para Excel.
+
 ### Versão 1.14.0 — módulo de escalas
 
 - Substitui o acesso direto ao Google Drive por uma página interna **Consultar escalas**.

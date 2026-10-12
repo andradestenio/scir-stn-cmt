@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.14.0 com módulo de escalas
+SCIR — NIR CEMETRON | Versão 1.15.0 com estatísticas dos plantões
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -17,6 +17,10 @@ CAMINHO SIMPLIFICADO
 - “Consultar escalas” abre uma página interna para cadastrar, editar, abrir e excluir links individuais.
 - Cada escala pode ser identificada por nome e competência ou setor.
 - Os links das escalas entram na cópia local, na sincronização em nuvem e nos backups.
+- A aba “Estatísticas” analisa exclusivamente os plantões encerrados registrados no histórico.
+- Os resultados podem ser filtrados por período, turno, plantonista, tipo de registro, origem, destino e texto livre.
+- Os indicadores incluem registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
+- A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
 - “Segurança e backup dos dados” aparece abaixo do módulo “Censo diário”.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,
   informar a senha do Zimbra e clicar em “Testar e ativar”.
