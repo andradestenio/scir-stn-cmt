@@ -84,6 +84,18 @@ test("censo diário totaliza os leitos disponíveis ao final de cada coluna",() 
   assert.match(html,/\.bed-census-result-table tfoot td\{border-top:2px solid #9aabc0;background:#e8eef6/);
 });
 
+test("censo diário inclui Masculina 2 - PPL em todos os fluxos",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/<input id="bedInfMasc2Ppl" type="number" min="0" step="1">/);
+  assert.match(html,/bedInfMasc2Ppl:\["infectologia","masc2Ppl"\]/);
+  assert.match(html,/\["masc2Ppl","Masculina 2 - PPL","🛏","male-bed"\]/);
+  assert.match(html,/add\("Infectologia - Masculina 2 - PPL", inf\.masc2Ppl\)/);
+  assert.match(html,/\["INFECTO\/PPL","Masculina 2 - PPL",inf\.masc2Ppl\]/);
+  assert.match(html,/tag\.includes\("PPL"\) \? "ppl"/);
+  assert.match(html,/\.sbar-sector-tag\.ppl\{background:#a21caf/);
+  assert.match(html,/const SCIR_VERSION = "1\.16\.6"/);
+});
+
 test("cabeçalho Hospub é simétrico e setores exibem as tags assistenciais",() => {
   const html = fs.readFileSync(new URL("index.html",root),"utf8");
   assert.match(html,/\.hospub-module-actions\{display:grid;width:min\(760px,100%\);grid-template-columns:repeat\(3,minmax\(190px,1fr\)\);align-items:stretch;/);

@@ -8,6 +8,13 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.6 — Masculina 2 - PPL no censo
+
+- Inclui **Masculina 2 - PPL** na seção Infectologia do **Censo diário**.
+- Disponibiliza o campo no formulário de registro e na visualização consolidada do Dashboard.
+- Integra o novo setor aos totais, ao histórico, ao SBAR e às exportações.
+- Mantém os censos anteriores compatíveis, deixando o novo campo em branco até o próximo preenchimento.
+
 ### Versão 1.16.5 — totais do censo diário
 
 - Adiciona uma linha **TOTAL** ao final das colunas de Infectologia e Clínica Médica no **Censo diário**.

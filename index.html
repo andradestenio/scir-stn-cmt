@@ -1049,6 +1049,7 @@
     .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.02em;flex:0 0 auto}
     .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
     .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
+    .sbar-sector-tag.ppl{background:#a21caf;color:#fff;border:1px solid #a21caf}
     .sbar-census-value{text-align:center;font-weight:800}
     .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 310px;border-top:1px solid #e5e7eb;background:#f8fafc}
     .sbar-census-observation-block{padding:12px 14px;min-width:0}
@@ -3164,6 +3165,7 @@
           <thead><tr><th>Clínica</th><th>Leitos disponíveis</th></tr></thead>
           <tbody>
             <tr><td>Masculina 2 - Coletivo</td><td><input id="bedInfMasc2" type="number" min="0" step="1"></td></tr>
+            <tr><td>Masculina 2 - PPL</td><td><input id="bedInfMasc2Ppl" type="number" min="0" step="1"></td></tr>
             <tr><td>Masculina 3 - Coletivo</td><td><input id="bedInfMasc3" type="number" min="0" step="1"></td></tr>
             <tr><td>Feminina - Coletivo</td><td><input id="bedInfFem" type="number" min="0" step="1"></td></tr>
             <tr><td>Isolamento - TB</td><td><input id="bedInfTb" type="number" min="0" step="1"></td></tr>
@@ -3273,7 +3275,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.5";
+  const SCIR_VERSION = "1.16.6";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -3424,7 +3426,7 @@
     shiftCensusUpdates: [],
     hospubCensus:emptyHospubCensus(),
     bedCensus: {
-      infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+      infectologia:{masc2:"",masc2Ppl:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
       clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
       observations:"",
       censusDate:"",
@@ -3444,7 +3446,7 @@
   state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
   state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
   state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
-    infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+    infectologia:{masc2:"",masc2Ppl:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
     clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
     observations:"",
     censusDate:"",
@@ -4147,7 +4149,7 @@
           state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
           state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
           state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
-            infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+            infectologia:{masc2:"",masc2Ppl:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
             clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
             observations:"",
             censusDate:"",
@@ -4197,6 +4199,7 @@
 
   const BED_CENSUS_FIELDS = {
     bedInfMasc2:["infectologia","masc2"],
+    bedInfMasc2Ppl:["infectologia","masc2Ppl"],
     bedInfMasc3:["infectologia","masc3"],
     bedInfFem:["infectologia","fem"],
     bedInfTb:["infectologia","tb"],
@@ -4211,6 +4214,7 @@
   const BED_CENSUS_LABELS = {
     infectologia:[
       ["masc2","Masculina 2 - Coletivo","🛏","male-bed"],
+      ["masc2Ppl","Masculina 2 - PPL","🛏","male-bed"],
       ["masc3","Masculina 3 - Coletivo","🛏","male-bed"],
       ["fem","Feminina - Coletivo","🛏","female-bed"],
       ["tb","Isolamento - TB","🤚🏻","isolation"],
@@ -7160,6 +7164,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     };
 
     add("Infectologia - Masculina 2 - Coletivo", inf.masc2);
+    add("Infectologia - Masculina 2 - PPL", inf.masc2Ppl);
     add("Infectologia - Masculina 3 - Coletivo", inf.masc3);
     add("Infectologia - Feminina - Coletivo", inf.fem);
     add("Infectologia - Isolamento - TB", inf.tb);
@@ -7247,6 +7252,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const med = census.clinica || {};
     const rows = [
       ["INFECTO","Masculina 2 - Coletivo",inf.masc2],
+      ["INFECTO/PPL","Masculina 2 - PPL",inf.masc2Ppl],
       ["INFECTO","Masculina 3 - Coletivo",inf.masc3],
       ["INFECTO","Feminina - Coletivo",inf.fem],
       ["INFECTO","Isolamento - TB",inf.tb],
@@ -7266,7 +7272,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       <div class="sbar-census-row">
         <div class="sbar-sector-cell">
           <span>${escapeHtml(sector)}</span>
-          <span class="sbar-sector-tag ${tag === "INFECTO" ? "infecto" : "cm"}">${tag}</span>
+          <span class="sbar-sector-tag ${tag.includes("PPL") ? "ppl" : (tag === "INFECTO" ? "infecto" : "cm")}">${tag}</span>
         </div>
         <div class="sbar-census-value">${escapeHtml(String(value))}</div>
       </div>`).join("");
@@ -7962,6 +7968,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:1px 4px;border-radius:999px;font-size:6.8px;font-weight:800;flex:0 0 auto}
   .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
   .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
+  .sbar-sector-tag.ppl{background:#a21caf;color:#fff;border:1px solid #a21caf}
   .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 190px;border-top:1px solid #e5e7eb;background:#f8fafc}
   .sbar-census-observation-block{padding:6px 7px;min-width:0}
   .sbar-census-detail-label{margin-bottom:3px;color:#0f2747;font-size:8.5px;font-weight:800}
@@ -8371,7 +8378,7 @@ ${reportHtml}
       state.shiftCensusUpdates = Array.isArray(state.shiftCensusUpdates) ? state.shiftCensusUpdates : [];
       state.hospubCensus = normalizeHospubCensus(state.hospubCensus);
       state.bedCensus = state.bedCensus && typeof state.bedCensus === "object" ? state.bedCensus : {
-        infectologia:{masc2:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
+        infectologia:{masc2:"",masc2Ppl:"",masc3:"",fem:"",tb:"",utiColetivo:"",utiIsolamento:""},
         clinica:{masc1:"",masc1Isolamento:"",fem:"",utiGeral:""},
         observations:"",
         censusDate:"",
