@@ -8,6 +8,14 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.2 — origem da solicitação e ajustes visuais
+
+- Adiciona ao **Novo registro** a seleção obrigatória da origem da solicitação: CRUE, CEREL, Interna ou Direta.
+- Exibe cada origem como uma tag com cor própria nos cartões, relatórios, histórico e estatísticas.
+- Inclui filtro e consolidação por origem da solicitação na aba **Estatísticas**.
+- Padroniza as setas dos campos de seleção e centraliza o conteúdo dos botões.
+- Mantém registros anteriores compatíveis, identificando a origem ainda não registrada como **Não informada**.
+
 ### Versão 1.16.1 — destino assistido em todos os registros
 
 - Disponibiliza as opções de destino do CEMETRON em todos os tipos de registro, mantendo o preenchimento livre.
