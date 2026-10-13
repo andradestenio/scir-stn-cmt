@@ -8,6 +8,13 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.5 — totais do censo diário
+
+- Adiciona uma linha **TOTAL** ao final das colunas de Infectologia e Clínica Médica no **Censo diário**.
+- Soma automaticamente os leitos disponíveis informados em cada grupo, considerando zero como valor válido.
+- Mantém o total como **—** enquanto nenhum quantitativo tiver sido informado.
+- Utiliza o mesmo padrão visual dos totais da tabela **Ocupação Hospub**.
+
 ### Versão 1.16.4 — perfil do paciente
 
 - Adiciona ao **Novo registro** a seleção obrigatória do perfil do paciente: Enfermaria, Isolamento, UTI ou Pronto Atendimento.

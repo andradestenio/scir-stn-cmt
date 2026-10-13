@@ -73,6 +73,17 @@ test("tabela Hospub exibe totais consolidados no rodapé",() => {
   assert.match(html,/<td>TOTAL<\/td>/);
 });
 
+test("censo diário totaliza os leitos disponíveis ao final de cada coluna",() => {
+  const html = fs.readFileSync(new URL("index.html",root),"utf8");
+  assert.match(html,/id="bedCensusInfectologiaTotal"/);
+  assert.match(html,/id="bedCensusClinicaTotal"/);
+  assert.match(html,/function bedCensusSectionTotal\(census, sectionKey\)/);
+  assert.match(html,/filter\(value => value !== "" && value !== null && value !== undefined\)/);
+  assert.match(html,/renderBedCensusTotal\("bedCensusInfectologiaTotal", bedCensusSectionTotal\(census,"infectologia"\)\)/);
+  assert.match(html,/renderBedCensusTotal\("bedCensusClinicaTotal", bedCensusSectionTotal\(census,"clinica"\)\)/);
+  assert.match(html,/\.bed-census-result-table tfoot td\{border-top:2px solid #9aabc0;background:#e8eef6/);
+});
+
 test("cabeçalho Hospub é simétrico e setores exibem as tags assistenciais",() => {
   const html = fs.readFileSync(new URL("index.html",root),"utf8");
   assert.match(html,/\.hospub-module-actions\{display:grid;width:min\(760px,100%\);grid-template-columns:repeat\(3,minmax\(190px,1fr\)\);align-items:stretch;/);
