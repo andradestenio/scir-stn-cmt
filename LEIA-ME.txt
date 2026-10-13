@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.2 com origem da solicitação e ajustes visuais
+SCIR — NIR CEMETRON | Versão 1.16.4 com perfil do paciente
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -24,11 +24,16 @@ CAMINHO SIMPLIFICADO
 - O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
 - Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.
 - Nas autorizações, enfermaria e leito são preenchidos em um único campo “Enfermaria/Leito”.
-- Em “Novo registro”, a origem da solicitação deve ser marcada como CRUE, CEREL, Interna ou Direta.
+- Em “Novo registro”, a origem da solicitação pode ser marcada como CRUE, CEREL, Interna, Direta ou N/A.
+- As cores são: CRUE em vermelho, CEREL em laranja, Interna em verde, Direta em azul e N/A em cinza.
 - A origem selecionada aparece como tag colorida nos registros, relatórios, histórico e estatísticas.
 - A aba “Estatísticas” permite filtrar e consolidar registros pela origem da solicitação.
 - As setas dos campos de seleção e a centralização dos textos nos botões foram padronizadas.
-- Registros anteriores continuam disponíveis e exibem “Não informada” quando esse dado ainda não existia.
+- N/A fica selecionado por padrão e também identifica registros anteriores sem origem da solicitação cadastrada.
+- Em “Novo registro”, o perfil do paciente deve ser selecionado como Enfermaria, Isolamento, UTI ou Pronto Atendimento.
+- As cores são: Enfermaria em verde, Isolamento em roxo, UTI em vermelho e Pronto Atendimento em laranja.
+- O perfil aparece nos cartões, documentos, SBAR, relatórios, histórico, exportações e na aba “Estatísticas”.
+- Registros anteriores sem esse campo continuam disponíveis e aparecem com o perfil “Não informado”.
 - A autorização permanece em “Novo registro” e não aparece mais como módulo separado na barra lateral.
 - “Segurança e backup dos dados” aparece abaixo do módulo “Censo diário”.
 - Depois do deploy, basta clicar em “Configurar e-mail” dentro do SCIR,

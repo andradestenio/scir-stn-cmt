@@ -8,6 +8,21 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.4 — perfil do paciente
+
+- Adiciona ao **Novo registro** a seleção obrigatória do perfil do paciente: Enfermaria, Isolamento, UTI ou Pronto Atendimento.
+- Exibe o perfil em tags coloridas: Enfermaria em verde, Isolamento em roxo, UTI em vermelho e Pronto Atendimento em laranja.
+- Inclui o perfil nos cartões, documentos, SBAR, relatórios, histórico e exportações PDF/Excel.
+- Adiciona filtro e consolidação por perfil do paciente na aba **Estatísticas**.
+- Mantém os registros anteriores compatíveis, exibindo **Não informado** quando o perfil ainda não estiver cadastrado.
+
+### Versão 1.16.3 — cores das origens e opção N/A
+
+- Ajusta as tags para **CRUE em vermelho**, **CEREL em laranja**, **Interna em verde** e **Direta em azul**.
+- Adiciona a opção **N/A** em cinza e a mantém selecionada por padrão quando nenhuma origem específica é informada.
+- Exibe como **N/A** os registros anteriores que ainda não possuem origem da solicitação cadastrada.
+- Inclui N/A nos filtros e consolidações da aba **Estatísticas**.
+
 ### Versão 1.16.2 — origem da solicitação e ajustes visuais
 
 - Adiciona ao **Novo registro** a seleção obrigatória da origem da solicitação: CRUE, CEREL, Interna ou Direta.

@@ -877,7 +877,7 @@
 
     .request-source-options{
       display:grid;
-      grid-template-columns:repeat(4,minmax(110px,1fr));
+      grid-template-columns:repeat(5,minmax(100px,1fr));
       gap:9px;
       max-width:720px;
     }
@@ -927,14 +927,31 @@
     .request-source-option input:disabled+span{opacity:.58;cursor:not-allowed;transform:none}
 
     .request-source-option.crue input:checked+span,
-    .request-source-tag.crue{border-color:#f59e0b;background:#fff7ed;color:#9a3412;box-shadow:0 0 0 1px rgba(245,158,11,.12)}
+    .request-source-tag.crue{border-color:#f87171;background:#fef2f2;color:#991b1b;box-shadow:0 0 0 1px rgba(248,113,113,.12)}
     .request-source-option.cerel input:checked+span,
-    .request-source-tag.cerel{border-color:#60a5fa;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 1px rgba(96,165,250,.12)}
+    .request-source-tag.cerel{border-color:#fb923c;background:#fff7ed;color:#9a3412;box-shadow:0 0 0 1px rgba(251,146,60,.12)}
     .request-source-option.interna input:checked+span,
-    .request-source-tag.interna{border-color:#c084fc;background:#faf5ff;color:#7e22ce;box-shadow:0 0 0 1px rgba(192,132,252,.12)}
+    .request-source-tag.interna{border-color:#4ade80;background:#f0fdf4;color:#166534;box-shadow:0 0 0 1px rgba(74,222,128,.12)}
     .request-source-option.direta input:checked+span,
-    .request-source-tag.direta{border-color:#4ade80;background:#f0fdf4;color:#166534;box-shadow:0 0 0 1px rgba(74,222,128,.12)}
-    .request-source-tag.not-informed{border-color:#cbd5e1;background:#f8fafc;color:#64748b;font-weight:700;box-shadow:none}
+    .request-source-tag.direta{border-color:#60a5fa;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 1px rgba(96,165,250,.12)}
+    .request-source-option.na input:checked+span,
+    .request-source-tag.na{border-color:#94a3b8;background:#f1f5f9;color:#475569;box-shadow:0 0 0 1px rgba(148,163,184,.12)}
+
+    .patient-profile-fieldset{grid-column:1/-1;min-width:0;margin:0;padding:0;border:0}
+    .patient-profile-title{display:block;margin:0 0 7px;color:#374151;font-size:12px;font-weight:700}
+    .patient-profile-options{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:9px;max-width:720px}
+    .patient-profile-option{position:relative;display:block;margin:0;cursor:pointer}
+    .patient-profile-option input{position:absolute;width:1px;height:1px;margin:0;opacity:0;pointer-events:none}
+    .patient-profile-option span,.patient-profile-tag{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 13px;border:1px solid transparent;border-radius:999px;font-size:12px;font-weight:800;line-height:1;text-align:center;white-space:nowrap}
+    .patient-profile-option span{width:100%;border-color:#cbd5e1;background:#fff;color:#475569;transition:border-color .15s ease,background .15s ease,color .15s ease,box-shadow .15s ease,transform .15s ease}
+    .patient-profile-option:hover span{transform:translateY(-1px);border-color:#94a3b8}
+    .patient-profile-option input:focus-visible+span{outline:3px solid rgba(79,142,220,.4);outline-offset:2px}
+    .patient-profile-option input:disabled+span{opacity:.58;cursor:not-allowed;transform:none}
+    .patient-profile-option.enfermaria input:checked+span,.patient-profile-tag.enfermaria{border-color:#4ade80;background:#f0fdf4;color:#166534;box-shadow:0 0 0 1px rgba(74,222,128,.12)}
+    .patient-profile-option.isolamento input:checked+span,.patient-profile-tag.isolamento{border-color:#c084fc;background:#faf5ff;color:#7e22ce;box-shadow:0 0 0 1px rgba(192,132,252,.12)}
+    .patient-profile-option.uti input:checked+span,.patient-profile-tag.uti{border-color:#f87171;background:#fef2f2;color:#991b1b;box-shadow:0 0 0 1px rgba(248,113,113,.12)}
+    .patient-profile-option.pronto-atendimento input:checked+span,.patient-profile-tag.pronto-atendimento{border-color:#fb923c;background:#fff7ed;color:#9a3412;box-shadow:0 0 0 1px rgba(251,146,60,.12)}
+    .patient-profile-tag.not-informed{border-color:#cbd5e1;background:#f8fafc;color:#64748b;font-weight:700;box-shadow:none}
 
     .record{
       background:#fff;
@@ -1508,7 +1525,7 @@
     .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}
     .stat{min-width:0;padding:12px;border-radius:10px}.stat .label{font-size:11px;line-height:1.3}.stat .value{font-size:24px}
     .form-grid{display:block}.form-grid>div{margin-bottom:12px}.form-grid>div:last-child{margin-bottom:0}
-    .request-source-fieldset{margin-bottom:12px}.request-source-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
+    .request-source-fieldset,.patient-profile-fieldset{margin-bottom:12px}.request-source-options,.patient-profile-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
     input,select,textarea{min-height:46px;padding:11px 12px;border-radius:9px;font-size:16px}
     textarea{min-height:110px}
     .actions{display:flex;gap:8px;margin-top:12px}.actions>.btn{flex:1 1 calc(50% - 4px);min-height:46px;padding:11px 12px}
@@ -1540,7 +1557,7 @@
   @media(max-width:430px){
     .actions{display:grid;grid-template-columns:1fr}.actions>.btn{width:100%}
     .record-footer{display:grid;grid-template-columns:1fr}.record-footer .btn{width:100%}
-    .request-source-options{grid-template-columns:1fr}
+    .request-source-options,.patient-profile-options{grid-template-columns:1fr}
     .topbar h2{font-size:20px}
     .mobile-brand-logo{width:108px;flex-basis:108px}.mobile-header-copy span{font-size:11px}
   }
@@ -2421,6 +2438,31 @@
                 <input type="radio" name="requestSource" value="direta">
                 <span>Direta</span>
               </label>
+              <label class="request-source-option na">
+                <input type="radio" name="requestSource" value="na" checked>
+                <span>N/A</span>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="patient-profile-fieldset" id="patientProfileFieldset">
+            <legend class="patient-profile-title">Perfil do paciente:</legend>
+            <div class="patient-profile-options" role="radiogroup" aria-label="Perfil do paciente">
+              <label class="patient-profile-option enfermaria">
+                <input type="radio" name="patientProfile" value="enfermaria">
+                <span>Enfermaria</span>
+              </label>
+              <label class="patient-profile-option isolamento">
+                <input type="radio" name="patientProfile" value="isolamento">
+                <span>Isolamento</span>
+              </label>
+              <label class="patient-profile-option uti">
+                <input type="radio" name="patientProfile" value="uti">
+                <span>UTI</span>
+              </label>
+              <label class="patient-profile-option pronto-atendimento">
+                <input type="radio" name="patientProfile" value="pronto_atendimento">
+                <span>Pronto Atendimento</span>
+              </label>
             </div>
           </fieldset>
           <div>
@@ -2599,6 +2641,7 @@
                 <th>Hora</th>
                 <th>Tipo</th>
                 <th>Origem da solicitação</th>
+                <th>Perfil</th>
                 <th>Paciente</th>
                 <th>Origem</th>
                 <th>HD</th>
@@ -2701,6 +2744,7 @@
                 <th>Hora</th>
                 <th>Tipo</th>
                 <th>Origem da solicitação</th>
+                <th>Perfil</th>
                 <th>Paciente</th>
                 <th>Origem</th>
                 <th>HD</th>
@@ -2768,6 +2812,17 @@
               <option value="cerel">CEREL</option>
               <option value="interna">Interna</option>
               <option value="direta">Direta</option>
+              <option value="na">N/A</option>
+            </select>
+          </div>
+          <div>
+            <label for="statisticsPatientProfile">Perfil do paciente</label>
+            <select id="statisticsPatientProfile">
+              <option value="">Todos</option>
+              <option value="enfermaria">Enfermaria</option>
+              <option value="isolamento">Isolamento</option>
+              <option value="uti">UTI</option>
+              <option value="pronto_atendimento">Pronto Atendimento</option>
             </select>
           </div>
           <div>
@@ -2826,6 +2881,10 @@
             <h4>Origens das solicitações</h4>
             <div class="statistics-ranking" id="statisticsRequestSources"></div>
           </div>
+          <div class="statistics-card">
+            <h4>Perfis dos pacientes</h4>
+            <div class="statistics-ranking" id="statisticsPatientProfiles"></div>
+          </div>
         </div>
       </div>
 
@@ -2839,7 +2898,7 @@
         <div class="table-wrap">
           <table class="records-table statistics-table">
             <thead>
-              <tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>Destino</th><th>Status</th></tr>
+              <tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>Destino</th><th>Status</th></tr>
             </thead>
             <tbody id="statisticsDetailBody"></tbody>
           </table>
@@ -3193,7 +3252,15 @@
     crue:{label:"CRUE",css:"crue"},
     cerel:{label:"CEREL",css:"cerel"},
     interna:{label:"Interna",css:"interna"},
-    direta:{label:"Direta",css:"direta"}
+    direta:{label:"Direta",css:"direta"},
+    na:{label:"N/A",css:"na"}
+  });
+
+  const PATIENT_PROFILE_META = Object.freeze({
+    enfermaria:{label:"Enfermaria",css:"enfermaria"},
+    isolamento:{label:"Isolamento",css:"isolamento"},
+    uti:{label:"UTI",css:"uti"},
+    pronto_atendimento:{label:"Pronto Atendimento",css:"pronto-atendimento"}
   });
 
   const STORAGE_KEY = "nirCemetronFinalStateV2";
@@ -3202,7 +3269,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.2";
+  const SCIR_VERSION = "1.16.4";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -4991,6 +5058,7 @@
         <div class="record-grid">
           <div><strong>Horário da solicitação:</strong> ${escapeHtml(record.requestTime)}</div>
           <div><strong>Origem da solicitação:</strong> ${requestSourceTagHtml(record.requestSource)}</div>
+          <div><strong>Perfil do paciente:</strong> ${patientProfileTagHtml(record.patientProfile)}</div>
           <div><strong>Paciente:</strong> ${escapeHtml(record.patient)}</div>
           <div><strong>Unidade de origem:</strong> ${escapeHtml(record.origin)}</div>
           <div><strong>HD:</strong> ${escapeHtml(record.hd)}</div>
@@ -5118,25 +5186,51 @@
     return !!record && record.module === "blue" && record.blueRecordType === "exame";
   }
 
+  function normalizeRequestSource(value){
+    const key = String(value || "").toLowerCase();
+    return REQUEST_SOURCE_META[key] ? key : "na";
+  }
+
   function requestSourceLabel(value){
-    return REQUEST_SOURCE_META[String(value || "").toLowerCase()]?.label || "Não informada";
+    return REQUEST_SOURCE_META[normalizeRequestSource(value)].label;
   }
 
   function requestSourceTagHtml(value){
-    const key = String(value || "").toLowerCase();
+    const key = normalizeRequestSource(value);
     const meta = REQUEST_SOURCE_META[key];
-    return meta
-      ? `<span class="request-source-tag ${meta.css}">${escapeHtml(meta.label)}</span>`
-      : '<span class="request-source-tag not-informed">Não informada</span>';
+    return `<span class="request-source-tag ${meta.css}">${escapeHtml(meta.label)}</span>`;
   }
 
   function selectedRequestSource(){
-    return document.querySelector('input[name="requestSource"]:checked')?.value || "";
+    return normalizeRequestSource(document.querySelector('input[name="requestSource"]:checked')?.value);
   }
 
-  function setSelectedRequestSource(value=""){
-    const selected = String(value || "").toLowerCase();
+  function setSelectedRequestSource(value="na"){
+    const selected = normalizeRequestSource(value);
     document.querySelectorAll('input[name="requestSource"]').forEach(input => {
+      input.checked = input.value === selected;
+    });
+  }
+
+  function patientProfileLabel(value){
+    return PATIENT_PROFILE_META[String(value || "").toLowerCase()]?.label || "Não informado";
+  }
+
+  function patientProfileTagHtml(value){
+    const key = String(value || "").toLowerCase();
+    const meta = PATIENT_PROFILE_META[key];
+    return meta
+      ? `<span class="patient-profile-tag ${meta.css}">${escapeHtml(meta.label)}</span>`
+      : '<span class="patient-profile-tag not-informed">Não informado</span>';
+  }
+
+  function selectedPatientProfile(){
+    return document.querySelector('input[name="patientProfile"]:checked')?.value || "";
+  }
+
+  function setSelectedPatientProfile(value=""){
+    const selected = String(value || "").toLowerCase();
+    document.querySelectorAll('input[name="patientProfile"]').forEach(input => {
       input.checked = input.value === selected;
     });
   }
@@ -5208,6 +5302,7 @@
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
       `Origem da solicitação: ${requestSourceLabel(record.requestSource)}`,
+      `Perfil do paciente: ${patientProfileLabel(record.patientProfile)}`,
       `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       "",
       "Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:",
@@ -5278,6 +5373,7 @@
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
     <strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br>
+    <strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br>
     <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}
   </div>
   <p class="intro">Informamos que foi programada avaliação para o paciente acima identificado, conforme informações abaixo:</p>
@@ -5412,6 +5508,7 @@
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
       `Origem da solicitação: ${requestSourceLabel(record.requestSource)}`,
+      `Perfil do paciente: ${patientProfileLabel(record.patientProfile)}`,
       `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       "",
       "Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:",
@@ -5442,7 +5539,7 @@
 </style></head><body><div class="sheet">
 <div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar</button></div>
 <h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
-<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
+<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
 <p class="intro">Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:</p>
 <div class="details-card"><div class="detail-row"><div class="detail-label">Exame</div><div class="detail-value">${escapeHtml(record.examName || "")}</div></div><div class="detail-row"><div class="detail-label">Local do exame</div><div class="detail-value">${escapeHtml(record.destination || record.examLocation || "")}</div></div><div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.examDate))}</div></div><div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.examTime || "")}</div></div></div>
 <strong>Orientações</strong><div class="guidance">${guidance}</div>
@@ -5596,7 +5693,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     if($("shiftCensusHistoryBody")) $("shiftCensusHistoryBody").innerHTML = censusHistoryRowsMarkup(censusUpdates);
 
     if(!state.records.length){
-      body.innerHTML = `<tr><td colspan="10" class="empty-table">Nenhum registro cadastrado neste plantão.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="11" class="empty-table">Nenhum registro cadastrado neste plantão.</td></tr>`;
       return;
     }
 
@@ -5611,6 +5708,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td><strong>${escapeHtml(record.requestTime || "")}</strong></td>
             <td class="type-cell ${meta.css}">${escapeHtml(typeLabel)}</td>
             <td>${requestSourceTagHtml(record.requestSource)}</td>
+            <td>${patientProfileTagHtml(record.patientProfile)}</td>
             <td>${escapeHtml(record.patient)}</td>
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
@@ -5633,6 +5731,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       "",
       `Proveniente: ${record.origin || ""}`,
       `Origem da solicitação: ${requestSourceLabel(record.requestSource)}`,
+      `Perfil do paciente: ${patientProfileLabel(record.patientProfile)}`,
       `Vaga disponibilizada: ${record.destination || ""}`,
       authorizationWardBedText(record) ? `Enfermaria/Leito: ${authorizationWardBedText(record)}` : null,
       `Paciente: ${record.patient || ""}`,
@@ -5715,6 +5814,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
     <strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br>
+    <strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br>
     <strong>Vaga disponibilizada / Destino:</strong> ${escapeHtml(record.destination || "")}
     ${authorizationWardBedText(record) ? `<br><strong>Enfermaria/Leito:</strong> ${escapeHtml(authorizationWardBedText(record))}` : ""}
   </div>
@@ -5751,6 +5851,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       `Paciente: ${record.patient || ""}`,
       `Unidade de origem: ${record.origin || ""}`,
       `Origem da solicitação: ${requestSourceLabel(record.requestSource)}`,
+      `Perfil do paciente: ${patientProfileLabel(record.patientProfile)}`,
       `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
       `Destino solicitado: ${record.destination || ""}`,
       "",
@@ -5817,6 +5918,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
     <strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br>
+    <strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br>
     <strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}<br>
     <strong>Destino solicitado:</strong> ${escapeHtml(record.destination || "")}
   </div>
@@ -5967,6 +6069,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${escapeHtml(record.requestTime || "")}</td>
             <td>${escapeHtml(meta.title)}</td>
             <td>${requestSourceTagHtml(record.requestSource)}</td>
+            <td>${patientProfileTagHtml(record.patientProfile)}</td>
             <td>${escapeHtml(record.patient)}</td>
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
@@ -5974,7 +6077,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
             <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
-      : `<tr><td colspan="9" class="empty-table">Sem registros neste plantão.</td></tr>`;
+      : `<tr><td colspan="10" class="empty-table">Sem registros neste plantão.</td></tr>`;
 
     $("historyReportPanel").scrollIntoView({behavior:"smooth", block:"start"});
   }
@@ -6015,13 +6118,14 @@ ${regulatorFooterHtml()}</div></body></html>`;
         <td>${escapeHtml(record.requestTime || "")}</td>
         <td>${escapeHtml(meta.title)}</td>
         <td>${escapeHtml(requestSourceLabel(record.requestSource))}</td>
+        <td>${escapeHtml(patientProfileLabel(record.patientProfile))}</td>
         <td>${escapeHtml(record.patient)}</td>
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
         <td>${escapeHtml(recordDestinationText(record))}</td>
         <td>${recordStatusDocumentHtml(record)}</td>
       </tr>`;
-    }).join("") : `<tr><td colspan="8">Sem registros neste plantão.</td></tr>`;
+    }).join("") : `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`;
 
     const doc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>${escapeHtml(data.title)}</title>
     <style>@page{size:A4 landscape;margin:12mm}body{font-family:Arial;color:#111827}h1{font-size:20px;color:#0f2747}h2{margin:14px 0 7px;color:#0f2747;font-size:13px}
@@ -6043,7 +6147,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <h2>ATUALIZAÇÕES DO CENSO NO PLANTÃO</h2>
     <table><thead><tr><th>Data e hora</th><th>Responsável</th><th>Resumo do censo</th><th>Observações</th></tr></thead><tbody>${censusRows}</tbody></table>
     <h2>REGISTROS DE REGULAÇÃO DO PLANTÃO</h2>
-    <table><thead><tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+    <table><thead><tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
 
     const win = window.open("", "_blank", "width=1200,height=800");
     if(!win){ alert("O navegador bloqueou a janela de impressão."); return; }
@@ -6063,28 +6167,28 @@ ${regulatorFooterHtml()}</div></body></html>`;
       data.censusHistoryAvailable
         ? "Nenhuma atualização de censo registrada neste plantão."
         : "Informação não registrada nas versões anteriores.",
-      8
+      9
     );
 
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
-      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(requestSourceLabel(record.requestSource))}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(recordDestinationText(record))}</td><td>${recordStatusDocumentHtml(record)}</td></tr>`;
+      return `<tr><td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(meta.title)}</td><td>${escapeHtml(requestSourceLabel(record.requestSource))}</td><td>${escapeHtml(patientProfileLabel(record.patientProfile))}</td><td>${escapeHtml(record.patient)}</td><td>${escapeHtml(record.origin)}</td><td>${escapeHtml(record.hd)}</td><td>${escapeHtml(recordDestinationText(record))}</td><td>${recordStatusDocumentHtml(record)}</td></tr>`;
     }).join("");
 
     const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
     <head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:Arial;font-size:11pt}th{background:#0f2747;color:#fff}th,td{border:1px solid #999;padding:6px}.meta{font-weight:bold;background:#e5e7eb}</style></head>
-    <body><table><tr><td colspan="8"><strong>${escapeHtml(data.title)}</strong></td></tr>
-    <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="5">${escapeHtml(data.type)}</td></tr>
-    <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Encerramento</td><td colspan="5">${escapeHtml(data.endedAt)}</td></tr>
-    <tr><td class="meta">E-mails recebidos</td><td>${emailSummary ? emailSummary.received || 0 : "—"}</td><td class="meta">Respondidos</td><td>${emailSummary ? emailSummary.responded || 0 : "—"}</td><td class="meta">Cientes</td><td>${emailSummary ? emailSummary.acknowledged || 0 : "—"}</td><td colspan="2"></td></tr>
-    <tr><td class="meta">Atualizações do censo</td><td>${data.censusHistoryAvailable ? data.censusUpdates.length : "—"}</td><td colspan="6"></td></tr>
-    <tr><td colspan="8"></td></tr>
-    <tr><td colspan="8"><strong>Atualizações do censo no plantão</strong></td></tr>
-    <tr><th>Data e hora</th><th>Responsável</th><th colspan="5">Resumo do censo</th><th>Observações</th></tr>
+    <body><table><tr><td colspan="9"><strong>${escapeHtml(data.title)}</strong></td></tr>
+    <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="6">${escapeHtml(data.type)}</td></tr>
+    <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Encerramento</td><td colspan="6">${escapeHtml(data.endedAt)}</td></tr>
+    <tr><td class="meta">E-mails recebidos</td><td>${emailSummary ? emailSummary.received || 0 : "—"}</td><td class="meta">Respondidos</td><td>${emailSummary ? emailSummary.responded || 0 : "—"}</td><td class="meta">Cientes</td><td>${emailSummary ? emailSummary.acknowledged || 0 : "—"}</td><td colspan="3"></td></tr>
+    <tr><td class="meta">Atualizações do censo</td><td>${data.censusHistoryAvailable ? data.censusUpdates.length : "—"}</td><td colspan="7"></td></tr>
+    <tr><td colspan="9"></td></tr>
+    <tr><td colspan="9"><strong>Atualizações do censo no plantão</strong></td></tr>
+    <tr><th>Data e hora</th><th>Responsável</th><th colspan="6">Resumo do censo</th><th>Observações</th></tr>
     ${censusRows}
-    <tr><td colspan="8"></td></tr>
-    <tr><td colspan="8"><strong>Registros de regulação do plantão</strong></td></tr>
-    <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="8">Sem registros neste plantão.</td></tr>`}</table></body></html>`;
+    <tr><td colspan="9"></td></tr>
+    <tr><td colspan="9"><strong>Registros de regulação do plantão</strong></td></tr>
+    <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`}</table></body></html>`;
 
     downloadBlob("\ufeff" + workbook, "application/vnd.ms-excel;charset=utf-8", `historico_${safeFilename(data.date)}_${safeFilename(data.type)}.xls`);
     toast("Histórico exportado para Excel.");
@@ -6106,6 +6210,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       professional:statisticsSearchText($("statisticsProfessional")?.value),
       module:$("statisticsModule")?.value || "",
       requestSource:$("statisticsRequestSource")?.value || "",
+      patientProfile:$("statisticsPatientProfile")?.value || "",
       origin:statisticsSearchText($("statisticsOrigin")?.value),
       destination:statisticsSearchText($("statisticsDestination")?.value),
       search:statisticsSearchText($("statisticsSearch")?.value)
@@ -6126,7 +6231,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       .filter(item => !filters.shiftType || item.shift.type === filters.shiftType)
       .filter(item => !filters.professional || statisticsSearchText(item.shift.professional).includes(filters.professional));
 
-    const hasRecordFilters = Boolean(filters.module || filters.requestSource || filters.origin || filters.destination || filters.search);
+    const hasRecordFilters = Boolean(filters.module || filters.requestSource || filters.patientProfile || filters.origin || filters.destination || filters.search);
     const rows = [];
     const matchedShiftIds = new Set();
 
@@ -6137,6 +6242,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
         const searchable = statisticsSearchText([
           record.patient,
           requestSourceLabel(record.requestSource),
+          patientProfileLabel(record.patientProfile),
           record.origin,
           record.hd,
           recordDestinationText(record),
@@ -6148,7 +6254,8 @@ ${regulatorFooterHtml()}</div></body></html>`;
           record.examName
         ].join(" "));
         if(filters.module && record.module !== filters.module) return;
-        if(filters.requestSource && record.requestSource !== filters.requestSource) return;
+        if(filters.requestSource && normalizeRequestSource(record.requestSource) !== filters.requestSource) return;
+        if(filters.patientProfile && record.patientProfile !== filters.patientProfile) return;
         if(filters.origin && !statisticsSearchText(record.origin).includes(filters.origin)) return;
         if(filters.destination && !statisticsSearchText(recordDestinationText(record)).includes(filters.destination)) return;
         if(filters.search && !searchable.includes(filters.search)) return;
@@ -6187,7 +6294,9 @@ ${regulatorFooterHtml()}</div></body></html>`;
     rows.forEach(({record}) => {
       const label = field === "requestSource"
         ? requestSourceLabel(record.requestSource)
-        : String(record[field] || "Não informado").trim() || "Não informado";
+        : field === "patientProfile"
+          ? patientProfileLabel(record.patientProfile)
+          : String(record[field] || "Não informado").trim() || "Não informado";
       counts.set(label, (counts.get(label) || 0) + 1);
     });
     const ranking = [...counts.entries()].sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0],"pt-BR")).slice(0,8);
@@ -6205,6 +6314,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     if(filters.professional) labels.push(`Plantonista contém “${$("statisticsProfessional").value.trim()}”`);
     if(filters.module) labels.push(`Tipo: ${statisticsModuleLabel(filters.module)}`);
     if(filters.requestSource) labels.push(`Origem da solicitação: ${requestSourceLabel(filters.requestSource)}`);
+    if(filters.patientProfile) labels.push(`Perfil do paciente: ${patientProfileLabel(filters.patientProfile)}`);
     if(filters.origin) labels.push(`Origem contém “${$("statisticsOrigin").value.trim()}”`);
     if(filters.destination) labels.push(`Destino contém “${$("statisticsDestination").value.trim()}”`);
     if(filters.search) labels.push(`Busca: “${$("statisticsSearch").value.trim()}”`);
@@ -6241,6 +6351,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     $("statisticsOrigins").innerHTML = statisticsRankingMarkup(rows,"origin");
     $("statisticsDestinations").innerHTML = statisticsRankingMarkup(rows,"destination");
     $("statisticsRequestSources").innerHTML = statisticsRankingMarkup(rows,"requestSource");
+    $("statisticsPatientProfiles").innerHTML = statisticsRankingMarkup(rows,"patientProfile");
 
     const daily = new Map();
     shifts.forEach(item => {
@@ -6269,12 +6380,13 @@ ${regulatorFooterHtml()}</div></body></html>`;
           <td>${escapeHtml(record.requestTime || "")}</td>
           <td class="type-cell ${escapeHtml(record.module || "")}">${escapeHtml(statisticsModuleLabel(record.module))}</td>
           <td>${requestSourceTagHtml(record.requestSource)}</td>
+          <td>${patientProfileTagHtml(record.patientProfile)}</td>
           <td class="patient-cell">${escapeHtml(record.patient || "")}</td>
           <td>${escapeHtml(record.origin || "")}</td>
           <td>${escapeHtml(recordDestinationText(record))}</td>
           <td class="status-cell">${escapeHtml(recordStatusDocumentText(record) || "")}</td>
         </tr>`).join("")
-      : '<tr><td colspan="10" class="empty-table">Nenhum registro encontrado para os filtros aplicados.</td></tr>';
+      : '<tr><td colspan="11" class="empty-table">Nenhum registro encontrado para os filtros aplicados.</td></tr>';
     $("statisticsDetailSummary").textContent = `${rows.length} registro${rows.length === 1 ? "" : "s"} em ${shifts.length} plantão${shifts.length === 1 ? "" : "ões"}.`;
     $("statisticsDetailNote").textContent = rows.length > visibleRows.length
       ? `Exibindo os primeiros ${visibleRows.length} registros. A exportação para Excel inclui todos os ${rows.length} resultados.`
@@ -6288,17 +6400,17 @@ ${regulatorFooterHtml()}</div></body></html>`;
     const rate = emailTotals.received ? Math.min(100,(treated / emailTotals.received) * 100) : 0;
     const detailRows = rows.map(({item,record}) => `<tr>
       <td>${escapeHtml(formatDate(item.shift.date || ""))}</td><td>${escapeHtml(item.shift.type || "")}</td><td>${escapeHtml(item.shift.professional || "")}</td>
-      <td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(statisticsModuleLabel(record.module))}</td><td>${escapeHtml(requestSourceLabel(record.requestSource))}</td><td>${escapeHtml(record.patient || "")}</td>
+      <td>${escapeHtml(record.requestTime || "")}</td><td>${escapeHtml(statisticsModuleLabel(record.module))}</td><td>${escapeHtml(requestSourceLabel(record.requestSource))}</td><td>${escapeHtml(patientProfileLabel(record.patientProfile))}</td><td>${escapeHtml(record.patient || "")}</td>
       <td>${escapeHtml(record.origin || "")}</td><td>${escapeHtml(record.hd || "")}</td><td>${escapeHtml(recordDestinationText(record))}</td><td>${escapeHtml(recordStatusDocumentText(record) || "")}</td>
     </tr>`).join("");
     const workbook = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
     <head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:Arial;font-size:10pt}th{background:#0f2747;color:#fff}th,td{border:1px solid #999;padding:6px;vertical-align:top}.title{font-size:15pt;font-weight:bold;color:#0f2747}.meta{font-weight:bold;background:#e5e7eb}</style></head><body><table>
-    <tr><td class="title" colspan="11">ESTATÍSTICAS DOS PLANTÕES — NIR CEMETRON</td></tr>
-    <tr><td class="meta" colspan="2">Filtros aplicados</td><td colspan="9">${escapeHtml(statisticsFilterSummary(filters))}</td></tr>
-    <tr><td class="meta">Plantões</td><td>${shifts.length}</td><td class="meta">Registros</td><td>${rows.length}</td><td class="meta">E-mails recebidos</td><td>${emailTotals.received}</td><td class="meta">E-mails tratados</td><td>${treated} (${rate.toLocaleString("pt-BR",{maximumFractionDigits:1})}%)</td><td class="meta">Atualizações do censo</td><td>${censusUpdates}</td><td></td></tr>
-    <tr><td class="meta">Pendências</td><td>${moduleCounts.yellow}</td><td class="meta">Transferências/Avaliações/Exames</td><td>${moduleCounts.blue}</td><td class="meta">Autorizações</td><td>${moduleCounts.green}</td><td class="meta">Negativas</td><td>${moduleCounts.red}</td><td colspan="3"></td></tr>
-    <tr><td colspan="11"></td></tr><tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
-    ${detailRows || '<tr><td colspan="11">Nenhum registro encontrado.</td></tr>'}</table></body></html>`;
+    <tr><td class="title" colspan="12">ESTATÍSTICAS DOS PLANTÕES — NIR CEMETRON</td></tr>
+    <tr><td class="meta" colspan="2">Filtros aplicados</td><td colspan="10">${escapeHtml(statisticsFilterSummary(filters))}</td></tr>
+    <tr><td class="meta">Plantões</td><td>${shifts.length}</td><td class="meta">Registros</td><td>${rows.length}</td><td class="meta">E-mails recebidos</td><td>${emailTotals.received}</td><td class="meta">E-mails tratados</td><td>${treated} (${rate.toLocaleString("pt-BR",{maximumFractionDigits:1})}%)</td><td class="meta">Atualizações do censo</td><td>${censusUpdates}</td><td colspan="2"></td></tr>
+    <tr><td class="meta">Pendências</td><td>${moduleCounts.yellow}</td><td class="meta">Transferências/Avaliações/Exames</td><td>${moduleCounts.blue}</td><td class="meta">Autorizações</td><td>${moduleCounts.green}</td><td class="meta">Negativas</td><td>${moduleCounts.red}</td><td colspan="4"></td></tr>
+    <tr><td colspan="12"></td></tr><tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
+    ${detailRows || '<tr><td colspan="12">Nenhum registro encontrado.</td></tr>'}</table></body></html>`;
     const stamp = new Date().toISOString().slice(0,10);
     downloadBlob("\ufeff" + workbook,"application/vnd.ms-excel;charset=utf-8",`estatisticas_scir_${stamp}.xls`);
     toast("Estatísticas exportadas para Excel.");
@@ -6670,6 +6782,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     document.querySelectorAll('input[name="requestSource"]').forEach(input => {
       input.disabled = locked;
     });
+    document.querySelectorAll('input[name="patientProfile"]').forEach(input => {
+      input.disabled = locked;
+    });
   }
 
   window.editRecord = function(id){
@@ -6684,6 +6799,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("module").value = record.module;
     $("requestTime").value = record.requestTime || getCurrentTime();
     setSelectedRequestSource(record.requestSource || "");
+    setSelectedPatientProfile(record.patientProfile || "");
     $("patient").value = record.patient || "";
     $("origin").value = record.origin || "";
     $("hd").value = record.hd || "";
@@ -6932,6 +7048,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       module: $("module").value,
       requestTime: $("requestTime").value || getCurrentTime(),
       requestSource: selectedRequestSource(),
+      patientProfile: selectedPatientProfile(),
       patient: $("patient").value.trim(),
       origin: $("origin").value.trim(),
       hd: $("hd").value.trim(),
@@ -6951,8 +7068,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       examGuidance: $("module").value === "blue" && $("blueRecordType").value === "exame" ? $("examGuidance").value.trim() : ""
     };
 
-    if(!record.requestSource){
-      alert("Selecione a origem da solicitação: CRUE, CEREL, Interna ou Direta.");
+    if(!record.patientProfile){
+      alert("Selecione o perfil do paciente: Enfermaria, Isolamento, UTI ou Pronto Atendimento.");
       return;
     }
     if(!record.patient || !record.origin || !record.hd || !record.destination || !record.status){
@@ -6986,6 +7103,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     saveState();
     $("requestTime").value = getCurrentTime();
     setSelectedRequestSource("");
+    setSelectedPatientProfile("");
     $("patient").value = "";
     $("origin").value = "";
     $("hd").value = "";
@@ -7002,6 +7120,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     clearBlueRecordFields();
     clearAuthorizationRecordFields();
     setSelectedRequestSource("");
+    setSelectedPatientProfile("");
     $("requestTime").value = getCurrentTime();
     editingRecordId = null;
     $("addRecord").textContent = "Adicionar registro";
@@ -7174,6 +7293,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Horário da solicitação", record.requestTime || ""],
       ["Paciente", record.patient || ""],
       ["Origem da solicitação", requestSourceLabel(record.requestSource)],
+      ["Perfil do paciente", patientProfileLabel(record.patientProfile)],
       ["Unidade de origem", record.origin || ""],
       ["HD / PROBLEMAS", record.hd || ""],
       ["Destino", recordDestinationText(record)],
@@ -7209,6 +7329,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Horário da solicitação", record.requestTime || ""],
       ["Paciente", record.patient || ""],
       ["Origem da solicitação", requestSourceLabel(record.requestSource)],
+      ["Perfil do paciente", patientProfileLabel(record.patientProfile)],
       ["Unidade de origem", record.origin || ""],
       ["HD / PROBLEMAS", record.hd || ""],
       ["Destino", recordDestinationText(record)],
@@ -7257,6 +7378,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `HORÁRIO DA SOLICITAÇÃO: ${r.requestTime}`,
       `PACIENTE: ${r.patient}`,
       `ORIGEM DA SOLICITAÇÃO: ${requestSourceLabel(r.requestSource)}`,
+      `PERFIL DO PACIENTE: ${patientProfileLabel(r.patientProfile)}`,
       `UNIDADE DE ORIGEM: ${r.origin}`,
       `HD / PROBLEMAS: ${r.hd}`,
       `DESTINO: ${recordDestinationText(r)}`,
@@ -7355,6 +7477,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <td>${escapeHtml(record.requestTime || "")}</td>
             <td>${escapeHtml(meta.title)}</td>
             <td>${escapeHtml(requestSourceLabel(record.requestSource))}</td>
+            <td>${escapeHtml(patientProfileLabel(record.patientProfile))}</td>
             <td>${escapeHtml(record.patient)}</td>
             <td>${escapeHtml(record.origin)}</td>
             <td>${escapeHtml(record.hd)}</td>
@@ -7362,7 +7485,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             <td>${recordStatusDocumentHtml(record)}</td>
           </tr>`;
         }).join("")
-      : `<tr><td colspan="8">Sem registros neste plantão.</td></tr>`;
+      : `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`;
 
     return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -7410,7 +7533,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   <h2>REGISTROS DE REGULAÇÃO DO PLANTÃO</h2>
   <table>
     <thead><tr>
-      <th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th>
+      <th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>
@@ -7448,13 +7571,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
     const data = buildShiftReportData();
     const emailSummary = data.emailSummary || {received:0,responded:0,acknowledged:0};
-    const censusRows = censusHistoryExcelRowsMarkup(data.censusUpdates, "Nenhuma atualização de censo registrada neste plantão.", 8);
+    const censusRows = censusHistoryExcelRowsMarkup(data.censusUpdates, "Nenhuma atualização de censo registrada neste plantão.", 9);
     const rows = data.records.map(record => {
       const meta = moduleMeta[record.module] || {title:"REGISTRO"};
       return `<tr>
         <td>${escapeHtml(record.requestTime || "")}</td>
         <td>${escapeHtml(meta.title)}</td>
         <td>${escapeHtml(requestSourceLabel(record.requestSource))}</td>
+        <td>${escapeHtml(patientProfileLabel(record.patientProfile))}</td>
         <td>${escapeHtml(record.patient)}</td>
         <td>${escapeHtml(record.origin)}</td>
         <td>${escapeHtml(record.hd)}</td>
@@ -7485,19 +7609,19 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 </head>
 <body>
 <table>
-  <tr><td colspan="8" class="title">${escapeHtml(data.title)}</td></tr>
-  <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="5">${escapeHtml(data.type)}</td></tr>
-  <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Status</td><td>${escapeHtml(data.status)}</td><td class="meta">Encerramento</td><td colspan="3">${escapeHtml(data.endedAt || "-")}</td></tr>
-  <tr><td class="meta">E-mails recebidos</td><td>${emailSummary.received || 0}</td><td class="meta">Respondidos</td><td>${emailSummary.responded || 0}</td><td class="meta">Cientes</td><td>${emailSummary.acknowledged || 0}</td><td colspan="2"></td></tr>
-  <tr><td class="meta">Atualizações do censo</td><td>${data.censusUpdates.length}</td><td colspan="6"></td></tr>
-  <tr><td colspan="8"></td></tr>
-  <tr><td colspan="8" class="title">Atualizações do censo no plantão</td></tr>
-  <tr><th>Data e hora</th><th>Responsável</th><th colspan="5">Resumo do censo</th><th>Observações</th></tr>
+  <tr><td colspan="9" class="title">${escapeHtml(data.title)}</td></tr>
+  <tr><td class="meta">Data</td><td>${escapeHtml(data.date)}</td><td class="meta">Plantão</td><td colspan="6">${escapeHtml(data.type)}</td></tr>
+  <tr><td class="meta">Plantonista</td><td>${escapeHtml(data.professional)}</td><td class="meta">Status</td><td>${escapeHtml(data.status)}</td><td class="meta">Encerramento</td><td colspan="4">${escapeHtml(data.endedAt || "-")}</td></tr>
+  <tr><td class="meta">E-mails recebidos</td><td>${emailSummary.received || 0}</td><td class="meta">Respondidos</td><td>${emailSummary.responded || 0}</td><td class="meta">Cientes</td><td>${emailSummary.acknowledged || 0}</td><td colspan="3"></td></tr>
+  <tr><td class="meta">Atualizações do censo</td><td>${data.censusUpdates.length}</td><td colspan="7"></td></tr>
+  <tr><td colspan="9"></td></tr>
+  <tr><td colspan="9" class="title">Atualizações do censo no plantão</td></tr>
+  <tr><th>Data e hora</th><th>Responsável</th><th colspan="6">Resumo do censo</th><th>Observações</th></tr>
   ${censusRows}
-  <tr><td colspan="8"></td></tr>
-  <tr><td colspan="8" class="title">Registros de regulação do plantão</td></tr>
-  <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
-  ${rows || `<tr><td colspan="8">Sem registros neste plantão.</td></tr>`}
+  <tr><td colspan="9"></td></tr>
+  <tr><td colspan="9" class="title">Registros de regulação do plantão</td></tr>
+  <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
+  ${rows || `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`}
 </table>
 </body>
 </html>`;
@@ -7934,7 +8058,7 @@ ${reportHtml}
     toast("Filtros aplicados.");
   });
   $("clearStatisticsFilters")?.addEventListener("click", () => {
-    ["statisticsStartDate","statisticsEndDate","statisticsShiftType","statisticsProfessional","statisticsModule","statisticsRequestSource","statisticsOrigin","statisticsDestination","statisticsSearch"].forEach(id => {
+    ["statisticsStartDate","statisticsEndDate","statisticsShiftType","statisticsProfessional","statisticsModule","statisticsRequestSource","statisticsPatientProfile","statisticsOrigin","statisticsDestination","statisticsSearch"].forEach(id => {
       if($(id)) $(id).value = "";
     });
     renderStatistics();
