@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.6 com Masculina 2 - PPL no censo
+SCIR — NIR CEMETRON | Versão 1.16.7 com tags padronizadas no SBAR
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -22,6 +22,8 @@ CAMINHO SIMPLIFICADO
 - Os indicadores incluem registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
 - O Censo diário exibe ao final de cada coluna o total de leitos disponíveis da Infectologia e da Clínica Médica.
 - A seção Infectologia do Censo diário inclui o setor “Masculina 2 - PPL”, integrado aos totais, ao histórico, ao SBAR e às exportações.
+- No SBAR, as tags INFECTO e INFECTO/PPL aparecem em verde-claro, enquanto CM aparece em azul-claro.
+- O rótulo clínico do SBAR foi padronizado como “HD/Problemas”.
 - A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
 - O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
 - Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.

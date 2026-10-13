@@ -1047,9 +1047,8 @@
     .sbar-census-row{border-top:1px solid #e5e7eb;font-size:12px}
     .sbar-sector-cell{display:flex;align-items:center;gap:8px;min-width:0}
     .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.02em;flex:0 0 auto}
-    .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
-    .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
-    .sbar-sector-tag.ppl{background:#a21caf;color:#fff;border:1px solid #a21caf}
+    .sbar-sector-tag.infecto,.sbar-sector-tag.ppl{background:#dcfce7;color:#166534;border:1px solid #86efac}
+    .sbar-sector-tag.cm{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
     .sbar-census-value{text-align:center;font-weight:800}
     .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 310px;border-top:1px solid #e5e7eb;background:#f8fafc}
     .sbar-census-observation-block{padding:12px 14px;min-width:0}
@@ -3275,7 +3274,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.6";
+  const SCIR_VERSION = "1.16.7";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -7322,7 +7321,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Origem da solicitação", requestSourceLabel(record.requestSource)],
       ["Perfil do paciente", patientProfileLabel(record.patientProfile)],
       ["Unidade de origem", record.origin || ""],
-      ["HD / PROBLEMAS", record.hd || ""],
+      ["HD/Problemas", record.hd || ""],
       ["Destino", recordDestinationText(record)],
       ["Status", record.status || ""]
     ];
@@ -7358,7 +7357,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Origem da solicitação", requestSourceLabel(record.requestSource)],
       ["Perfil do paciente", patientProfileLabel(record.patientProfile)],
       ["Unidade de origem", record.origin || ""],
-      ["HD / PROBLEMAS", record.hd || ""],
+      ["HD/Problemas", record.hd || ""],
       ["Destino", recordDestinationText(record)],
       ["Status", record.status || ""]
     ];
@@ -7407,7 +7406,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `ORIGEM DA SOLICITAÇÃO: ${requestSourceLabel(r.requestSource)}`,
       `PERFIL DO PACIENTE: ${patientProfileLabel(r.patientProfile)}`,
       `UNIDADE DE ORIGEM: ${r.origin}`,
-      `HD / PROBLEMAS: ${r.hd}`,
+      `HD/Problemas: ${r.hd}`,
       `DESTINO: ${recordDestinationText(r)}`,
       `STATUS: ${r.status}`,
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
@@ -7966,9 +7965,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   .sbar-sector-cell{display:flex;align-items:center;gap:4px;min-width:0}
   .sbar-sector-tag{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:1px 4px;border-radius:999px;font-size:6.8px;font-weight:800;flex:0 0 auto}
-  .sbar-sector-tag.infecto{background:#6aa84f;color:#fff;border:1px solid #6aa84f}
-  .sbar-sector-tag.cm{background:#8e7cc3;color:#fff;border:1px solid #8e7cc3}
-  .sbar-sector-tag.ppl{background:#a21caf;color:#fff;border:1px solid #a21caf}
+  .sbar-sector-tag.infecto,.sbar-sector-tag.ppl{background:#dcfce7;color:#166534;border:1px solid #86efac}
+  .sbar-sector-tag.cm{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
   .sbar-census-details{display:grid;grid-template-columns:minmax(0,1fr) 190px;border-top:1px solid #e5e7eb;background:#f8fafc}
   .sbar-census-observation-block{padding:6px 7px;min-width:0}
   .sbar-census-detail-label{margin-bottom:3px;color:#0f2747;font-size:8.5px;font-weight:800}

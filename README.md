@@ -8,6 +8,13 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.7 — padronização visual do SBAR
+
+- Padroniza as tags **INFECTO** e **INFECTO/PPL** em verde-claro.
+- Altera a tag **CM** para azul-claro.
+- Mantém as mesmas cores na visualização e na impressão/PDF do SBAR.
+- Corrige o rótulo **HD/PROBLEMAS** para **HD/Problemas** em todas as páginas do SBAR.
+
 ### Versão 1.16.6 — Masculina 2 - PPL no censo
 
 - Inclui **Masculina 2 - PPL** na seção Infectologia do **Censo diário**.
