@@ -1677,7 +1677,29 @@
 
 
   .dashboard-record-stats{
-    grid-template-columns:repeat(5,minmax(0,1fr));
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    align-items:stretch;
+  }
+  .dashboard-record-stats .stat{
+    display:flex;
+    min-width:0;
+    min-height:116px;
+    flex-direction:column;
+    justify-content:center;
+    padding:18px 20px;
+  }
+  .dashboard-record-stats .stat .label{
+    display:flex;
+    min-height:32px;
+    align-items:flex-start;
+    margin-bottom:8px;
+    font-size:12px;
+    line-height:1.35;
+  }
+  .dashboard-record-stats .stat .value{
+    margin-top:auto;
+    font-size:28px;
+    line-height:1;
   }
   .total-records-stat{
     border-color:#9fb3ca;
@@ -1998,6 +2020,11 @@
     border-radius:10px;
     background:#f8fbff;
   }
+  .blue-record-details.external-transfer-details{
+    border-color:#d8b4fe;
+    background:#faf5ff;
+  }
+  .external-transfer-details .blue-record-details-header strong{color:#6b21a8}
   .blue-record-details-header{margin-bottom:12px}
   .blue-record-details-header strong{display:block;color:var(--navy);font-size:13px}
   .blue-record-details-header span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
@@ -2013,6 +2040,23 @@
     line-height:1.55;
   }
   .evaluation-summary strong{color:var(--navy)}
+  .evaluation-summary.transfer-summary{
+    border-left-color:var(--transfer);
+    background:#f5f0ff;
+  }
+  .transfer-status-tag{
+    display:inline-flex;
+    align-items:center;
+    padding:3px 8px;
+    border:1px solid #c4b5fd;
+    border-radius:999px;
+    background:#ede9fe;
+    color:#6d28d9;
+    font-size:12px;
+    font-weight:800;
+  }
+  .transfer-status-tag.autorizada{border-color:#86efac;background:#dcfce7;color:#166534}
+  .transfer-status-tag.aguardando{border-color:#fcd34d;background:#fef3c7;color:#92400e}
   .btn-evaluation{background:#1d4ed8;color:#fff}
   @media(max-width:700px){
     .blue-record-details{padding:12px}
@@ -2524,18 +2568,18 @@
               </div>
             </div>
           </div>
-          <div id="externalTransferDetails" class="blue-record-details hidden" style="grid-column:1/-1">
+          <div id="externalTransferDetails" class="blue-record-details external-transfer-details hidden" style="grid-column:1/-1">
             <div class="blue-record-details-header">
               <strong>Detalhamento — Transferência externa</strong>
-              <span>Informe se a transferência foi solicitada ou autorizada e complete os dados correspondentes.</span>
+              <span>Informe se a transferência está autorizada ou aguardando e complete os dados correspondentes.</span>
             </div>
             <div class="form-grid blue-record-details-grid">
               <div>
                 <label for="externalTransferStatus">Situação da transferência</label>
                 <select id="externalTransferStatus">
                   <option value="">Selecione</option>
-                  <option value="solicitada">Solicitada</option>
                   <option value="autorizada">Autorizada</option>
+                  <option value="aguardando">Aguardando</option>
                 </select>
               </div>
               <div id="externalTransferRequestChannelField" class="external-transfer-requested-only hidden">
@@ -3319,7 +3363,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.8";
+  const SCIR_VERSION = "1.16.9";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -3460,10 +3504,12 @@
 
   function normalizeRecordCategory(record){
     if(!record || typeof record !== "object") return record;
-    if(record.module === "blue" && record.blueRecordType === "transferencia"){
-      return {...record,module:"transfer"};
-    }
-    return record;
+    const normalized = record.module === "blue" && record.blueRecordType === "transferencia"
+      ? {...record,module:"transfer"}
+      : record;
+    return normalized.externalTransferStatus === "solicitada"
+      ? {...normalized,externalTransferStatus:"aguardando"}
+      : normalized;
   }
 
   function normalizeRecordCollections(candidate){
@@ -5154,10 +5200,10 @@
           <div><strong>Destino:</strong> ${escapeHtml(recordDestinationText(record))}</div>
           <div><strong>Status:</strong> ${recordStatusDocumentHtml(record)}</div>
           ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
-          ${isExternalTransferRecord(record) ? `<div class="evaluation-summary">
-            <strong>Situação da transferência:</strong> ${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}<br>
-            ${record.externalTransferStatus === "solicitada" ? `<strong>Meio:</strong> ${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}<br>` : ""}
-            ${record.externalTransferStatus === "solicitada" && record.externalTransferRequestChannel === "regularo" ? `<strong>Protocolo RegulaRO:</strong> ${escapeHtml(record.externalTransferProtocol || "Não informado")}<br>` : ""}
+          ${isExternalTransferRecord(record) ? `<div class="evaluation-summary transfer-summary">
+            <strong>Situação da transferência:</strong> <span class="transfer-status-tag ${escapeHtml(record.externalTransferStatus || "")}">${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}</span><br>
+            ${record.externalTransferStatus === "aguardando" || record.externalTransferStatus === "solicitada" ? `<strong>Meio:</strong> ${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}<br>` : ""}
+            ${(record.externalTransferStatus === "aguardando" || record.externalTransferStatus === "solicitada") && record.externalTransferRequestChannel === "regularo" ? `<strong>Protocolo RegulaRO:</strong> ${escapeHtml(record.externalTransferProtocol || "Não informado")}<br>` : ""}
             ${record.externalTransferStatus === "autorizada" ? `<strong>Enfermaria/Leito:</strong> ${escapeHtml(record.externalTransferWardBed || "Não informado")}` : ""}
           </div>` : ""}
           ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
@@ -5180,6 +5226,10 @@
           ${isExamRecord(record) ? `
             <button class="btn btn-secondary" onclick="copyExamReport('${record.id}')">Copiar</button>
             <button class="btn btn-pdf" onclick="printExamReport('${record.id}')">Gerar PDF / Imprimir</button>
+          ` : ""}
+          ${isExternalTransferRecord(record) ? `
+            <button class="btn btn-secondary" onclick="copyExternalTransferReport('${record.id}')">Copiar</button>
+            <button class="btn btn-pdf" onclick="printExternalTransferReport('${record.id}')">Gerar PDF / Imprimir</button>
           ` : ""}
           ${record.module === "green" ? `
             <button class="btn btn-secondary" onclick="copyAuthorization('${record.id}')">Copiar</button>
@@ -5274,7 +5324,7 @@
   }
 
   function externalTransferStatusLabel(value){
-    return ({solicitada:"Solicitada",autorizada:"Autorizada"})[value] || "Não informada";
+    return ({solicitada:"Aguardando",aguardando:"Aguardando",autorizada:"Autorizada"})[value] || "Não informada";
   }
 
   function externalTransferChannelLabel(value){
@@ -5360,7 +5410,7 @@
     if(isExternalTransferRecord(record)){
       const transferStatus = String(record.externalTransferStatus || "");
       if(transferStatus) parts.push(externalTransferStatusLabel(transferStatus));
-      if(transferStatus === "solicitada"){
+      if(transferStatus === "aguardando" || transferStatus === "solicitada"){
         const channel = String(record.externalTransferRequestChannel || "");
         if(channel) parts.push(`Solicitação por ${externalTransferChannelLabel(channel)}`);
         if(channel === "regularo" && record.externalTransferProtocol) parts.push(`Protocolo: ${String(record.externalTransferProtocol).trim()}`);
@@ -5390,7 +5440,7 @@
     const destination = $("destination");
     if(destination) destination.placeholder = "Selecione um destino do CEMETRON ou digite outro";
     const transferStatus = $("externalTransferStatus")?.value || "";
-    const transferRequested = isExternalTransfer && transferStatus === "solicitada";
+    const transferRequested = isExternalTransfer && (transferStatus === "aguardando" || transferStatus === "solicitada");
     const transferAuthorized = isExternalTransfer && transferStatus === "autorizada";
     const transferChannel = $("externalTransferRequestChannel")?.value || "";
     if($("destinationLabel")) $("destinationLabel").textContent = isAuthorization || transferAuthorized ? "Destino autorizado" : "Destino";
@@ -5722,6 +5772,72 @@ ${regulatorFooterHtml()}</div></body></html>`;
         else reportWindow.prompt("Copie o informe abaixo:", buildExamReportText(record));
       });
     }, 120);
+  };
+
+  function buildExternalTransferReportText(record){
+    const issued = getIssueDateTime();
+    const waiting = record.externalTransferStatus === "aguardando" || record.externalTransferStatus === "solicitada";
+    return [
+      "INFORME DE TRANSFERÊNCIA EXTERNA",
+      "",
+      `Paciente: ${record.patient || ""}`,
+      `Unidade de origem: ${record.origin || ""}`,
+      `Origem da solicitação: ${requestSourceLabel(record.requestSource)}`,
+      `Perfil do paciente: ${patientProfileLabel(record.patientProfile)}`,
+      `Hipóteses diagnósticas / Problemas: ${record.hd || ""}`,
+      "",
+      `Situação da transferência: ${externalTransferStatusLabel(record.externalTransferStatus)}`,
+      `Destino: ${record.destination || ""}`,
+      waiting ? `Meio da solicitação: ${externalTransferChannelLabel(record.externalTransferRequestChannel)}` : null,
+      waiting && record.externalTransferRequestChannel === "regularo" ? `Protocolo RegulaRO: ${record.externalTransferProtocol || ""}` : null,
+      record.externalTransferStatus === "autorizada" && record.externalTransferWardBed ? `Enfermaria/Leito: ${record.externalTransferWardBed}` : null,
+      "",
+      "Informações / Orientações:",
+      recordStatusDocumentText(record) || "Sem informações adicionais registradas.",
+      "",
+      REGULATOR_INFO.name,
+      `${REGULATOR_INFO.role} | ${REGULATOR_INFO.crm}`,
+      REGULATOR_INFO.unit,
+      `Emitido em ${issued.date} às ${issued.time}`
+    ].filter(value => value !== null).join("\n");
+  }
+
+  function buildExternalTransferReportHtml(record, showActions=true){
+    const waiting = record.externalTransferStatus === "aguardando" || record.externalTransferStatus === "solicitada";
+    const statusClass = record.externalTransferStatus === "autorizada" ? "authorized" : "waiting";
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe de Transferência Externa</title>
+<style>
+@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#6b21a8;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #d8b4fe;border-radius:9px;background:#faf5ff;line-height:1.7}.details-card{margin:20px 0 18px;border:1px solid #d8b4fe;border-radius:10px;background:#fff;overflow:hidden}.detail-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #eadcf8;align-items:stretch}.detail-row:first-child{border-top:0}.detail-label,.detail-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}.detail-label{background:#f3e8ff;color:#581c87;font-size:13px;font-weight:700}.detail-value{background:#fff;color:#111827;font-size:13px;overflow-wrap:anywhere}.status-tag{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;font-weight:800}.status-tag.authorized{border:1px solid #86efac;background:#dcfce7;color:#166534}.status-tag.waiting{border:1px solid #fcd34d;background:#fef3c7;color:#92400e}.orientation{min-height:80px;margin-top:6px;padding:13px 16px;border:1px solid #d8b4fe;border-radius:10px;background:#faf5ff;line-height:1.55;overflow-wrap:anywhere}.orientation-title{color:#581c87;font-weight:700}.document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}.regulator-signature strong{color:#0f2747;font-size:13px}.document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#7c3aed;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#ede9fe;color:#5b21b6}@media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #eadcf8}.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+${recordStatusDocumentCss()}
+</style></head><body><div class="sheet">
+<div class="screen-actions"><button id="externalTransferPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="externalTransferCopyBtn" type="button">Copiar</button></div>
+<h1>INFORME DE TRANSFERÊNCIA EXTERNA</h1><div class="subtitle">NIR CEMETRON</div>
+<div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
+<div class="details-card"><div class="detail-row"><div class="detail-label">Situação</div><div class="detail-value"><span class="status-tag ${statusClass}">${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}</span></div></div><div class="detail-row"><div class="detail-label">Destino</div><div class="detail-value">${escapeHtml(record.destination || "")}</div></div>${waiting ? `<div class="detail-row"><div class="detail-label">Meio da solicitação</div><div class="detail-value">${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}</div></div>` : ""}${waiting && record.externalTransferRequestChannel === "regularo" ? `<div class="detail-row"><div class="detail-label">Protocolo RegulaRO</div><div class="detail-value">${escapeHtml(record.externalTransferProtocol || "")}</div></div>` : ""}${record.externalTransferStatus === "autorizada" && record.externalTransferWardBed ? `<div class="detail-row"><div class="detail-label">Enfermaria/Leito</div><div class="detail-value">${escapeHtml(record.externalTransferWardBed)}</div></div>` : ""}</div>
+<div class="orientation-title">Informações / Orientações</div><div class="orientation">${recordStatusDocumentText(record) ? recordStatusDocumentHtml(record) : "Sem informações adicionais registradas."}</div>
+${regulatorFooterHtml()}</div></body></html>`;
+  }
+
+  window.copyExternalTransferReport = async function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExternalTransferRecord(record)) return;
+    const text = buildExternalTransferReportText(record);
+    const copied = await copyTextWithFallback(text);
+    if(copied) toast("Informe de transferência copiado. Pronto para colar no WhatsApp.");
+    else window.prompt("Copie o informe abaixo:", text);
+  };
+
+  window.printExternalTransferReport = function(id){
+    const record = state.records.find(r => r.id === id);
+    if(!isExternalTransferRecord(record)) return;
+    const printWindow = window.open("", "_blank", "width=1000,height=800");
+    if(!printWindow){ alert("O navegador bloqueou a janela de impressão. Autorize pop-ups para este site e tente novamente."); return; }
+    printWindow.document.open();
+    printWindow.document.write(buildExternalTransferReportHtml(record, false));
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { try{ printWindow.focus(); printWindow.print(); } catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe."); } }, 450);
   };
 
 
@@ -7205,8 +7321,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       destination: $("destination").value.trim(),
       authorizationWardBed: $("module").value === "green" ? $("authorizationWardBed").value.trim() : "",
       externalTransferStatus: $("module").value === "transfer" ? $("externalTransferStatus").value : "",
-      externalTransferRequestChannel: $("module").value === "transfer" && $("externalTransferStatus").value === "solicitada" ? $("externalTransferRequestChannel").value : "",
-      externalTransferProtocol: $("module").value === "transfer" && $("externalTransferStatus").value === "solicitada" && $("externalTransferRequestChannel").value === "regularo" ? $("externalTransferProtocol").value.trim() : "",
+      externalTransferRequestChannel: $("module").value === "transfer" && $("externalTransferStatus").value === "aguardando" ? $("externalTransferRequestChannel").value : "",
+      externalTransferProtocol: $("module").value === "transfer" && $("externalTransferStatus").value === "aguardando" && $("externalTransferRequestChannel").value === "regularo" ? $("externalTransferProtocol").value.trim() : "",
       externalTransferWardBed: $("module").value === "transfer" && $("externalTransferStatus").value === "autorizada" ? $("externalTransferWardBed").value.trim() : "",
       status: $("status").value.trim(),
       statusHtml: getRichEditorHtml("status"),
@@ -7235,14 +7351,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
     if(isExternalTransferRecord(record) && !record.externalTransferStatus){
-      alert("Informe se a transferência externa foi solicitada ou autorizada.");
+      alert("Informe se a transferência externa está autorizada ou aguardando.");
       return;
     }
-    if(isExternalTransferRecord(record) && record.externalTransferStatus === "solicitada" && !record.externalTransferRequestChannel){
+    if(isExternalTransferRecord(record) && record.externalTransferStatus === "aguardando" && !record.externalTransferRequestChannel){
       alert("Selecione o meio da solicitação: E-mail ou RegulaRO.");
       return;
     }
-    if(isExternalTransferRecord(record) && record.externalTransferStatus === "solicitada" && record.externalTransferRequestChannel === "regularo" && !record.externalTransferProtocol){
+    if(isExternalTransferRecord(record) && record.externalTransferStatus === "aguardando" && record.externalTransferRequestChannel === "regularo" && !record.externalTransferProtocol){
       alert("Informe o protocolo RegulaRO.");
       return;
     }
@@ -7451,7 +7567,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   function appendExternalTransferRows(rows, record){
     if(!isExternalTransferRecord(record)) return;
     rows.push(["Situação da transferência", externalTransferStatusLabel(record.externalTransferStatus)]);
-    if(record.externalTransferStatus === "solicitada"){
+    if(record.externalTransferStatus === "aguardando" || record.externalTransferStatus === "solicitada"){
       rows.push(["Meio da solicitação", externalTransferChannelLabel(record.externalTransferRequestChannel)]);
       if(record.externalTransferRequestChannel === "regularo") rows.push(["Protocolo RegulaRO", record.externalTransferProtocol || ""]);
     }
@@ -7567,8 +7683,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `STATUS: ${r.status}`,
       ...(isExternalTransferRecord(r) ? [
         `SITUAÇÃO DA TRANSFERÊNCIA: ${externalTransferStatusLabel(r.externalTransferStatus)}`,
-        ...(r.externalTransferStatus === "solicitada" ? [`MEIO DA SOLICITAÇÃO: ${externalTransferChannelLabel(r.externalTransferRequestChannel)}`] : []),
-        ...(r.externalTransferStatus === "solicitada" && r.externalTransferRequestChannel === "regularo" ? [`PROTOCOLO REGULARO: ${r.externalTransferProtocol || ""}`] : []),
+        ...(r.externalTransferStatus === "aguardando" || r.externalTransferStatus === "solicitada" ? [`MEIO DA SOLICITAÇÃO: ${externalTransferChannelLabel(r.externalTransferRequestChannel)}`] : []),
+        ...((r.externalTransferStatus === "aguardando" || r.externalTransferStatus === "solicitada") && r.externalTransferRequestChannel === "regularo" ? [`PROTOCOLO REGULARO: ${r.externalTransferProtocol || ""}`] : []),
         ...(r.externalTransferStatus === "autorizada" ? [`ENFERMARIA/LEITO: ${r.externalTransferWardBed || ""}`] : [])
       ] : []),
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),

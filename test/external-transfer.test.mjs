@@ -13,10 +13,10 @@ test("transferências externas são separadas de avaliações e exames",() => {
   assert.match(html,/blue: \{ title: "🟦 AVALIAÇÕES \/ EXAMES", css: "blue" \}/);
 });
 
-test("transferência solicitada registra meio e protocolo RegulaRO",() => {
+test("transferência aguardando registra meio e protocolo RegulaRO",() => {
   assert.match(html,/id="externalTransferStatus"/);
-  assert.match(html,/<option value="solicitada">Solicitada<\/option>/);
   assert.match(html,/<option value="autorizada">Autorizada<\/option>/);
+  assert.match(html,/<option value="aguardando">Aguardando<\/option>/);
   assert.match(html,/<option value="email">E-mail<\/option>/);
   assert.match(html,/<option value="regularo">RegulaRO<\/option>/);
   assert.match(html,/id="externalTransferProtocol"/);
@@ -32,7 +32,8 @@ test("transferência autorizada inclui destino e enfermaria ou leito",() => {
 
 test("transferências antigas são migradas sem apagar dados",() => {
   assert.match(html,/record\.module === "blue" && record\.blueRecordType === "transferencia"/);
-  assert.match(html,/return \{\.\.\.record,module:"transfer"\};/);
+  assert.match(html,/\? \{\.\.\.record,module:"transfer"\}/);
+  assert.match(html,/externalTransferStatus === "solicitada"[\s\S]*?externalTransferStatus:"aguardando"/);
   assert.match(html,/item\.records\.map\(normalizeRecordCategory\)/);
   assert.match(html,/normalizeRecordCollections\(state\)/);
 });
@@ -43,4 +44,21 @@ test("nova categoria participa de indicadores estatísticas e SBAR",() => {
   assert.match(html,/const moduleCounts = \{yellow:0,transfer:0,blue:0,green:0,red:0\}/);
   assert.match(html,/sbarFullGroupMarkup\("transfer"\)/);
   assert.match(html,/TRANSFERÊNCIAS EXTERNAS: \$\{counts\.transfer\}/);
+});
+
+test("transferência externa permite copiar e gerar PDF com cores próprias",() => {
+  assert.match(html,/copyExternalTransferReport\('\$\{record\.id\}'\)/);
+  assert.match(html,/printExternalTransferReport\('\$\{record\.id\}'\)/);
+  assert.match(html,/function buildExternalTransferReportText\(record\)/);
+  assert.match(html,/function buildExternalTransferReportHtml\(record, showActions=true\)/);
+  assert.match(html,/INFORME DE TRANSFERÊNCIA EXTERNA/);
+  assert.match(html,/\.evaluation-summary\.transfer-summary/);
+  assert.match(html,/\.transfer-status-tag\.autorizada/);
+  assert.match(html,/\.transfer-status-tag\.aguardando/);
+});
+
+test("indicadores do dashboard ficam simétricos em uma linha",() => {
+  assert.match(html,/\.dashboard-record-stats\{\s*grid-template-columns:repeat\(6,minmax\(0,1fr\)\);/);
+  assert.match(html,/\.dashboard-record-stats \.stat\{[\s\S]*?min-height:116px;[\s\S]*?flex-direction:column;/);
+  assert.match(html,/\.dashboard-record-stats \.stat \.label\{[\s\S]*?min-height:32px;/);
 });

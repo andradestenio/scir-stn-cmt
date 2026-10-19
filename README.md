@@ -8,10 +8,18 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.9 — documentos de transferência e simetria do Dashboard
+
+- Atualiza a situação da transferência externa para **Autorizada** ou **Aguardando**.
+- Mantém E-mail/RegulaRO e protocolo nos casos que estão aguardando, com migração automática dos registros anteriores.
+- Adiciona **Copiar** e **Gerar PDF / Imprimir** ao cartão de transferência externa.
+- Aplica a identidade roxa do módulo aos detalhes e ao documento, com tags verde para Autorizada e amarela para Aguardando.
+- Alinha os seis indicadores do Dashboard na mesma linha, com dimensões, tipografia e espaçamento uniformes em telas amplas.
+
 ### Versão 1.16.8 — transferências externas separadas
 
 - Separa **Transferências externas** de **Avaliações / Exames** nos registros, Dashboard, histórico, estatísticas e SBAR.
-- Permite classificar a transferência externa como **Solicitada** ou **Autorizada**.
+- Permite classificar a situação da transferência externa.
 - Para solicitações, registra o meio (**E-mail** ou **RegulaRO**) e exige o protocolo quando o RegulaRO for selecionado.
 - Para transferências autorizadas, registra destino e **Enfermaria/Leito**.
 - Migra automaticamente as transferências antigas para a nova categoria, sem perda de dados.

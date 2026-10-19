@@ -51,5 +51,5 @@ test("novo registro inclui perfil do paciente com tags coloridas e integração 
   assert.match(html,/statisticsPatientProfiles/);
   assert.match(html,/patientProfileLabel\(record\.patientProfile\)/);
   assert.match(html,/PERFIL DO PACIENTE: \$\{patientProfileLabel\(r\.patientProfile\)\}/);
-  assert.match(html,/const SCIR_VERSION = "1\.16\.8"/);
+  assert.match(html,/const SCIR_VERSION = "1\.16\.9"/);
 });
