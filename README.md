@@ -8,6 +8,14 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.8 — transferências externas separadas
+
+- Separa **Transferências externas** de **Avaliações / Exames** nos registros, Dashboard, histórico, estatísticas e SBAR.
+- Permite classificar a transferência externa como **Solicitada** ou **Autorizada**.
+- Para solicitações, registra o meio (**E-mail** ou **RegulaRO**) e exige o protocolo quando o RegulaRO for selecionado.
+- Para transferências autorizadas, registra destino e **Enfermaria/Leito**.
+- Migra automaticamente as transferências antigas para a nova categoria, sem perda de dados.
+
 ### Versão 1.16.7 — padronização visual do SBAR
 
 - Padroniza as tags **INFECTO** e **INFECTO/PPL** em verde-claro.

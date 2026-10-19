@@ -24,10 +24,12 @@
       --panel:#ffffff;
       --bg:#f3f4f6;
       --yellow:#f6c945;
+      --transfer:#8b5cf6;
       --blue:#4f8edc;
       --green:#4caf72;
       --red:#d9534f;
       --soft-yellow:#fff8d8;
+      --soft-transfer:#f3e8ff;
       --soft-blue:#eaf3ff;
       --soft-green:#eaf8ef;
       --soft-red:#fdecec;
@@ -830,6 +832,7 @@
     }
 
     .module-card.yellow{border-left-color:var(--yellow);background:var(--soft-yellow)}
+    .module-card.transfer{border-left-color:var(--transfer);background:var(--soft-transfer)}
     .module-card.blue{border-left-color:var(--blue);background:var(--soft-blue)}
     .module-card.green{border-left-color:var(--green);background:var(--soft-green)}
     .module-card.red{border-left-color:var(--red);background:var(--soft-red)}
@@ -1037,6 +1040,7 @@
     .sbar-record-group{margin-top:12px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
     .sbar-record-group-title{padding:9px 12px;font-weight:800;color:#0f2747}
     .sbar-record-group-title.yellow{background:#fff7d6}
+    .sbar-record-group-title.transfer{background:#f3e8ff}
     .sbar-record-group-title.blue{background:#e8f1ff}
     .sbar-record-group-title.green{background:#e8f7ee}
     .sbar-record-group-title.red{background:#fdecec}
@@ -1064,12 +1068,13 @@
 
     .sbar-summary-box,.sbar-email-box{margin:16px 0 20px;border:1px solid #cbd5e1;border-radius:16px;overflow:hidden;background:#fff}
     .sbar-summary-title,.sbar-email-title{padding:16px 18px;background:#eef4fb;color:#0f2747;font-size:16px;font-weight:600;border-bottom:1px solid #dbe3ec}
-    .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+    .sbar-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin:0}
     .sbar-summary-card{padding:20px 18px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:128px;display:flex;flex-direction:column;justify-content:center}
     .sbar-summary-card:last-child{border-right:0}
     .sbar-summary-card span{display:block;color:#64748b;font-size:13px;font-weight:600;line-height:1.35}
     .sbar-summary-card strong{display:block;margin-top:10px;color:#334155;font-size:30px;font-weight:500;line-height:1}
     .sbar-summary-card.yellow{background:#fffaf0}
+    .sbar-summary-card.transfer{background:#f7f2ff}
     .sbar-summary-card.blue{background:#f2f7ff}
     .sbar-summary-card.green{background:#f2fbf7}
     .sbar-summary-card.red{background:#fff5f5}
@@ -1086,7 +1091,7 @@
     .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
     .sbar-full-group{margin-top:8px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
     .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:#0f2747;font-size:12px;font-weight:800}
-    .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+    .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.transfer .sbar-full-group-title{background:#f3e8ff}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
     .sbar-count-pill{display:inline-flex;min-width:26px;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
     .sbar-record-full{padding:11px 12px;border-top:1px solid #e5e7eb;font-size:12px;line-height:1.45}
     .sbar-record-full:first-of-type{border-top:0}.sbar-record-line{display:grid;grid-template-columns:170px 1fr;gap:8px;margin:3px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
@@ -1256,6 +1261,7 @@
     }
 
     .type-cell.yellow{border-left-color:var(--yellow)}
+    .type-cell.transfer{border-left-color:var(--transfer)}
     .type-cell.blue{border-left-color:var(--blue)}
     .type-cell.green{border-left-color:var(--green)}
     .type-cell.red{border-left-color:var(--red)}
@@ -1467,7 +1473,7 @@
   .standard-message-form{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:12px;align-items:start}.standard-message-form .message-text-field{grid-row:span 2}.standard-message-form textarea{min-height:112px}
   .standard-messages-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.standard-message-card{display:flex;flex-direction:column;min-width:0;padding:15px;border:1px solid var(--line);border-radius:11px;background:#f8fafc}.standard-message-title{margin:0 0 8px;color:var(--navy);font-size:15px;line-height:1.35}.standard-message-text{flex:1;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#374151;font-size:13px;line-height:1.55}.standard-message-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0}.standard-message-actions .btn{min-height:38px;padding:8px 11px;font-size:12px}.standard-messages-empty{grid-column:1/-1;padding:24px;border:1px dashed #cbd5e1;border-radius:10px;text-align:center;color:var(--muted);font-size:13px}
   .scale-link-form{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(220px,.65fr) minmax(280px,1.5fr);gap:12px;align-items:end}.scale-link-form .actions{grid-column:1/-1;margin-top:0}.scale-links-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}.scale-link-card{display:flex;flex-direction:column;min-width:0;padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc}.scale-link-title{margin:0;color:var(--navy);font-size:16px;line-height:1.35}.scale-link-reference{margin:6px 0 0;color:#475569;font-size:13px;line-height:1.45}.scale-link-address{margin:12px 0 0;padding:9px 11px;border-radius:8px;background:#e8eef6;color:#334155;font-size:12px;overflow-wrap:anywhere}.scale-link-updated{margin:9px 0 0;color:#64748b;font-size:11px}.scale-link-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:14px}.scale-link-actions .btn{min-height:38px;padding:8px 11px;font-size:12px;text-decoration:none}.scale-links-empty{grid-column:1/-1;padding:28px 18px;border:1px dashed #94a3b8;border-radius:11px;text-align:center;color:#64748b;font-size:13px;line-height:1.55}
-  .statistics-filters{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}.statistics-filter-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.statistics-filter-summary{margin-top:13px;padding:10px 12px;border:1px solid #dbe4ef;border-radius:9px;background:#f8fafc;color:#475569;font-size:12px;line-height:1.5}.statistics-kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:11px}.statistics-kpi{padding:14px;border:1px solid #dbe4ef;border-radius:11px;background:#f8fafc}.statistics-kpi span{display:block;min-height:30px;color:#64748b;font-size:11px;font-weight:700;line-height:1.35;text-transform:uppercase}.statistics-kpi strong{display:block;margin-top:5px;color:var(--navy);font-size:25px;line-height:1}.statistics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.statistics-card{min-width:0;padding:16px;border:1px solid #dbe4ef;border-radius:11px;background:#fff}.statistics-card h4{margin:0 0 14px;color:var(--navy);font-size:14px}.statistics-bars{display:grid;gap:13px}.statistics-bar-heading{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;color:#334155;font-size:12px}.statistics-bar-heading strong{color:var(--navy)}.statistics-bar-track{height:10px;overflow:hidden;border-radius:999px;background:#e5e7eb}.statistics-bar-fill{display:block;height:100%;min-width:0;border-radius:inherit;background:var(--blue)}.statistics-bar-fill.yellow{background:var(--yellow)}.statistics-bar-fill.blue{background:var(--blue)}.statistics-bar-fill.green{background:var(--green)}.statistics-bar-fill.red{background:var(--red)}.statistics-ranking{display:grid;gap:9px}.statistics-ranking-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 10px;border-radius:8px;background:#f8fafc;color:#334155;font-size:12px}.statistics-ranking-row span{overflow-wrap:anywhere}.statistics-ranking-row strong{color:var(--navy)}.statistics-empty{padding:20px;border:1px dashed #cbd5e1;border-radius:9px;text-align:center;color:#64748b;font-size:12px;line-height:1.5}.statistics-detail-note{margin:10px 0 0;color:#64748b;font-size:11px;line-height:1.45}.statistics-table .type-cell{min-width:150px}.statistics-table .status-cell{min-width:220px;white-space:normal}.statistics-table .patient-cell{min-width:170px}
+  .statistics-filters{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}.statistics-filter-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.statistics-filter-summary{margin-top:13px;padding:10px 12px;border:1px solid #dbe4ef;border-radius:9px;background:#f8fafc;color:#475569;font-size:12px;line-height:1.5}.statistics-kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:11px}.statistics-kpi{padding:14px;border:1px solid #dbe4ef;border-radius:11px;background:#f8fafc}.statistics-kpi span{display:block;min-height:30px;color:#64748b;font-size:11px;font-weight:700;line-height:1.35;text-transform:uppercase}.statistics-kpi strong{display:block;margin-top:5px;color:var(--navy);font-size:25px;line-height:1}.statistics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.statistics-card{min-width:0;padding:16px;border:1px solid #dbe4ef;border-radius:11px;background:#fff}.statistics-card h4{margin:0 0 14px;color:var(--navy);font-size:14px}.statistics-bars{display:grid;gap:13px}.statistics-bar-heading{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;color:#334155;font-size:12px}.statistics-bar-heading strong{color:var(--navy)}.statistics-bar-track{height:10px;overflow:hidden;border-radius:999px;background:#e5e7eb}.statistics-bar-fill{display:block;height:100%;min-width:0;border-radius:inherit;background:var(--blue)}.statistics-bar-fill.yellow{background:var(--yellow)}.statistics-bar-fill.transfer{background:var(--transfer)}.statistics-bar-fill.blue{background:var(--blue)}.statistics-bar-fill.green{background:var(--green)}.statistics-bar-fill.red{background:var(--red)}.statistics-ranking{display:grid;gap:9px}.statistics-ranking-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 10px;border-radius:8px;background:#f8fafc;color:#334155;font-size:12px}.statistics-ranking-row span{overflow-wrap:anywhere}.statistics-ranking-row strong{color:var(--navy)}.statistics-empty{padding:20px;border:1px dashed #cbd5e1;border-radius:9px;text-align:center;color:#64748b;font-size:12px;line-height:1.5}.statistics-detail-note{margin:10px 0 0;color:#64748b;font-size:11px;line-height:1.45}.statistics-table .type-cell{min-width:150px}.statistics-table .status-cell{min-width:220px;white-space:normal}.statistics-table .patient-cell{min-width:170px}
   .reminder-modal{position:fixed;inset:0;z-index:3200;display:grid;place-items:center;padding:20px;background:rgba(2,8,23,.7);opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}.reminder-modal.show{opacity:1;visibility:visible}.reminder-dialog{width:min(430px,100%);padding:30px;border:1px solid rgba(255,255,255,.25);border-radius:18px;background:#fff;text-align:center;box-shadow:0 28px 80px rgba(0,0,0,.38);transform:translateY(12px) scale(.98);transition:.2s}.reminder-modal.show .reminder-dialog{transform:none}.reminder-symbol{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:#e8eef6;color:var(--navy);font-size:28px;font-weight:900}.reminder-eyebrow{display:block;margin-bottom:7px;color:var(--navy-2);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.reminder-dialog h3{margin:0 0 9px;color:var(--navy);font-size:22px}.reminder-dialog p{margin:0 0 22px;color:#475569;font-size:15px;line-height:1.6}.reminder-dialog .btn{width:100%;min-height:48px}
 
   @media(max-width:1024px){
@@ -1833,6 +1839,7 @@
 
   .records-donut{
     --chart-yellow:0deg;
+      --chart-transfer:0deg;
     --chart-blue:0deg;
     --chart-green:0deg;
     width:230px;
@@ -1842,7 +1849,8 @@
     border-radius:50%;
     background:conic-gradient(
       var(--yellow) 0deg var(--chart-yellow),
-      var(--blue) var(--chart-yellow) var(--chart-blue),
+      var(--transfer) var(--chart-yellow) var(--chart-transfer),
+      var(--blue) var(--chart-transfer) var(--chart-blue),
       var(--green) var(--chart-blue) var(--chart-green),
       var(--red) var(--chart-green) 360deg
     );
@@ -1917,6 +1925,7 @@
   }
 
   .chart-dot.yellow{background:var(--yellow)}
+  .chart-dot.transfer{background:var(--transfer)}
   .chart-dot.blue{background:var(--blue)}
   .chart-dot.green{background:var(--green)}
   .chart-dot.red{background:var(--red)}
@@ -2177,7 +2186,8 @@
 
       <div class="grid dashboard-record-stats">
         <div class="stat"><div class="label">🟨 Pendências</div><div class="value" id="countYellow">0</div></div>
-        <div class="stat"><div class="label">🟦 Transferências / Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
+        <div class="stat"><div class="label">🟪 Transferências externas</div><div class="value" id="countTransfer">0</div></div>
+        <div class="stat"><div class="label">🟦 Avaliações / Exames</div><div class="value" id="countBlue">0</div></div>
         <div class="stat"><div class="label">🟩 Autorizações</div><div class="value" id="countGreen">0</div></div>
         <div class="stat"><div class="label">🟥 Negativas</div><div class="value" id="countRed">0</div></div>
         <div class="stat total-records-stat">
@@ -2204,7 +2214,8 @@
           </div>
           <div class="records-chart-legend" id="recordsChartLegend">
             <div class="chart-legend-row"><span class="chart-dot yellow"></span><span>Pendências</span><strong id="chartYellowValue">0 (0%)</strong></div>
-            <div class="chart-legend-row"><span class="chart-dot blue"></span><span>Transferências / Avaliações / Exames</span><strong id="chartBlueValue">0 (0%)</strong></div>
+            <div class="chart-legend-row"><span class="chart-dot transfer"></span><span>Transferências externas</span><strong id="chartTransferValue">0 (0%)</strong></div>
+            <div class="chart-legend-row"><span class="chart-dot blue"></span><span>Avaliações / Exames</span><strong id="chartBlueValue">0 (0%)</strong></div>
             <div class="chart-legend-row"><span class="chart-dot green"></span><span>Autorizações</span><strong id="chartGreenValue">0 (0%)</strong></div>
             <div class="chart-legend-row"><span class="chart-dot red"></span><span>Negativas</span><strong id="chartRedValue">0 (0%)</strong></div>
           </div>
@@ -2410,7 +2421,8 @@
             <label for="module">Módulo</label>
             <select id="module">
               <option value="yellow">🟨 Pendências</option>
-              <option value="blue">🟦 Transferências externas / Avaliações / Exames</option>
+              <option value="transfer">🟪 Transferências externas</option>
+              <option value="blue">🟦 Avaliações / Exames</option>
               <option value="green">🟩 Autorizações de transferência/internação</option>
               <option value="red">🟥 Negativas</option>
             </select>
@@ -2512,9 +2524,41 @@
               </div>
             </div>
           </div>
+          <div id="externalTransferDetails" class="blue-record-details hidden" style="grid-column:1/-1">
+            <div class="blue-record-details-header">
+              <strong>Detalhamento — Transferência externa</strong>
+              <span>Informe se a transferência foi solicitada ou autorizada e complete os dados correspondentes.</span>
+            </div>
+            <div class="form-grid blue-record-details-grid">
+              <div>
+                <label for="externalTransferStatus">Situação da transferência</label>
+                <select id="externalTransferStatus">
+                  <option value="">Selecione</option>
+                  <option value="solicitada">Solicitada</option>
+                  <option value="autorizada">Autorizada</option>
+                </select>
+              </div>
+              <div id="externalTransferRequestChannelField" class="external-transfer-requested-only hidden">
+                <label for="externalTransferRequestChannel">Meio da solicitação</label>
+                <select id="externalTransferRequestChannel">
+                  <option value="">Selecione</option>
+                  <option value="email">E-mail</option>
+                  <option value="regularo">RegulaRO</option>
+                </select>
+              </div>
+              <div id="externalTransferProtocolField" class="external-transfer-regularo-only hidden">
+                <label for="externalTransferProtocol">Protocolo RegulaRO</label>
+                <input id="externalTransferProtocol" maxlength="120" placeholder="Informe o número do protocolo">
+              </div>
+              <div id="externalTransferWardBedField" class="external-transfer-authorized-only hidden">
+                <label for="externalTransferWardBed">Enfermaria/Leito</label>
+                <input id="externalTransferWardBed" maxlength="160" placeholder="Ex.: Enfermaria 2 — Leito 05">
+              </div>
+            </div>
+          </div>
           <div id="blueRecordDetails" class="blue-record-details hidden" style="grid-column:1/-1">
             <div class="blue-record-details-header">
-              <strong>Detalhamento — Transferências externas / Avaliações / Exames</strong>
+              <strong>Detalhamento — Avaliações / Exames</strong>
               <span>Selecione o tipo para registrar as informações específicas. O campo Destino será utilizado como local da avaliação ou do exame.</span>
             </div>
             <div class="form-grid blue-record-details-grid">
@@ -2522,7 +2566,6 @@
                 <label for="blueRecordType">Tipo de registro</label>
                 <select id="blueRecordType">
                   <option value="">Selecione</option>
-                  <option value="transferencia">Transferência externa</option>
                   <option value="avaliacao">Avaliação</option>
                   <option value="exame">Exame</option>
                 </select>
@@ -2799,7 +2842,8 @@
             <select id="statisticsModule">
               <option value="">Todos</option>
               <option value="yellow">Pendências</option>
-              <option value="blue">Transferências, avaliações e exames</option>
+              <option value="transfer">Transferências externas</option>
+              <option value="blue">Avaliações e exames</option>
               <option value="green">Autorizações</option>
               <option value="red">Negativas</option>
             </select>
@@ -3248,7 +3292,8 @@
 <script>
   const moduleMeta = {
     yellow: { title: "🟨 PENDÊNCIAS", css: "yellow" },
-    blue: { title: "🟦 TRANSFERÊNCIAS EXTERNAS / AVALIAÇÕES / EXAMES", css: "blue" },
+    transfer: { title: "🟪 TRANSFERÊNCIAS EXTERNAS", css: "transfer" },
+    blue: { title: "🟦 AVALIAÇÕES / EXAMES", css: "blue" },
     green: { title: "🟩 AUTORIZAÇÕES DE TRANSFERÊNCIA/INTERNAÇÃO", css: "green" },
     red: { title: "🟥 NEGATIVAS", css: "red" }
   };
@@ -3274,7 +3319,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.7";
+  const SCIR_VERSION = "1.16.8";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -3413,6 +3458,24 @@
     return Object.values(candidate.sbar || {}).some(value => String(value || "").trim());
   }
 
+  function normalizeRecordCategory(record){
+    if(!record || typeof record !== "object") return record;
+    if(record.module === "blue" && record.blueRecordType === "transferencia"){
+      return {...record,module:"transfer"};
+    }
+    return record;
+  }
+
+  function normalizeRecordCollections(candidate){
+    if(!candidate || typeof candidate !== "object") return candidate;
+    candidate.records = Array.isArray(candidate.records) ? candidate.records.map(normalizeRecordCategory) : [];
+    candidate.history = Array.isArray(candidate.history) ? candidate.history.map(item => ({
+      ...item,
+      records:Array.isArray(item?.records) ? item.records.map(normalizeRecordCategory) : []
+    })) : [];
+    return candidate;
+  }
+
   let state = readLocalState() || {
     shift: null,
     records: [],
@@ -3437,6 +3500,7 @@
 
   state.records = Array.isArray(state.records) ? state.records : [];
   state.history = Array.isArray(state.history) ? state.history : [];
+  normalizeRecordCollections(state);
   state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
   state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
   state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;
@@ -4138,6 +4202,7 @@
           state = result.state;
           state.records = Array.isArray(state.records) ? state.records : [];
           state.history = Array.isArray(state.history) ? state.history : [];
+          normalizeRecordCollections(state);
           state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
           state.sbar = state.sbar || {operationalStatus:"",turnover:"",vacancies:"",background:"",professionalAbsence:"",assessment:"",recommendation:""};
           state.sbar.professionalAbsence = typeof state.sbar.professionalAbsence === "string" ? state.sbar.professionalAbsence : "";
@@ -5089,6 +5154,12 @@
           <div><strong>Destino:</strong> ${escapeHtml(recordDestinationText(record))}</div>
           <div><strong>Status:</strong> ${recordStatusDocumentHtml(record)}</div>
           ${record.module === "blue" && record.blueRecordType ? `<div><strong>Tipo:</strong> ${escapeHtml(blueRecordTypeLabel(record.blueRecordType))}</div>` : ""}
+          ${isExternalTransferRecord(record) ? `<div class="evaluation-summary">
+            <strong>Situação da transferência:</strong> ${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}<br>
+            ${record.externalTransferStatus === "solicitada" ? `<strong>Meio:</strong> ${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}<br>` : ""}
+            ${record.externalTransferStatus === "solicitada" && record.externalTransferRequestChannel === "regularo" ? `<strong>Protocolo RegulaRO:</strong> ${escapeHtml(record.externalTransferProtocol || "Não informado")}<br>` : ""}
+            ${record.externalTransferStatus === "autorizada" ? `<strong>Enfermaria/Leito:</strong> ${escapeHtml(record.externalTransferWardBed || "Não informado")}` : ""}
+          </div>` : ""}
           ${isEvaluationRecord(record) ? `<div class="evaluation-summary">
             <strong>Avaliação:</strong> ${escapeHtml(record.evaluationSpecialty || "Não informada")}<br>
             <strong>Profissional:</strong> ${escapeHtml(record.evaluationSpecialist || "Não informado")}<br>
@@ -5199,7 +5270,19 @@
   }
 
   function blueRecordTypeLabel(value){
-    return ({transferencia:"Transferência externa",avaliacao:"Avaliação",exame:"Exame"})[value] || "";
+    return ({avaliacao:"Avaliação",exame:"Exame"})[value] || "";
+  }
+
+  function externalTransferStatusLabel(value){
+    return ({solicitada:"Solicitada",autorizada:"Autorizada"})[value] || "Não informada";
+  }
+
+  function externalTransferChannelLabel(value){
+    return ({email:"E-mail",regularo:"RegulaRO"})[value] || "Não informado";
+  }
+
+  function isExternalTransferRecord(record){
+    return !!record && record.module === "transfer";
   }
 
   function isEvaluationRecord(record){
@@ -5274,6 +5357,18 @@
       const wardBed = authorizationWardBedText(record);
       if(wardBed) parts.push(`Enfermaria/Leito: ${wardBed}`);
     }
+    if(isExternalTransferRecord(record)){
+      const transferStatus = String(record.externalTransferStatus || "");
+      if(transferStatus) parts.push(externalTransferStatusLabel(transferStatus));
+      if(transferStatus === "solicitada"){
+        const channel = String(record.externalTransferRequestChannel || "");
+        if(channel) parts.push(`Solicitação por ${externalTransferChannelLabel(channel)}`);
+        if(channel === "regularo" && record.externalTransferProtocol) parts.push(`Protocolo: ${String(record.externalTransferProtocol).trim()}`);
+      }
+      if(transferStatus === "autorizada" && record.externalTransferWardBed){
+        parts.push(`Enfermaria/Leito: ${String(record.externalTransferWardBed).trim()}`);
+      }
+    }
     return parts.join(" · ");
   }
 
@@ -5286,13 +5381,22 @@
   function updateBlueRecordFields(){
     const selectedModule = $("module")?.value || "";
     const isBlue = selectedModule === "blue";
+    const isExternalTransfer = selectedModule === "transfer";
     const isAuthorization = selectedModule === "green";
     $("blueRecordDetails")?.classList.toggle("hidden", !isBlue);
+    $("externalTransferDetails")?.classList.toggle("hidden", !isExternalTransfer);
     $("authorizationLocationDetails")?.classList.toggle("hidden", !isAuthorization);
 
     const destination = $("destination");
     if(destination) destination.placeholder = "Selecione um destino do CEMETRON ou digite outro";
-    if($("destinationLabel")) $("destinationLabel").textContent = isAuthorization ? "Destino autorizado" : "Destino";
+    const transferStatus = $("externalTransferStatus")?.value || "";
+    const transferRequested = isExternalTransfer && transferStatus === "solicitada";
+    const transferAuthorized = isExternalTransfer && transferStatus === "autorizada";
+    const transferChannel = $("externalTransferRequestChannel")?.value || "";
+    if($("destinationLabel")) $("destinationLabel").textContent = isAuthorization || transferAuthorized ? "Destino autorizado" : "Destino";
+    document.querySelectorAll(".external-transfer-requested-only").forEach(el => el.classList.toggle("hidden", !transferRequested));
+    document.querySelectorAll(".external-transfer-regularo-only").forEach(el => el.classList.toggle("hidden", !(transferRequested && transferChannel === "regularo")));
+    document.querySelectorAll(".external-transfer-authorized-only").forEach(el => el.classList.toggle("hidden", !transferAuthorized));
 
     const selectedType = $("blueRecordType")?.value || "";
     const isEvaluation = isBlue && selectedType === "avaliacao";
@@ -5308,6 +5412,13 @@
       "evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance",
       "examName","examDate","examTime","examGuidance"
     ].forEach(id => {
+      if($(id)) $(id).value = "";
+    });
+    updateBlueRecordFields();
+  }
+
+  function clearExternalTransferFields(){
+    ["externalTransferStatus","externalTransferRequestChannel","externalTransferProtocol","externalTransferWardBed"].forEach(id => {
       if($(id)) $(id).value = "";
     });
     updateBlueRecordFields();
@@ -5639,6 +5750,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     const records = Array.isArray(state.records) ? state.records : [];
     const counts = {
       yellow:records.filter(r=>r.module==="yellow").length,
+      transfer:records.filter(r=>r.module==="transfer").length,
       blue:records.filter(r=>r.module==="blue").length,
       green:records.filter(r=>r.module==="green").length,
       red:records.filter(r=>r.module==="red").length
@@ -5646,6 +5758,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     const total = records.length;
 
     $("countYellow").textContent = counts.yellow;
+    $("countTransfer").textContent = counts.transfer;
     $("countBlue").textContent = counts.blue;
     $("countGreen").textContent = counts.green;
     $("countRed").textContent = counts.red;
@@ -5656,6 +5769,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
 
     if($("chartTotalRecords")) $("chartTotalRecords").textContent = total;
     if($("chartYellowValue")) $("chartYellowValue").textContent = formatChartValue(counts.yellow);
+    if($("chartTransferValue")) $("chartTransferValue").textContent = formatChartValue(counts.transfer);
     if($("chartBlueValue")) $("chartBlueValue").textContent = formatChartValue(counts.blue);
     if($("chartGreenValue")) $("chartGreenValue").textContent = formatChartValue(counts.green);
     if($("chartRedValue")) $("chartRedValue").textContent = formatChartValue(counts.red);
@@ -5663,16 +5777,18 @@ ${regulatorFooterHtml()}</div></body></html>`;
     const donut = $("recordsDonut");
     if(donut){
       const yellowEnd = percent(counts.yellow) * 3.6;
-      const blueEnd = yellowEnd + percent(counts.blue) * 3.6;
+      const transferEnd = yellowEnd + percent(counts.transfer) * 3.6;
+      const blueEnd = transferEnd + percent(counts.blue) * 3.6;
       const greenEnd = blueEnd + percent(counts.green) * 3.6;
       donut.style.setProperty("--chart-yellow", `${yellowEnd}deg`);
+      donut.style.setProperty("--chart-transfer", `${transferEnd}deg`);
       donut.style.setProperty("--chart-blue", `${blueEnd}deg`);
       donut.style.setProperty("--chart-green", `${greenEnd}deg`);
       donut.classList.toggle("empty", total === 0);
       donut.setAttribute(
         "aria-label",
         total
-          ? `Total de ${total} registros: ${counts.yellow} pendências, ${counts.blue} transferências, avaliações ou exames, ${counts.green} autorizações e ${counts.red} negativas.`
+          ? `Total de ${total} registros: ${counts.yellow} pendências, ${counts.transfer} transferências externas, ${counts.blue} avaliações ou exames, ${counts.green} autorizações e ${counts.red} negativas.`
           : "Nenhum registro no plantão atual."
       );
     }
@@ -6273,6 +6389,10 @@ ${regulatorFooterHtml()}</div></body></html>`;
           authorizationWardBedText(record),
           record.status,
           record.blueRecordType,
+          externalTransferStatusLabel(record.externalTransferStatus),
+          externalTransferChannelLabel(record.externalTransferRequestChannel),
+          record.externalTransferProtocol,
+          record.externalTransferWardBed,
           record.evaluationSpecialty,
           record.evaluationSpecialist,
           record.examName
@@ -6296,7 +6416,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
       return dateOrder || String(a.record.requestTime || "").localeCompare(String(b.record.requestTime || ""));
     });
 
-    const moduleCounts = {yellow:0,blue:0,green:0,red:0};
+    const moduleCounts = {yellow:0,transfer:0,blue:0,green:0,red:0};
     rows.forEach(({record}) => {
       if(Object.prototype.hasOwnProperty.call(moduleCounts, record.module)) moduleCounts[record.module] += 1;
     });
@@ -6432,7 +6552,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <tr><td class="title" colspan="12">ESTATÍSTICAS DOS PLANTÕES — NIR CEMETRON</td></tr>
     <tr><td class="meta" colspan="2">Filtros aplicados</td><td colspan="10">${escapeHtml(statisticsFilterSummary(filters))}</td></tr>
     <tr><td class="meta">Plantões</td><td>${shifts.length}</td><td class="meta">Registros</td><td>${rows.length}</td><td class="meta">E-mails recebidos</td><td>${emailTotals.received}</td><td class="meta">E-mails tratados</td><td>${treated} (${rate.toLocaleString("pt-BR",{maximumFractionDigits:1})}%)</td><td class="meta">Atualizações do censo</td><td>${censusUpdates}</td><td colspan="2"></td></tr>
-    <tr><td class="meta">Pendências</td><td>${moduleCounts.yellow}</td><td class="meta">Transferências/Avaliações/Exames</td><td>${moduleCounts.blue}</td><td class="meta">Autorizações</td><td>${moduleCounts.green}</td><td class="meta">Negativas</td><td>${moduleCounts.red}</td><td colspan="4"></td></tr>
+    <tr><td class="meta">Pendências</td><td>${moduleCounts.yellow}</td><td class="meta">Transferências externas</td><td>${moduleCounts.transfer}</td><td class="meta">Avaliações/Exames</td><td>${moduleCounts.blue}</td><td class="meta">Autorizações</td><td>${moduleCounts.green}</td><td class="meta">Negativas</td><td>${moduleCounts.red}</td><td colspan="2"></td></tr>
     <tr><td colspan="12"></td></tr><tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
     ${detailRows || '<tr><td colspan="12">Nenhum registro encontrado.</td></tr>'}</table></body></html>`;
     const stamp = new Date().toISOString().slice(0,10);
@@ -6800,7 +6920,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
 
     const locked = isShiftClosed();
-    ["module","requestTime","patient","origin","hd","destination","authorizationWardBed","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance","examName","examDate","examTime","examGuidance","addRecord","clearForm"].forEach(id => {
+    ["module","requestTime","patient","origin","hd","destination","authorizationWardBed","externalTransferStatus","externalTransferRequestChannel","externalTransferProtocol","externalTransferWardBed","status","blueRecordType","evaluationSpecialty","evaluationSpecialist","evaluationDate","evaluationTime","evaluationGuidance","examName","examDate","examTime","examGuidance","addRecord","clearForm"].forEach(id => {
       if($(id)) $(id).disabled = locked;
     });
     document.querySelectorAll('input[name="requestSource"]').forEach(input => {
@@ -6829,6 +6949,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = record.hd || "";
     $("destination").value = record.destination || "";
     $("authorizationWardBed").value = authorizationWardBedText(record);
+    $("externalTransferStatus").value = record.externalTransferStatus || "";
+    $("externalTransferRequestChannel").value = record.externalTransferRequestChannel || "";
+    $("externalTransferProtocol").value = record.externalTransferProtocol || "";
+    $("externalTransferWardBed").value = record.externalTransferWardBed || "";
     $("status").value = record.status || "";
     initRichEditor("status");
     setRichEditorValue("status", record.statusHtml || "", record.status || "");
@@ -7052,6 +7176,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
   $("module").addEventListener("change", updateBlueRecordFields);
   $("blueRecordType").addEventListener("change", updateBlueRecordFields);
+  $("externalTransferStatus").addEventListener("change", updateBlueRecordFields);
+  $("externalTransferRequestChannel").addEventListener("change", updateBlueRecordFields);
   updateBlueRecordFields();
 
   $("addRecord").addEventListener("click", () => {
@@ -7078,6 +7204,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       hd: $("hd").value.trim(),
       destination: $("destination").value.trim(),
       authorizationWardBed: $("module").value === "green" ? $("authorizationWardBed").value.trim() : "",
+      externalTransferStatus: $("module").value === "transfer" ? $("externalTransferStatus").value : "",
+      externalTransferRequestChannel: $("module").value === "transfer" && $("externalTransferStatus").value === "solicitada" ? $("externalTransferRequestChannel").value : "",
+      externalTransferProtocol: $("module").value === "transfer" && $("externalTransferStatus").value === "solicitada" && $("externalTransferRequestChannel").value === "regularo" ? $("externalTransferProtocol").value.trim() : "",
+      externalTransferWardBed: $("module").value === "transfer" && $("externalTransferStatus").value === "autorizada" ? $("externalTransferWardBed").value.trim() : "",
       status: $("status").value.trim(),
       statusHtml: getRichEditorHtml("status"),
       blueRecordType: $("module").value === "blue" ? $("blueRecordType").value : "",
@@ -7101,7 +7231,19 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
     if(record.module === "blue" && !record.blueRecordType){
-      alert("Selecione o tipo do registro: Transferência externa, Avaliação ou Exame.");
+      alert("Selecione o tipo do registro: Avaliação ou Exame.");
+      return;
+    }
+    if(isExternalTransferRecord(record) && !record.externalTransferStatus){
+      alert("Informe se a transferência externa foi solicitada ou autorizada.");
+      return;
+    }
+    if(isExternalTransferRecord(record) && record.externalTransferStatus === "solicitada" && !record.externalTransferRequestChannel){
+      alert("Selecione o meio da solicitação: E-mail ou RegulaRO.");
+      return;
+    }
+    if(isExternalTransferRecord(record) && record.externalTransferStatus === "solicitada" && record.externalTransferRequestChannel === "regularo" && !record.externalTransferProtocol){
+      alert("Informe o protocolo RegulaRO.");
       return;
     }
     if(isEvaluationRecord(record) && (!record.evaluationSpecialty || !record.evaluationSpecialist || !record.evaluationDate || !record.evaluationTime)){
@@ -7133,6 +7275,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     $("hd").value = "";
     $("destination").value = "";
     clearAuthorizationRecordFields();
+    clearExternalTransferFields();
     $("status").value = "";
     setRichEditorValue("status", "", "");
     clearBlueRecordFields();
@@ -7143,6 +7286,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     setRichEditorValue("status", "", "");
     clearBlueRecordFields();
     clearAuthorizationRecordFields();
+    clearExternalTransferFields();
     setSelectedRequestSource("");
     setSelectedPatientProfile("");
     $("requestTime").value = getCurrentTime();
@@ -7301,7 +7445,17 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   function sbarSummaryCounts(){
     const records = Array.isArray(state.records) ? state.records : [];
     const count = key => records.filter(r => r.module === key).length;
-    return {total:records.length,yellow:count("yellow"),blue:count("blue"),green:count("green"),red:count("red")};
+    return {total:records.length,yellow:count("yellow"),transfer:count("transfer"),blue:count("blue"),green:count("green"),red:count("red")};
+  }
+
+  function appendExternalTransferRows(rows, record){
+    if(!isExternalTransferRecord(record)) return;
+    rows.push(["Situação da transferência", externalTransferStatusLabel(record.externalTransferStatus)]);
+    if(record.externalTransferStatus === "solicitada"){
+      rows.push(["Meio da solicitação", externalTransferChannelLabel(record.externalTransferRequestChannel)]);
+      if(record.externalTransferRequestChannel === "regularo") rows.push(["Protocolo RegulaRO", record.externalTransferProtocol || ""]);
+    }
+    if(record.externalTransferStatus === "autorizada") rows.push(["Enfermaria/Leito", record.externalTransferWardBed || ""]);
   }
 
   function sbarEmailSummary(){
@@ -7325,6 +7479,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Destino", recordDestinationText(record)],
       ["Status", record.status || ""]
     ];
+    appendExternalTransferRows(rows, record);
     if(record.module === "blue" && record.blueRecordType) rows.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
     if(isEvaluationRecord(record)){
       rows.push(["Especialidade",record.evaluationSpecialty || ""],["Profissional",record.evaluationSpecialist || ""],["Data",formatEvaluationDate(record.evaluationDate)],["Horário",record.evaluationTime || ""],["Orientações",record.evaluationGuidance || ""]);
@@ -7361,6 +7516,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       ["Destino", recordDestinationText(record)],
       ["Status", record.status || ""]
     ];
+    appendExternalTransferRows(lines, record);
     if(record.module === "blue" && record.blueRecordType){
       lines.push(["Tipo", blueRecordTypeLabel(record.blueRecordType)]);
     }
@@ -7409,6 +7565,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `HD/Problemas: ${r.hd}`,
       `DESTINO: ${recordDestinationText(r)}`,
       `STATUS: ${r.status}`,
+      ...(isExternalTransferRecord(r) ? [
+        `SITUAÇÃO DA TRANSFERÊNCIA: ${externalTransferStatusLabel(r.externalTransferStatus)}`,
+        ...(r.externalTransferStatus === "solicitada" ? [`MEIO DA SOLICITAÇÃO: ${externalTransferChannelLabel(r.externalTransferRequestChannel)}`] : []),
+        ...(r.externalTransferStatus === "solicitada" && r.externalTransferRequestChannel === "regularo" ? [`PROTOCOLO REGULARO: ${r.externalTransferProtocol || ""}`] : []),
+        ...(r.externalTransferStatus === "autorizada" ? [`ENFERMARIA/LEITO: ${r.externalTransferWardBed || ""}`] : [])
+      ] : []),
       ...(r.module === "blue" && r.blueRecordType ? [`TIPO: ${blueRecordTypeLabel(r.blueRecordType)}`] : []),
       ...(isEvaluationRecord(r) ? [
         `ESPECIALIDADE: ${r.evaluationSpecialty || ""}`,
@@ -7729,7 +7891,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         return [
           `NÚMERO DE OCORRÊNCIAS: ${counts.total}`,
           `PENDÊNCIAS: ${counts.yellow}`,
-          `TRANSFERÊNCIAS / AVALIAÇÕES / EXAMES: ${counts.blue}`,
+          `TRANSFERÊNCIAS EXTERNAS: ${counts.transfer}`,
+          `AVALIAÇÕES / EXAMES: ${counts.blue}`,
           `AUTORIZAÇÕES: ${counts.green}`,
           `NEGATIVAS: ${counts.red}`,
           "",
@@ -7743,6 +7906,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       })(),
       "",
       moduleMeta.yellow.title, "", buildRecordsText("yellow"), "",
+      moduleMeta.transfer.title, "", buildRecordsText("transfer"), "",
       moduleMeta.blue.title, "", buildRecordsText("blue"), "",
       moduleMeta.green.title, "", buildRecordsText("green"), "",
       moduleMeta.red.title, "", buildRecordsText("red"),
@@ -7818,7 +7982,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                     <div class="sbar-summary-grid">
                       <div class="sbar-summary-card">${sbarIcon("list","lg")}<span>Número de ocorrências</span><strong>${counts.total}</strong></div>
                       <div class="sbar-summary-card yellow">${sbarIcon("hourglass","lg")}<span>Pendências</span><strong>${counts.yellow}</strong></div>
-                      <div class="sbar-summary-card blue">${sbarIcon("transfer","lg")}<span>Transferências / Avaliações / Exames</span><strong>${counts.blue}</strong></div>
+                      <div class="sbar-summary-card transfer">${sbarIcon("transfer","lg")}<span>Transferências externas</span><strong>${counts.transfer}</strong></div>
+                      <div class="sbar-summary-card blue">${sbarIcon("list","lg")}<span>Avaliações / Exames</span><strong>${counts.blue}</strong></div>
                       <div class="sbar-summary-card green">${sbarIcon("check","lg")}<span>Autorizações</span><strong>${counts.green}</strong></div>
                       <div class="sbar-summary-card red">${sbarIcon("x","lg")}<span>Negativas</span><strong>${counts.red}</strong></div>
                     </div>
@@ -7840,6 +8005,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 <div class="sbar-full-report-page-break">
                   <div class="sbar-full-report-title">Relatório completo</div>
                   ${sbarFullGroupMarkup("yellow")}
+                  ${sbarFullGroupMarkup("transfer")}
                   ${sbarFullGroupMarkup("blue")}
                   ${sbarFullGroupMarkup("green")}
                   ${sbarFullGroupMarkup("red")}
@@ -7925,6 +8091,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-record-group{margin-top:7px;border:1px solid #dbe3ec;border-radius:8px;overflow:hidden;break-inside:auto}
   .sbar-record-group-title{padding:6px 8px;font-weight:800;color:#0f2747;font-size:10px;break-after:avoid}
   .sbar-record-group-title.yellow{background:#fff7d6}
+  .sbar-record-group-title.transfer{background:#f3e8ff}
   .sbar-record-group-title.blue{background:#e8f1ff}
   .sbar-record-group-title.green{background:#e8f7ee}
   .sbar-record-group-title.red{background:#fdecec}
@@ -7934,16 +8101,16 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-census-head>div,.sbar-census-row>div{padding:4px 6px}.sbar-census-row{border-top:1px solid #e5e7eb;font-size:8.8px}
   .sbar-census-value{text-align:center;font-weight:800}
   .sbar-census-value{text-align:center;font-weight:800}
-  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin:0}
   .sbar-summary-card{padding:8px 7px;border:0;border-right:1px solid #dbe3ec;border-radius:0;background:#f8fafc;min-height:52px}
   .sbar-summary-card span{display:block;color:#64748b;font-size:7.8px;font-weight:600;line-height:1.15}.sbar-summary-card strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500;line-height:1}
-  .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4}.sbar-summary-card:last-child{border-right:0}
+  .sbar-summary-card.yellow{background:#fffaf0;border-color:#f5df9a}.sbar-summary-card.transfer{background:#f7f2ff;border-color:#d8c4ff}.sbar-summary-card.blue{background:#f2f7ff;border-color:#bfd5f5}.sbar-summary-card.green{background:#f1fbf5;border-color:#b9e4c9}.sbar-summary-card.red{background:#fff4f4}.sbar-summary-card:last-child{border-right:0}
   .sbar-summary-box,.sbar-email-box{margin:6px 0 8px;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:6px 8px;background:#eef4fb;color:#0f2747;font-size:9.5px;font-weight:600;border-bottom:1px solid #dbe3ec}
   .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:9px 7px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:52px}.sbar-email-metric:first-child{border-left:0}
   .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:600}.sbar-email-metric strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500}
   .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:2mm}.sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
   .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
-  .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
+  .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.transfer .sbar-full-group-title{background:#f3e8ff}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
   .sbar-count-pill{display:inline-flex;min-width:20px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
   .sbar-record-full{padding:5px 7px;border-top:1px solid #e5e7eb;font-size:8.8px;line-height:1.22;break-inside:avoid}.sbar-record-full:first-of-type{border-top:0}
   .sbar-record-line{display:grid;grid-template-columns:120px 1fr;gap:5px;margin:1px 0}.sbar-record-line strong{color:#0f2747}.sbar-record-line span{min-width:0;overflow-wrap:anywhere}
@@ -7977,11 +8144,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-background-card-text{color:#64748b;font-size:8.5px;line-height:1.3}
   .sbar-summary-box,.sbar-email-box{margin:5px 0 7px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff}
   .sbar-summary-title,.sbar-email-title{padding:5px 7px;background:#eef4fb;color:#111827;font-size:9px;font-weight:500}
-  .sbar-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0}
+  .sbar-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin:0}
   .sbar-summary-card{padding:7px 6px;border-right:1px solid #dbe3ec;background:#f8fafc;min-height:50px}
   .sbar-summary-card span{display:block;color:#64748b;font-size:7.5px;font-weight:500;line-height:1.15}
   .sbar-summary-card strong{display:block;margin-top:3px;color:#475569;font-size:13px;font-weight:500;line-height:1}
-  .sbar-summary-card.yellow{background:#fffaf0}.sbar-summary-card.blue{background:#f2f7ff}.sbar-summary-card.green{background:#f1fbf5}.sbar-summary-card.red{background:#fff4f4}
+  .sbar-summary-card.yellow{background:#fffaf0}.sbar-summary-card.transfer{background:#f7f2ff}.sbar-summary-card.blue{background:#f2f7ff}.sbar-summary-card.green{background:#f1fbf5}.sbar-summary-card.red{background:#fff4f4}
   .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}
   .sbar-email-metric{padding:7px 6px;text-align:center;border-left:1px solid #dbe3ec;background:#fff;min-height:48px}
   .sbar-email-metric:first-child{border-left:0;background:#f8fafc}.sbar-email-metric:nth-child(2){background:#f1fbf5}.sbar-email-metric:nth-child(3){background:#f7f5ff}
@@ -7990,6 +8157,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 
 .sbar-summary-card:last-child{border-right:0}
 .sbar-summary-card.yellow{background:#fffaf0}
+.sbar-summary-card.transfer{background:#f7f2ff}
 .sbar-summary-card.blue{background:#f2f7ff}
 .sbar-summary-card.green{background:#f2fbf7}
 .sbar-summary-card.red{background:#fff5f5}
@@ -8343,6 +8511,7 @@ ${reportHtml}
       localStorage.setItem(LOCAL_SAVE_TIME_STORAGE_KEY, new Date().toISOString());
       state.records = Array.isArray(state.records) ? state.records : [];
       state.history = Array.isArray(state.history) ? state.history : [];
+      normalizeRecordCollections(state);
       state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
       state.standardMessages = Array.isArray(state.standardMessages) ? state.standardMessages : [];
       state.scaleLinks = normalizeScaleLinks(state.scaleLinks);
@@ -8368,6 +8537,7 @@ ${reportHtml}
       state = imported;
       state.records = Array.isArray(state.records) ? state.records : [];
       state.history = Array.isArray(state.history) ? state.history : [];
+      normalizeRecordCollections(state);
       state.calendarShifts = Array.isArray(state.calendarShifts) ? state.calendarShifts : [];
       state.dashboardNotes = typeof state.dashboardNotes === "string" ? state.dashboardNotes : "";
       state.dashboardNotesUpdatedAt = state.dashboardNotesUpdatedAt || null;

@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.7 com tags padronizadas no SBAR
+SCIR — NIR CEMETRON | Versão 1.16.8 com transferências externas separadas
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -27,6 +27,11 @@ CAMINHO SIMPLIFICADO
 - A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
 - O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
 - Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.
+- “Transferências externas” é uma categoria separada de “Avaliações / Exames”.
+- A transferência externa pode ser marcada como Solicitada ou Autorizada.
+- Na solicitada, selecione E-mail ou RegulaRO; o protocolo é obrigatório para RegulaRO.
+- Na autorizada, além do destino, pode ser informado o campo único “Enfermaria/Leito”.
+- Transferências antigas são migradas automaticamente para a nova categoria sem perda de dados.
 - Nas autorizações, enfermaria e leito são preenchidos em um único campo “Enfermaria/Leito”.
 - Em “Novo registro”, a origem da solicitação pode ser marcada como CRUE, CEREL, Interna, Direta ou N/A.
 - As cores são: CRUE em vermelho, CEREL em laranja, Interna em verde, Direta em azul e N/A em cinza.

@@ -94,7 +94,7 @@ test("censo diário inclui Masculina 2 - PPL em todos os fluxos",() => {
   assert.match(html,/tag\.includes\("PPL"\) \? "ppl"/);
   assert.match(html,/\.sbar-sector-tag\.infecto,\.sbar-sector-tag\.ppl\{background:#dcfce7;color:#166534;border:1px solid #86efac\}/);
   assert.match(html,/\.sbar-sector-tag\.cm\{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd\}/);
-  assert.match(html,/const SCIR_VERSION = "1\.16\.7"/);
+  assert.match(html,/const SCIR_VERSION = "1\.16\.8"/);
 });
 
 test("SBAR usa tags claras e o rótulo HD/Problemas",() => {
