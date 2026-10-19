@@ -8,6 +8,13 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.10 — identidade oficial nos documentos
+
+- Substitui a logomarca anterior pela imagem oficial do **CEMETRON — Centro de Medicina Tropical de Rondônia**, em maior resolução.
+- Insere a logo centralizada no cabeçalho dos PDFs de avaliação, exame, transferência externa, autorização e negativa.
+- Mantém o título, a identificação **NIR CEMETRON** e a faixa de cor correspondente a cada tipo de documento.
+- Preserva a estética, os dados e as ações de copiar e gerar PDF/imprimir já existentes.
+
 ### Versão 1.16.9 — documentos de transferência e simetria do Dashboard
 
 - Atualiza a situação da transferência externa para **Autorizada** ou **Aguardando**.

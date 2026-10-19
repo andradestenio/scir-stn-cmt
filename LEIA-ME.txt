@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.9 com documentos de transferência externa
+SCIR — NIR CEMETRON | Versão 1.16.10 com identidade oficial nos documentos
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -32,6 +32,7 @@ CAMINHO SIMPLIFICADO
 - Quando estiver aguardando, selecione E-mail ou RegulaRO; o protocolo é obrigatório para RegulaRO.
 - Cada transferência externa possui ações para copiar o texto e gerar PDF/imprimir um informe específico.
 - Os indicadores de registros do Dashboard permanecem simétricos, com seis cartões de tamanho uniforme na mesma linha em telas amplas.
+- Os PDFs de avaliação, exame, transferência externa, autorização e negativa exibem a logo oficial do CEMETRON no cabeçalho, com a faixa de cor correspondente ao documento.
 - Na autorizada, além do destino, pode ser informado o campo único “Enfermaria/Leito”.
 - Transferências antigas são migradas automaticamente para a nova categoria sem perda de dados.
 - Nas autorizações, enfermaria e leito são preenchidos em um único campo “Enfermaria/Leito”.

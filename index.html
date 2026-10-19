@@ -3363,7 +3363,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.9";
+  const SCIR_VERSION = "1.16.10";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -5319,6 +5319,49 @@
     </div>`;
   }
 
+  const DOCUMENT_LOGO_SRC = new URL("assets/logo-cemetron.png", document.baseURI).href;
+
+  function documentHeaderHtml(title, accent="#4f8edc"){
+    return `<header class="document-brand-header">
+      <img class="document-logo" src="${escapeHtml(DOCUMENT_LOGO_SRC)}" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
+      <h1>${escapeHtml(title)}</h1>
+      <div class="subtitle">NIR CEMETRON</div>
+      <div class="document-accent" style="background:${escapeHtml(accent)}"></div>
+    </header>`;
+  }
+
+  function documentHeaderCss(){
+    return `.document-brand-header{text-align:center;margin:0 0 24px}
+    .document-logo{display:block;width:270px;max-width:72%;height:auto;margin:0 auto 18px}
+    .document-brand-header h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px;letter-spacing:.01em}
+    .document-brand-header .subtitle{text-align:center;color:#64748b;font-size:12px;margin:0}
+    .document-accent{height:4px;margin-top:18px;border-radius:999px}
+    @media(max-width:600px){.document-logo{width:230px;max-width:82%}}
+    @media print{.document-brand-header{page-break-inside:avoid;break-inside:avoid}}`;
+  }
+
+  function printDocumentWindow(printWindow, errorMessage){
+    let completed = false;
+    const printNow = () => {
+      if(completed) return;
+      completed = true;
+      try{
+        printWindow.focus();
+        printWindow.print();
+      }catch(e){
+        alert(errorMessage || "Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
+      }
+    };
+    const logo = printWindow.document.querySelector(".document-logo");
+    if(!logo || logo.complete){
+      setTimeout(printNow, 80);
+      return;
+    }
+    logo.addEventListener("load", printNow, {once:true});
+    logo.addEventListener("error", printNow, {once:true});
+    setTimeout(printNow, 1800);
+  }
+
   function blueRecordTypeLabel(value){
     return ({avaliacao:"Avaliação",exame:"Exame"})[value] || "";
   }
@@ -5540,6 +5583,7 @@
   .screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}
   button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}
   button.secondary{background:#e5e7eb;color:#111827}
+  ${documentHeaderCss()}
   @media print{
     .screen-actions{display:none!important}
     .sheet{max-width:none;padding:0}
@@ -5552,8 +5596,7 @@
     <button id="printBtn" type="button">Gerar PDF / Imprimir</button>
     <button class="secondary" id="copyBtn" type="button">Copiar</button>
   </div>
-  <h1>INFORME PARA AVALIAÇÃO</h1>
-  <div class="subtitle">NIR CEMETRON</div>
+  ${documentHeaderHtml("INFORME PARA AVALIAÇÃO", "#4f8edc")}
   <div class="patient">
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
@@ -5634,14 +5677,7 @@
     printWindow.document.close();
     printWindow.focus();
 
-    setTimeout(() => {
-      try{
-        printWindow.focus();
-        printWindow.print();
-      }catch(e){
-        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
-      }
-    }, 450);
+    printDocumentWindow(printWindow);
   };
 
   window.openEvaluationReport = function(id){
@@ -5720,10 +5756,10 @@
 @page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#0f2747;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;line-height:1.7}.intro{margin:20px 0 14px;line-height:1.6}.details-card{margin:0 0 18px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;overflow:hidden}.detail-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #dbe3ec;align-items:stretch}.detail-row:first-child{border-top:0}.detail-label,.detail-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}.detail-label{background:#e8eef6;color:#0f2747;font-size:13px;font-weight:700}.detail-value{background:#fff;color:#111827;font-size:13px;font-weight:400;overflow-wrap:anywhere;word-break:normal}.guidance{min-height:80px;padding:13px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55;overflow-wrap:anywhere}@media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #dbe3ec}}.closing{margin-top:18px;line-height:1.6}.footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;text-align:center;color:#0f2747;font-weight:700}
   .document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}
   .regulator-signature strong{color:#0f2747;font-size:13px}
-  .document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
+  .document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#0f2747;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}${documentHeaderCss()}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}}
 </style></head><body><div class="sheet">
 <div class="screen-actions"><button id="examPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="examCopyBtn" type="button">Copiar</button></div>
-<h1>INFORME PARA EXAME</h1><div class="subtitle">NIR CEMETRON</div>
+${documentHeaderHtml("INFORME PARA EXAME", "#4f8edc")}
 <div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
 <p class="intro">Informamos que foi programado exame para o paciente acima identificado, conforme informações abaixo:</p>
 <div class="details-card"><div class="detail-row"><div class="detail-label">Exame</div><div class="detail-value">${escapeHtml(record.examName || "")}</div></div><div class="detail-row"><div class="detail-label">Local do exame</div><div class="detail-value">${escapeHtml(record.destination || record.examLocation || "")}</div></div><div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.examDate))}</div></div><div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.examTime || "")}</div></div></div>
@@ -5750,7 +5786,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     printWindow.document.write(buildExamReportHtml(record, false));
     printWindow.document.close();
     printWindow.focus();
-    setTimeout(() => { try{ printWindow.focus(); printWindow.print(); } catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe."); } }, 450);
+    printDocumentWindow(printWindow);
   };
 
   window.openExamReport = function(id){
@@ -5809,10 +5845,11 @@ ${regulatorFooterHtml()}</div></body></html>`;
 <title>Informe de Transferência Externa</title>
 <style>
 @page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff}.sheet{max-width:780px;margin:0 auto;padding:18px}h1{margin:0 0 6px;text-align:center;color:#6b21a8;font-size:20px}.subtitle{text-align:center;color:#64748b;font-size:12px;margin-bottom:24px}.patient{padding:14px 16px;border:1px solid #d8b4fe;border-radius:9px;background:#faf5ff;line-height:1.7}.details-card{margin:20px 0 18px;border:1px solid #d8b4fe;border-radius:10px;background:#fff;overflow:hidden}.detail-row{display:grid;grid-template-columns:30% 1fr;min-height:54px;border-top:1px solid #eadcf8;align-items:stretch}.detail-row:first-child{border-top:0}.detail-label,.detail-value{display:flex;align-items:center;min-width:0;padding:12px 16px;line-height:1.45}.detail-label{background:#f3e8ff;color:#581c87;font-size:13px;font-weight:700}.detail-value{background:#fff;color:#111827;font-size:13px;overflow-wrap:anywhere}.status-tag{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;font-weight:800}.status-tag.authorized{border:1px solid #86efac;background:#dcfce7;color:#166534}.status-tag.waiting{border:1px solid #fcd34d;background:#fef3c7;color:#92400e}.orientation{min-height:80px;margin-top:6px;padding:13px 16px;border:1px solid #d8b4fe;border-radius:10px;background:#faf5ff;line-height:1.55;overflow-wrap:anywhere}.orientation-title{color:#581c87;font-weight:700}.document-footer{margin-top:34px;padding-top:14px;border-top:1px solid #cbd5e1;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;color:#334155;font-size:12px;line-height:1.5}.regulator-signature strong{color:#0f2747;font-size:13px}.document-issued{text-align:right;color:#64748b;white-space:nowrap}.screen-actions{display:${showActions ? "flex" : "none"};justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 20px}button{padding:10px 14px;border:0;border-radius:8px;background:#7c3aed;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#ede9fe;color:#5b21b6}@media(max-width:600px){.detail-row{grid-template-columns:1fr}.detail-label{border-bottom:1px solid #eadcf8}.document-footer{display:block}.document-issued{text-align:left;margin-top:12px}}@media print{.screen-actions{display:none!important}.sheet{max-width:none;padding:0}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
+${documentHeaderCss()}
 ${recordStatusDocumentCss()}
 </style></head><body><div class="sheet">
 <div class="screen-actions"><button id="externalTransferPrintBtn" type="button">Gerar PDF / Imprimir</button><button class="secondary" id="externalTransferCopyBtn" type="button">Copiar</button></div>
-<h1>INFORME DE TRANSFERÊNCIA EXTERNA</h1><div class="subtitle">NIR CEMETRON</div>
+${documentHeaderHtml("INFORME DE TRANSFERÊNCIA EXTERNA", "#7c3aed")}
 <div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
 <div class="details-card"><div class="detail-row"><div class="detail-label">Situação</div><div class="detail-value"><span class="status-tag ${statusClass}">${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}</span></div></div><div class="detail-row"><div class="detail-label">Destino</div><div class="detail-value">${escapeHtml(record.destination || "")}</div></div>${waiting ? `<div class="detail-row"><div class="detail-label">Meio da solicitação</div><div class="detail-value">${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}</div></div>` : ""}${waiting && record.externalTransferRequestChannel === "regularo" ? `<div class="detail-row"><div class="detail-label">Protocolo RegulaRO</div><div class="detail-value">${escapeHtml(record.externalTransferProtocol || "")}</div></div>` : ""}${record.externalTransferStatus === "autorizada" && record.externalTransferWardBed ? `<div class="detail-row"><div class="detail-label">Enfermaria/Leito</div><div class="detail-value">${escapeHtml(record.externalTransferWardBed)}</div></div>` : ""}</div>
 <div class="orientation-title">Informações / Orientações</div><div class="orientation">${recordStatusDocumentText(record) ? recordStatusDocumentHtml(record) : "Sem informações adicionais registradas."}</div>
@@ -5837,7 +5874,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     printWindow.document.write(buildExternalTransferReportHtml(record, false));
     printWindow.document.close();
     printWindow.focus();
-    setTimeout(() => { try{ printWindow.focus(); printWindow.print(); } catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe."); } }, 450);
+    printDocumentWindow(printWindow);
   };
 
 
@@ -6056,6 +6093,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
   @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 
   ${regulatorFooterCss()}
+  ${documentHeaderCss()}
 </style>
 </head>
 <body>
@@ -6064,8 +6102,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <button id="authorizationPrintBtn" type="button">Gerar PDF / Imprimir</button>
     <button class="secondary" id="authorizationCopyBtn" type="button">Copiar</button>
   </div>
-  <h1>PARECER DO REGULADOR</h1>
-  <div class="subtitle">NIR CEMETRON</div>
+  ${documentHeaderHtml("PARECER DO REGULADOR", "#4caf72")}
   <div class="patient">
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
     <strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br>
@@ -6158,6 +6195,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
   @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 
   ${regulatorFooterCss()}
+  ${documentHeaderCss()}
 </style>
 </head>
 <body>
@@ -6167,8 +6205,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <button class="secondary" id="negativeCopyBtn" type="button">Copiar</button>
   </div>
 
-  <h1>PARECER DO REGULADOR</h1>
-  <div class="subtitle">NIR CEMETRON</div>
+  ${documentHeaderHtml("PARECER DO REGULADOR", "#d9534f")}
 
   <div class="patient">
     <strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br>
@@ -6217,14 +6254,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     printWindow.document.write(buildNegativeReportHtml(record, false));
     printWindow.document.close();
     printWindow.focus();
-    setTimeout(() => {
-      try{
-        printWindow.focus();
-        printWindow.print();
-      }catch(e){
-        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
-      }
-    }, 450);
+    printDocumentWindow(printWindow);
   };
 
   window.copyAuthorization = async function(id){
@@ -6248,10 +6278,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     printWindow.document.write(buildAuthorizationHtml(record, false));
     printWindow.document.close();
     printWindow.focus();
-    setTimeout(() => {
-      try{ printWindow.focus(); printWindow.print(); }
-      catch(e){ alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela da autorização."); }
-    }, 450);
+    printDocumentWindow(printWindow, "Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela da autorização.");
   };
 
   function getFilteredHistory(){
