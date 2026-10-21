@@ -79,22 +79,25 @@ test("censo diário totaliza os leitos disponíveis ao final de cada coluna",() 
   assert.match(html,/id="bedCensusClinicaTotal"/);
   assert.match(html,/function bedCensusSectionTotal\(census, sectionKey\)/);
   assert.match(html,/filter\(value => value !== "" && value !== null && value !== undefined\)/);
-  assert.match(html,/renderBedCensusTotal\("bedCensusInfectologiaTotal", bedCensusSectionTotal\(census,"infectologia"\)\)/);
-  assert.match(html,/renderBedCensusTotal\("bedCensusClinicaTotal", bedCensusSectionTotal\(census,"clinica"\)\)/);
-  assert.match(html,/\.bed-census-result-table tfoot td\{border-top:2px solid #9aabc0;background:#e8eef6/);
+  assert.match(html,/const infectologiaTotal = bedCensusSectionTotal\(census,"infectologia"\)/);
+  assert.match(html,/const clinicaTotal = bedCensusSectionTotal\(census,"clinica"\)/);
+  assert.match(html,/renderBedCensusTotal\("bedCensusInfectologiaTotal", infectologiaTotal\)/);
+  assert.match(html,/renderBedCensusTotal\("bedCensusClinicaTotal", clinicaTotal\)/);
+  assert.match(html,/renderBedCensusTotal\("bedCensusGrandTotal", grandTotal\)/);
+  assert.match(html,/\.bed-census-entry-table tfoot td\{height:37px;border-top:3px solid #60758f/);
 });
 
 test("censo diário inclui Masculina 2 - PPL em todos os fluxos",() => {
   const html = fs.readFileSync(new URL("index.html",root),"utf8");
-  assert.match(html,/<input id="bedInfMasc2Ppl" type="number" min="0" step="1">/);
+  assert.match(html,/<input id="bedInfMasc2Ppl" type="number" min="0" step="1" inputmode="numeric">/);
   assert.match(html,/bedInfMasc2Ppl:\["infectologia","masc2Ppl"\]/);
   assert.match(html,/\["masc2Ppl","Masculina 2 - PPL","🛏","male-bed"\]/);
-  assert.match(html,/add\("Infectologia - Masculina 2 - PPL", inf\.masc2Ppl\)/);
-  assert.match(html,/\["INFECTO\/PPL","Masculina 2 - PPL",inf\.masc2Ppl\]/);
+  assert.match(html,/add\("Infectologia - Masculina 2 - PPL", inf\.masc2Ppl, infBeds\.masc2Ppl\)/);
+  assert.match(html,/\["INFECTO\/PPL","Masculina 2 - PPL",inf\.masc2Ppl,infBeds\.masc2Ppl\]/);
   assert.match(html,/tag\.includes\("PPL"\) \? "ppl"/);
   assert.match(html,/\.sbar-sector-tag\.infecto,\.sbar-sector-tag\.ppl\{background:#dcfce7;color:#166534;border:1px solid #86efac\}/);
   assert.match(html,/\.sbar-sector-tag\.cm\{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd\}/);
-  assert.match(html,/const SCIR_VERSION = "1\.16\.10"/);
+  assert.match(html,/const SCIR_VERSION = "1\.16\.19"/);
 });
 
 test("SBAR usa tags claras e o rótulo HD/Problemas",() => {

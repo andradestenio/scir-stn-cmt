@@ -8,6 +8,65 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.19 — aprimoramento visual do censo
+
+- Recupera o padrão visual em cards para Infectologia e Clínica Médica, mantendo as três colunas **Setor**, **Leitos disponíveis** e **Enf/Leito**.
+- Substitui a aparência de planilha por linhas leves, espaçamento maior, tags de disponibilidade e identificação visual dos setores.
+- Restaura a janela própria de preenchimento, com data, hora, responsável, totais automáticos e observações.
+- Posiciona as observações abaixo dos dois cards no resumo da dashboard.
+- Mantém o conteúdo de **Enf/Leito** em todos os fluxos já existentes.
+
+### Versão 1.16.18 — arquivo independente sem reutilização da visualização anterior
+
+- Consolida o censo da dashboard com três colunas visíveis: **Setor**, **Leitos disponíveis** e **Enf/Leito**.
+- Distribui esta versão em arquivo HTML e pacote com nomes exclusivos, evitando a reabertura da versão anterior chamada “Index 2”.
+
+### Versão 1.16.17 — coluna Enf/Leito sempre preenchível
+
+- Corrige definitivamente a tabela do censo da dashboard para exibir, em cada bloco, **Setor | Leitos disponíveis | Enf/Leito**.
+- Mantém um campo livre de preenchimento na coluna **Enf/Leito** em todas as linhas, sem bloqueio condicionado ao quantitativo de vagas.
+- Preserva o conteúdo de **Enf/Leito** no salvamento, histórico, SBAR, sincronização e backup.
+
+### Versão 1.16.16 — censo preenchível diretamente na dashboard
+
+- Transforma o censo da dashboard em uma tabela operacional preenchível, sem necessidade de abrir uma janela separada.
+- Organiza **Infectologia** e **Clínica Médica** lado a lado, seguindo a lógica visual do modelo fornecido.
+- Mantém as colunas **Setor**, **Leitos disponíveis** e **Enf/Leito**, com totais automáticos por bloco e total geral.
+- Integra data, hora, responsável, observações e salvamento no histórico do plantão, preservando os dados anteriores.
+- Mantém o layout responsivo em celulares e tablets, empilhando os blocos quando necessário.
+
+### Versão 1.16.15 — tabela do censo com três colunas
+
+- Padroniza a tabela do censo com as colunas **Setor**, **Leitos disponíveis** e **Enf/Leito**.
+- Mantém o preenchimento da quantidade e da identificação da enfermaria ou do leito em cada setor.
+- Preserva a compatibilidade com os censos e backups já registrados.
+
+### Versão 1.16.14 — censo manual no padrão da Ocupação Hospub
+
+- Reorganiza o Censo diário inicial em uma tabela operacional única, próxima ao padrão visual da **Ocupação Hospub**.
+- Exibe, por setor, **Leitos disponíveis** e **Enf/Leito**, permitindo identificar as vagas que podem ser cedidas.
+- Adiciona indicadores de Infectologia, Clínica Médica e total geral, além dos subtotais por área.
+- Mantém a descrição dos leitos no SBAR, histórico, texto copiado, sincronização e backup.
+
+### Versão 1.16.13 — quantidade e identificação dos leitos livres
+
+- Cria duas colunas distintas por clínica: **Nº de leitos livres** e **Quais leitos estão disponíveis**.
+- A primeira recebe somente a quantidade, como `2`; a segunda identifica os leitos, como `201, 202`.
+- Mantém a identificação dos leitos no Dashboard, no SBAR, no histórico e no texto copiado do censo.
+
+### Versão 1.16.12 — duas colunas de disponibilidade
+
+- Mantém duas informações distintas para cada clínica: **Nº de vagas disponíveis** e **Nº do leito disponível**.
+- A primeira coluna registra a quantidade de vagas; a segunda identifica o número do leito, como `201` ou `201, 202`.
+- O campo de número do leito permanece habilitado somente quando houver ao menos uma vaga.
+
+### Versão 1.16.11 — identificação dos leitos disponíveis
+
+- Separa, no Censo diário, o **número de vagas disponíveis** da identificação dos **leitos disponíveis**.
+- Habilita o campo de identificação dos leitos somente quando o setor possui uma ou mais vagas.
+- Exibe os leitos informados no Dashboard, no SBAR, no histórico do plantão e no texto copiado do censo.
+- Mantém compatibilidade com censos e backups anteriores, sem perda dos quantitativos já registrados.
+
 ### Versão 1.16.10 — identidade oficial nos documentos
 
 - Substitui a logomarca anterior pela imagem oficial do **CEMETRON — Centro de Medicina Tropical de Rondônia**, em maior resolução.

@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.10 com identidade oficial nos documentos
+SCIR — NIR CEMETRON | Versão 1.16.19 com censo em cards e janela de preenchimento
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -21,6 +21,10 @@ CAMINHO SIMPLIFICADO
 - Os resultados podem ser filtrados por período, turno, plantonista, tipo de registro, origem, destino e texto livre.
 - Os indicadores incluem registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
 - O Censo diário exibe ao final de cada coluna o total de leitos disponíveis da Infectologia e da Clínica Médica.
+- O Censo diário inicial utiliza uma tabela operacional semelhante à Ocupação Hospub.
+- Para cada setor, “Leitos disponíveis” recebe a quantidade e “Enf/Leito” identifica a enfermaria ou os leitos que podem ser cedidos.
+- O painel mostra subtotais da Infectologia e Clínica Médica e o total geral de leitos disponíveis.
+- A identificação dos leitos também aparece no Dashboard, SBAR, histórico do plantão e texto copiado do censo.
 - A seção Infectologia do Censo diário inclui o setor “Masculina 2 - PPL”, integrado aos totais, ao histórico, ao SBAR e às exportações.
 - No SBAR, as tags INFECTO e INFECTO/PPL aparecem em verde-claro, enquanto CM aparece em azul-claro.
 - O rótulo clínico do SBAR foi padronizado como “HD/Problemas”.
