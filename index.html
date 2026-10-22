@@ -1018,6 +1018,7 @@
     .record-status-rich p{margin:0}.record-status-rich ul,.record-status-rich ol{margin:4px 0 4px 18px;padding:0}
     .sbar-report{color:#111827;background:#fff}
     .sbar-report-header{text-align:center;padding:22px 20px;border-bottom:1px solid #dbe3ec}
+    .sbar-report-logo,.sbar-detail-logo{display:block;width:250px;max-width:58%;height:auto;margin:0 auto 14px}
     .sbar-report-header h2{margin:0;color:#0f2747;font-size:22px;letter-spacing:.02em}
     .sbar-report-header p{margin:6px 0 0;color:#64748b;font-size:14px;font-weight:600}
     .sbar-report-body{padding:20px}
@@ -1088,7 +1089,11 @@
     .sbar-email-metric span{display:block;color:#64748b;font-size:13px;font-weight:600}
     .sbar-email-metric strong{display:block;margin-top:12px;color:#334155;font-size:30px;font-weight:500}
 
-    .sbar-full-report-page-break{margin-top:14px}
+    .sbar-r-section .sbar-summary-box{margin-bottom:0}
+    .sbar-full-report-page-break,.sbar-full-report-continuation{margin-top:22px}
+    .sbar-detail-header{text-align:center;padding:18px 16px 14px;border-bottom:1px solid #dbe3ec;margin-bottom:14px}
+    .sbar-detail-header h3{margin:0;color:#0f2747;font-size:20px;letter-spacing:.02em}
+    .sbar-detail-header p{margin:6px 0 0;color:#64748b;font-size:13px;font-weight:600}
     .sbar-full-report-title{margin:14px 0 8px;color:#0f2747;font-size:13px;font-weight:800}
     .sbar-full-group{margin-top:8px;border:1px solid #dbe3ec;border-radius:10px;overflow:hidden}
     .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:#0f2747;font-size:12px;font-weight:800}
@@ -1380,7 +1385,9 @@
     .sbar-next-page-note{
       margin:14px 0 0;
       padding:10px 14px;
-      border-top:1px solid #d7e0ea;
+      border:1px solid #d7e0ea;
+      border-radius:12px;
+      background:#f8fafc;
       color:#5f7188;
       font-size:11px;
       font-style:italic;
@@ -3511,7 +3518,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.19";
+  const SCIR_VERSION = "1.16.20";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -5594,13 +5601,21 @@
         alert(errorMessage || "Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do informe.");
       }
     };
-    const logo = printWindow.document.querySelector(".document-logo");
-    if(!logo || logo.complete){
+    const logos = Array.from(printWindow.document.querySelectorAll(".document-logo,.sbar-report-logo,.sbar-detail-logo"));
+    const pendingLogos = logos.filter(logo => !logo.complete);
+    if(!pendingLogos.length){
       setTimeout(printNow, 80);
       return;
     }
-    logo.addEventListener("load", printNow, {once:true});
-    logo.addEventListener("error", printNow, {once:true});
+    let remaining = pendingLogos.length;
+    const logoReady = () => {
+      remaining -= 1;
+      if(remaining === 0) setTimeout(printNow, 80);
+    };
+    pendingLogos.forEach(logo => {
+      logo.addEventListener("load", logoReady, {once:true});
+      logo.addEventListener("error", logoReady, {once:true});
+    });
     setTimeout(printNow, 1800);
   }
 
@@ -5859,7 +5874,7 @@
   <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente, exames realizados e demais informações clínicas necessárias à avaliação.</p>
   ${regulatorFooterHtml()}
 </div>
-</body>
+<\/body>
 </html>`;
   }
 
@@ -6007,7 +6022,7 @@ ${documentHeaderHtml("INFORME PARA EXAME", "#4f8edc")}
 <div class="details-card"><div class="detail-row"><div class="detail-label">Exame</div><div class="detail-value">${escapeHtml(record.examName || "")}</div></div><div class="detail-row"><div class="detail-label">Local do exame</div><div class="detail-value">${escapeHtml(record.destination || record.examLocation || "")}</div></div><div class="detail-row"><div class="detail-label">Data</div><div class="detail-value">${escapeHtml(formatEvaluationDate(record.examDate))}</div></div><div class="detail-row"><div class="detail-label">Horário</div><div class="detail-value">${escapeHtml(record.examTime || "")}</div></div></div>
 <strong>Orientações</strong><div class="guidance">${guidance}</div>
 <p class="closing">Solicitamos que o paciente seja encaminhado ao local informado com antecedência adequada, acompanhado da documentação pertinente e demais informações clínicas necessárias à realização do exame.</p>
-${regulatorFooterHtml()}</div></body></html>`;
+${regulatorFooterHtml()}</div><\/body></html>`;
   }
 
   window.copyExamReport = async function(id){
@@ -6095,7 +6110,7 @@ ${documentHeaderHtml("INFORME DE TRANSFERÊNCIA EXTERNA", "#7c3aed")}
 <div class="patient"><strong>Paciente:</strong> ${escapeHtml(record.patient || "")}<br><strong>Unidade de origem:</strong> ${escapeHtml(record.origin || "")}<br><strong>Origem da solicitação:</strong> ${escapeHtml(requestSourceLabel(record.requestSource))}<br><strong>Perfil do paciente:</strong> ${escapeHtml(patientProfileLabel(record.patientProfile))}<br><strong>Hipóteses diagnósticas / Problemas:</strong> ${escapeHtml(record.hd || "")}</div>
 <div class="details-card"><div class="detail-row"><div class="detail-label">Situação</div><div class="detail-value"><span class="status-tag ${statusClass}">${escapeHtml(externalTransferStatusLabel(record.externalTransferStatus))}</span></div></div><div class="detail-row"><div class="detail-label">Destino</div><div class="detail-value">${escapeHtml(record.destination || "")}</div></div>${waiting ? `<div class="detail-row"><div class="detail-label">Meio da solicitação</div><div class="detail-value">${escapeHtml(externalTransferChannelLabel(record.externalTransferRequestChannel))}</div></div>` : ""}${waiting && record.externalTransferRequestChannel === "regularo" ? `<div class="detail-row"><div class="detail-label">Protocolo RegulaRO</div><div class="detail-value">${escapeHtml(record.externalTransferProtocol || "")}</div></div>` : ""}${record.externalTransferStatus === "autorizada" && record.externalTransferWardBed ? `<div class="detail-row"><div class="detail-label">Enfermaria/Leito</div><div class="detail-value">${escapeHtml(record.externalTransferWardBed)}</div></div>` : ""}</div>
 <div class="orientation-title">Informações / Orientações</div><div class="orientation">${recordStatusDocumentText(record) ? recordStatusDocumentHtml(record) : "Sem informações adicionais registradas."}</div>
-${regulatorFooterHtml()}</div></body></html>`;
+${regulatorFooterHtml()}</div><\/body></html>`;
   }
 
   window.copyExternalTransferReport = async function(id){
@@ -6373,7 +6388,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
   </div>
   ${regulatorFooterHtml()}
 </div>
-</body>
+<\/body>
 </html>`;
   }
 
@@ -6471,7 +6486,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
 
   ${regulatorFooterHtml()}
 </div>
-</body>
+<\/body>
 </html>`;
   }
 
@@ -6672,7 +6687,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <h2>ATUALIZAÇÕES DO CENSO NO PLANTÃO</h2>
     <table><thead><tr><th>Data e hora</th><th>Responsável</th><th>Resumo do censo</th><th>Observações</th></tr></thead><tbody>${censusRows}</tbody></table>
     <h2>REGISTROS DE REGULAÇÃO DO PLANTÃO</h2>
-    <table><thead><tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+    <table><thead><tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table><\/body></html>`;
 
     const win = window.open("", "_blank", "width=1200,height=800");
     if(!win){ alert("O navegador bloqueou a janela de impressão."); return; }
@@ -6713,7 +6728,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     ${censusRows}
     <tr><td colspan="9"></td></tr>
     <tr><td colspan="9"><strong>Registros de regulação do plantão</strong></td></tr>
-    <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`}</table></body></html>`;
+    <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>${rows || `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`}</table><\/body></html>`;
 
     downloadBlob("\ufeff" + workbook, "application/vnd.ms-excel;charset=utf-8", `historico_${safeFilename(data.date)}_${safeFilename(data.type)}.xls`);
     toast("Histórico exportado para Excel.");
@@ -6939,7 +6954,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <tr><td class="meta">Plantões</td><td>${shifts.length}</td><td class="meta">Registros</td><td>${rows.length}</td><td class="meta">E-mails recebidos</td><td>${emailTotals.received}</td><td class="meta">E-mails tratados</td><td>${treated} (${rate.toLocaleString("pt-BR",{maximumFractionDigits:1})}%)</td><td class="meta">Atualizações do censo</td><td>${censusUpdates}</td><td colspan="2"></td></tr>
     <tr><td class="meta">Pendências</td><td>${moduleCounts.yellow}</td><td class="meta">Transferências externas</td><td>${moduleCounts.transfer}</td><td class="meta">Avaliações/Exames</td><td>${moduleCounts.blue}</td><td class="meta">Autorizações</td><td>${moduleCounts.green}</td><td class="meta">Negativas</td><td>${moduleCounts.red}</td><td colspan="2"></td></tr>
     <tr><td colspan="12"></td></tr><tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
-    ${detailRows || '<tr><td colspan="12">Nenhum registro encontrado.</td></tr>'}</table></body></html>`;
+    ${detailRows || '<tr><td colspan="12">Nenhum registro encontrado.</td></tr>'}</table><\/body></html>`;
     const stamp = new Date().toISOString().slice(0,10);
     downloadBlob("\ufeff" + workbook,"application/vnd.ms-excel;charset=utf-8",`estatisticas_scir_${stamp}.xls`);
     toast("Estatísticas exportadas para Excel.");
@@ -7220,7 +7235,7 @@ ${regulatorFooterHtml()}</div></body></html>`;
     <thead><tr><th>Data</th><th>Turno</th><th>Setor</th><th>Início</th><th>Carga horária</th><th>Término previsto</th><th>Situação</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>
-</body>
+<\/body>
 </html>`;
   }
 
@@ -7272,7 +7287,7 @@ th,td{border:1px solid #999;padding:6px}
 <tr><th>Data</th><th>Turno</th><th>Setor</th><th>Início</th><th>Carga horária</th><th>Término previsto</th><th>Situação</th></tr>
 ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 </table>
-</body>
+<\/body>
 </html>`;
 
     const month = padCalendarNumber(calendarCurrentDate.getMonth()+1);
@@ -7859,6 +7874,18 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     };
   }
 
+  function sbarEmailBlockMarkup(){
+    const mail = sbarEmailSummary();
+    return `<div class="sbar-email-box">
+      <div class="sbar-email-title">Produtividade de e-mails</div>
+      <div class="sbar-email-grid">
+        <div class="sbar-email-metric">${sbarIcon("inbox","lg")}<span>Recebidos</span><strong>${mail.received}</strong></div>
+        <div class="sbar-email-metric">${sbarIcon("eye","lg")}<span>Cientes</span><strong>${mail.acknowledged}</strong></div>
+        <div class="sbar-email-metric">${sbarIcon("send","lg")}<span>Respondidos</span><strong>${mail.responded}</strong></div>
+      </div>
+    </div>`;
+  }
+
   function sbarRecordFullMarkup(record){
     const rows = [
       ["Horário da solicitação", record.requestTime || ""],
@@ -8117,7 +8144,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     <tbody>${rows}</tbody>
   </table>
   <div class="footer">Documento gerado localmente em ${escapeHtml(new Date().toLocaleString("pt-BR"))}.</div>
-</body>
+<\/body>
 </html>`;
   }
 
@@ -8202,7 +8229,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   <tr><th>Hora</th><th>Tipo</th><th>Origem da solicitação</th><th>Perfil</th><th>Paciente</th><th>Origem</th><th>HD</th><th>Destino</th><th>Status</th></tr>
   ${rows || `<tr><td colspan="9">Sem registros neste plantão.</td></tr>`}
 </table>
-</body>
+<\/body>
 </html>`;
 
     const filename = `relatorio_${safeFilename(state.shift.date)}_${safeFilename(state.shift.type)}.xls`;
@@ -8276,6 +8303,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       state.sbar.assessment || "",
       "",
       "R — RELATÓRIO DO PLANTÃO",
+      state.sbar.recommendation || "SEM RELATÓRIO ADICIONAL REGISTRADO.",
+      "",
       ...(() => {
         const counts = sbarSummaryCounts();
         const mail = sbarEmailSummary();
@@ -8287,12 +8316,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
           `AUTORIZAÇÕES: ${counts.green}`,
           `NEGATIVAS: ${counts.red}`,
           "",
+          "Relatório detalhado do plantão nas próximas páginas.",
+          "",
           "PRODUTIVIDADE DE E-MAILS",
           `RECEBIDOS: ${mail.received}`,
           `CIENTES: ${mail.acknowledged}`,
           `RESPONDIDOS: ${mail.responded}`,
           "",
-          "RELATÓRIO COMPLETO"
+          "RELATÓRIO DETALHADO DO PLANTÃO"
         ];
       })(),
       "",
@@ -8311,6 +8342,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     const reportHtml = `
       <div class="sbar-report" data-copy-text="${escapeHtml(reportText)}">
         <div class="sbar-report-header">
+          <img class="sbar-report-logo" src="${escapeHtml(DOCUMENT_LOGO_SRC)}" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
           <h2>RELATÓRIO SBAR</h2>
           <p>NIR CEMETRON • PASSAGEM DE PLANTÃO</p>
         </div>
@@ -8362,10 +8394,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               </div>
             </div>
 
-            <div class="sbar-section">
+            <div class="sbar-section sbar-r-section">
               <div class="sbar-letter">R</div>
               <div class="sbar-content">
                 <h4>Relatório do plantão</h4>
+                ${richHtmlForOutput(state.sbar.richHtml?.recommendation, state.sbar.recommendation || "Sem relatório adicional registrado.")}
                 ${(() => {
                   const counts = sbarSummaryCounts();
                   return `<div class="sbar-summary-box">
@@ -8380,30 +8413,34 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                     </div>
                   </div>`;
                 })()}
-                ${(() => {
-                  const mail = sbarEmailSummary();
-                  return `<div class="sbar-email-box">
-                    <div class="sbar-email-title">Produtividade de e-mails</div>
-                    <div class="sbar-email-grid">
-                      <div class="sbar-email-metric">${sbarIcon("inbox","lg")}<span>Recebidos</span><strong>${mail.received}</strong></div>
-                      <div class="sbar-email-metric">${sbarIcon("eye","lg")}<span>Cientes</span><strong>${mail.acknowledged}</strong></div>
-                      <div class="sbar-email-metric">${sbarIcon("send","lg")}<span>Respondidos</span><strong>${mail.responded}</strong></div>
-                    </div>
-                  </div>
-          <div class="sbar-next-page-note">Relatório detalhado do plantão nas próximas páginas.</div>
-`;
-                })()}
-                <div class="sbar-full-report-page-break">
-                  <div class="sbar-full-report-title">Relatório completo</div>
-                  ${sbarFullGroupMarkup("yellow")}
-                  ${sbarFullGroupMarkup("transfer")}
-                  ${sbarFullGroupMarkup("blue")}
-                  ${sbarFullGroupMarkup("green")}
-                  ${sbarFullGroupMarkup("red")}
-                </div>
               </div>
             </div>
           </div>
+
+          <div class="sbar-next-page-note">Relatório detalhado do plantão nas próximas páginas.</div>
+
+          <section class="sbar-full-report-page-break">
+            <div class="sbar-detail-header">
+              <img class="sbar-detail-logo" src="${escapeHtml(DOCUMENT_LOGO_SRC)}" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
+              <h3>RELATÓRIO DETALHADO DO PLANTÃO</h3>
+              <p>NIR CEMETRON | PRODUTIVIDADE E REGISTROS DO SBAR</p>
+            </div>
+            ${sbarEmailBlockMarkup()}
+            <div class="sbar-full-report-title">Registros do plantão</div>
+            ${sbarFullGroupMarkup("yellow")}
+            ${sbarFullGroupMarkup("transfer")}
+            ${sbarFullGroupMarkup("blue")}
+          </section>
+
+          <section class="sbar-full-report-continuation">
+            <div class="sbar-detail-header">
+              <img class="sbar-detail-logo" src="${escapeHtml(DOCUMENT_LOGO_SRC)}" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
+              <h3>RELATÓRIO DETALHADO DO PLANTÃO</h3>
+              <p>NIR CEMETRON | CONTINUAÇÃO DO SBAR</p>
+            </div>
+            ${sbarFullGroupMarkup("green")}
+            ${sbarFullGroupMarkup("red")}
+          </section>
 
           ${regulatorFooterHtml(generatedDate, generatedTime)}
         </div>
@@ -8456,11 +8493,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Relatório SBAR - NIR CEMETRON</title>
 <style>
-  @page{size:A4;margin:10mm}
+  @page{size:A4;margin:10mm 10mm 18mm}
   *{box-sizing:border-box}
-  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:11px}
+  body{font-family:Arial,sans-serif;color:#111827;margin:0;background:#fff;font-size:11px;padding-bottom:12mm}
   .sbar-report{color:#111827;background:#fff}
   .sbar-report-header{text-align:center;padding:13px 12px;border-bottom:1px solid #dbe3ec}
+  .sbar-report-logo,.sbar-detail-logo{display:block;width:44mm;max-width:52%;height:auto;margin:0 auto 7px}
   .sbar-report-header h2{margin:0;color:#0f2747;font-size:18px;letter-spacing:.02em}
   .sbar-report-header p{margin:4px 0 0;color:#64748b;font-size:11px;font-weight:600}
   .sbar-report-body{padding:10px 0}
@@ -8499,7 +8537,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-summary-box,.sbar-email-box{margin:6px 0 8px;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff}.sbar-summary-title,.sbar-email-title{padding:6px 8px;background:#eef4fb;color:#0f2747;font-size:9.5px;font-weight:600;border-bottom:1px solid #dbe3ec}
   .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:9px 7px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:52px}.sbar-email-metric:first-child{border-left:0}
   .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:600}.sbar-email-metric strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500}
-  .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:2mm}.sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
+  .sbar-r-section .sbar-summary-box{margin-bottom:0}
+  .sbar-full-report-page-break,.sbar-full-report-continuation{break-before:page;page-break-before:always;padding-top:0}
+  .sbar-detail-header{text-align:center;padding:0 12px 9px;border-bottom:1px solid #dbe3ec;margin-bottom:7px}
+  .sbar-detail-header h3{margin:0;color:#0f2747;font-size:16px;letter-spacing:.02em}
+  .sbar-detail-header p{margin:4px 0 0;color:#64748b;font-size:9.5px;font-weight:600}
+  .sbar-full-report-title{margin:7px 0 4px;color:#0f2747;font-size:9.5px;font-weight:800}.sbar-full-group{margin-top:4px;border:1px solid #dbe3ec;border-radius:7px;overflow:hidden;break-inside:auto}
   .sbar-full-group-title{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:4px 6px;color:#0f2747;font-size:8.8px;font-weight:800;break-after:avoid}
   .sbar-full-group.yellow .sbar-full-group-title{background:#fff7d6}.sbar-full-group.transfer .sbar-full-group-title{background:#f3e8ff}.sbar-full-group.blue .sbar-full-group-title{background:#e8f1ff}.sbar-full-group.green .sbar-full-group-title{background:#e8f7ee}.sbar-full-group.red .sbar-full-group-title{background:#fdecec}
   .sbar-count-pill{display:inline-flex;min-width:20px;justify-content:center;padding:2px 5px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,39,71,.12)}
@@ -8518,7 +8561,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     .sbar-record-group,.sbar-full-group{break-inside:auto}
     .sbar-record-full{break-inside:avoid}
     .sbar-summary-box,.sbar-email-box{break-inside:avoid}
-    .sbar-full-report-page-break{break-before:page;page-break-before:always}
+    .sbar-full-report-page-break,.sbar-full-report-continuation{break-before:page;page-break-before:always}
+    .regulator-footer{position:fixed;left:0;right:0;bottom:-12mm;margin:0!important;padding-top:5px!important;background:#fff}
   }
 
   .sbar-sector-cell{display:flex;align-items:center;gap:4px;min-width:0}
@@ -8576,7 +8620,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     .sbar-next-page-note{
       margin:14px 0 0;
       padding:10px 14px;
-      border-top:1px solid #d7e0ea;
+      border:1px solid #d7e0ea;
+      border-radius:8px;
+      background:#f8fafc;
       color:#5f7188;
       font-size:11px;
       font-style:italic;
@@ -8589,19 +8635,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
 </head>
 <body>
 ${reportHtml}
-</body>
+<\/body>
 </html>`);
     printWindow.document.close();
     printWindow.focus();
 
-    setTimeout(() => {
-      try{
-        printWindow.focus();
-        printWindow.print();
-      }catch(e){
-        alert("Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do relatório.");
-      }
-    }, 450);
+    printDocumentWindow(printWindow, "Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do relatório.");
   });
 
 

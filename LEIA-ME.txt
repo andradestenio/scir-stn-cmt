@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.19 com censo em cards e janela de preenchimento
+SCIR — NIR CEMETRON | Versão 1.16.20 com PDF do SBAR atualizado
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -28,6 +28,10 @@ CAMINHO SIMPLIFICADO
 - A seção Infectologia do Censo diário inclui o setor “Masculina 2 - PPL”, integrado aos totais, ao histórico, ao SBAR e às exportações.
 - No SBAR, as tags INFECTO e INFECTO/PPL aparecem em verde-claro, enquanto CM aparece em azul-claro.
 - O rótulo clínico do SBAR foi padronizado como “HD/Problemas”.
+- O PDF do SBAR mantém S, B, A e R na primeira página, com o Resumo do plantão integrado ao R.
+- A primeira página termina com “Relatório detalhado do plantão nas próximas páginas.”.
+- A Produtividade de e-mails começa na segunda página, seguida do relatório detalhado dos registros.
+- A logo oficial do CEMETRON e os cartões com bordas arredondadas foram aplicados em todas as páginas do SBAR.
 - A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
 - O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
 - Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.

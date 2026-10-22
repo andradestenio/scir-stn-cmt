@@ -17,7 +17,8 @@ test("os documentos finais usam o cabeçalho padronizado com logo",() => {
   assert.match(html,/function documentHeaderHtml\(title, accent="#4f8edc"\)/);
   assert.match(html,/class="document-logo"/);
   assert.match(html,/function printDocumentWindow\(printWindow, errorMessage\)/);
-  assert.match(html,/logo\.addEventListener\("load", printNow, \{once:true\}\)/);
+  assert.match(html,/querySelectorAll\("\.document-logo,\.sbar-report-logo,\.sbar-detail-logo"\)/);
+  assert.match(html,/logo\.addEventListener\("load", logoReady, \{once:true\}\)/);
   assert.match(html,/documentHeaderHtml\("INFORME PARA AVALIAÇÃO", "#4f8edc"\)/);
   assert.match(html,/documentHeaderHtml\("INFORME PARA EXAME", "#4f8edc"\)/);
   assert.match(html,/documentHeaderHtml\("INFORME DE TRANSFERÊNCIA EXTERNA", "#7c3aed"\)/);

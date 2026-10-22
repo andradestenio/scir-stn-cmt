@@ -8,6 +8,15 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.20 — novo PDF do SBAR
+
+- Aplica ao PDF do SBAR a identidade visual aprovada do SCIR, com a logo oficial do CEMETRON e cartões com bordas arredondadas.
+- Mantém na primeira página as seções **S**, **B**, **A** e **R**, incluindo o **Resumo do plantão** dentro da seção **R**.
+- Encerra a primeira página com a frase **“Relatório detalhado do plantão nas próximas páginas.”**.
+- Inicia a segunda página pela **Produtividade de e-mails**, seguida das pendências, transferências externas e avaliações/exames.
+- Reserva a página seguinte para autorizações e negativas, preservando as cores de cada grupo.
+- Aguarda o carregamento de todas as logos antes de abrir a impressão, evitando cabeçalhos incompletos no PDF.
+
 ### Versão 1.16.19 — aprimoramento visual do censo
 
 - Recupera o padrão visual em cards para Infectologia e Clínica Médica, mantendo as três colunas **Setor**, **Leitos disponíveis** e **Enf/Leito**.
