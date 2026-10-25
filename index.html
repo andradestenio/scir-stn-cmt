@@ -1090,7 +1090,7 @@
     .sbar-email-metric strong{display:block;margin-top:12px;color:#334155;font-size:30px;font-weight:500}
 
     .sbar-r-section .sbar-summary-box{margin-bottom:0}
-    .sbar-full-report-page-break,.sbar-full-report-continuation{margin-top:22px}
+    .sbar-full-report-page-break{margin-top:22px}
     .sbar-detail-header{text-align:center;padding:18px 16px 14px;border-bottom:1px solid #dbe3ec;margin-bottom:14px}
     .sbar-detail-header h3{margin:0;color:#0f2747;font-size:20px;letter-spacing:.02em}
     .sbar-detail-header p{margin:6px 0 0;color:#64748b;font-size:13px;font-weight:600}
@@ -1105,6 +1105,9 @@
     .sbar-record:first-of-type{border-top:0}
     .sbar-record p{margin:2px 0}
     .sbar-empty{padding:12px;color:#64748b;font-size:13px}
+    .sbar-closing-box{margin-top:10px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff;break-inside:avoid;page-break-inside:avoid}
+    .sbar-closing-title{padding:10px 12px;background:#e8eef6;color:#0f2747;font-size:12px;font-weight:800;border-bottom:1px solid #dbe3ec}
+    .sbar-closing-text{padding:11px 12px;color:#111827;font-size:12px;line-height:1.45;background:#f8fafc}
     .sbar-footer{display:flex;justify-content:space-between;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid #cbd5e1;font-size:12px;color:#64748b}
     .sbar-footer strong{display:block;color:#0f2747;font-size:13px;margin-bottom:3px}
     .sbar-print-wrapper{background:#fff;color:#111827}
@@ -3518,7 +3521,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.20";
+  const SCIR_VERSION = "1.16.21";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -5503,7 +5506,7 @@
     unit: "NIR CEMETRON"
   });
 
-  function regulatorFooterHtml(issueDate="", issueTime=""){
+  function sbarRegulatorFooterHtml(issueDate="", issueTime=""){
     const dateTime = issueDate || issueTime
       ? `<div class="regulator-footer-issued">${issueDate ? `Emitido em ${escapeHtml(issueDate)}` : ""}${issueDate && issueTime ? "<br>" : ""}${issueTime ? escapeHtml(issueTime) : ""}</div>`
       : "";
@@ -7886,6 +7889,15 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     </div>`;
   }
 
+  const SBAR_CLOSING_TEXT = "Pendências e encaminhamentos revisados. Favor, confirmar as vagas sinalizadas no censo atualizado e acompanhar os registros de pendências.";
+
+  function sbarClosingBlockMarkup(){
+    return `<div class="sbar-closing-box">
+      <div class="sbar-closing-title">Encerramento do plantão</div>
+      <div class="sbar-closing-text">${escapeHtml(SBAR_CLOSING_TEXT)}</div>
+    </div>`;
+  }
+
   function sbarRecordFullMarkup(record){
     const rows = [
       ["Horário da solicitação", record.requestTime || ""],
@@ -8333,6 +8345,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       moduleMeta.green.title, "", buildRecordsText("green"), "",
       moduleMeta.red.title, "", buildRecordsText("red"),
       "",
+      "ENCERRAMENTO DO PLANTÃO",
+      SBAR_CLOSING_TEXT,
+      "",
       `${sbarProfessionalNameOnly(professional)}`,
       `Médico Regulador | ${crmLabel}`,
       "NIR CEMETRON",
@@ -8430,19 +8445,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
             ${sbarFullGroupMarkup("yellow")}
             ${sbarFullGroupMarkup("transfer")}
             ${sbarFullGroupMarkup("blue")}
-          </section>
-
-          <section class="sbar-full-report-continuation">
-            <div class="sbar-detail-header">
-              <img class="sbar-detail-logo" src="${escapeHtml(DOCUMENT_LOGO_SRC)}" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
-              <h3>RELATÓRIO DETALHADO DO PLANTÃO</h3>
-              <p>NIR CEMETRON | CONTINUAÇÃO DO SBAR</p>
-            </div>
             ${sbarFullGroupMarkup("green")}
             ${sbarFullGroupMarkup("red")}
+            ${sbarClosingBlockMarkup()}
           </section>
 
-          ${regulatorFooterHtml(generatedDate, generatedTime)}
+          ${sbarRegulatorFooterHtml(generatedDate, generatedTime)}
         </div>
       </div>`;
 
@@ -8538,7 +8546,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-email-grid{display:grid;grid-template-columns:repeat(3,1fr)}.sbar-email-metric{padding:9px 7px;text-align:center;border-left:1px solid #dbe3ec;background:#f8fafc;min-height:52px}.sbar-email-metric:first-child{border-left:0}
   .sbar-email-metric span{display:block;color:#64748b;font-size:7.8px;font-weight:600}.sbar-email-metric strong{display:block;margin-top:4px;color:#334155;font-size:13.5px;font-weight:500}
   .sbar-r-section .sbar-summary-box{margin-bottom:0}
-  .sbar-full-report-page-break,.sbar-full-report-continuation{break-before:page;page-break-before:always;padding-top:0}
+  .sbar-full-report-page-break{break-before:page;page-break-before:always;padding-top:0}
   .sbar-detail-header{text-align:center;padding:0 12px 9px;border-bottom:1px solid #dbe3ec;margin-bottom:7px}
   .sbar-detail-header h3{margin:0;color:#0f2747;font-size:16px;letter-spacing:.02em}
   .sbar-detail-header p{margin:4px 0 0;color:#64748b;font-size:9.5px;font-weight:600}
@@ -8552,6 +8560,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   .sbar-record:first-of-type{border-top:0}
   .sbar-record p{margin:3px 0}
   .sbar-empty{padding:7px 9px;color:#64748b;font-size:9.8px}
+  .sbar-closing-box{margin-top:6px;border:1px solid #cbd5e1;border-radius:7px;overflow:hidden;background:#fff;break-inside:avoid;page-break-inside:avoid}
+  .sbar-closing-title{padding:5px 7px;background:#e8eef6;color:#0f2747;font-size:8.8px;font-weight:800;border-bottom:1px solid #dbe3ec}
+  .sbar-closing-text{padding:6px 7px;color:#111827;font-size:8.8px;line-height:1.3;background:#f8fafc}
   .sbar-footer{display:flex;justify-content:space-between;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid #cbd5e1;font-size:9.8px;color:#64748b}
   .sbar-footer strong{display:block;color:#0f2747;font-size:10.5px;margin-bottom:2px}
   @media print{
@@ -8561,7 +8572,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     .sbar-record-group,.sbar-full-group{break-inside:auto}
     .sbar-record-full{break-inside:avoid}
     .sbar-summary-box,.sbar-email-box{break-inside:avoid}
-    .sbar-full-report-page-break,.sbar-full-report-continuation{break-before:page;page-break-before:always}
+    .sbar-full-report-page-break{break-before:page;page-break-before:always}
     .regulator-footer{position:fixed;left:0;right:0;bottom:-12mm;margin:0!important;padding-top:5px!important;background:#fff}
   }
 

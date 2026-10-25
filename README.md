@@ -8,6 +8,14 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.21 — relatório detalhado contínuo no SBAR
+
+- Mantém integralmente a primeira página aprovada, incluindo o **Resumo do plantão** dentro da seção **R** e a frase de continuidade.
+- Remove a quebra forçada entre avaliações/exames e autorizações, deixando todos os grupos ocuparem continuamente o espaço disponível.
+- Mantém cada registro íntegro e muda de página apenas quando o espaço restante for insuficiente.
+- Inclui o bloco **Encerramento do plantão** com a orientação padronizada para confirmação das vagas e acompanhamento das pendências.
+- Mantém no rodapé a identificação do médico à esquerda e a data e o horário de emissão à direita.
+
 ### Versão 1.16.20 — novo PDF do SBAR
 
 - Aplica ao PDF do SBAR a identidade visual aprovada do SCIR, com a logo oficial do CEMETRON e cartões com bordas arredondadas.

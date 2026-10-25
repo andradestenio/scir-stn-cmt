@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.20 com PDF do SBAR atualizado
+SCIR — NIR CEMETRON | Versão 1.16.21 com relatório detalhado contínuo no SBAR
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -32,6 +32,9 @@ CAMINHO SIMPLIFICADO
 - A primeira página termina com “Relatório detalhado do plantão nas próximas páginas.”.
 - A Produtividade de e-mails começa na segunda página, seguida do relatório detalhado dos registros.
 - A logo oficial do CEMETRON e os cartões com bordas arredondadas foram aplicados em todas as páginas do SBAR.
+- Pendências, transferências, avaliações/exames, autorizações e negativas seguem em fluxo contínuo, sem quebra forçada entre os grupos.
+- O encerramento do plantão orienta a confirmação das vagas do censo atualizado e o acompanhamento dos registros de pendências.
+- O rodapé do SBAR mantém a identificação do médico à esquerda e a emissão do relatório à direita.
 - A aba mostra distribuição por categoria, evolução diária, principais origens e destinos e permite exportar o resultado para Excel.
 - O campo “Unidade de origem” sugere HEPSJPII, AMI, HBAP, UPAs Zona Sul/Leste e PAs Ana Adelaide/José Adelino, mas aceita outras unidades digitadas livremente.
 - Os oito destinos do CEMETRON ficam disponíveis em todos os tipos de registro, sem impedir a digitação de outros destinos.
