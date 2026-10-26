@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.22 com estatísticas de ocupação pelo censo da dashboard
+SCIR — NIR CEMETRON | Versão 1.16.23 responsiva com menu lateral recolhível
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -6,6 +6,9 @@ CAMINHO SIMPLIFICADO
 - Não é necessário cadastrar nova variável na Vercel.
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
 - O SCIR abre diretamente no Dashboard, sem página de login e sem botão Sair.
+- O menu lateral pode ser recolhido ou expandido pelo botão de três barras; a preferência fica salva neste navegador.
+- As telas se reorganizam conforme a largura disponível, inclusive em computadores menores, tablets e celulares.
+- A aba “Estatísticas” usa grades adaptativas para impedir que cartões e informações fiquem cortados.
 - Toda alteração é salva primeiro no navegador e uma cópia local anterior é preservada.
 - Uma base vazia não substitui dados locais existentes; o sistema reenvia a cópia local.
 - O botão “Recuperar cópia local anterior” restaura a versão imediatamente anterior.

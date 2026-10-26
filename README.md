@@ -8,6 +8,15 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.23 — responsividade e menu lateral recolhível
+
+- Adiciona ao menu lateral um botão de três barras para recolher ou expandir a navegação em computadores.
+- Mantém o botão de três barras no cabeçalho de tablets e celulares, com abertura do menu em painel lateral.
+- Salva no navegador a preferência de menu recolhido ou expandido, sem alterar os registros do SCIR.
+- Permite que o conteúdo central encolha corretamente, evitando cortes quando o menu lateral está visível.
+- Torna filtros, indicadores, gráficos, cartões de ocupação e rankings da aba **Estatísticas** adaptativos à largura disponível.
+- Preserva a rolagem horizontal somente nas tabelas extensas, mantendo os demais indicadores integralmente visíveis.
+
 ### Versão 1.16.22 — estatísticas de ocupação pelo censo da dashboard
 
 - Reestrutura a aba **Estatísticas** com resumo executivo, evolução da demanda, decisões regulatórias, transferências externas, avaliações/exames e rankings.
