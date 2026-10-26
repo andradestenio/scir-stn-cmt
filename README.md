@@ -8,6 +8,17 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.22 — estatísticas de ocupação pelo censo da dashboard
+
+- Reestrutura a aba **Estatísticas** com resumo executivo, evolução da demanda, decisões regulatórias, transferências externas, avaliações/exames e rankings.
+- Adiciona filtros específicos para situação da transferência e para avaliações ou exames, além de atalhos de período.
+- Usa exclusivamente os registros manuais do **Censo diário da dashboard** como fonte de disponibilidade de leitos.
+- Considera **91 leitos operacionais** conforme o quadro de referência aprovado e calcula `ocupados = operacionais − disponíveis`.
+- Exibe a taxa média de ocupação consolidada, o último censo completo e taxas por setor quando existe correspondência segura entre capacidade e campo do censo.
+- Mantém como **N/D** os setores sem capacidade informada ou sem campo próprio no censo, sem criar estimativas artificiais.
+- Desconsidera censos incompletos ou acima da capacidade no cálculo consolidado e informa a qualidade dos dados ao usuário.
+- Inclui os indicadores e a tabela de ocupação na exportação para Excel.
+
 ### Versão 1.16.21 — relatório detalhado contínuo no SBAR
 
 - Mantém integralmente a primeira página aprovada, incluindo o **Resumo do plantão** dentro da seção **R** e a frase de continuidade.

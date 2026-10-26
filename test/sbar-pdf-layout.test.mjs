@@ -5,8 +5,8 @@ import fs from "node:fs";
 const root = new URL("../",import.meta.url);
 const html = fs.readFileSync(new URL("index.html",root),"utf8");
 
-test("a versão 1.16.21 aplica o cabeçalho institucional ao SBAR",() => {
-  assert.match(html,/const SCIR_VERSION = "1\.16\.21"/);
+test("a versão 1.16.22 mantém o cabeçalho institucional do SBAR",() => {
+  assert.match(html,/const SCIR_VERSION = "1\.16\.22"/);
   assert.match(html,/class="sbar-report-logo"/);
   assert.match(html,/class="sbar-detail-logo"/);
   assert.match(html,/RELATÓRIO DETALHADO DO PLANTÃO/);

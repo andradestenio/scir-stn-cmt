@@ -1,4 +1,4 @@
-SCIR — NIR CEMETRON | Versão 1.16.21 com relatório detalhado contínuo no SBAR
+SCIR — NIR CEMETRON | Versão 1.16.22 com estatísticas de ocupação pelo censo da dashboard
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
@@ -19,7 +19,12 @@ CAMINHO SIMPLIFICADO
 - Os links das escalas entram na cópia local, na sincronização em nuvem e nos backups.
 - A aba “Estatísticas” analisa exclusivamente os plantões encerrados registrados no histórico.
 - Os resultados podem ser filtrados por período, turno, plantonista, tipo de registro, origem, destino e texto livre.
-- Os indicadores incluem registros, média por plantão, e-mails recebidos e tratados e atualizações do censo.
+- O resumo executivo inclui taxa de autorização, pendências por plantão, transferências aguardando e taxa média de ocupação.
+- A disponibilidade de leitos é obtida dos censos manuais salvos na dashboard; atualizações automáticas do Hospub não entram nesse cálculo.
+- A capacidade operacional considerada é de 91 leitos, conforme o quadro de referência cadastrado para os setores.
+- A ocupação é calculada pela fórmula: leitos operacionais menos leitos disponíveis; a taxa corresponde aos ocupados divididos pelos operacionais.
+- Censos incompletos ou com total superior à capacidade são sinalizados e não alteram a taxa consolidada.
+- Os setores sem capacidade informada ou sem campo correspondente no censo permanecem como N/D, sem estimativas artificiais.
 - O Censo diário exibe ao final de cada coluna o total de leitos disponíveis da Infectologia e da Clínica Médica.
 - O Censo diário inicial utiliza uma tabela operacional semelhante à Ocupação Hospub.
 - Para cada setor, “Leitos disponíveis” recebe a quantidade e “Enf/Leito” identifica a enfermaria ou os leitos que podem ser cedidos.
