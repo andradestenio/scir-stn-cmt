@@ -1,5 +1,6 @@
 import {json, readJson} from "../lib/http.js";
 import {getState, putState} from "../lib/supabase.js";
+import {requireAuth} from "../lib/auth.js";
 
 function databaseErrorCode(error){
   if(error?.code) return error.code;
@@ -43,6 +44,7 @@ function databaseHttpStatus(code){
 
 export default async function handler(req, res){
   try{
+    if(!requireAuth(req,res)) return;
     if(req.method === "GET"){
       const row = await getState();
       return json(res, 200, row ? {exists:true, state:row.state, updatedAt:row.updated_at} : {exists:false});

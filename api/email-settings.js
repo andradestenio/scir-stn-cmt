@@ -1,4 +1,5 @@
 import {json, readJson} from "../lib/http.js";
+import {requireAuth} from "../lib/auth.js";
 import {
   configureZimbra,
   getPublicEmailIntegration
@@ -6,6 +7,7 @@ import {
 
 export default async function handler(req, res){
   try{
+    if(!requireAuth(req,res)) return;
     if(req.method === "GET"){
       return json(res, 200, {integration:await getPublicEmailIntegration()});
     }

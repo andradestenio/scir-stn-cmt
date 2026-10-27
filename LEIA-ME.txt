@@ -1,11 +1,14 @@
-SCIR — NIR CEMETRON | Versão 1.16.23 responsiva com menu lateral recolhível
+SCIR — NIR CEMETRON | Versão 1.16.24 com acesso exclusivo e dados preservados
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
 - Não é necessário executar novo SQL no Supabase.
-- Não é necessário cadastrar nova variável na Vercel.
+- Cadastre ADMIN_USERNAME e ADMIN_PASSWORD nas variáveis protegidas da Vercel antes do novo deploy.
+- Preserve o valor atual de SESSION_SECRET; não o altere se o Zimbra já estiver configurado.
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
-- O SCIR abre diretamente no Dashboard, sem página de login e sem botão Sair.
+- O SCIR abre em uma página de login institucional e aceita somente o único usuário configurado.
+- O botão “Sair do sistema” encerra a sessão sem excluir registros, backups ou configurações.
+- Todas as APIs de sincronização e e-mail também exigem a sessão válida.
 - O menu lateral pode ser recolhido ou expandido pelo botão de três barras; a preferência fica salva neste navegador.
 - As telas se reorganizam conforme a largura disponível, inclusive em computadores menores, tablets e celulares.
 - A aba “Estatísticas” usa grades adaptativas para impedir que cartões e informações fiquem cortados.
@@ -119,13 +122,18 @@ CONFIGURAÇÃO JÁ DEFINIDA
 ATUALIZAÇÃO DO SISTEMA
 1. Extraia o pacote.
 2. Substitua no repositório todos os arquivos correspondentes.
-3. Faça commit e push no repositório conectado à Vercel.
-4. Aguarde o deploy.
-5. Entre no SCIR e abra “Configurar e-mail”.
-6. Informe a senha e clique em “Testar e ativar”.
+3. Na Vercel, cadastre ADMIN_USERNAME e ADMIN_PASSWORD em Environment Variables.
+4. Mantenha o SESSION_SECRET atual. Se ele ainda não existir, use uma chave aleatória com pelo menos 32 caracteres.
+5. Faça commit e push no repositório conectado à Vercel.
+6. Aguarde o deploy ou execute Redeploy.
+7. Entre no SCIR com o usuário e a senha cadastrados.
+8. Abra “Configurar e-mail”, informe a senha do Zimbra e clique em “Testar e ativar”, se necessário.
 
 SEGURANÇA
-- A senha não está incluída neste pacote.
+- A senha de acesso não está incluída neste pacote e deve existir somente na Vercel.
+- A sincronização, os registros e as funções de e-mail recusam acesso sem sessão válida.
+- A sessão usa cookie protegido e expira após 24 horas.
+- Sair do sistema ou ter a sessão expirada não apaga os dados locais nem a base do Supabase.
 - A senha é testada pela função segura da Vercel.
 - Depois de validada, é armazenada com criptografia AES-256-GCM.
 - A senha nunca é devolvida ao navegador.
@@ -140,4 +148,4 @@ VALIDAÇÕES EXECUTADAS
 - Início e pausa do monitoramento vinculados ao plantão ativo.
 - Resumo por status e histórico de respondidos validados.
 - Auditoria npm: nenhuma vulnerabilidade encontrada.
-- Acesso direto, nuvem, registros, censo, calendário e módulos laterais validados.
+- Login, encerramento de sessão, nuvem, registros, censo, calendário e módulos laterais validados.

@@ -1,4 +1,5 @@
 import {json} from "../lib/http.js";
+import {requireAuth} from "../lib/auth.js";
 import {listEmailNotifications} from "../lib/supabase.js";
 import {
   getPublicEmailIntegration,
@@ -31,6 +32,7 @@ function requestedShiftStartedAt(req){
 
 export default async function handler(req, res){
   try{
+    if(!requireAuth(req,res)) return;
     if(req.method !== "GET") return json(res, 405, {error:"Método não permitido."});
 
     const shiftId = requestedShiftId(req);

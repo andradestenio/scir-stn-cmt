@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import listHandler from "../api/email-notifications.js";
 import statusHandler from "../api/email-notification-status.js";
+import {createSessionToken,SESSION_COOKIE_NAME} from "../lib/auth.js";
 import {
   decryptEmailPassword,
   encryptEmailPassword
@@ -16,14 +17,21 @@ import {
 process.env.SUPABASE_URL = "https://example.supabase.co";
 process.env.SUPABASE_SECRET_KEY = "supabase-secret";
 process.env.SESSION_SECRET = "12345678901234567890123456789012";
+process.env.ADMIN_USERNAME = "usuario-teste";
+process.env.ADMIN_PASSWORD = "senha-segura-de-teste";
 
-test("abre diretamente sem formulário de login ou ação de sair", () => {
+test("protege o SCIR com login único sem remover as salvaguardas locais", () => {
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-  assert.doesNotMatch(html, /id="loginScreen"/);
-  assert.doesNotMatch(html, /id="loginForm"/);
-  assert.doesNotMatch(html, /id="logoutButton"/);
-  assert.doesNotMatch(html, /\/api\/login/);
-  assert.doesNotMatch(html, /\/api\/logout/);
+  assert.match(html, /id="loginScreen"/);
+  assert.match(html, /id="loginForm"/);
+  assert.match(html, /id="loginUsername"/);
+  assert.match(html, /id="loginPassword"/);
+  assert.match(html, /id="logoutButton"/);
+  assert.match(html, /\/api\/auth\/login/);
+  assert.match(html, /\/api\/auth\/session/);
+  assert.match(html, /\/api\/auth\/logout/);
+  assert.match(html, /body class="auth-pending"/);
+  assert.match(html, /Sua sessão expirou[\s\S]*?os dados locais foram preservados/);
   assert.match(html, /nirCemetronRecoveryStateV1/);
   assert.match(html, /Dados locais protegidos/);
   assert.match(html, /setTimeout\(queueCloudSave, 15000\)/);
@@ -96,6 +104,10 @@ function responseRecorder(){
   };
 }
 
+function authorizedHeaders(){
+  return {cookie:`${SESSION_COOKIE_NAME}=${createSessionToken(process.env.ADMIN_USERNAME)}`};
+}
+
 test("interface inclui ciência em roxo e produtividade no histórico do plantão", () => {
   const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
   assert.match(html, /data-email-action="acknowledged"/);
@@ -148,6 +160,7 @@ test("lista somente as notificações vinculadas ao plantão solicitado", async 
   try{
     const req = {
       method:"GET",
+      headers:authorizedHeaders(),
       query:{historyShiftId:"plantao-atual"}
     };
     const res = responseRecorder();
@@ -196,6 +209,7 @@ test("persiste a marcação de e-mail como lido", async () => {
   try{
     const req = {
       method:"PUT",
+      headers:authorizedHeaders(),
       body:{eventKey:"message-1", action:"read"}
     };
     const res = responseRecorder();
@@ -240,6 +254,7 @@ test("evolui um e-mail lido para respondido", async () => {
   try{
     const req = {
       method:"PUT",
+      headers:authorizedHeaders(),
       body:{eventKey:"message-2", action:"responded"}
     };
     const res = responseRecorder();
@@ -282,6 +297,7 @@ test("permite editar um e-mail respondido para ciente", async () => {
   try{
     const req = {
       method:"PUT",
+      headers:authorizedHeaders(),
       body:{eventKey:"message-ciente", action:"acknowledged"}
     };
     const res = responseRecorder();
@@ -324,6 +340,7 @@ test("permite devolver um e-mail ciente para pendente", async () => {
   try{
     const req = {
       method:"PUT",
+      headers:authorizedHeaders(),
       body:{eventKey:"message-reaberta", action:"pending"}
     };
     const res = responseRecorder();
@@ -366,6 +383,7 @@ test("permite editar um e-mail finalizado para lido", async () => {
   try{
     const req = {
       method:"PUT",
+      headers:authorizedHeaders(),
       body:{eventKey:"message-lida", action:"read"}
     };
     const res = responseRecorder();

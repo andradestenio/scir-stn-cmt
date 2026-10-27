@@ -1468,9 +1468,11 @@
     body.sidebar-collapsed #mainSidebar .sidebar-control-row{justify-content:center;margin:0 0 14px}
     body.sidebar-collapsed #mainSidebar .sidebar-toggle-button{width:44px;padding:8px}
     body.sidebar-collapsed #mainSidebar .sidebar-toggle-label,
-    body.sidebar-collapsed #mainSidebar .nav-label{display:none}
+    body.sidebar-collapsed #mainSidebar .nav-label,
+    body.sidebar-collapsed #mainSidebar .authorized-user{display:none}
     body.sidebar-collapsed #mainSidebar nav button,
-    body.sidebar-collapsed #mainSidebar nav .sidebar-link{justify-content:center;gap:0;padding-left:0;padding-right:0}
+    body.sidebar-collapsed #mainSidebar nav .sidebar-link,
+    body.sidebar-collapsed #mainSidebar .sidebar-logout-button{justify-content:center;gap:0;padding-left:0;padding-right:0}
     body.sidebar-collapsed #mainSidebar nav button.active{box-shadow:inset 0 0 0 1px rgba(111,177,244,.7)}
   }
 
@@ -1495,6 +1497,16 @@
   .login-error{display:flex;align-items:center;min-height:22px;margin-top:12px;color:#b91c1c;font-size:13px;line-height:1.4}
   .login-security-note{display:flex;align-items:flex-start;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;color:#64748b;font-size:11px;line-height:1.5}
   .login-security-note span:first-child{font-size:14px}
+  body.auth-pending,body.auth-locked{overflow:hidden}
+  body.auth-pending>.app,body.auth-pending>.mobile-header,body.auth-pending>.menu-backdrop,body.auth-pending>.cloud-bar,
+  body.auth-locked>.app,body.auth-locked>.mobile-header,body.auth-locked>.menu-backdrop,body.auth-locked>.cloud-bar{visibility:hidden;pointer-events:none}
+  .login-checking{display:flex;align-items:center;gap:8px;margin:0 0 16px;padding:10px 12px;border:1px solid #dbe4ef;border-radius:9px;background:#f8fafc;color:#475569;font-size:12px;line-height:1.4}
+  .login-checking.hidden{display:none}
+  .login-checking-dot{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 rgba(79,142,220,.42);animation:loginPulse 1.4s infinite}
+  .login-submit:disabled{cursor:wait;opacity:.72}
+  .authorized-user{display:flex;align-items:center;gap:8px;margin:0 0 8px;padding:0 4px;color:#bfdbfe;font-size:11px;line-height:1.35;overflow-wrap:anywhere}
+  .authorized-user-icon{display:grid;place-items:center;width:23px;height:23px;flex:0 0 23px;border-radius:50%;background:rgba(255,255,255,.12);font-size:12px}
+  @keyframes loginPulse{0%{box-shadow:0 0 0 0 rgba(79,142,220,.42)}70%{box-shadow:0 0 0 8px rgba(79,142,220,0)}100%{box-shadow:0 0 0 0 rgba(79,142,220,0)}}
   .dashboard-panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}.dashboard-panel-header h3{margin-bottom:4px}.dashboard-panel-header p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
   .data-security-panel{border-color:#bfdbfe;background:linear-gradient(135deg,#ffffff 0%,#f8fbff 100%)}
   .data-security-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
@@ -2239,7 +2251,54 @@
 </style>
 
 </head>
-<body>
+<body class="auth-pending">
+  <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
+    <div class="login-shell">
+      <div class="login-brand-panel">
+        <div class="login-logo-surface">
+          <img src="assets/logo-cemetron.png" alt="CEMETRON — Centro de Medicina Tropical de Rondônia">
+        </div>
+        <div class="login-brand-copy">
+          <span class="login-eyebrow">Acesso institucional</span>
+          <h1>Controle Interno de Regulações</h1>
+          <p>Ambiente protegido do NIR CEMETRON para acompanhamento dos plantões, registros e disponibilidade de leitos.</p>
+          <ul class="login-features">
+            <li><span class="login-feature-icon" aria-hidden="true">✓</span>Sincronização protegida com a base integrada</li>
+            <li><span class="login-feature-icon" aria-hidden="true">✓</span>Dados locais preservados durante o acesso</li>
+            <li><span class="login-feature-icon" aria-hidden="true">✓</span>Sessão exclusiva para o usuário autorizado</li>
+          </ul>
+        </div>
+      </div>
+      <form class="login-card" id="loginForm" autocomplete="on" novalidate>
+        <div class="login-form-heading">
+          <span class="login-access-label">Acesso restrito</span>
+          <h2 id="loginTitle">Entrar no SCIR</h2>
+          <p>Informe as credenciais do único usuário autorizado.</p>
+        </div>
+        <div class="login-checking" id="loginChecking" role="status">
+          <span class="login-checking-dot" aria-hidden="true"></span>
+          <span>Verificando a sessão protegida…</span>
+        </div>
+        <div class="field">
+          <label for="loginUsername">Usuário</label>
+          <input id="loginUsername" name="username" type="text" maxlength="160" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div class="field">
+          <label for="loginPassword">Senha</label>
+          <div class="password-field">
+            <input id="loginPassword" name="password" type="password" maxlength="512" autocomplete="current-password" required>
+            <button class="password-toggle" id="toggleLoginPassword" type="button" aria-controls="loginPassword" aria-pressed="false">Mostrar</button>
+          </div>
+        </div>
+        <button class="btn btn-primary login-submit" id="loginSubmit" type="submit">Entrar com segurança</button>
+        <div class="login-error" id="loginError" role="alert" aria-live="polite"></div>
+        <div class="login-security-note">
+          <span aria-hidden="true">🔒</span>
+          <span>A sessão é protegida e os dados do plantão não são removidos ao sair do sistema.</span>
+        </div>
+      </form>
+    </div>
+  </section>
   <div class="cloud-bar" id="cloudStatus">Conectando à base…</div>
   <header class="mobile-header">
     <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Abrir menu" aria-controls="mainSidebar" aria-expanded="false">☰</button>
@@ -2308,6 +2367,17 @@
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
       </span><span class="nav-label">Mensagens padrão</span></button>
     </nav>
+
+    <div class="sidebar-footer-actions">
+      <div class="authorized-user" title="Usuário autenticado">
+        <span class="authorized-user-icon" aria-hidden="true">●</span>
+        <span id="authorizedUsername">Usuário autorizado</span>
+      </div>
+      <button class="sidebar-logout-button" id="logoutButton" type="button" title="Sair do sistema">
+        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M8 12h10"/></svg></span>
+        <span class="nav-label">Sair do sistema</span>
+      </button>
+    </div>
 
   </aside>
 
@@ -3617,7 +3687,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.23";
+  const SCIR_VERSION = "1.16.24";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -3884,8 +3954,133 @@
   let hospubCareAreaDraft = {};
 
   const $ = id => document.getElementById(id);
+  let isAuthenticated = false;
+  let applicationStarted = false;
+  let authenticatedUsername = "";
+  let authenticationInProgress = false;
   const SIDEBAR_COLLAPSED_STORAGE_KEY = "scirSidebarCollapsedV1";
   const desktopSidebarMedia = window.matchMedia("(min-width:1025px)");
+
+  function setLoginBusy(busy,{checking=false}={}){
+    authenticationInProgress = Boolean(busy);
+    ["loginUsername","loginPassword","toggleLoginPassword","loginSubmit"].forEach(id => {
+      if($(id)) $(id).disabled = Boolean(busy);
+    });
+    if($("loginSubmit")) $("loginSubmit").textContent = checking ? "Verificando acesso…" : (busy ? "Entrando…" : "Entrar com segurança");
+    $("loginChecking")?.classList.toggle("hidden",!checking);
+  }
+
+  function showLogin(message=""){
+    isAuthenticated = false;
+    authenticatedUsername = "";
+    document.body.classList.remove("auth-pending");
+    document.body.classList.add("auth-locked");
+    $("loginScreen")?.classList.remove("hidden");
+    if($("loginError")) $("loginError").textContent = message;
+    if($("authorizedUsername")) $("authorizedUsername").textContent = "Usuário autorizado";
+    setLoginBusy(false);
+    closeMobileMenu();
+    closeEmailNotificationsPopover();
+    closeEmailSettingsModal();
+    setTimeout(() => $("loginUsername")?.focus(),80);
+  }
+
+  async function activateAuthenticatedApplication(user){
+    isAuthenticated = true;
+    authenticatedUsername = String(user?.username || "Usuário autorizado");
+    if($("authorizedUsername")) $("authorizedUsername").textContent = authenticatedUsername;
+    if($("loginPassword")) $("loginPassword").value = "";
+    if($("loginError")) $("loginError").textContent = "";
+    $("loginScreen")?.classList.add("hidden");
+    document.body.classList.remove("auth-pending","auth-locked");
+    setLoginBusy(false);
+    renderAll();
+    ensureCurrentRequestTime();
+    applicationStarted = true;
+    await loadCloudState();
+  }
+
+  async function checkAuthenticatedSession(){
+    document.body.classList.add("auth-pending");
+    setLoginBusy(true,{checking:true});
+    try{
+      const response = await fetch("/api/auth/session",{
+        method:"GET",
+        headers:{"Accept":"application/json"},
+        credentials:"same-origin"
+      });
+      const body = await response.json().catch(() => ({}));
+      if(response.ok && body.authenticated){
+        await activateAuthenticatedApplication(body.user);
+        return;
+      }
+      showLogin(body.code === "AUTH_NOT_CONFIGURED"
+        ? "Acesso seguro ainda não configurado. Cadastre ADMIN_USERNAME, ADMIN_PASSWORD e SESSION_SECRET na Vercel."
+        : "");
+    }catch(error){
+      showLogin("Não foi possível verificar o acesso. Confira a conexão e tente novamente.");
+    }
+  }
+
+  async function submitLogin(){
+    if(authenticationInProgress) return;
+    const username = $("loginUsername")?.value.trim() || "";
+    const password = $("loginPassword")?.value || "";
+    if(!username || !password){
+      if($("loginError")) $("loginError").textContent = "Informe o usuário e a senha.";
+      (username ? $("loginPassword") : $("loginUsername"))?.focus();
+      return;
+    }
+    setLoginBusy(true);
+    if($("loginError")) $("loginError").textContent = "";
+    try{
+      const response = await fetch("/api/auth/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        credentials:"same-origin",
+        body:JSON.stringify({username,password})
+      });
+      const body = await response.json().catch(() => ({}));
+      if(!response.ok){
+        throw Object.assign(new Error(body.error || "Não foi possível entrar no SCIR."),{status:response.status,code:body.code});
+      }
+      await activateAuthenticatedApplication(body.user);
+    }catch(error){
+      if($("loginPassword")) $("loginPassword").value = "";
+      if($("loginError")) $("loginError").textContent = error.message || "Não foi possível entrar no SCIR.";
+      setLoginBusy(false);
+      $("loginPassword")?.focus();
+    }
+  }
+
+  function lockExpiredSession(){
+    if(!isAuthenticated) return;
+    clearTimeout(cloudSaveTimer);
+    clearTimeout(cloudRetryTimer);
+    stopEmailNotificationPolling();
+    stopHospubCensusPolling();
+    showLogin("Sua sessão expirou. Entre novamente para continuar; os dados locais foram preservados.");
+  }
+
+  async function logoutApplication(){
+    if(!isAuthenticated) return showLogin();
+    isAuthenticated = false;
+    clearTimeout(cloudSaveTimer);
+    clearTimeout(cloudRetryTimer);
+    stopEmailNotificationPolling();
+    stopHospubCensusPolling();
+    try{
+      await fetch("/api/auth/logout",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        credentials:"same-origin",
+        body:"{}"
+      });
+    }catch(error){
+      console.error("Não foi possível confirmar o encerramento da sessão.",error);
+    }
+    showLogin("Sessão encerrada com segurança. Os dados do SCIR permanecem preservados.");
+  }
 
   function updateSidebarToggleControl(){
     const button = $("sidebarToggleButton");
@@ -4007,6 +4202,7 @@
   async function cloudRequest(path, options={}){
     const response = await fetch(path, {
       ...options,
+      credentials:"same-origin",
       headers:{"Content-Type":"application/json", ...(options.headers || {})}
     });
     const body = await response.json().catch(() => ({}));
@@ -4014,6 +4210,7 @@
       const error = new Error(body.error || "Falha ao acessar a base em nuvem.");
       error.status = response.status;
       error.code = body.code || "CLOUD_REQUEST_FAILED";
+      if(response.status === 401 || error.code === "AUTH_REQUIRED") lockExpiredSession();
       throw error;
     }
     return body;
@@ -4295,6 +4492,7 @@
   }
 
   async function loadEmailNotifications({announce=true}={}){
+    if(!isAuthenticated) return;
     if(emailNotificationRequestPromise) return emailNotificationRequestPromise;
     emailNotificationRequestInFlight = true;
     emailNotificationRequestPromise = (async () => {
@@ -4339,6 +4537,7 @@
 
   function startEmailNotificationPolling(){
     clearInterval(emailNotificationPollTimer);
+    if(!isAuthenticated) return;
     emailMonitoringActive = Boolean(currentEmailShiftId());
     renderEmailNotifications();
     if(!emailMonitoringActive) return;
@@ -4519,6 +4718,7 @@
   }
 
   function queueCloudSave(){
+    if(!isAuthenticated) return;
     clearTimeout(cloudSaveTimer);
     clearTimeout(cloudRetryTimer);
     setCloudStatus("Dados salvos localmente • sincronizando…");
@@ -4533,7 +4733,7 @@
         .catch(error => {
           setCloudStatus(synchronizationFailureLabel(error), "error", error);
           console.error(error);
-          cloudRetryTimer = setTimeout(queueCloudSave, 15000);
+          if(isAuthenticated) cloudRetryTimer = setTimeout(queueCloudSave, 15000);
         });
     }, 350);
   }
@@ -4545,6 +4745,7 @@
   }
 
   async function loadCloudState(){
+    if(!isAuthenticated) return;
     setCloudStatus("Conectando à base…");
     try{
       const localSavedAt = new Date(localStorage.getItem(LOCAL_SAVE_TIME_STORAGE_KEY) || 0).getTime();
@@ -4601,7 +4802,7 @@
       setCloudStatus(synchronizationFailureLabel(error), "error", error);
       console.error(error);
       clearTimeout(cloudRetryTimer);
-      cloudRetryTimer = setTimeout(loadCloudState, 15000);
+      if(isAuthenticated) cloudRetryTimer = setTimeout(loadCloudState, 15000);
     }
   }
 
@@ -5082,6 +5283,7 @@
 
   function startHospubCensusPolling(){
     stopHospubCensusPolling();
+    if(!isAuthenticated) return;
     if(!state.shift || isShiftClosed()) return;
     hospubCensusInitialTimer = setTimeout(() => requestHospubCensusUpdate(),1500);
     hospubCensusPollTimer = setInterval(() => requestHospubCensusUpdate(),HOSPUB_POLL_INTERVAL_MS);
@@ -7890,7 +8092,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }
   });
   document.addEventListener("visibilitychange", () => {
-    if(document.visibilityState === "visible" && emailNotificationsLoaded && currentEmailShiftId()){
+    if(isAuthenticated && document.visibilityState === "visible" && emailNotificationsLoaded && currentEmailShiftId()){
       loadEmailNotifications();
     }
   });
@@ -9408,9 +9610,26 @@ ${reportHtml}
     }finally{ event.target.value = ""; }
   });
 
-  renderAll();
-  ensureCurrentRequestTime();
-  loadCloudState();
+  $("loginForm")?.addEventListener("submit",event => {
+    event.preventDefault();
+    submitLogin();
+  });
+  $("toggleLoginPassword")?.addEventListener("click",() => {
+    const input = $("loginPassword");
+    const button = $("toggleLoginPassword");
+    const showing = input?.type === "text";
+    if(input) input.type = showing ? "password" : "text";
+    if(button){
+      button.textContent = showing ? "Mostrar" : "Ocultar";
+      button.setAttribute("aria-pressed",String(!showing));
+    }
+    input?.focus();
+  });
+  $("logoutButton")?.addEventListener("click",() => {
+    if(confirm("Deseja sair do SCIR? Os dados salvos permanecerão preservados.")) logoutApplication();
+  });
+
+  checkAuthenticatedSession();
 </script>
 </body>
 </html>

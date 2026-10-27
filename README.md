@@ -4,9 +4,20 @@ Versão preparada para publicação na Vercel com base PostgreSQL no Supabase. O
 
 ## Atualização de uma versão já publicada
 
-Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, preservando as pastas `api`, `lib` e `supabase`. As variáveis já cadastradas na Vercel não precisam ser cadastradas novamente. Após o envio ao GitHub, aguarde o deploy automático ou faça **Deployments → Redeploy**.
+Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, preservando as pastas `api`, `lib` e `supabase`. Mantenha as variáveis já cadastradas e acrescente `ADMIN_USERNAME` e `ADMIN_PASSWORD` na Vercel. Após o envio ao GitHub, aguarde o deploy automático ou faça **Deployments → Redeploy**.
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
+
+### Versão 1.16.24 — acesso exclusivo para um usuário autorizado
+
+- Reintroduz uma página de login institucional e responsiva, sem expor a senha no pacote ou no navegador.
+- Mantém um único usuário configurado pelas variáveis protegidas `ADMIN_USERNAME` e `ADMIN_PASSWORD` da Vercel.
+- Protege no servidor a sincronização, os registros, as configurações do Zimbra e as notificações de e-mail; a tela de login não é apenas uma camada visual.
+- Usa sessão de 24 horas em cookie `HttpOnly`, `SameSite=Strict` e `Secure` no ambiente publicado.
+- Limita tentativas repetidas de login e devolve mensagens genéricas para credenciais inválidas.
+- Adiciona o botão **Sair do sistema** ao menu lateral e bloqueia novamente a interface quando a sessão expira.
+- Preserva integralmente a base do Supabase, o backup local e a cópia de recuperação; entrar ou sair não apaga dados.
+- Não exige alteração no SQL do Supabase.
 
 ### Versão 1.16.23 — responsividade e menu lateral recolhível
 
@@ -467,12 +478,18 @@ Crie um repositório vazio e envie **todo o conteúdo desta pasta**, mantendo as
 | --- | --- |
 | `SUPABASE_URL` | Project URL do Supabase |
 | `SUPABASE_SECRET_KEY` | Secret key `sb_secret_...` do Supabase |
-| `SESSION_SECRET` | Texto aleatório com pelo menos 32 caracteres, usado para proteger a senha do Zimbra |
+| `ADMIN_USERNAME` | Nome do único usuário autorizado a entrar no SCIR |
+| `ADMIN_PASSWORD` | Senha longa e exclusiva desse usuário; cadastre somente na Vercel |
+| `SESSION_SECRET` | Texto aleatório com pelo menos 32 caracteres, usado na sessão e na proteção da senha do Zimbra |
 
 5. Clique em **Deploy**.
 
 Para gerar `SESSION_SECRET`, use um gerenciador de senhas ou execute
-localmente: `openssl rand -hex 32`.
+localmente: `openssl rand -hex 32`. Se essa variável já existe no projeto, não
+troque o valor, pois ela também protege a senha já configurada do Zimbra.
+
+Depois de cadastrar ou alterar as variáveis, faça um novo **Redeploy**. Não
+informe a senha no GitHub, no arquivo `.env.example` nem em mensagens.
 
 ## 4. Ativar as notificações do Zimbra
 
@@ -503,7 +520,9 @@ Depois da primeira migração, todos os dispositivos que acessarem o endereço d
 ## Segurança
 
 - A chave privilegiada do Supabase fica somente nas funções da Vercel e nunca é enviada ao navegador.
-- O SCIR abre diretamente, sem usuário, senha ou cookie de sessão. Portanto, o endereço publicado deve ser compartilhado somente com a equipe autorizada.
+- O SCIR exige o usuário único configurado na Vercel antes de exibir os dados ou acessar qualquer API operacional.
+- A sessão fica em cookie protegido e expira após 24 horas; o botão **Sair do sistema** encerra o acesso sem apagar os dados.
+- A senha de acesso não é incluída no pacote, no GitHub, no HTML ou nas respostas enviadas ao navegador.
 - A tabela não permite acesso direto pelas chaves públicas do Supabase.
 - A senha do Zimbra é criptografada com AES-256-GCM usando uma chave derivada
   do `SESSION_SECRET` configurado na Vercel.
