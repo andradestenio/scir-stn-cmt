@@ -2250,6 +2250,10 @@
   }
 </style>
 
+<style>
+  #sbarHistoryPanel .records-table{min-width:720px}
+  #sbarHistoryPanel td:last-child{white-space:nowrap}
+</style>
 </head>
 <body class="auth-pending">
   <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
@@ -3537,6 +3541,38 @@
         <h3>Pré-visualização</h3>
         <div id="sbarOutput" class="sbar-box">Clique em “Gerar/Atualizar SBAR” para montar o relatório.</div>
       </div>
+
+      <div class="panel" id="sbarHistoryPanel">
+        <h3>Histórico SBAR</h3>
+        <p class="note">Cada plantão encerrado preserva seu SBAR completo para consulta individual pela data do plantão.</p>
+        <div class="form-grid">
+          <div><label for="sbarHistoryDate">Data do plantão</label><input id="sbarHistoryDate" type="date"></div>
+          <div><label for="sbarHistoryType">Tipo de plantão</label><select id="sbarHistoryType">
+            <option value="">Todos</option>
+            <option>Manhã — 07h00 às 13h00</option>
+            <option>Tarde — 13h00 às 19h00</option>
+            <option>Noite — 19h00 às 07h00</option>
+            <option>Tarde/Noite — 13h00 às 07h00</option>
+          </select></div>
+        </div>
+        <div class="actions"><button class="btn btn-secondary" id="clearSbarHistoryFilters" type="button">Limpar filtros</button></div>
+        <p class="note" id="sbarHistoryCount" role="status"></p>
+        <div class="table-wrap"><table class="records-table">
+          <thead><tr><th>Data</th><th>Plantão</th><th>Plantonista</th><th>Encerramento</th><th>Ação</th></tr></thead>
+          <tbody id="sbarHistoryBody"></tbody>
+        </table></div>
+      </div>
+      <div class="panel hidden" id="sbarHistoryDetail">
+        <div class="report-header">
+          <div><h3>Relatório SBAR arquivado</h3><div class="report-subtitle" id="sbarHistorySummary"></div></div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn btn-secondary" id="copyHistoricalSbar" type="button">Copiar SBAR</button>
+            <button class="btn btn-pdf" id="printHistoricalSbar" type="button">Gerar PDF / Imprimir</button>
+            <button class="btn btn-secondary" id="closeHistoricalSbar" type="button">Fechar consulta</button>
+          </div>
+        </div>
+        <div id="sbarHistoryOutput"></div>
+      </div>
     </section>
   </main>
 </div>
@@ -3687,7 +3723,7 @@
   const LAST_CLOUD_SYNC_STORAGE_KEY = "nirCemetronLastCloudSyncV1";
   const BACKUP_FORMAT = "scir-nir-cemetron-backup";
   const BACKUP_VERSION = 1;
-  const SCIR_VERSION = "1.16.24";
+  const SCIR_VERSION = "1.16.25";
   const HOSPUB_APP_SOURCE = "scir-hospub-app-v1";
   const HOSPUB_CONNECTOR_SOURCE = "scir-hospub-connector-v1";
   const HOSPUB_POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -3924,6 +3960,7 @@
 
   let editingRecordId = null;
   let selectedHistoryId = null;
+  let selectedSbarHistoryId = null;
   let calendarEditingId = null;
   let editingStandardMessageId = null;
   let editingScaleLinkId = null;
@@ -6549,6 +6586,7 @@ ${regulatorFooterHtml()}</div><\/body></html>`;
 
   function renderSbarFields(){
     state.sbar = state.sbar || {};
+    sbarVacanciesFromCensus = Boolean(state.sbar.vacanciesFromCensus);
     $("operationalStatus").value = state.sbar.operationalStatus || "";
     $("turnover").value = state.sbar.turnover || "";
     $("vacancies").value = state.sbar.vacancies || "";
@@ -7885,6 +7923,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     renderSbarFields();
     renderShiftReportTable();
     renderHistoryTable();
+    renderSbarHistory();
     renderStatistics();
     renderCalendar();
     renderBedCensus();
@@ -8385,8 +8424,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.document}</svg>`;
   }
 
-  function sbarCensusTableMarkup(){
-    const census = state.bedCensus || {};
+  function sbarCensusTableMarkup(reportState=state){
+    const census = reportState.bedCensus || {};
     const inf = census.infectologia || {};
     const med = census.clinica || {};
     const infBeds = census.availableBeds?.infectologia || {};
@@ -8441,8 +8480,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     </div>`;
   }
 
-  function sbarSummaryCounts(){
-    const records = Array.isArray(state.records) ? state.records : [];
+  function sbarSummaryCounts(reportState=state){
+    const records = Array.isArray(reportState.records) ? reportState.records : [];
     const count = key => records.filter(r => r.module === key).length;
     return {total:records.length,yellow:count("yellow"),transfer:count("transfer"),blue:count("blue"),green:count("green"),red:count("red")};
   }
@@ -8457,9 +8496,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     if(record.externalTransferStatus === "autorizada") rows.push(["Enfermaria/Leito", record.externalTransferWardBed || ""]);
   }
 
-  function sbarEmailSummary(){
-    const archivedItem = state.shift?.id ? state.history.find(item => item.id === state.shift.id) : null;
-    const summary = archivedItem?.emailSummary || (typeof buildEmailProductivitySummary === "function" ? buildEmailProductivitySummary() : {});
+  function sbarEmailSummary(reportState=state){
+    const archivedItem = reportState.shift?.id ? reportState.history?.find(item => item.id === reportState.shift.id) : null;
+    const summary = reportState.emailSummary || archivedItem?.emailSummary || (reportState === state ? buildEmailProductivitySummary() : {});
     return {
       received:Number(summary?.received || 0),
       acknowledged:Number(summary?.acknowledged || 0),
@@ -8467,8 +8506,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     };
   }
 
-  function sbarEmailBlockMarkup(){
-    const mail = sbarEmailSummary();
+  function sbarEmailBlockMarkup(reportState=state){
+    const mail = sbarEmailSummary(reportState);
     return `<div class="sbar-email-box">
       <div class="sbar-email-title">Produtividade de e-mails</div>
       <div class="sbar-email-grid">
@@ -8515,8 +8554,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     }).join("")}</div>`;
   }
 
-  function sbarFullGroupMarkup(moduleKey){
-    const records = state.records.filter(r => r.module === moduleKey);
+  function sbarFullGroupMarkup(moduleKey, reportState=state){
+    const records = (reportState.records || []).filter(r => r.module === moduleKey);
     const meta = moduleMeta[moduleKey] || {title:"REGISTROS"};
     const body = records.length ? records.map(sbarRecordFullMarkup).join("") : `<div class="sbar-empty">Sem registros neste plantão.</div>`;
     return `<div class="sbar-full-group ${moduleKey}">
@@ -8572,8 +8611,8 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     </div>`;
   }
 
-  function buildRecordsText(moduleKey){
-    const records = state.records.filter(r => r.module === moduleKey);
+  function buildRecordsText(moduleKey, reportState=state){
+    const records = (reportState.records || []).filter(r => r.module === moduleKey);
     if(!records.length) return "SEM REGISTROS NESTE PLANTÃO.";
 
     return records.map((r) => [
@@ -8637,6 +8676,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       shift: JSON.parse(JSON.stringify(state.shift)),
       records: JSON.parse(JSON.stringify(state.records)),
       sbar: JSON.parse(JSON.stringify(state.sbar)),
+      sbarSnapshot: {
+        schemaVersion:1,
+        generatedAt:state.shift.endedAt || new Date().toISOString(),
+        vacanciesFromCensus:Boolean(state.sbar.vacanciesFromCensus),
+        bedCensus:JSON.parse(JSON.stringify(state.bedCensus || {}))
+      },
       emailSummary:buildEmailProductivitySummary(),
       censusUpdates:JSON.parse(JSON.stringify(state.shiftCensusUpdates || [])),
       archivedAt: new Date().toISOString()
@@ -8663,6 +8708,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       return;
     }
 
+    state.sbar = readCurrentSbarFields();
     await loadEmailNotifications({announce:false});
     state.shift.status = "ENCERRADO";
     state.shift.endedAt = new Date().toISOString();
@@ -8849,7 +8895,7 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
     toast("Registros atualizados.");
   });
 
-  let sbarVacanciesFromCensus = false;
+  let sbarVacanciesFromCensus = Boolean(state.sbar?.vacanciesFromCensus);
   $("copyCensusToVacancies")?.addEventListener("click", () => {
     const text = buildLatestCensusVacanciesText();
     if(!text){ alert("Ainda não há um censo diário registrado para copiar."); return; }
@@ -8861,9 +8907,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
   });
   $("vacancies")?.addEventListener("input", () => { sbarVacanciesFromCensus = false; });
 
-  $("generateSbar").addEventListener("click", () => {
+  function readCurrentSbarFields(){
     SBAR_RICH_FIELDS.forEach(syncRichSource);
-    state.sbar = {
+    return {
       operationalStatus: $("operationalStatus").value,
       turnover: $("turnover").value,
       vacancies: $("vacancies").value.trim(),
@@ -8871,12 +8917,14 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       professionalAbsence: $("professionalAbsence").value.trim(),
       assessment: $("assessment").value.trim(),
       recommendation: $("recommendation").value.trim(),
-      richHtml: Object.fromEntries(SBAR_RICH_FIELDS.map(field => [field, getRichEditorHtml(field)]))
+      richHtml: Object.fromEntries(SBAR_RICH_FIELDS.map(field => [field, getRichEditorHtml(field)])),
+      vacanciesFromCensus: sbarVacanciesFromCensus
     };
-    saveState();
+  }
 
-    const shift = state.shift || {};
-    const now = new Date();
+  function buildSbarReport(reportState, {generatedAt=new Date().toISOString(), vacanciesFromCensus=false}={}){
+    const shift = reportState.shift || {};
+    const now = new Date(generatedAt);
     const dateLabel = shift.date ? formatDate(shift.date) : "NÃO INFORMADA";
     const shiftLabel = sbarShiftLabel(shift.type);
     const professional = shift.professional || "NÃO INFORMADO";
@@ -8893,23 +8941,23 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       `PLANTONISTA: ${sbarProfessionalNameOnly(professional)} | ${crmLabel}`,
       "",
       "S — SITUAÇÃO",
-      `VAGAS DISPONÍVEIS: ${state.sbar.vacancies || "NÃO INFORMADO"}`,
+      `VAGAS DISPONÍVEIS: ${reportState.sbar.vacancies || "NÃO INFORMADO"}`,
       "",
       "B — BACKGROUND / CONTEXTO",
-      `REGISTRO DE OCORRÊNCIAS: ${state.sbar.background || "SEM REGISTROS."}`,
-      `AUSÊNCIA DE PROFISSIONAIS COM IMPACTO REGULATÓRIO: ${state.sbar.professionalAbsence || "NÃO INFORMADA."}`,
+      `REGISTRO DE OCORRÊNCIAS: ${reportState.sbar.background || "SEM REGISTROS."}`,
+      `AUSÊNCIA DE PROFISSIONAIS COM IMPACTO REGULATÓRIO: ${reportState.sbar.professionalAbsence || "NÃO INFORMADA."}`,
       "",
       "A — AVALIAÇÃO",
-      `STATUS OPERACIONAL: ${state.sbar.operationalStatus || "NÃO INFORMADO"}`,
-      `ROTATIVIDADE: ${state.sbar.turnover || "NÃO INFORMADA"}`,
-      state.sbar.assessment || "",
+      `STATUS OPERACIONAL: ${reportState.sbar.operationalStatus || "NÃO INFORMADO"}`,
+      `ROTATIVIDADE: ${reportState.sbar.turnover || "NÃO INFORMADA"}`,
+      reportState.sbar.assessment || "",
       "",
       "R — RELATÓRIO DO PLANTÃO",
-      state.sbar.recommendation || "SEM RELATÓRIO ADICIONAL REGISTRADO.",
+      reportState.sbar.recommendation || "SEM RELATÓRIO ADICIONAL REGISTRADO.",
       "",
       ...(() => {
-        const counts = sbarSummaryCounts();
-        const mail = sbarEmailSummary();
+        const counts = sbarSummaryCounts(reportState);
+        const mail = sbarEmailSummary(reportState);
         return [
           `NÚMERO DE OCORRÊNCIAS: ${counts.total}`,
           `PENDÊNCIAS: ${counts.yellow}`,
@@ -8929,11 +8977,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         ];
       })(),
       "",
-      moduleMeta.yellow.title, "", buildRecordsText("yellow"), "",
-      moduleMeta.transfer.title, "", buildRecordsText("transfer"), "",
-      moduleMeta.blue.title, "", buildRecordsText("blue"), "",
-      moduleMeta.green.title, "", buildRecordsText("green"), "",
-      moduleMeta.red.title, "", buildRecordsText("red"),
+      moduleMeta.yellow.title, "", buildRecordsText("yellow", reportState), "",
+      moduleMeta.transfer.title, "", buildRecordsText("transfer", reportState), "",
+      moduleMeta.blue.title, "", buildRecordsText("blue", reportState), "",
+      moduleMeta.green.title, "", buildRecordsText("green", reportState), "",
+      moduleMeta.red.title, "", buildRecordsText("red", reportState),
       "",
       "ENCERRAMENTO DO PLANTÃO",
       SBAR_CLOSING_TEXT,
@@ -8964,9 +9012,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-content">
                 <h4>Situação</h4>
                 <p><strong>Vagas disponíveis:</strong></p>
-                ${sbarVacanciesFromCensus && sbarCensusTableMarkup()
-                  ? sbarCensusTableMarkup()
-                  : `${richHtmlForOutput(state.sbar.richHtml?.vacancies, state.sbar.vacancies || "NÃO INFORMADO")}`}
+                ${vacanciesFromCensus && sbarCensusTableMarkup(reportState)
+                  ? sbarCensusTableMarkup(reportState)
+                  : `${richHtmlForOutput(reportState.sbar.richHtml?.vacancies, reportState.sbar.vacancies || "NÃO INFORMADO")}`}
               </div>
             </div>
 
@@ -8977,11 +9025,11 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
                 <div class="sbar-background-grid">
                   <div class="sbar-background-card">
                     <div class="sbar-background-card-title">Registro de ocorrências</div>
-                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.background, state.sbar.background || "")}</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(reportState.sbar.richHtml?.background, reportState.sbar.background || "")}</div>
                   </div>
                   <div class="sbar-background-card">
                     <div class="sbar-background-card-title">Ausência de profissionais com impacto regulatório</div>
-                    <div class="sbar-background-card-text">${richHtmlForOutput(state.sbar.richHtml?.professionalAbsence, state.sbar.professionalAbsence || "")}</div>
+                    <div class="sbar-background-card-text">${richHtmlForOutput(reportState.sbar.richHtml?.professionalAbsence, reportState.sbar.professionalAbsence || "")}</div>
                   </div>
                 </div>
               </div>
@@ -8992,10 +9040,10 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-content">
                 <h4>Avaliação</h4>
                 <div class="sbar-badges sbar-assessment-badges">
-                  <span class="sbar-badge ${sbarOperationalStatusClass(state.sbar.operationalStatus)}">Status operacional: ${escapeHtml(state.sbar.operationalStatus || "NÃO INFORMADO")}</span>
-                  <span class="sbar-badge">Rotatividade: ${escapeHtml(state.sbar.turnover || "NÃO INFORMADA")}</span>
+                  <span class="sbar-badge ${sbarOperationalStatusClass(reportState.sbar.operationalStatus)}">Status operacional: ${escapeHtml(reportState.sbar.operationalStatus || "NÃO INFORMADO")}</span>
+                  <span class="sbar-badge">Rotatividade: ${escapeHtml(reportState.sbar.turnover || "NÃO INFORMADA")}</span>
                 </div>
-                ${richHtmlForOutput(state.sbar.richHtml?.assessment, state.sbar.assessment || "Sem avaliação adicional registrada.")}
+                ${richHtmlForOutput(reportState.sbar.richHtml?.assessment, reportState.sbar.assessment || "Sem avaliação adicional registrada.")}
               </div>
             </div>
 
@@ -9003,9 +9051,9 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <div class="sbar-letter">R</div>
               <div class="sbar-content">
                 <h4>Relatório do plantão</h4>
-                ${richHtmlForOutput(state.sbar.richHtml?.recommendation, state.sbar.recommendation || "Sem relatório adicional registrado.")}
+                ${richHtmlForOutput(reportState.sbar.richHtml?.recommendation, reportState.sbar.recommendation || "Sem relatório adicional registrado.")}
                 ${(() => {
-                  const counts = sbarSummaryCounts();
+                  const counts = sbarSummaryCounts(reportState);
                   return `<div class="sbar-summary-box">
                     <div class="sbar-summary-title">Resumo do plantão</div>
                     <div class="sbar-summary-grid">
@@ -9030,13 +9078,13 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
               <h3>RELATÓRIO DETALHADO DO PLANTÃO</h3>
               <p>NIR CEMETRON | PRODUTIVIDADE E REGISTROS DO SBAR</p>
             </div>
-            ${sbarEmailBlockMarkup()}
+            ${sbarEmailBlockMarkup(reportState)}
             <div class="sbar-full-report-title">Registros do plantão</div>
-            ${sbarFullGroupMarkup("yellow")}
-            ${sbarFullGroupMarkup("transfer")}
-            ${sbarFullGroupMarkup("blue")}
-            ${sbarFullGroupMarkup("green")}
-            ${sbarFullGroupMarkup("red")}
+            ${sbarFullGroupMarkup("yellow", reportState)}
+            ${sbarFullGroupMarkup("transfer", reportState)}
+            ${sbarFullGroupMarkup("blue", reportState)}
+            ${sbarFullGroupMarkup("green", reportState)}
+            ${sbarFullGroupMarkup("red", reportState)}
             ${sbarClosingBlockMarkup()}
           </section>
 
@@ -9044,13 +9092,20 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
         </div>
       </div>`;
 
-    $("sbarOutput").innerHTML = reportHtml;
+    return {html:reportHtml, text:reportText};
+  }
+
+  $("generateSbar").addEventListener("click", () => {
+    state.sbar = readCurrentSbarFields();
+    saveState();
+    const report = buildSbarReport(state, {vacanciesFromCensus:sbarVacanciesFromCensus});
+    $("sbarOutput").innerHTML = report.html;
     toast("SBAR gerado/atualizado.");
   });
 
-  $("copySbar").addEventListener("click", async () => {
-    const reportNode = $("sbarOutput").querySelector(".sbar-report");
-    const text = reportNode?.dataset.copyText || $("sbarOutput").textContent;
+  async function copySbarReport(outputId="sbarOutput"){
+    const reportNode = $(outputId).querySelector(".sbar-report");
+    const text = reportNode?.dataset.copyText || $(outputId).textContent;
     if(!text || text.startsWith("Clique em")){
       alert("Gere o SBAR antes de copiar.");
       return;
@@ -9066,10 +9121,12 @@ ${rows || `<tr><td colspan="7">Nenhum plantão cadastrado.</td></tr>`}
       area.remove();
     }
     toast("SBAR copiado com sucesso.");
-  });
+  }
 
-  $("printSbar").addEventListener("click", () => {
-    const reportNode = $("sbarOutput").querySelector(".sbar-report");
+  $("copySbar").addEventListener("click", () => copySbarReport());
+
+  function printSbarReport(outputId="sbarOutput"){
+    const reportNode = $(outputId).querySelector(".sbar-report");
     if(!reportNode){
       alert("Gere o SBAR antes de criar o PDF ou imprimir.");
       return;
@@ -9242,8 +9299,102 @@ ${reportHtml}
     printWindow.focus();
 
     printDocumentWindow(printWindow, "Não foi possível abrir a impressão automaticamente. Use Ctrl+P ou Cmd+P na janela do relatório.");
-  });
+  }
 
+  $("printSbar").addEventListener("click", () => printSbarReport());
+
+
+
+  function sbarHistoryItems(){
+    const date = $("sbarHistoryDate").value;
+    const type = $("sbarHistoryType").value;
+    return (state.history || []).filter(item => item?.shift && item.sbar &&
+      (!date || item.shift.date === date) && (!type || item.shift.type === type)
+    ).slice().sort((a,b) => String(b.shift.date || "").localeCompare(String(a.shift.date || "")) ||
+      String(b.shift.endedAt || b.archivedAt || "").localeCompare(String(a.shift.endedAt || a.archivedAt || "")));
+  }
+
+  function closeHistoricalSbar(){
+    selectedSbarHistoryId = null;
+    $("sbarHistoryDetail").classList.add("hidden");
+    $("sbarHistoryOutput").replaceChildren();
+    $("sbarHistorySummary").textContent = "";
+  }
+
+  function renderSbarHistory(){
+    const items = sbarHistoryItems();
+    $("sbarHistoryCount").textContent = `${items.length} ${items.length === 1 ? "relatório encontrado" : "relatórios encontrados"}`;
+    const body = $("sbarHistoryBody");
+    body.replaceChildren();
+    if(!items.length){
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.colSpan = 5;
+      cell.className = "empty-table";
+      cell.textContent = "Nenhum SBAR arquivado para esta consulta.";
+      row.append(cell);
+      body.append(row);
+    }
+    items.forEach(item => {
+      const row = document.createElement("tr");
+      [formatDate(item.shift.date), item.shift.type || "", item.shift.professional || "",
+        formatDateTime(item.shift.endedAt || item.archivedAt)].forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.append(cell);
+      });
+      const cell = document.createElement("td");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "btn btn-primary";
+      button.textContent = "Consultar SBAR";
+      button.setAttribute("aria-label", `Consultar SBAR de ${formatDate(item.shift.date)}, ${item.shift.type || "plantão"}, ${item.shift.professional || "plantonista não informado"}`);
+      button.addEventListener("click", () => openHistoricalSbar(item.id));
+      cell.append(button);
+      row.append(cell);
+      body.append(row);
+    });
+    if(selectedSbarHistoryId && !items.some(item => item.id === selectedSbarHistoryId)) closeHistoricalSbar();
+  }
+
+  function openHistoricalSbar(id){
+    const item = (state.history || []).find(entry => entry.id === id);
+    if(!item?.sbar || !item.shift) return;
+    const snapshot = item.sbarSnapshot || {};
+    const censusUpdates = Array.isArray(item.censusUpdates) ? item.censusUpdates : [];
+    // Legacy reports use only their archived data; never today's census or emails.
+    const reportState = {
+      shift:item.shift,
+      records:Array.isArray(item.records) ? item.records : [],
+      sbar:item.sbar,
+      emailSummary:item.emailSummary || {},
+      bedCensus:snapshot.bedCensus || censusUpdates[censusUpdates.length - 1] || {}
+    };
+    const generatedAt = snapshot.generatedAt || item.shift.endedAt || item.archivedAt || `${item.shift.date}T12:00:00`;
+    const report = buildSbarReport(reportState, {
+      generatedAt,
+      vacanciesFromCensus:Boolean(snapshot.vacanciesFromCensus ?? item.sbar.vacanciesFromCensus)
+    });
+    selectedSbarHistoryId = id;
+    $("sbarHistoryOutput").innerHTML = report.html;
+    $("sbarHistorySummary").textContent = `${formatDate(item.shift.date)} · ${item.shift.type || ""} · ${item.shift.professional || ""} · Somente consulta`;
+    $("sbarHistoryDetail").classList.remove("hidden");
+    $("sbarHistoryDetail").scrollIntoView({block:"start", behavior:"smooth"});
+  }
+
+  ["sbarHistoryDate", "sbarHistoryType"].forEach(id => $(id).addEventListener("change", () => {
+    closeHistoricalSbar();
+    renderSbarHistory();
+  }));
+  $("clearSbarHistoryFilters").addEventListener("click", () => {
+    $("sbarHistoryDate").value = "";
+    $("sbarHistoryType").value = "";
+    closeHistoricalSbar();
+    renderSbarHistory();
+  });
+  $("closeHistoricalSbar").addEventListener("click", closeHistoricalSbar);
+  $("copyHistoricalSbar").addEventListener("click", () => copySbarReport("sbarHistoryOutput"));
+  $("printHistoricalSbar").addEventListener("click", () => printSbarReport("sbarHistoryOutput"));
 
   if(!$("shiftDate").value){
     $("shiftDate").value = new Date().toISOString().slice(0,10);

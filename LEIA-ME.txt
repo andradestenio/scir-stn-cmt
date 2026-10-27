@@ -1,9 +1,18 @@
-SCIR — NIR CEMETRON | Versão 1.16.24 com acesso exclusivo e dados preservados
+SCIR — NIR CEMETRON | Versão 1.16.25 com histórico SBAR por data
+
+NOVIDADE DESTA VERSÃO
+- O formulário, o relatório e o PDF do SBAR mantêm o padrão atual.
+- Ao encerrar o plantão, o SBAR completo é salvo com os registros e o censo daquele momento.
+- Para consultar: Relatório SBAR > Histórico SBAR > selecione a data > Consultar SBAR.
+- Se houver mais de um plantão na mesma data, cada um aparece separadamente.
+- Cada consulta permite copiar o SBAR completo ou gerar PDF/imprimir.
+- O histórico acompanha o salvamento, a sincronização e os backups existentes.
+- Esta atualização não exige novo SQL ou novas variáveis na Vercel.
 
 CAMINHO SIMPLIFICADO
 - Não é necessário editar código.
 - Não é necessário executar novo SQL no Supabase.
-- Cadastre ADMIN_USERNAME e ADMIN_PASSWORD nas variáveis protegidas da Vercel antes do novo deploy.
+- Preserve as variáveis protegidas já configuradas na Vercel, inclusive ADMIN_USERNAME, ADMIN_PASSWORD e SESSION_SECRET.
 - Preserve o valor atual de SESSION_SECRET; não o altere se o Zimbra já estiver configurado.
 - Não é necessário Docker, Terminal ou computador permanentemente ligado.
 - O SCIR abre em uma página de login institucional e aceita somente o único usuário configurado.

@@ -5,8 +5,8 @@ import fs from "node:fs";
 const root = new URL("../",import.meta.url);
 const html = fs.readFileSync(new URL("index.html",root),"utf8");
 
-test("a versão 1.16.24 mantém o cabeçalho institucional do SBAR",() => {
-  assert.match(html,/const SCIR_VERSION = "1\.16\.24"/);
+test("a versão 1.16.25 mantém o cabeçalho institucional do SBAR",() => {
+  assert.match(html,/const SCIR_VERSION = "1\.16\.25"/);
   assert.match(html,/class="sbar-report-logo"/);
   assert.match(html,/class="sbar-detail-logo"/);
   assert.match(html,/RELATÓRIO DETALHADO DO PLANTÃO/);
@@ -17,23 +17,23 @@ test("a primeira página termina no resumo do R e na frase de continuidade",() =
   const summaryIndex = html.indexOf('<div class="sbar-summary-box">',rIndex);
   const noteIndex = html.indexOf('<div class="sbar-next-page-note">Relatório detalhado do plantão nas próximas páginas.</div>',summaryIndex);
   const detailIndex = html.indexOf('<section class="sbar-full-report-page-break">',noteIndex);
-  const emailIndex = html.indexOf('${sbarEmailBlockMarkup()}',detailIndex);
+  const emailIndex = html.indexOf('${sbarEmailBlockMarkup(reportState)}',detailIndex);
 
   assert.ok(rIndex >= 0,"a seção R deve existir");
   assert.ok(summaryIndex > rIndex,"o resumo deve estar dentro da sequência da seção R");
   assert.ok(noteIndex > summaryIndex,"a frase de continuidade deve vir após o resumo");
   assert.ok(detailIndex > noteIndex,"o relatório detalhado deve começar após a frase");
   assert.ok(emailIndex > detailIndex,"a produtividade de e-mails deve começar na página detalhada");
-  assert.equal(html.slice(rIndex,noteIndex).includes('${sbarEmailBlockMarkup()}'),false);
+  assert.equal(html.slice(rIndex,noteIndex).includes('${sbarEmailBlockMarkup(reportState)}'),false);
 });
 
 test("o relatório detalhado segue continuamente e mantém cartões arredondados",() => {
   const detailIndex = html.indexOf('<section class="sbar-full-report-page-break">');
-  const yellowIndex = html.indexOf('${sbarFullGroupMarkup("yellow")}',detailIndex);
-  const transferIndex = html.indexOf('${sbarFullGroupMarkup("transfer")}',yellowIndex);
-  const blueIndex = html.indexOf('${sbarFullGroupMarkup("blue")}',transferIndex);
-  const greenIndex = html.indexOf('${sbarFullGroupMarkup("green")}',blueIndex);
-  const redIndex = html.indexOf('${sbarFullGroupMarkup("red")}',greenIndex);
+  const yellowIndex = html.indexOf('${sbarFullGroupMarkup("yellow", reportState)}',detailIndex);
+  const transferIndex = html.indexOf('${sbarFullGroupMarkup("transfer", reportState)}',yellowIndex);
+  const blueIndex = html.indexOf('${sbarFullGroupMarkup("blue", reportState)}',transferIndex);
+  const greenIndex = html.indexOf('${sbarFullGroupMarkup("green", reportState)}',blueIndex);
+  const redIndex = html.indexOf('${sbarFullGroupMarkup("red", reportState)}',greenIndex);
   const closingIndex = html.indexOf('${sbarClosingBlockMarkup()}',redIndex);
 
   assert.ok(detailIndex >= 0);

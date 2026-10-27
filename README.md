@@ -4,9 +4,23 @@ Versão preparada para publicação na Vercel com base PostgreSQL no Supabase. O
 
 ## Atualização de uma versão já publicada
 
-Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, preservando as pastas `api`, `lib` e `supabase`. Mantenha as variáveis já cadastradas e acrescente `ADMIN_USERNAME` e `ADMIN_PASSWORD` na Vercel. Após o envio ao GitHub, aguarde o deploy automático ou faça **Deployments → Redeploy**.
+Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, preservando as pastas `api`, `lib` e `supabase`. Mantenha as variáveis já cadastradas na Vercel. A atualização 1.16.25 não exige novas variáveis nem alteração no SQL do Supabase. Após o envio ao GitHub, aguarde o deploy automático ou faça **Deployments → Redeploy**.
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
+
+### Versão 1.16.25 — histórico SBAR por data
+
+- Preserva os campos, as informações e o padrão visual do formulário, do relatório e do PDF do SBAR atual.
+- Acrescenta **Histórico SBAR** à mesma aba, com consulta individual pela data do plantão e filtro por turno.
+- Mantém separados os plantões realizados na mesma data.
+- Salva os últimos campos preenchidos ao encerrar o plantão, mesmo sem clicar novamente em **Gerar/Atualizar SBAR**.
+- Arquiva o SBAR, os registros, o resumo de e-mails e o censo daquele momento; novos plantões não alteram as informações arquivadas.
+- Abre o relatório histórico completo em modo de consulta, com **Copiar SBAR** e **Gerar PDF / Imprimir** no mesmo padrão já utilizado.
+- Inclui o histórico no salvamento local, na sincronização e nos backups existentes.
+- Permite consultar os plantões anteriores a esta atualização a partir dos dados efetivamente arquivados. Informações antigas não salvas não são preenchidas com dados do plantão atual.
+- Mantém o login e as integrações existentes. Não exige nova tabela, novo SQL ou novas variáveis de ambiente.
+
+**Como usar:** encerre o plantão normalmente. Na aba **Relatório SBAR**, vá a **Histórico SBAR**, selecione a data e clique em **Consultar SBAR** no plantão desejado.
 
 ### Versão 1.16.24 — acesso exclusivo para um usuário autorizado
 

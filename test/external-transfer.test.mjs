@@ -42,7 +42,7 @@ test("nova categoria participa de indicadores estatísticas e SBAR",() => {
   assert.match(html,/id="countTransfer"/);
   assert.match(html,/id="chartTransferValue"/);
   assert.match(html,/const moduleCounts = \{yellow:0,transfer:0,blue:0,green:0,red:0\}/);
-  assert.match(html,/sbarFullGroupMarkup\("transfer"\)/);
+  assert.match(html,/sbarFullGroupMarkup\("transfer", reportState\)/);
   assert.match(html,/TRANSFERÊNCIAS EXTERNAS: \$\{counts\.transfer\}/);
 });
 
