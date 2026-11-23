@@ -1,4 +1,17 @@
-SCIR — NIR CEMETRON | Versão 1.16.25 com histórico SBAR por data
+SCIR — NIR CEMETRON | Versão 1.16.26 com leitura de e-mail e anexos
+
+NOVO: botão Abrir e-mail nos avisos da dashboard e no histórico de e-mails.
+Texto completo (simples ou formatação segura), remetente/destinatários e anexos.
+Imagens e PDFs têm opção Visualizar; todos os anexos podem ser baixados.
+Sem envio de respostas, sem compartilhamento ao ChatGPT e sem alterar mensagens.
+Mensagens permanecem na INBOX do Zimbra; conteúdo não é arquivado no SCIR.
+Limite: mensagem MIME total de 25 MB, texto + HTML de 2 MB. Acima disso, webmail.
+Não requer SQL nem variáveis novas. Preserve SESSION_SECRET e variáveis atuais.
+Atualize também assets/email-reader.*, api/email-message.js, lib/email-content.js,
+package.json e package-lock.json junto dos demais arquivos. Faça novo deploy.
+Não abra apenas index.html localmente: o leitor necessita das APIs autenticadas.
+Validado com mensagens simuladas; testar leitura e anexos reais após o deploy.
+
 
 NOVIDADE DESTA VERSÃO
 - O formulário, o relatório e o PDF do SBAR mantêm o padrão atual.

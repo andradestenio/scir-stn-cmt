@@ -1,6 +1,6 @@
 {
   "name": "scir-nir-cemetron",
-  "version": "1.16.25",
+  "version": "1.16.26",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,6 +10,8 @@
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "imapflow": "1.7.8"
+    "imapflow": "1.7.8",
+    "mailparser": "3.15.0",
+    "sanitize-html": "2.18.2"
   }
 }

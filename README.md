@@ -8,6 +8,18 @@ Substitua no GitHub os arquivos antigos por todos os arquivos desta versão, pre
 
 Esta versão inclui no Dashboard a área **Segurança e backup dos dados**, com estado da cópia local e da nuvem, teste de sincronização, exportação, importação e recuperação local.
 
+### Versão 1.16.26 — texto de e-mail e anexos (somente leitura)
+
+- `Abrir e-mail` nos avisos existentes abre texto completo, destinatários e anexos.
+- HTML sanitizado sem conteúdo ativo, estilos externos ou imagens remotas. Alternativa em texto simples.
+- Download com verificação SHA-256 e fragmentos de até 3 MB para respeitar o tamanho de resposta da hospedagem. PDFs e imagens comuns oferecem pré-visualização; se o navegador não suportar, utilize Baixar.
+- Mensagens MIME de até 25 MB e texto + HTML até 2 MB. Mensagens maiores devem ser consultadas no webmail; o leitor não trunca silenciosamente.
+- Consulta apenas à INBOX, com sessão autenticada. Mensagens movidas/excluídas podem ficar indisponíveis. Novos avisos guardam UID/UIDVALIDITY; anteriores usam Message-ID e data para evitar abrir outra mensagem.
+- Não marca a mensagem como lida no Zimbra. As ações manuais de acompanhamento existentes no SCIR permanecem independentes. Não envia respostas nem dados ao ChatGPT.
+- Corpo e anexos ficam apenas na memória durante a consulta, sem cópia no estado ou backup. Baixar salva no dispositivo por ação do usuário.
+- Sem migração SQL, sem redefinir senha ou SESSION_SECRET. Publicar todos os arquivos, incluindo dependências, APIs e assets novos. Não foi realizado deploy nem acesso à caixa real nesta entrega.
+- Homologação após publicar: entrar, abrir aviso recebido, conferir texto/acentos, visualizar PDF/imagem, baixar e conferir anexo; testar no iPad. Testes automatizados usam e-mails sintéticos.
+
 ### Versão 1.16.25 — histórico SBAR por data
 
 - Preserva os campos, as informações e o padrão visual do formulário, do relatório e do PDF do SBAR atual.
